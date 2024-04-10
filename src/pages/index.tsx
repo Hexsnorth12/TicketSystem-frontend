@@ -1,5 +1,6 @@
 // pages/index.tsx
-import Head from 'next/head'
+import React from 'react';
+import Head from 'next/head';
 
 export default function Home() {
   return (
@@ -15,5 +16,5 @@ export default function Home() {
         <p className="text-lg text-center mt-4">This is a simple example page.</p>
       </main>
     </div>
-  )
+  );
 }
