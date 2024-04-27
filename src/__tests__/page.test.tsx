@@ -1,7 +1,7 @@
 import React from 'react'
 import { test } from 'vitest'
 import { render } from '@testing-library/react'
-import Page from '../app/page'
+import Page from '../app/dashboard'
 
 test('Page', () => {
   render(<Page />)
