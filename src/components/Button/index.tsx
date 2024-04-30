@@ -4,10 +4,18 @@ import clsx from 'clsx'
 
 import type { ButtonProps, FormButton } from '@/types'
 
-const Button: React.FC<ButtonProps> = (props) => {
-  const { type, title, disabled, onClick, className, children } = props
-
-  function isFormButton(buttonProps: ButtonProps): buttonProps is FormButton {
+const Button: React.FC<ButtonProps> = ({
+  type,
+  title,
+  disabled,
+  onClick,
+  className,
+  children,
+  ...props
+}) => {
+  function isFormButton(
+    buttonProps: Partial<ButtonProps>,
+  ): buttonProps is Partial<FormButton> {
     return 'name' in buttonProps && 'value' in buttonProps
   }
 
