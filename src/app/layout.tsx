@@ -19,12 +19,12 @@ export default function RootLayout({
     children: React.ReactNode
     modal: React.ReactNode
 }>) {
-  return (
-    <StoreProviders>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-        {modal}
-      </html>
-    </StoreProviders>
-  )
+    return (
+        <StoreProviders>
+            <html lang="en">
+                <body className={inter.className}>{children}</body>
+                {modal}
+            </html>
+        </StoreProviders>
+    )
 }
