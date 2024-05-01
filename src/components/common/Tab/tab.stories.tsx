@@ -3,22 +3,22 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Tab from './tab'
 
 const meta = {
-  title: 'common/Tab',
-  component: Tab,
+    title: 'common/Tab',
+    component: Tab,
 
-  parameters: {
-    nextjs: {
-      appDirectory: true,
+    parameters: {
+        nextjs: {
+            appDirectory: true,
+        },
+        layout: 'centered',
     },
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Tab>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  args: {
-    children: <p>到期票卷</p>,
-  },
+    args: {
+        children: <p>到期票卷</p>,
+    },
 }

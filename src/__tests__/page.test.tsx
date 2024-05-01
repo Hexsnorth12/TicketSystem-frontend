@@ -4,6 +4,6 @@ import { render } from '@testing-library/react'
 import Page from '../app/dashboard'
 
 test('Page', () => {
-  render(<Page />)
-  // expect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()
+    render(<Page />)
+    // expect(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeDefined()
 })
