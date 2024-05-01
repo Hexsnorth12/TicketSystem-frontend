@@ -1,7 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
-import Input from '../common/input'
-import Checkbox from '../common/checkbox'
+import { Input, Checkbox } from '../common'
 export default function SignUp() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')

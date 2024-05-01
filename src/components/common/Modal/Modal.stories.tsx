@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Modal from './Modal'
 
 const meta = {
-  title: 'Example/Modal',
+  title: 'common/Modal',
   component: Modal,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocss
   parameters: {

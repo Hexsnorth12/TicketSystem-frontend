@@ -1,6 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
-import Input from '../common/input'
+import { Input } from '../common'
 
 export default function SingIn() {
   const [username, setUsername] = useState('')

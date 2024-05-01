@@ -1,6 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React from 'react'
-import Tab, { TabPanel } from '../common/tab'
+import { Tab, TabPanel } from '../common'
 import SingIn from './signIn'
 import SignUp from './signUp'
 export default function tabForm() {
