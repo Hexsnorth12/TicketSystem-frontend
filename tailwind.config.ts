@@ -15,7 +15,12 @@ const config: Config = {
       },
       colors: {
         primary: '#0FF',
+        secondary: '#00A9B4',
         'gray-1': '#151515',
+        'gray-2': '#1E1E1E',
+        'gray-3': '#333',
+        'gray-4': '#4E4E4E',
+        'gray-5': '#888',
       },
     },
   },

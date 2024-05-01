@@ -1,7 +1,9 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+
 import '@/styles/globals.css'
+import StoreProviders from '@/components/common/StoreProviders'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,9 +20,11 @@ export default function RootLayout({
     modal: React.ReactNode
 }>) {
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
-            {modal}
-        </html>
+        <StoreProviders>
+            <html lang="en">
+                <body className={inter.className}>{children}</body>
+                {modal}
+            </html>
+        </StoreProviders>
     )
 }
