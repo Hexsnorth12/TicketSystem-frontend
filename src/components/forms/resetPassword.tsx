@@ -1,6 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
-import { Input } from '../common'
+import { InputComponent } from '../common'
 
 export default function ResetPassword() {
     const [passWord, setPassWord] = useState('')
@@ -28,7 +28,7 @@ export default function ResetPassword() {
                 className="mx-auto mt-16 max-w-xl sm:mt-16">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                        <Input
+                        <InputComponent
                             label={'輸入新密碼(請輸入8位以上英數字)'}
                             type={'password'}
                             value={passWord}
@@ -36,7 +36,7 @@ export default function ResetPassword() {
                         />
                     </div>
                     <div className="sm:col-span-2">
-                        <Input
+                        <InputComponent
                             label={'再次輸入新密碼'}
                             type={'password'}
                             value={checkPassWord}
