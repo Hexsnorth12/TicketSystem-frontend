@@ -24,13 +24,15 @@ const Button: React.FC<ButtonProps> = ({
     }
 
     function refactedClassName() {
-        const defaultStyle =
-            'py-3 px-5 border-primary hover:bg-primary hover:text-gray-1 rounded-full border bg-transparent tracking-widest text-white'
+        const isDisabled = disabled
+            ? 'border-gray-2 bg-gray-2 text-gray-4'
+            : 'border-primary hover:bg-primary hover:text-gray-1 bg-transparent text-white'
+        const defaultStyle = `py-3 px-5 rounded-full border tracking-widest ${isDisabled}`
         return clsx(defaultStyle, className)
     }
 
     function onClickHandler() {
-        onClick()
+        if (onClick) onClick()
     }
 
     const elementProps = {
