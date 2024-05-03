@@ -2,8 +2,14 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { InputComponent } from '../../common'
+import { useLoginMutation } from '@/services/modules/auth'
+import { useAppDispatch } from '@/hooks/index'
+import { i } from 'vitest/dist/reporters-xEmem8D4.js'
+import { userActions } from '@/stores/slices/userSlice'
 
 export default function SingIn() {
+    const [login, { isLoading }] = useLoginMutation()
+    const dispatch = useAppDispatch()
     const [username, setUsername] = useState('')
 
     const [passWord, setPassWord] = useState('')
@@ -14,6 +20,18 @@ export default function SingIn() {
 
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
+    }
+    const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault()
+        try {
+            const response = await login({ account: username, pwd: passWord })
+            //TODO: 統一處理 response 的 data
+            //TODO: 重導到首頁
+            console.log('response', response)
+            // dispatch(userActions.login({ ...response.data }))
+        } catch (error) {
+            console.log('ERROR', error)
+        }
     }
 
     return (
@@ -85,8 +103,9 @@ export default function SingIn() {
                 </div>
                 <div className="mt-10">
                     <button
-                        type="submit"
-                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        // type="submit"
+                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={handleSubmit}>
                         登入
                     </button>
                 </div>
