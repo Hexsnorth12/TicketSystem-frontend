@@ -5,9 +5,9 @@ import {
     FetchBaseQueryError,
     FetchBaseQueryMeta,
 } from '@reduxjs/toolkit/query'
-import { ILoginBody, ILoginData, IMeta } from './auth'
+import { ISignUpBody, ISignUpData, IMeta } from './auth'
 
-const login = (
+const signUp = (
     build: EndpointBuilder<
         BaseQueryFn<
             string | FetchArgs,
@@ -20,12 +20,12 @@ const login = (
         'api'
     >,
 ) =>
-    build.mutation<ILoginData, ILoginBody>({
+    build.mutation<ISignUpData, ISignUpBody>({
         query: (body) => ({
-            url: 'api/v1/user/login',
+            url: 'api/v1/user/sign-up',
             method: 'POST',
             body,
         }),
     })
 
-export default login
+export default signUp

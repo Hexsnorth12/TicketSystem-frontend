@@ -1,17 +1,18 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { InputComponent } from '../../common'
 import { useLoginMutation } from '@/services/modules/auth'
 import { useAppDispatch } from '@/hooks/index'
-import { i } from 'vitest/dist/reporters-xEmem8D4.js'
 import { userActions } from '@/stores/slices/userSlice'
 
 export default function SingIn() {
-    const [login, { isLoading }] = useLoginMutation()
+    const [login] = useLoginMutation()
     const dispatch = useAppDispatch()
-    const [username, setUsername] = useState('')
+    const router = useRouter()
 
+    const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
 
     const handleUsernameChange = (value: string) => {
@@ -24,11 +25,14 @@ export default function SingIn() {
     const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         try {
-            const response = await login({ account: username, pwd: passWord })
-            //TODO: 統一處理 response 的 data
-            //TODO: 重導到首頁
-            console.log('response', response)
-            // dispatch(userActions.login({ ...response.data }))
+            const response = await login({
+                account: username,
+                pwd: passWord,
+            }).unwrap()
+            console.log('DATA', response)
+            await dispatch(userActions.login({ ...response }))
+            //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
+            router.push('/')
         } catch (error) {
             console.log('ERROR', error)
         }
@@ -95,7 +99,8 @@ export default function SingIn() {
                             </label>
                             <Link
                                 href="/signup"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-900 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-300">
+                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-900 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-300"
+                                scroll={false}>
                                 註冊
                             </Link>
                         </div>

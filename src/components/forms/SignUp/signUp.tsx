@@ -1,7 +1,12 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
+import { useSignUpMutation } from '@/services/modules/auth'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { InputComponent, Checkbox } from '../../common'
 export default function SignUp() {
+    const [signUp] = useSignUpMutation()
+    const router = useRouter()
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [passWord, setPassWord] = useState('')
@@ -26,6 +31,21 @@ export default function SignUp() {
 
     const handleAgreeChange = (value: string) => {
         setAgree(value)
+    }
+
+    const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault()
+        try {
+            await signUp({
+                account: username,
+                email,
+                pwd: passWord,
+                confirmPwd: checkPassWord,
+            })
+            router.push('/login', { scroll: false })
+        } catch (error) {
+            console.log('ERROR', error)
+        }
     }
     return (
         <>
@@ -89,18 +109,19 @@ export default function SignUp() {
                                 className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
                                 已經有帳號了？
                             </label>
-                            <a
+                            <Link
                                 href="/login"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                scroll={false}>
                                 登入
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
                 <div className="mt-10">
                     <button
-                        type="submit"
-                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={handleSubmit}>
                         註冊
                     </button>
                 </div>
