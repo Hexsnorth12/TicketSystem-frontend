@@ -1,8 +1,8 @@
 'use client' // This is a client component 👈🏽
 import React from 'react'
 import { Tab, TabPanel } from '../common'
-import SingIn from './signIn'
-import SignUp from './signUp'
+import SingIn from './SignIn/signIn'
+import SignUp from './SignUp/signUp'
 export default function tabForm() {
     return (
         <main className="min-h-screen">
