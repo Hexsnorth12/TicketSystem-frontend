@@ -1,6 +1,7 @@
 'use client' // This is a client component 👈🏽
 import React from 'react'
 import Link from 'next/link'
+import SearchForm from '@/components/forms/Search'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
           This is a simple example page.
         </p>
         <Link href={'/login'}>LOGIN</Link>
+        <SearchForm></SearchForm>
       </div>
     </main>
   )
