@@ -14,7 +14,6 @@ export default function Home() {
           This is a simple example page.
         </p>
         <Link href={'/login'}>LOGIN</Link>
-        <SearchForm></SearchForm>
       </div>
     </main>
   )
