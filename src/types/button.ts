@@ -28,3 +28,15 @@ export type NavigateButton = PropsWithChildren<{
     iconDimension?: { width: number; height: number }
     disabled?: boolean
 }>
+
+export type TagButton = PropsWithChildren<{
+    disabled?: boolean
+    onClick?: () => void
+    active?: boolean
+}>
+
+export type HelpersButton = {
+    type: 'top' | 'bell' | 'chatroom'
+    disabled?: boolean
+    iconDimension?: { width: number; height: number }
+}

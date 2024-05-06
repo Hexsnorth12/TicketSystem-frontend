@@ -6,8 +6,12 @@ import { Button } from '../common'
 import { BUTTONS } from '@/lib/constants'
 
 import type { NavigateButton } from '@/types'
+import { useButton } from '@/hooks/button'
 
-const Navigate: React.FC<NavigateButton> = ({
+const { DEFAULT_ICON_HEIGHT, DEFAULT_ICON_WIDTH, ICON, ICON_DISABLED } =
+    BUTTONS.NAVIGATE
+
+export const Navigate: React.FC<NavigateButton> = ({
     children,
     href,
     className,
@@ -17,44 +21,23 @@ const Navigate: React.FC<NavigateButton> = ({
     iconDimension,
     disabled,
 }) => {
-    const [isHovered, setIsHovered] = useState<boolean>(false)
+    const { setIconDimension, changeIconStyle, basicButtonProps } = useButton(
+        DEFAULT_ICON_WIDTH,
+        DEFAULT_ICON_HEIGHT,
+        disabled,
+    )
 
     const buttonStyle = `flex gap-2 ${icon && 'pr-3'} ${className}`
-    const { iconWidth, iconHeight } = setIconDimension()
     const img = iconImg()
-    const iconClassName = changeIconStyle()
-
-    function onEnterHandler() {
-        setIsHovered(true)
-    }
-
-    function onLeaveHandler() {
-        setIsHovered(false)
-    }
-
-    function changeIconStyle() {
-        return !isHovered ? `invert ${iconStyle}` : iconStyle
-    }
+    const { iconWidth, iconHeight } = setIconDimension(iconDimension)
+    const iconClassName = changeIconStyle(iconStyle)
 
     function iconImg() {
-        const { ICON, ICON_DISABLED } = BUTTONS.NAVIGATE
         return disabled ? ICON_DISABLED : ICON
     }
 
-    function setIconDimension() {
-        const { DEFAULT_ICON_WIDTH, DEFAULT_ICON_HEIGHT } = BUTTONS.NAVIGATE
-        return {
-            iconWidth: iconDimension?.width || DEFAULT_ICON_WIDTH,
-            iconHeight: iconDimension?.height || DEFAULT_ICON_HEIGHT,
-        }
-    }
-
     return (
-        <Link
-            href={href}
-            className="inline-block"
-            onMouseEnter={onEnterHandler}
-            onMouseLeave={onLeaveHandler}>
+        <Link href={href} {...basicButtonProps}>
             <Button
                 type="button"
                 title="navigation"
@@ -75,5 +58,3 @@ const Navigate: React.FC<NavigateButton> = ({
         </Link>
     )
 }
-
-export default Navigate

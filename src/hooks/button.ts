@@ -1,6 +1,10 @@
 import { useState } from 'react'
 
-export const useButton = (defaultWidth: number, defaultHeight: number) => {
+export const useButton = (
+    defaultWidth: number,
+    defaultHeight: number,
+    disabled: boolean | undefined,
+) => {
     const [isHovered, setIsHovered] = useState<boolean>(false)
 
     function _onEnterHandler() {
@@ -12,7 +16,7 @@ export const useButton = (defaultWidth: number, defaultHeight: number) => {
     }
 
     function changeIconStyle(style: string = '') {
-        return !isHovered ? `invert ${style}` : style
+        return !isHovered && !disabled ? `invert ${style}` : style
     }
 
     function setIconDimension(
