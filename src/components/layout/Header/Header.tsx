@@ -22,7 +22,7 @@ const Header = () => {
                     <Link href="/gatherings">
                         <p className="text-white">一起揪團</p>
                     </Link>
-                    <Link href="/login">
+                    <Link href="/login" scroll={false}>
                         <div
                             className="inline-block rounded-full border px-4 py-2"
                             style={{ borderColor: '#00FFFF' }}>

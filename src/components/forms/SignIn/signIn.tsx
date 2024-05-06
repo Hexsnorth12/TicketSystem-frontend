@@ -1,10 +1,18 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
-import { Input } from '../common'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { InputComponent } from '../../common'
+import { useLoginMutation } from '@/services/modules/auth'
+import { useAppDispatch } from '@/hooks/index'
+import { userActions } from '@/stores/slices/userSlice'
 
 export default function SingIn() {
-    const [username, setUsername] = useState('')
+    const [login] = useLoginMutation()
+    const dispatch = useAppDispatch()
+    const router = useRouter()
 
+    const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
 
     const handleUsernameChange = (value: string) => {
@@ -13,6 +21,21 @@ export default function SingIn() {
 
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
+    }
+    const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault()
+        try {
+            const response = await login({
+                account: username,
+                pwd: passWord,
+            }).unwrap()
+            console.log('DATA', response)
+            await dispatch(userActions.login({ ...response }))
+            //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
+            router.push('/')
+        } catch (error) {
+            console.log('ERROR', error)
+        }
     }
 
     return (
@@ -42,7 +65,7 @@ export default function SingIn() {
                     </div>
                     <div className="sm:col-span-2">
                         <div>
-                            <Input
+                            <InputComponent
                                 label={'使用者帳號'}
                                 type={'text'}
                                 value={username}
@@ -51,7 +74,7 @@ export default function SingIn() {
                         </div>
                     </div>
                     <div className="sm:col-span-2">
-                        <Input
+                        <InputComponent
                             label={'密碼'}
                             type={'password'}
                             value={passWord}
@@ -74,18 +97,20 @@ export default function SingIn() {
                                 className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
                                 沒有帳號嗎？
                             </label>
-                            <a
-                                href="/login"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            <Link
+                                href="/signup"
+                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-900 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-300"
+                                scroll={false}>
                                 註冊
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
                 <div className="mt-10">
                     <button
-                        type="submit"
-                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        // type="submit"
+                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={handleSubmit}>
                         登入
                     </button>
                 </div>
