@@ -1,15 +1,17 @@
-// components/Header.tsx
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-const Header = () => {
+interface HeaderProps {
+    logoSrc: string
+}
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     return (
         <header className="bg-gray-800 py-4">
             <div className="container mx-auto flex items-center justify-between">
                 <Link href="">
                     <Image
-                        src="/Movie go.png"
+                        src={logoSrc}
                         alt="My App Logo"
                         width={180}
                         height={60}
