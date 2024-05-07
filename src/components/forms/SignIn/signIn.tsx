@@ -31,6 +31,7 @@ export default function SingIn() {
             }).unwrap()
             console.log('DATA', response)
             await dispatch(userActions.login({ ...response }))
+            router.back()
             //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
             router.push('/')
         } catch (error) {
