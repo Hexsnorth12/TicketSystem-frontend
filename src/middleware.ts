@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { BASE_URL, serverCode, protectedRoutes } from '@/definitions'
+import { protectedRoutes } from '@/definitions'
 import { getSession } from './lib'
 
 export async function middleware(req: NextRequest) {
