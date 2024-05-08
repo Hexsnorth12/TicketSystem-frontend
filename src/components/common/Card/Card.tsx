@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { truncateName } from '../../../utils/numberUtils'
 
 interface Movie {
     name: string
@@ -12,13 +13,6 @@ interface Movie {
 interface CardProps {
     movies: Movie[]
     imageSizeMap: { [key: string]: { width: number; height: number } }
-}
-
-const truncateName = (name: string): string => {
-    if (name && name.length > 5) {
-        return name.slice(0, 5)
-    }
-    return name
 }
 
 const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
@@ -36,24 +30,18 @@ const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         />
                     </Link>
                     <div className="text-center">
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}>
+                        <div className="flex justify-between">
                             <div className="mt-2 text-start text-white">
-                                <h2 className="text-l font-semibold">
+                                <div className="text-btn1 font-medium">
                                     {truncateName(movie.name)}
-                                </h2>
-                                <p className="text-sm text-gray-500">
+                                </div>
+                                <div className="text-small1 font-regular text-gray-5">
                                     {movie.type}
-                                </p>
+                                </div>
                             </div>
-                            <h2
-                                className="font-semibold"
-                                style={{ color: '#00FFFF', fontSize: '32px' }}>
+                            <div className="text-number1 font-bold text-primary">
                                 {movie.rank}
-                            </h2>
+                            </div>
                         </div>
                         <button className="rounded-lg bg-blue-500 text-white hover:bg-blue-600">
                             立即購票

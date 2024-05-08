@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { truncateName } from '../../../utils/numberUtils'
 
 interface Movie {
     name: string
@@ -15,20 +16,13 @@ interface CardProps {
     imageSizeMap: { [key: string]: { width: number; height: number } }
 }
 
-const truncateName = (name: string): string => {
-    if (name && name.length > 5) {
-        return name.slice(0, 5)
-    }
-    return name
-}
-
 const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     return (
         <div className="grid grid-cols-4 gap-4 px-32">
             {movies.map((movie, index) => (
                 <div
                     key={index}
-                    className="m-4 rounded-lg text-center shadow-md">
+                    className="m-4 flex flex-col items-center rounded-lg shadow-md">
                     <Link href="">
                         <Image
                             src={movie.image}
@@ -38,19 +32,34 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             className="rounded-lg object-cover"
                         />
                     </Link>
-                    <div className="mt-2 text-center text-white">
-                        <h2 className="text-l font-semibold">
+                    <div className="mt-2 text-center">
+                        <div className="text-headline5 font-medium text-white">
                             {truncateName(movie.name)}
-                        </h2>
-                        <div
-                            className="text-gray-500"
-                            style={{ fontSize: '14px' }}>
-                            <div style={{ color: '#00FFFF' }}>
-                                剩餘：{movie.number} 張
-                            </div>
-                            <div> NT$ {movie.price} </div>
                         </div>
-                        <p>{movie.date}</p>
+                        <div className="text-small2">
+                            <div className="flex items-center justify-center text-gray-5">
+                                剩餘
+                                <nav className="px-2 text-number4 text-primary">
+                                    {' '}
+                                    1{' '}
+                                </nav>
+                                張
+                            </div>
+                            <div className="flex items-center justify-center text-gray-5">
+                                NT$
+                                <nav className="px-2 text-number4 text-primary">
+                                    {' '}
+                                    {movie.price}{' '}
+                                </nav>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-center text-gray-5">
+                            時效性
+                            <nav className="px-2 text-number5 text-white">
+                                {' '}
+                                {movie.date}{' '}
+                            </nav>
+                        </div>
                     </div>
                     <button className="rounded-lg bg-blue-500 text-white hover:bg-blue-600">
                         聊聊

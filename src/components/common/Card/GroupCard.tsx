@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { truncateName, truncateContent } from '../../../utils/numberUtils'
 
 interface Movie {
     name: string
@@ -17,20 +18,6 @@ interface CardProps {
     imageSizeMap: { [key: string]: { width: number; height: number } }
 }
 
-const truncateName = (name: string): string => {
-    if (name && name.length > 5) {
-        return name.slice(0, 5) + '...'
-    }
-    return name
-}
-
-const truncateContent = (content: string): string => {
-    if (content && content.length > 12) {
-        return content.slice(0, 12) + '...'
-    }
-    return content
-}
-
 const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     return (
         <div className="flex flex-row items-center justify-center px-32">
@@ -45,27 +32,22 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             className="rounded-lg object-cover"
                         />
                     </Link>
-                    <div className="mt-2 text-start text-white">
-                        <h2 className="text-l font-semibold">
+                    <div className="text-start">
+                        <div className="mt-2 text-btn1 font-medium text-white">
                             {truncateName(movie.name)}
-                        </h2>
-                        <div style={{ fontSize: '14px' }}>
-                            <p style={{ color: '#888888' }}>
+                        </div>
+                        <div className="text-small2 font-regular">
+                            <div className="text-gray-5">
                                 {truncateContent(movie.content)}
-                            </p>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    color: '#00FFFF',
-                                }}>
-                                <p>{movie.date}</p>
+                            </div>
+                            <div className="flex justify-between text-primary">
+                                <div>{movie.date}</div>
                                 <p className="px-2">{movie.people}</p>
                             </div>
 
                             <div className="flex text-white">
-                                <p>{movie.type}</p>
-                                <p>{movie.city}</p>
+                                <div>{movie.type}</div>
+                                <div className=" px-2">{movie.city}</div>
                             </div>
                         </div>
                     </div>
