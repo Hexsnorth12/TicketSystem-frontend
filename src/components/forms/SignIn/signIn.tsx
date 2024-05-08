@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { InputComponent } from '../../common'
-import { useLoginMutation } from '@/services/modules/auth'
 import { useAppDispatch } from '@/hooks/index'
 import { userActions } from '@/stores/slices/userSlice'
+import { useSignInMutation } from '@/services/apiSlice'
 
 export default function SingIn() {
-    const [login] = useLoginMutation()
     const dispatch = useAppDispatch()
     const router = useRouter()
+    const [signIn] = useSignInMutation()
 
     const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
@@ -25,16 +25,17 @@ export default function SingIn() {
     const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         try {
-            const response = await login({
+            const response = await signIn({
                 account: username,
                 pwd: passWord,
             }).unwrap()
-            console.log('DATA', response)
+
             await dispatch(userActions.login({ ...response }))
-            router.back()
             //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
+            router.back()
             router.push('/')
         } catch (error) {
+            //TODO: alert Error
             console.log('ERROR', error)
         }
     }
