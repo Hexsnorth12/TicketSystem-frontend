@@ -6,12 +6,13 @@ import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
 import cartIcon from '@icon/cart_light.svg'
 import { useAppSelector } from '@/hooks'
+import { User } from '@/types'
 
 interface HeaderProps {
     logoSrc: string
 }
 const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
-    const user = useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state) as User
     return (
         <header className=" fixed w-full bg-gray-800 py-4">
             <div className="container relative flex items-center justify-between">

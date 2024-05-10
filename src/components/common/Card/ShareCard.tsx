@@ -5,7 +5,7 @@ import { truncateName } from '../../../utils/numberUtils'
 
 interface Movie {
     name: string
-    number: number
+    number: string
     price: number
     image: string
     date: string

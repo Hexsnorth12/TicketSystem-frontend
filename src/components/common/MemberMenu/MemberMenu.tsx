@@ -4,14 +4,12 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useLazyLogoutQuery } from '@/services/apiSlice'
-import { useRouter } from 'next/navigation'
 import { useAppDispatch } from '@/hooks/index'
 import { userActions } from '@/stores/slices/userSlice'
 
 const MemberMenu = () => {
     const [isExpand, setIsExpand] = useState(false)
     const [logout] = useLazyLogoutQuery()
-    const router = useRouter()
     const dispatch = useAppDispatch()
 
     const onToggleMenu = () => {
