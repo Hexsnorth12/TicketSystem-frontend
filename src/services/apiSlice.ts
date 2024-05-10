@@ -33,10 +33,16 @@ export const nextApi = createApi({
                 body,
             }),
         }),
+        logout: builder.query({
+            query: () => ({
+                url: 'api/logout',
+                method: 'POST',
+            }),
+        }),
     }),
 })
 
-export const { useSignInMutation } = nextApi
+export const { useSignInMutation, useLazyLogoutQuery } = nextApi
 
 // backend api endpoint
 export const api = createApi({

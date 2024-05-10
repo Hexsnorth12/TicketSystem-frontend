@@ -30,7 +30,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
                 </linearGradient>
                 <path fill="url(#grad)" d={iconPath} />
             </svg>
-            <div className="text-header3 font-bold leading-150 text-white">
+            <div className="text-header3 leading-150 font-bold text-white">
                 {title}
             </div>
         </div>
@@ -73,7 +73,7 @@ const HomePage = () => {
     return (
         <>
             <Header logoSrc="/Movie go.png" />
-            <main className="min-h-screen bg-gray-2">
+            <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
                 <HeaderTitle title="你可能會喜歡" iconPath={mdiFire} />
