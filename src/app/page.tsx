@@ -30,7 +30,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
                 </linearGradient>
                 <path fill="url(#grad)" d={iconPath} />
             </svg>
-            <div className="text-header3 leading-150 font-bold text-white">
+            <div className="text-header3 font-bold leading-150 text-white">
                 {title}
             </div>
         </div>
