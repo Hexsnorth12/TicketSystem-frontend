@@ -1,6 +1,44 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { serverCode } from '@/definitions'
 
+// next api endpoint
+export const nextApi = createApi({
+    reducerPath: 'nextApi',
+    baseQuery: fetchBaseQuery({
+        responseHandler: async (response) => {
+            if (response.status === 200) {
+                return response.json().then((data) => {
+                    const { status, message, data: result } = data
+                    // server 自定義錯誤
+                    if (status !== serverCode.SUCCESS) {
+                        return Promise.reject(new Error(message))
+                    }
+                    return result
+                })
+            } else {
+                // http status code error
+                return response.json().then((error) => {
+                    console.log('error', error)
+                    const { status, message } = error
+                    return { status, message }
+                })
+            }
+        },
+    }),
+    endpoints: (builder) => ({
+        signIn: builder.mutation({
+            query: (body) => ({
+                url: 'api/sign-in',
+                method: 'POST',
+                body,
+            }),
+        }),
+    }),
+})
+
+export const { useSignInMutation } = nextApi
+
+// backend api endpoint
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
@@ -16,7 +54,6 @@ export const api = createApi({
         },
         timeout: 20000,
         responseHandler: async (response) => {
-            console.log('response', response)
             if (response.status === 200) {
                 return response.json().then((data) => {
                     const { status, message, data: result } = data
