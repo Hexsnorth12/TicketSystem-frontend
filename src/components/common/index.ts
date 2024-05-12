@@ -8,6 +8,8 @@ import RecCard from './Card/RecCard'
 import GroupCard from './Card/GroupCard'
 import ShareCard from './Card/ShareCard'
 import MemberMenu from './MemberMenu/MemberMenu'
+import Select from './Select/select'
+import Input from './Input/input'
 
 export {
     Modal,
@@ -20,5 +22,7 @@ export {
     RecCard,
     GroupCard,
     ShareCard,
+    Select,
+    Input,
     MemberMenu,
 }
