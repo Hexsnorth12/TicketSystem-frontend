@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
     }
 
     function onClickHandler() {
-        if (onClick) onClick()
+        if (onClick) disabled && onClick()
     }
 
     const elementProps = {

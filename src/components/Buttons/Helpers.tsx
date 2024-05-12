@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import { Button } from '../common'
-import { BUTTONS } from '@/lib/constants'
+import { BUTTONS } from '@/lib'
 
 import type { HelpersButton } from '@/types'
 import { useButton } from '@/hooks/button'
@@ -28,14 +28,32 @@ export const Helpers: React.FC<HelpersButton> = ({
     iconDimension,
 }) => {
     const { setIconDimension, changeIconStyle, basicButtonProps } = useButton(
+        disabled,
         DEFAULT_ICON_WIDTH,
         DEFAULT_ICON_HEIGHT,
-        disabled,
     )
 
     const { iconWidth, iconHeight } = setIconDimension(iconDimension)
     const imgSrcProps = renderSrcAlt(type)
-    const iconClassName = changeIconStyle()
+    const iconClassName = changeIconStyle(shouldInvertIcon())
+    const defaultStyle = buttonStyle()
+
+    function shouldInvertIcon() {
+        return type === SCROLL_TO_TOP
+    }
+
+    function buttonStyle() {
+        let style = ''
+        switch (type) {
+            case NOTIFICATION:
+            case CHATROOM:
+                style = disabled
+                    ? 'bg-gray-2 border-gray-2'
+                    : 'bg-gray-3 border-gray-3 hover:bg-secondary hover:border-secondary'
+                break
+        }
+        return style
+    }
 
     function renderSrcAlt(type: string) {
         let img = ''
@@ -84,7 +102,7 @@ export const Helpers: React.FC<HelpersButton> = ({
             <Button
                 type="button"
                 title={`helpers button - ${type}`}
-                className="p-4"
+                className={`p-4 ${defaultStyle}`}
                 disabled={disabled}
                 onClick={onClickHandler}>
                 <Image

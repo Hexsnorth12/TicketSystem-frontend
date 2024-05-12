@@ -40,3 +40,20 @@ export type HelpersButton = {
     disabled?: boolean
     iconDimension?: { width: number; height: number }
 }
+
+export type SocialButton = {
+    type: 'facebook' | 'x' | 'line' | 'link'
+    disabled?: boolean
+    iconDimension?: { width: number; height: number }
+}
+
+export type ChatButton = {
+    disabled?: boolean
+}
+
+export type CloseButton = {
+    className?: string
+    onClick?: () => void
+    iconDimension?: { width: number; height: number }
+    disabled?: boolean
+}

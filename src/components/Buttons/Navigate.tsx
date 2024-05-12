@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
 import { Button } from '../common'
-import { BUTTONS } from '@/lib/constants'
+import { BUTTONS } from '@/lib'
 
 import type { NavigateButton } from '@/types'
 import { useButton } from '@/hooks/button'
@@ -22,15 +21,15 @@ export const Navigate: React.FC<NavigateButton> = ({
     disabled,
 }) => {
     const { setIconDimension, changeIconStyle, basicButtonProps } = useButton(
+        disabled,
         DEFAULT_ICON_WIDTH,
         DEFAULT_ICON_HEIGHT,
-        disabled,
     )
 
-    const buttonStyle = `flex gap-2 ${icon && 'pr-3'} ${className}`
+    const buttonStyle = `flex gap-2 bg-gray-1 ${icon && 'pr-3'} ${className}`
     const img = iconImg()
     const { iconWidth, iconHeight } = setIconDimension(iconDimension)
-    const iconClassName = changeIconStyle(iconStyle)
+    const iconClassName = changeIconStyle(true, iconStyle)
 
     function iconImg() {
         return disabled ? ICON_DISABLED : ICON

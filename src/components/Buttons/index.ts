@@ -1,3 +1,6 @@
 export * from './Navigate'
 export * from './SearchTag'
 export * from './Helpers'
+export * from './SocialBtn'
+export * from './ChatBtn'
+export * from './CloseBtn'

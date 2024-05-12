@@ -1,9 +1,11 @@
 import { useState } from 'react'
 
+import { cn } from '@/utils'
+
 export const useButton = (
-    defaultWidth: number,
-    defaultHeight: number,
     disabled: boolean | undefined,
+    defaultWidth: number = 0,
+    defaultHeight: number = 0,
 ) => {
     const [isHovered, setIsHovered] = useState<boolean>(false)
 
@@ -15,8 +17,10 @@ export const useButton = (
         setIsHovered(false)
     }
 
-    function changeIconStyle(style: string = '') {
-        return !isHovered && !disabled ? `invert ${style}` : style
+    // 預設icon都會invert
+    function changeIconStyle(shouldInvert: boolean = true, style: string = '') {
+        const invert = shouldInvert ? 'invert' : ''
+        return !isHovered && !disabled ? cn(invert, style) : cn(style)
     }
 
     function setIconDimension(

@@ -12,7 +12,9 @@ export const SearchTag: React.FC<TagButton> = ({
     function style() {
         const defaultStyle = 'border-gray-4 px-4 py-2 text-base'
         const hoverStyle =
-            !disabled && 'hover:bg-gray-4 hover:text-white hover:border-gray-4'
+            !disabled &&
+            !active &&
+            'hover:bg-gray-4 hover:text-white hover:border-gray-4'
         const activeStyle = active && 'text-black bg-primary border-primary'
         return cn(defaultStyle, hoverStyle, activeStyle)
     }
