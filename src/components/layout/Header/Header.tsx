@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             alt="navigate to cart page"
                         />
                     </Link>
-                    {user.account.length === 0 ? (
+                    {user.account?.length === 0 ? (
                         <Link href="/login" scroll={false}>
                             <div
                                 className="inline-block rounded-full border px-4 py-2"
