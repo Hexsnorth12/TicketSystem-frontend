@@ -40,7 +40,7 @@ const MemberMenu = () => {
             {isExpand ? (
                 <ul className="absolute right-0 top-[88px] w-full rounded-lg bg-gray-1 px-4  ">
                     <li className="border-b-2 border-gray-4 py-3 text-white">
-                        <Link href="/login" scroll={false}>
+                        <Link href="/user" scroll={false}>
                             會員資料
                         </Link>
                     </li>
@@ -50,7 +50,7 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li
-                        className="border-b-2 border-gray-4 py-3 text-white"
+                        className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
                         onClick={onLogout}>
                         <p>登出</p>
                     </li>
