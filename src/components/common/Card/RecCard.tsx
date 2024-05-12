@@ -1,8 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Tag from '@components/common/Tag/tag'
 import { truncateName, truncateContent } from '../../../utils/numberUtils'
-
+import { MapPinIcon } from '@heroicons/react/20/solid'
 interface Movie {
     name: string
     image: string
@@ -31,7 +32,7 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         />
                     </Link>
                     <div className="text-start">
-                        <div className="mt-2 text-btn1 font-medium text-white">
+                        <div className="text-btn1 mt-2 font-medium text-white">
                             {truncateName(movie.name)}
                         </div>
                         <div className="text-small2 font-regular">
@@ -40,7 +41,12 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             </div>
                             <div className="flex text-white">
                                 <div>{movie.ticket}</div>
-                                <div className=" px-2">{movie.city}</div>
+                                <div className=" px-2">
+                                    <Tag
+                                        icon={MapPinIcon}
+                                        tagValue={movie.city}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
