@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import Counter from './Counter'
 
@@ -22,7 +23,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
     args: {
-        onValueChange: (value: number) => {},
+        onValueChange: () => {},
         initialValue: 1,
         minValue: 1,
         maxValue: 999,
