@@ -23,4 +23,22 @@ export const BUTTONS = {
         CHATROOM_DISABLED: '/icons/buttons/chatroom-disabled.png',
         CHATROOM_ALT: 'chatroom icon',
     },
+    SOCIAL: {
+        DEFAULT_ICON_WIDTH: 24,
+        DEFAULT_ICON_HEIGHT: 24,
+        TYPES: {
+            FACEBOOK: 'facebook',
+            X: 'x',
+            LINE: 'line',
+            LINK: 'link',
+        },
+        FACEBOOK_ALT: 'Facebook icon',
+        X_ALT: 'X icon',
+        LINE_ALT: 'Line icon',
+        LINK_ALT: 'link icon',
+        FACEBOOK_ICON: '/icons/buttons/facebook.png',
+        X_ICON: '/icons/buttons/x.png',
+        LINE_ICON: '/icons/buttons/line.png',
+        LINK_ICON: '/icons/buttons/link.png',
+    },
 }
