@@ -57,3 +57,11 @@ export type CloseButton = {
     iconDimension?: { width: number; height: number }
     disabled?: boolean
 }
+
+export type FavoriteButton = {
+    className?: string
+    onClick?: () => void
+    iconDimension?: { width: number; height: number }
+    disabled?: boolean
+    active?: boolean
+}

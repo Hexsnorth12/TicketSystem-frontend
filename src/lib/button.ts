@@ -5,6 +5,7 @@ export const BUTTONS = {
         ICON: '/icons/arrow-right.png',
         ICON_DISABLED: '/icons/buttons/arrow-right-disabled.png',
     },
+
     HELPERS: {
         TYPES: {
             SCROLL_TO_TOP: 'top',
@@ -23,6 +24,7 @@ export const BUTTONS = {
         CHATROOM_DISABLED: '/icons/buttons/chatroom-disabled.png',
         CHATROOM_ALT: 'chatroom icon',
     },
+
     SOCIAL: {
         DEFAULT_ICON_WIDTH: 24,
         DEFAULT_ICON_HEIGHT: 24,
@@ -41,10 +43,17 @@ export const BUTTONS = {
         LINE_ICON: '/icons/buttons/line.png',
         LINK_ICON: '/icons/buttons/link.png',
     },
+
     CLOSE: {
         DEFAULT_ICON_WIDTH: 24,
         DEFAULT_ICON_HEIGHT: 24,
         ICON: '/icons/buttons/close.png',
         ICON_DISABLED: '/icons/buttons/close-disabled.png',
+    },
+
+    FAVORITE: {
+        DEFAULT_ICON_WIDTH: 16,
+        DEFAULT_ICON_HEIGHT: 16,
+        ICON_DISABLED: '/icons/buttons/favorite-disabled.png',
     },
 }

@@ -50,12 +50,12 @@ export const CloseBtn: React.FC<CloseButton> = ({
             onMouseLeave={mouseLeaveHandler}>
             <Button
                 type="button"
-                title="navigation"
+                title="close"
                 disabled={disabled}
                 onClick={onClick}
                 className={buttonStyle}>
                 <Image
-                    alt="Navigation icon"
+                    alt="close icon"
                     src={img}
                     width={iconWidth}
                     height={iconHeight}
