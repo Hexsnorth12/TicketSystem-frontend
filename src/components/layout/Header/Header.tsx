@@ -12,7 +12,7 @@ interface HeaderProps {
     logoSrc: string
 }
 const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
-    const user = useAppSelector((state) => state) as User
+    const user = useAppSelector((state) => state.user) as User
     return (
         <header className=" fixed w-full bg-gray-800 py-4">
             <div className="container relative flex items-center justify-between">
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             alt="navigate to cart page"
                         />
                     </Link>
-                    {user.account?.length === 0 ? (
+                    {user.account.length === 0 ? (
                         <Link href="/login" scroll={false}>
                             <div
                                 className="inline-block rounded-full border px-4 py-2"
