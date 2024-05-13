@@ -65,3 +65,11 @@ export type FavoriteButton = {
     disabled?: boolean
     active?: boolean
 }
+
+export type CartButton = {
+    amount: number
+    className?: string
+    onClick?: () => void
+    iconDimension?: { width: number; height: number }
+    disabled?: boolean
+}
