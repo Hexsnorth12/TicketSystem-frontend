@@ -4,21 +4,19 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useLazyLogoutQuery } from '@/services/apiSlice'
-import { useAppDispatch } from '@/hooks/index'
-import { userActions } from '@/stores/slices/userSlice'
+import { refreshAuth } from '@/app/api/refreshAuth/action'
 
 const MemberMenu = () => {
     const [isExpand, setIsExpand] = useState(false)
     const [logout] = useLazyLogoutQuery()
-    const dispatch = useAppDispatch()
 
     const onToggleMenu = () => {
         setIsExpand((prev) => !prev)
     }
     const onLogout = async () => {
         await logout({})
-        await dispatch(userActions.login({ account: '', email: '', token: '' }))
-        // router.push('/')
+        // await dispatch(userActions.login({ account: '', email: '', token: '' }))
+        refreshAuth()
     }
     return (
         <div className="relative">
