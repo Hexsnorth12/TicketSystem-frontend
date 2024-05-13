@@ -8,7 +8,7 @@ export default function SearchForm() {
     const [selectedCity, setSelectedCity] = useState('') // 狀態用於存儲所選縣市
     const [selectedDistrict, setSelectedDistrict] = useState('') // 狀態用於存儲所選行政區
     // console.log(TaiwanCities[selectedCity], 'TaiwanCities[selectedCity]')
-    console.log(selectedCity, 'selectedCity')
+    console.log(selectedCity, selectedDistrict, 'selectedCity')
 
     const handleCityChange = (city: string) => {
         setSelectedCity(city)
