@@ -71,7 +71,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Header logoSrc="/Movie go.png" />
+            <Header logoSrc="/assets/Movie go.png" />
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />

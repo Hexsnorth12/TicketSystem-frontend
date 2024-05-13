@@ -123,7 +123,7 @@ export const Groupcards = [
         people: '2/4',
         content:
             '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard1.jpg',
+        image: '/assets/groupcard1.png',
     },
     {
         name: '功夫熊貓4',
@@ -133,7 +133,7 @@ export const Groupcards = [
         people: '2/4',
         content:
             '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard2.jpg',
+        image: '/assets/groupcard2.png',
     },
     {
         name: '可憐的東西',
@@ -143,7 +143,7 @@ export const Groupcards = [
         people: '2/4',
         content:
             '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard3.jpg',
+        image: '/assets/groupcard3.png',
     },
     {
         name: '關於，半夜夢見林默娘乘著海湧把垃圾全丟進我的未來這件塑，好像是真的',
