@@ -5,7 +5,7 @@ import { truncateName } from '../../../utils/numberUtils'
 
 interface Movie {
     name: string
-    number: number
+    number: string
     price: number
     image: string
     date: string
@@ -24,13 +24,17 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                     key={index}
                     className="m-4 flex flex-col items-center rounded-lg shadow-md">
                     <Link href="">
-                        <Image
-                            src={movie.image}
-                            alt={movie.name}
-                            width={imageSizeMap[movie.image]?.width}
-                            height={imageSizeMap[movie.image]?.height}
-                            className="rounded-lg object-cover"
-                        />
+                        <div className="relative">
+                            <Image
+                                src={movie.image}
+                                alt={movie.name}
+                                width={imageSizeMap[movie.image]?.width}
+                                height={imageSizeMap[movie.image]?.height}
+                                className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                            />
+                            {/* Border-primary with blur effect */}
+                            <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
+                        </div>
                     </Link>
                     <div className="mt-2 text-center">
                         <div className="text-headline5 font-medium text-white">
