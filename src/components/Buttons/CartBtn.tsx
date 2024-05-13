@@ -1,12 +1,12 @@
+import { useState } from 'react'
 import Image from 'next/image'
 
 import { Button } from '../common'
 import { BUTTONS } from '@/lib'
+import { useButton } from '@/hooks/button'
+import { cn } from '@/utils'
 
 import type { CartButton } from '@/types'
-import { useButton } from '@/hooks/button'
-import { useState } from 'react'
-import { cn } from '@/utils'
 
 const { DEFAULT_ICON_HEIGHT, DEFAULT_ICON_WIDTH, ICON_DISABLED, ICON } =
     BUTTONS.CART

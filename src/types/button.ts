@@ -39,12 +39,14 @@ export type HelpersButton = {
     type: 'top' | 'bell' | 'chatroom'
     disabled?: boolean
     iconDimension?: { width: number; height: number }
+    iconStyle?: string
 }
 
 export type SocialButton = {
     type: 'facebook' | 'x' | 'line' | 'link'
     disabled?: boolean
     iconDimension?: { width: number; height: number }
+    iconStyle?: string
 }
 
 export type ChatButton = {
@@ -72,4 +74,13 @@ export type CartButton = {
     onClick?: () => void
     iconDimension?: { width: number; height: number }
     disabled?: boolean
+}
+
+export type ArrowButton = {
+    type: 'right' | 'left' | 'right-outline' | 'left-outline'
+    className?: string
+    onClick?: () => void
+    iconDimension?: { width: number; height: number }
+    disabled?: boolean
+    iconStyle?: string
 }

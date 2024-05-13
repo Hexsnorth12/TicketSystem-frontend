@@ -25,6 +25,7 @@ export const SocialBtn: React.FC<SocialButton> = ({
     disabled,
     type,
     iconDimension,
+    iconStyle,
 }) => {
     const { setIconDimension, changeIconStyle, basicButtonProps } = useButton(
         disabled,
@@ -34,7 +35,7 @@ export const SocialBtn: React.FC<SocialButton> = ({
 
     const { iconWidth, iconHeight } = setIconDimension(iconDimension)
     const imgSrcProps = renderSrcAlt(type)
-    const iconClassName = changeIconStyle(false)
+    const iconClassName = changeIconStyle(iconStyle)
 
     function renderSrcAlt(type: string) {
         let img = ''

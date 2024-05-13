@@ -17,10 +17,8 @@ export const useButton = (
         setIsHovered(false)
     }
 
-    // 預設icon都會invert
-    function changeIconStyle(shouldInvert: boolean = true, style: string = '') {
-        const invert = shouldInvert ? 'invert' : ''
-        return !isHovered && !disabled ? cn(invert, style) : cn(style)
+    function changeIconStyle(style: string = '') {
+        return !isHovered && !disabled ? cn(style) : ''
     }
 
     function setIconDimension(
