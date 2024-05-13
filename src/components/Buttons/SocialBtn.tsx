@@ -1,3 +1,4 @@
+import React from 'react'
 import Image from 'next/image'
 
 import { Button } from '../common'
@@ -65,11 +66,11 @@ export const SocialBtn: React.FC<SocialButton> = ({
     }
 
     function onClickHandler() {
-        openLink(type)
+        openLink()
     }
 
     // 未來增加相對應連結
-    function openLink(type: string) {}
+    function openLink() {}
 
     return (
         <div {...basicButtonProps}>
