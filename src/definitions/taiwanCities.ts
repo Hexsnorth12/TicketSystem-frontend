@@ -1,4 +1,7 @@
-export const TaiwanCities = {
+type TaiwanCitiesType = {
+    [key: string]: string[]
+}
+export const TaiwanCities: TaiwanCitiesType = {
     基隆市: ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '七堵區'],
     臺北市: [
         '中正區',

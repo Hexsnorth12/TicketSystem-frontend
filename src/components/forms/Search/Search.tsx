@@ -1,13 +1,12 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
 import { Button, Input, SelectInput } from '@/components/common/index'
-import { TaiwanCities } from '/Users/jenny/Desktop/ticket/TicketSystem-frontend/src/definitions/taiwanCities'
+import { TaiwanCities } from '@/definitions/taiwanCities'
 
 export default function SearchForm() {
     const [name, setname] = useState('')
     const [selectedCity, setSelectedCity] = useState('') // 狀態用於存儲所選縣市
     const [selectedDistrict, setSelectedDistrict] = useState('') // 狀態用於存儲所選行政區
-    // console.log(TaiwanCities[selectedCity], 'TaiwanCities[selectedCity]')
     console.log(selectedCity, selectedDistrict, 'selectedCity')
 
     const handleCityChange = (city: string) => {
@@ -18,12 +17,17 @@ export default function SearchForm() {
     const handleDistrictChange = (district: string) => {
         setSelectedDistrict(district)
     }
-    const handleUsernameChange = (value: string) => {
+    const handleNameChange = (value: string) => {
         setname(value)
     }
     const handleOnclick = () => {
         console.log('onclick！')
     }
+    const priceOptions = Array.from({ length: 8 }, (_, index) => {
+        const start = index * 500 + 1
+        const end = start + 499
+        return `${start}-${end}`
+    })
     return (
         <>
             <div className="mx-auto max-w-2xl text-center">
@@ -42,7 +46,7 @@ export default function SearchForm() {
                             placeholder={'輸入關鍵字'}
                             type={'text'}
                             value={name}
-                            onChange={handleUsernameChange}
+                            onChange={handleNameChange}
                         />
                     </div>
                     <div className="sm:col-span-3">
@@ -114,7 +118,12 @@ export default function SearchForm() {
                                 <SelectInput
                                     placeholder="請選擇"
                                     label="行政區"
-                                    options={Object.keys(TaiwanCities)}
+                                    options={
+                                        selectedCity &&
+                                        TaiwanCities[selectedCity] // 这里是你选择城市的行政区
+                                            ? TaiwanCities[selectedCity]
+                                            : []
+                                    }
                                     onSelectChange={handleDistrictChange}
                                 />
                             </div>
@@ -126,7 +135,7 @@ export default function SearchForm() {
                             <div className="grow basis-3/4">
                                 <SelectInput
                                     label="價錢範圍"
-                                    options={Object.keys(TaiwanCities)}
+                                    options={priceOptions}
                                     onSelectChange={handleDistrictChange}
                                     placeholder="請選擇"
                                 />

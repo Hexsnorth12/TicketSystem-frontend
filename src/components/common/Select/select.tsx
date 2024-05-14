@@ -19,15 +19,20 @@ const SelectInput: React.FC<SelectProps> = ({
     options,
 }) => {
     console.log(options, 'options')
-    const handleChange = (selectedValue: string) => {
-        onSelectChange(selectedValue)
-        console.log(selectedValue, 'selectedValue')
+    const [selectedValue, setSelectedValue] = React.useState<string>('')
+
+    const handleChange = (value: string) => {
+        setSelectedValue(value)
+        onSelectChange(value)
     }
     return (
-        <Select.Root>
+        <Select.Root
+            value={selectedValue}
+            onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
                 className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
-                aria-label="Food">
+                aria-label="city"
+                disabled={options.length === 0}>
                 <Select.Value placeholder={placeholder} />
                 <Select.Icon className="text-violet11">
                     <ChevronDownIcon />
@@ -43,18 +48,14 @@ const SelectInput: React.FC<SelectProps> = ({
                             <Select.Label className="text-mauve11 px-[25px] text-xs leading-[25px]">
                                 {label}
                             </Select.Label>
-                            {options &&
-                                options.map((option, index) => (
-                                    <>
-                                        <SelectItem
-                                            key={index}
-                                            value={option}
-                                            onClick={() => handleChange(option)} // 使用 handleChange 处理点击事件
-                                        >
-                                            {option}
-                                        </SelectItem>
-                                    </>
-                                ))}
+                            {options.map((option, index) => (
+                                <SelectItem
+                                    key={index}
+                                    value={option}
+                                    onClick={() => handleChange(option)}>
+                                    {option}
+                                </SelectItem>
+                            ))}
                         </Select.Group>
                     </Select.Viewport>
                     <Select.ScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
@@ -70,7 +71,7 @@ interface SelectItemProps {
     className?: string
     children?: React.ReactNode
     disabled?: boolean
-    onClick: () => void
+    onClick: () => void // 更新 onClick 属性
 }
 const SelectItem: React.FC<SelectItemProps> = ({
     value,
