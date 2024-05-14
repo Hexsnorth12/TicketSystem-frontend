@@ -1,5 +1,7 @@
 import type { Preview } from '@storybook/react'
 import '../src/styles/globals.css'
+import { Decorators } from './decorators'
+
 const preview: Preview = {
     parameters: {
         controls: {
@@ -9,6 +11,7 @@ const preview: Preview = {
             },
         },
     },
+    decorators: [Decorators],
 }
 
 export default preview
