@@ -57,6 +57,10 @@ const config: Config = {
                 '150': '1.5',
                 '120': '1.2',
             },
+            borderRadius: {
+                primary: '20px',
+                secondary: '40px',
+            },
         },
     },
     plugins: [],

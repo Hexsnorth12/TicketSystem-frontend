@@ -15,12 +15,16 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
+const priceOptions = Array.from({ length: 8 }, (_, index) => {
+    const start = index * 500 + 1
+    const end = start + 499
+    return `${start}-${end}`
+})
 export const Primary: Story = {
     args: {
         placeholder: '訂閱電子報',
         label: '縣市',
-        options: [],
+        options: priceOptions,
         onSelectChange: () => {},
     },
 }
