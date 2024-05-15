@@ -6,7 +6,7 @@ interface TagProps {
     iconColor: string
 }
 
-const TagProps: React.FC<TagProps> = ({ icon: Icon, tagValue, iconColor }) => {
+const Tag: React.FC<TagProps> = ({ icon: Icon, tagValue, iconColor }) => {
     return (
         <div>
             <li key={tagValue} className="flex gap-x-2">
@@ -20,4 +20,4 @@ const TagProps: React.FC<TagProps> = ({ icon: Icon, tagValue, iconColor }) => {
     )
 }
 
-export default TagProps
+export default Tag

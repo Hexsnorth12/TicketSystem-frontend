@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Tag from '@components/common/Tag/tag'
 import { truncateName, truncateContent } from '../../../utils/numberUtils'
-import { MapPinIcon } from '@heroicons/react/20/solid'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 interface Movie {
     name: string
     image: string
@@ -47,7 +47,7 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                 <div>{movie.ticket}</div>
                                 <div className=" px-2">
                                     <Tag
-                                        icon={MapPinIcon}
+                                        icon={FaMapMarkerAlt}
                                         tagValue={movie.city}
                                         iconColor="gray-4"
                                     />

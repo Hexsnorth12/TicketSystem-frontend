@@ -1,7 +1,6 @@
-import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import Tag from './tag'
-import { MapPinIcon } from '@heroicons/react/20/solid'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 const meta = {
     title: 'common/Tag',
     component: Tag,
@@ -19,7 +18,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
     args: {
-        icon: MapPinIcon,
+        icon: FaMapMarkerAlt,
         tagValue: '台北',
         iconColor: 'gray-4',
     },

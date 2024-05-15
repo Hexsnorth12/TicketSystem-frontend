@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { truncateName, truncateContent } from '../../../utils/numberUtils'
 import Tag from '@components/common/Tag/tag'
-import { MapPinIcon } from '@heroicons/react/20/solid'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 interface Movie {
     name: string
     image: string
@@ -54,8 +54,9 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                 <div>{movie.type}</div>
                                 <div className=" px-2">
                                     <Tag
-                                        icon={MapPinIcon}
+                                        icon={FaMapMarkerAlt}
                                         tagValue={movie.city}
+                                        iconColor="gray-4"
                                     />
                                 </div>
                             </div>
