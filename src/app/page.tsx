@@ -1,6 +1,5 @@
 import React from 'react'
 import { mdiFire } from '@mdi/js'
-
 import { Header } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
@@ -72,7 +71,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Header logoSrc="/Movie go.png" />
+            <Header logoSrc="/assets/Movie go.png" />
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
