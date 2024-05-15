@@ -23,18 +23,22 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     return (
         <div className="flex flex-row items-center justify-center px-32">
             {movies.map((movie, index) => (
-                <div key={index} className="m-4 rounded-lg shadow-md">
+                <div key={index} className="m-4 overflow-hidden rounded-lg p-4">
                     <Link href="">
-                        <Image
-                            src={movie.image}
-                            alt={movie.name}
-                            width={imageSizeMap[movie.image]?.width}
-                            height={imageSizeMap[movie.image]?.height}
-                            className="rounded-lg object-cover"
-                        />
+                        <div className="relative">
+                            <Image
+                                src={movie.image}
+                                alt={movie.name}
+                                width={imageSizeMap[movie.image]?.width}
+                                height={imageSizeMap[movie.image]?.height}
+                                className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                            />
+                            {/* Border-primary with blur effect */}
+                            <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
+                        </div>
                     </Link>
                     <div className="text-start">
-                        <div className="text-btn1 mt-2 font-medium text-white">
+                        <div className="mt-2 text-btn1 font-medium text-white">
                             {truncateName(movie.name)}
                         </div>
                         <div className="text-small2 font-regular">

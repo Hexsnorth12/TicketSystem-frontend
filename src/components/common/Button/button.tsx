@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import clsx from 'clsx'
+
+import { cn } from '@/utils'
 
 import type { ButtonProps, FormButton } from '@/types'
 
@@ -24,13 +25,15 @@ const Button: React.FC<ButtonProps> = ({
     }
 
     function refactedClassName() {
-        const defaultStyle =
-            'py-3 px-5 border-primary hover:bg-primary hover:text-gray-1 rounded-full border bg-transparent tracking-widest text-white'
-        return clsx(defaultStyle, className)
+        const isDisabled = disabled
+            ? 'border-gray-2 bg-gray-2 text-gray-4'
+            : 'border-primary hover:bg-primary hover:text-gray-1 bg-transparent text-white'
+        const defaultStyle = `py-3 px-5 rounded-full border tracking-widest text-lg items-center ${isDisabled}`
+        return cn(defaultStyle, className)
     }
 
     function onClickHandler() {
-        onClick()
+        if (onClick) !disabled && onClick()
     }
 
     const elementProps = {
