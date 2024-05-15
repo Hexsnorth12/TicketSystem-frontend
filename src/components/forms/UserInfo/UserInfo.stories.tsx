@@ -22,5 +22,18 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        userInfo: {
+            name: 'Joe',
+            createdAt: '2024-1-1',
+            birthDate: '2024-11-11',
+            phone: 912345678,
+            gender: 'none',
+            address: '',
+            imgUrl: '',
+            account: '',
+            email: 'hex@mail.com',
+            token: '',
+        },
+    },
 }

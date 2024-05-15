@@ -4,14 +4,13 @@ import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
 import cartIcon from '@icon/cart_light.svg'
 
-
 interface HeaderProps {
     logoSrc: string
     isAuth: boolean
 }
 const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
     return (
-        <header className=" fixed w-full bg-gray-800 py-4">
+        <header className=" fixed z-[99] w-full bg-gray-800 py-4">
             <div className="container relative flex items-center justify-between">
                 <Link href="">
                     <Image

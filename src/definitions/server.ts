@@ -6,12 +6,13 @@ export interface Server {
 export const serverCode: Server = {
     SUCCESS: '6000',
     NOT_LOGGED_IN: '6303',
+    TOKEN_INVALID: '6302',
 }
 
 export const BASE_URL = 'https://ticketsystembackend-zz2vrjpjsa-de.a.run.app/'
 
 // 保護路由: 驗證失敗會重導登入頁
-export const protectedRoutes = ['/search']
+export const protectedRoutes = ['/search', '/user/info']
 
 // 公開路由
 export const publicRoutes = ['/login', '/signup', '/', '/Dashboard']

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useLazyLogoutQuery } from '@/services/apiSlice'
-import { refreshAuth } from '@/app/api/refreshAuth/action'
+import { refreshAuth } from '@/lib'
 
 const MemberMenu = () => {
     const [isExpand, setIsExpand] = useState(false)
@@ -38,7 +38,7 @@ const MemberMenu = () => {
             {isExpand ? (
                 <ul className="absolute right-0 top-[88px] w-full rounded-lg bg-gray-1 px-4  ">
                     <li className="border-b-2 border-gray-4 py-3 text-white">
-                        <Link href="/user" scroll={false}>
+                        <Link href="/user/info" scroll={false}>
                             會員資料
                         </Link>
                     </li>

@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { BASE_URL, serverCode } from '@/definitions'
@@ -13,7 +13,10 @@ export const verifySession = async () => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            cache: 'force-cache',
+            next: {
+                revalidate: 60 * 30,
+                tags: ['auth']
+            },
         })
         const { status, data: userProfile } = await response.json()
 

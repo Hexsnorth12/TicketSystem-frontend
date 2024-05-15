@@ -1,13 +1,29 @@
 import React from 'react'
-import UserInfo from '@/components/forms/UserInfo/UserInfo'
+import { UserInfoForm } from '@/components/forms'
+import { cookies } from 'next/headers'
+import { verifySession } from '@/lib'
+import { serverFetch } from '@/utils'
+import type { UserInfo } from '@/types'
 
-interface pageProps {}
+const Page = async () => {
+    await verifySession()
+    const token = cookies().get('token')?.value || ''
 
-const Page = (props: pageProps) => {
+    const data: UserInfo = await serverFetch('api/v1/user', token, {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+        },
+        nextConfig: { tags: ['info'] },
+    })
+
     return (
-        <>
-            <UserInfo />
-        </>
+        <div className="border-gray-3 py-6 md:border md:px-[60px] md:py-[60px]">
+            <h4 className="mb-3 text-header4 md:mb-6">個人資料</h4>
+            <UserInfoForm userInfo={data} />
+        </div>
     )
 }
 

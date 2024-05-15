@@ -8,16 +8,19 @@ import {
     Path,
     FieldErrors,
 } from 'react-hook-form'
+import { ErrorMessage } from '@hookform/error-message'
 
 interface InputProps<T extends FieldValues>
     extends InputHTMLAttributes<HTMLInputElement> {
     label: string
     type: string
     placeholder?: string
-    theme?: 'light' | 'dark'
-    required?: boolean
     registerKey: Path<T>
     register: UseFormRegister<T>
+    errors?: FieldErrors<FieldValues>
+    theme?: 'light' | 'dark'
+    required?: boolean
+    defaultValue?: string | number
 }
 
 const InputRegister = <T extends FieldValues>({
@@ -28,13 +31,9 @@ const InputRegister = <T extends FieldValues>({
     required = false,
     register,
     registerKey,
+    defaultValue = '',
+    errors,
 }: InputProps<T>): JSX.Element => {
-    if (!register) {
-        throw new Error('"register" prop is required for InputComponent')
-    }
-    if (!registerKey) {
-        throw new Error('"key" prop is required for InputComponent')
-    }
     return (
         <div className="w-full">
             <label
@@ -48,18 +47,26 @@ const InputRegister = <T extends FieldValues>({
                 {label}
                 {required ? <span className="text-primary">*</span> : null}
             </label>
-            <div className="mt-2  md:mt-2.5">
+            <div className="mt-2 md:mt-2.5">
                 <input
-                    {...register(registerKey)}
+                    {...(register(registerKey), { defaultValue })}
                     type={type}
                     className={clsx(
-                        'border-1 ring-black-300/10 block w-full rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body',
+                        'ring-black-300/10 block min-h-[49px] w-full rounded-md  bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm outline outline-1 outline-gray-3 ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body',
                         {
                             'text-gray-900': theme === 'light',
                             'bg-opacity-0': theme === 'light',
                         },
                     )}
                     placeholder={placeholder}
+                    name={registerKey}
+                />
+                <ErrorMessage
+                    name={registerKey}
+                    errors={errors}
+                    render={({ message }) => (
+                        <p className="text-red-600">{message}</p>
+                    )}
                 />
             </div>
         </div>
