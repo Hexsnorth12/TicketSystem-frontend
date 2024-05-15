@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Search from './search'
+import Search from './Search'
 
 const meta = {
     title: 'forms/Search',
