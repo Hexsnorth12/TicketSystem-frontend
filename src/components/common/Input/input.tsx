@@ -4,11 +4,11 @@ import React from 'react'
 import clsx from 'clsx'
 
 interface InputProps {
-    label: string
+    label?: string
     type: string
     value: string
-    onChange: (value: string) => void
     placeholder?: string
+    onChange: (value: string) => void
     theme?: 'light' | 'dark'
     required?: boolean
 }
@@ -17,8 +17,8 @@ const InputComponent: React.FC<InputProps> = ({
     label,
     type,
     value,
-    onChange,
     placeholder = '',
+    onChange,
     theme = 'dark',
     required = false,
 }) => {

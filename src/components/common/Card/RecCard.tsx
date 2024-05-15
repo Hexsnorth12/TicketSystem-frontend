@@ -1,8 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import Tag from '@components/common/Tag/tag'
 import { truncateName, truncateContent } from '../../../utils/numberUtils'
-
+import { FaMapMarkerAlt } from 'react-icons/fa'
 interface Movie {
     name: string
     image: string
@@ -44,7 +45,13 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             </div>
                             <div className="flex text-white">
                                 <div>{movie.ticket}</div>
-                                <div className=" px-2">{movie.city}</div>
+                                <div className=" px-2">
+                                    <Tag
+                                        icon={FaMapMarkerAlt}
+                                        tagValue={movie.city}
+                                        iconColor="gray-4"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

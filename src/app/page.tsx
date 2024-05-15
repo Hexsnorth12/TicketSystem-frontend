@@ -1,11 +1,11 @@
 import React from 'react'
 import { mdiFire } from '@mdi/js'
-
 import { Header } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
 import GroupCard from '@components/common/Card/GroupCard'
 import ShareCard from '@components/common/Card/ShareCard'
+
 import {
     Popcards,
     Reccards,
@@ -75,7 +75,7 @@ const HomePage = async () => {
 
     return (
         <>
-            <Header logoSrc="/Movie go.png" isAuth={isAuth} />
+            <Header logoSrc="/assets/Movie go.png" isAuth={isAuth} />
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />

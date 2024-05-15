@@ -1,0 +1,14 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/(auth)/signup/page": "app/(auth)/signup/page.js",
+  "/@modal/(.)login/page": "app/@modal/(.)login/page.js",
+  "/@modal/(.)signup/page": "app/@modal/(.)signup/page.js",
+  "/api/logout/route": "app/api/logout/route.js",
+  "/page": "app/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/cart/page": "app/cart/page.js",
+  "/search/page": "app/search/page.js",
+  "/user/page": "app/user/page.js",
+  "/api/sign-in/route": "app/api/sign-in/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js"
+}
