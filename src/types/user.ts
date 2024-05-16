@@ -3,3 +3,13 @@ export interface User {
     email: string
     token: string
 }
+
+export interface UserInfo extends User {
+    name: string
+    createdAt: string
+    birthDate: string
+    phone: number
+    gender: string
+    address: string
+    imgUrl: string
+}
