@@ -5,11 +5,12 @@ on:
     branches:
       - main
       - master
+      - develope
   pull_request:
     branches:
       - main
       - master
-
+      - develope
 jobs:
   # ESlint Check
   lint:

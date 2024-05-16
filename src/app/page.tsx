@@ -1,5 +1,10 @@
 import React from 'react'
-import { mdiFire } from '@mdi/js'
+import {
+    mdiFire,
+    mdiHeartCircle,
+    mdiAccountMultipleOutline,
+    mdiTicketConfirmation,
+} from '@mdi/js'
 import { Header } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
@@ -76,14 +81,20 @@ const HomePage = () => {
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
-                <HeaderTitle title="你可能會喜歡" iconPath={mdiFire} />
+                <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
                 <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
-                <HeaderTitle title="一起揪團" iconPath={mdiFire} />
+                <HeaderTitle
+                    title="一起揪團"
+                    iconPath={mdiAccountMultipleOutline}
+                />
                 <GroupCard
                     movies={Groupcards}
                     imageSizeMap={groupcardImageSizeMap}
                 />
-                <HeaderTitle title="分票專區" iconPath={mdiFire} />
+                <HeaderTitle
+                    title="分票專區"
+                    iconPath={mdiTicketConfirmation}
+                />
                 <ShareCard
                     movies={Sharecards}
                     imageSizeMap={sharecardImageSizeMap}
