@@ -1,15 +1,14 @@
 'use client' // This is a client component 👈🏽
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { InputComponent } from '../../common'
 import { useAppDispatch } from '@/hooks/index'
 import { userActions } from '@/stores/slices/userSlice'
 import { useSignInMutation } from '@/services/apiSlice'
+import { refreshAuth } from '@/lib'
 
 export default function SingIn() {
     const dispatch = useAppDispatch()
-    const router = useRouter()
     const [signIn] = useSignInMutation()
 
     const [username, setUsername] = useState('')
@@ -29,11 +28,9 @@ export default function SingIn() {
                 account: username,
                 pwd: passWord,
             }).unwrap()
-
             await dispatch(userActions.login({ ...response }))
             //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
-            router.back()
-            router.push('/')
+            refreshAuth()
         } catch (error) {
             //TODO: alert Error
             console.log('ERROR', error)

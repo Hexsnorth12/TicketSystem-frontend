@@ -19,6 +19,7 @@ import {
 } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
+import { verifySession } from '@/lib'
 
 interface HeaderTitleProps {
     title: string
@@ -42,7 +43,9 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     )
 }
 
-const HomePage = () => {
+const HomePage = async () => {
+    const { isAuth } = await verifySession()
+
     const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
     const popcardImageSizeMap = generateImageSizeMap(
         popcardImageSources,
@@ -77,7 +80,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Header logoSrc="/assets/Movie go.png" />
+            <Header logoSrc="/assets/Movie go.png" isAuth={isAuth} />
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
