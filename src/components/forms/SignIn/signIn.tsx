@@ -17,7 +17,7 @@ export default function SingIn() {
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-
+    const handleGoogleLogin = () => {}
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
@@ -39,8 +39,8 @@ export default function SingIn() {
 
     return (
         <>
-            <div className="mx-auto max-w-2xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-300">
+            <div className="mx-auto min-w-96 text-center ">
+                <h2 className="text-number5 font-bold tracking-tight text-white sm:text-header4 dark:text-gray-300">
                     立即登入
                 </h2>
             </div>
@@ -48,18 +48,19 @@ export default function SingIn() {
             <form
                 action="#"
                 method="POST"
-                className="mx-auto mt-16 max-w-xl sm:mt-16">
+                className="mx-auto mt-6 min-w-96  sm:mt-6">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                         <button
                             type="submit"
-                            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={handleGoogleLogin}>
                             Google
                         </button>
                     </div>
                     <div className="flex items-center justify-center sm:col-span-2">
                         <div className="mr-4 flex-grow border-t border-gray-400"></div>
-                        <div className="text-gray-600">or</div>
+                        <div className="text-white dark:text-white">or</div>
                         <div className="ml-4 flex-grow border-t border-gray-400"></div>
                     </div>
                     <div className="sm:col-span-2">
@@ -107,7 +108,7 @@ export default function SingIn() {
                 </div>
                 <div className="mt-10">
                     <button
-                        // type="submit"
+                        type="submit"
                         className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}>
                         登入
