@@ -49,15 +49,15 @@ export default function SignUp() {
     }
     return (
         <>
-            <div className="mx-auto max-w-2xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-300">
+            <div className="mx-auto min-w-96  text-center">
+                <h2 className="text-number5 font-bold tracking-tight text-white sm:text-header4 dark:text-gray-300">
                     建立新帳號
                 </h2>
             </div>
             <form
                 action="#"
                 method="POST"
-                className="mx-auto mt-16 max-w-xl sm:mt-16">
+                className="mx-auto mt-6 min-w-96  sm:mt-6">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                         <div>
