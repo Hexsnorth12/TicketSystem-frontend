@@ -4,6 +4,7 @@ import Tab, { TabPanel } from './Tab/tab'
 import Tag from './Tag/tag'
 import Button from './Button/button'
 import Checkbox from './Checkbox/checkbox'
+import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
 import RecCard from './Card/RecCard'
 import GroupCard from './Card/GroupCard'
@@ -21,6 +22,7 @@ export {
     TabPanel,
     Button,
     Checkbox,
+    Marquee,
     Card,
     RecCard,
     GroupCard,
