@@ -1,3 +1,4 @@
 import Header from './Header/Header'
+import Footer from './Footer'
 
-export { Header }
+export { Header, Footer }
