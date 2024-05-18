@@ -14,6 +14,14 @@ const config: Config = {
             },
             padding: '0.75rem',
         },
+        letterSpacing: {
+            tighter: '-0.05em',
+            tight: '-0.025em',
+            normal: '0em',
+            wide: '1px',
+            wider: '2px',
+            widest: '0.1em',
+        },
         extend: {
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
