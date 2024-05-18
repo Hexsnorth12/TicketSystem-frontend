@@ -77,7 +77,7 @@ const HomePage = async () => {
 
     return (
         <>
-            <Header logoSrc="/assets/Movie go.png" isAuth={isAuth} />
+            <Header logoSrc="/assets/movie-go-logo.png" isAuth={isAuth} />
 
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <Marquee />
