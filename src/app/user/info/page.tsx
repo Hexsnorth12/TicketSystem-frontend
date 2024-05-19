@@ -6,7 +6,7 @@ import { serverFetch } from '@/utils'
 import type { UserInfo } from '@/types'
 
 const Page = async () => {
-    await verifySession()
+    //await verifySession()
     const token = cookies().get('token')?.value || ''
 
     const data: UserInfo = await serverFetch('api/v1/user', token, {
@@ -21,7 +21,7 @@ const Page = async () => {
 
     return (
         <div className="border-gray-3 py-6 md:border md:px-[60px] md:py-[60px]">
-            <h4 className="mb-3 text-header4 md:mb-6">個人資料</h4>
+            <h4 className="mb-3 text-header4 text-white md:mb-6">個人資料</h4>
             <UserInfoForm userInfo={data} />
         </div>
     )

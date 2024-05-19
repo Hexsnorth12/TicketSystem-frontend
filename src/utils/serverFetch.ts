@@ -2,6 +2,7 @@ import { FetchOptions } from '@/types'
 import { serverCode } from '@/definitions'
 import { BASE_URL } from '@/definitions'
 import { redirect } from 'next/navigation'
+import { refreshAuth } from '@/lib'
 
 export const serverFetch = async <T>(
     url: string,
@@ -29,7 +30,8 @@ export const serverFetch = async <T>(
 
         const { status, data } = await response.json()
         if (status === serverCode.TOKEN_INVALID) {
-            redirect(`/login}`)
+            refreshAuth()
+            redirect(`/`)
         }
         return data
     } catch (error) {

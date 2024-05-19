@@ -2,10 +2,11 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import clsx from 'clsx'
 import arrow from '@icon/arrow_right_primary.svg'
 import arrow_r_white from '@icon/arrow_right_white.svg'
 import arrow_l_white from '@icon/arrow_left_white.svg'
-import clsx from 'clsx'
 
 interface ScrollbarProps {}
 
@@ -68,9 +69,11 @@ const Scrollbar: React.FC<ScrollbarProps> = () => {
                     scrollBehavior: 'smooth',
                 }}>
                 <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                    <p className="text-nowrap text-small2 md:text-btn2">
+                    <Link
+                        href={'/user/info'}
+                        className="text-nowrap text-small2 md:text-btn2">
                         會員資料
-                    </p>
+                    </Link>
                     <Image
                         src={arrow}
                         width={24}
@@ -80,9 +83,11 @@ const Scrollbar: React.FC<ScrollbarProps> = () => {
                     />
                 </li>
                 <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                    <p className="text-nowrap text-small2 md:text-btn2">
+                    <Link
+                        href={'/user/tickets'}
+                        className="text-nowrap text-small2 md:text-btn2">
                         我的電影票
-                    </p>
+                    </Link>
                     <Image
                         src={arrow}
                         width={24}
