@@ -7,7 +7,6 @@ import { Pagination, Navigation } from 'swiper/modules'
 import { Popcards } from '../../../definitions/marqueeData'
 import Image from 'next/image'
 import '../Swiper/swiper-custom.css'
-import { ArrowBtns } from '../../Buttons/ArrowBtns'
 
 const Marquee: React.FC = () => {
     return (
