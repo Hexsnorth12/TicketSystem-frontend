@@ -21,6 +21,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
     const renderStars = () => {
         const starts = Array.from({ length: 5 }, (_, index) => (
             <Image
+                key={index}
                 src={star}
                 alt={'star'}
                 width={16}
