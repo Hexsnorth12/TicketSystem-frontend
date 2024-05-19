@@ -1,20 +1,16 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
 import cartIcon from '@icon/cart_light.svg'
-import { useAppSelector } from '@/hooks'
-import { User } from '@/types'
 
 interface HeaderProps {
     logoSrc: string
+    isAuth: boolean
 }
-const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
-    const user = useAppSelector((state) => state.user) as User
+const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
     return (
-        <header className=" fixed w-full bg-gray-800 py-4">
+        <header className=" fixed z-[99] w-full bg-gray-800 py-4">
             <div className="container relative flex items-center justify-between">
                 <Link href="">
                     <Image
@@ -40,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             alt="navigate to cart page"
                         />
                     </Link>
-                    {user.account.length === 0 ? (
+                    {!isAuth ? (
                         <Link href="/login" scroll={false}>
                             <div
                                 className="inline-block rounded-full border px-4 py-2"
