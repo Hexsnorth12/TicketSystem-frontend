@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
-import arrow from '@icon/arrow_right_primary.svg'
 import avatar from '@images/avatar.jpg'
+import Scrollbar from '../../common/ScrollTabs/Scrollbar'
 
 interface SidebarProps {}
 
@@ -22,70 +22,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
                     王小明
                 </p>
             </div>
-
-            <div className="overflow-hidden border-b border-gray-3 py-3 md:rounded-lg md:border md:px-4">
-                <ul className=" m-0 flex gap-6 px-3 md:block">
-                    <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                        <p className="text-nowrap text-small2 md:text-btn2">
-                            會員資料
-                        </p>
-                        <Image
-                            src={arrow}
-                            width={24}
-                            height={24}
-                            className="hidden md:block"
-                            alt="navigation to user info"
-                        />
-                    </li>
-                    <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                        <p className="text-nowrap text-small2 md:text-btn2">
-                            會員資料
-                        </p>
-                        <Image
-                            src={arrow}
-                            width={24}
-                            height={24}
-                            className="hidden md:block"
-                            alt="navigation to user info"
-                        />
-                    </li>
-                    <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                        <p className="text-nowrap text-small2 md:text-btn2">
-                            會員資料
-                        </p>
-                        <Image
-                            src={arrow}
-                            width={24}
-                            height={24}
-                            className="hidden md:block"
-                            alt="navigation to user info"
-                        />
-                    </li>
-                    <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                        <p className="text-nowrap text-small2 md:text-btn2">
-                            會員資料
-                        </p>
-                        <Image
-                            src={arrow}
-                            width={24}
-                            height={24}
-                            className="hidden md:block"
-                            alt="navigation to user info"
-                        />
-                    </li>
-                    <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                        <p className="text-nowrap text-small2 md:text-btn2">
-                            會員資料
-                        </p>
-                        <Image
-                            src={arrow}
-                            width={24}
-                            height={24}
-                            className="hidden md:block"
-                            alt="navigation to user info"
-                        />
-                    </li>
-                </ul>
+            <div className="-mx-3 border-b border-gray-3 py-3 md:mx-0 md:rounded-lg md:border md:px-4">
+                <Scrollbar />
             </div>
         </div>
     )
