@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
     content: [
@@ -71,6 +72,50 @@ const config: Config = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(function ({ addUtilities, theme, matchUtilities }) {
+            addUtilities({
+                '.scrollbar': {
+                    'scrollbar-width': 'auto',
+                    'scrollbar-color': 'white',
+                    '&::-webkit-scrollbar': {
+                        width: '4px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                        backgroundColor: '#333',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: 'white',
+                        borderRadius: '4px',
+                    },
+                },
+                '.scrollbar-hidden': {
+                    '-ms-overflow-style': 'none',
+                    'scrollbar-width': 'none',
+                    '&::-webkit-scrollbar': {
+                        display: 'none',
+                    },
+                },
+                '.scrollbar-block': {
+                    '-ms-overflow-style': 'visible',
+                    'scrollbar-width': 'auto',
+                    '&::-webkit-scrollbar': {
+                        display: 'block',
+                    },
+                },
+            })
+
+            matchUtilities(
+                {
+                    'scrollbar-mr': (value) => ({
+                        '&::-webkit-scrollbar': {
+                            marginRight: value,
+                        },
+                    }),
+                },
+                { values: theme('spacing') },
+            )
+        }),
+    ],
 }
 export default config

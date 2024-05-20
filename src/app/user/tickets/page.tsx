@@ -5,8 +5,8 @@ interface Props {}
 
 const Page: React.FC<Props> = () => {
     return (
-        <div className="border-gray-3 py-6 md:border md:px-[60px] md:py-[60px]">
-            <div className="flex">
+        <div className=" py-6 md:py-0 md:pl-[60px]">
+            <div className="flex gap-2">
                 <ButtonGroup />
             </div>
             <div className="mt-4 md:mt-10">

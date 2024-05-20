@@ -7,8 +7,8 @@ interface TicketGroupProps {}
 
 const TicketGroup: React.FC<TicketGroupProps> = () => {
     return (
-        <div className="max-h-screen overflow-y-scroll">
-            <div className="flex flex-col gap-[18px]  md:gap-10">
+        <div className="scrollbar-hidden md:scrollbar-block md:scrollbar max-h-screen overflow-y-scroll md:pr-10">
+            <div className="flex flex-col gap-[18px] md:gap-10">
                 <MyTicket />
                 <MyTicket />
                 <MyTicket />

@@ -63,7 +63,7 @@ const Scrollbar: React.FC<ScrollbarProps> = () => {
     return (
         <div className="relative overflow-hidden px-10 md:px-0">
             <ul
-                className=" m-0 flex gap-6 overflow-x-scroll md:block"
+                className="scrollbar-hidden m-0 flex gap-6 overflow-x-scroll md:block"
                 ref={scrollRef}
                 style={{
                     scrollBehavior: 'smooth',
