@@ -1,7 +1,6 @@
 import React from 'react'
 import { UserInfoForm } from '@/components/forms'
 import { cookies } from 'next/headers'
-import { verifySession } from '@/lib'
 import { serverFetch } from '@/utils'
 import type { UserInfo } from '@/types'
 

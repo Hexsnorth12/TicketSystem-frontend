@@ -117,8 +117,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                         type={'button'}
                         title={'詳細'}
                         onClick={() => {}}
-                        className="w-full py-2 md:w-auto md:py-3"
-                        value={'詳細'}>
+                        className="w-full py-2 md:w-auto md:py-3">
                         <span className="font-medium tracking-wider">詳細</span>
                     </Button>
                 </div>
