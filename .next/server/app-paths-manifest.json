@@ -1,4 +1,6 @@
 {
-  "/@modal/(.)login/page": "app/@modal/(.)login/page.js",
-  "/page": "app/page.js"
+  "/not-found": "app/not-found.js",
+  "/@modal/(.)signup/page": "app/@modal/(.)signup/page.js",
+  "/page": "app/page.js",
+  "/@modal/(.)login/page": "app/@modal/(.)login/page.js"
 }

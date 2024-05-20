@@ -15,7 +15,7 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-const people = [
+const people: string[] = [
     'Bob',
     'Lisa',
     'Anika',
