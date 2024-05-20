@@ -4,6 +4,7 @@ import Tab, { TabPanel } from './Tab/tab'
 import Tag from './Tag/tag'
 import Button from './Button/button'
 import Checkbox from './Checkbox/checkbox'
+import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
 import RecCard from './Card/RecCard'
 import GroupCard from './Card/GroupCard'
@@ -13,6 +14,8 @@ import InputRegister from './InputRegister/InputRegister'
 import SelectInput from './Select/select'
 import Input from './Input/input'
 import Pagination from './Pagination/pagination'
+import CommentCard from './CommentCard/CommentCard'
+
 
 export {
     Modal,
@@ -22,6 +25,7 @@ export {
     TabPanel,
     Button,
     Checkbox,
+    Marquee,
     Card,
     RecCard,
     GroupCard,
@@ -31,4 +35,5 @@ export {
     MemberMenu,
     InputRegister,
     Pagination,
+    CommentCard,
 }

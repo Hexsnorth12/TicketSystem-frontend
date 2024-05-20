@@ -1,0 +1,10 @@
+/* Custom pagination button styles */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--color-white);
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: var(--color-primary);
+}

@@ -24,6 +24,11 @@ const Button: React.FC<ButtonProps> = ({
         if (isFormButton(props)) return { name: props.name, value: props.value }
     }
 
+    function renderButtonContent() {
+        if (isFormButton(props)) return props.value
+        return children
+    }
+
     function refactedClassName() {
         const isDisabled = disabled
             ? 'border-gray-2 bg-gray-2 text-gray-4'
@@ -44,8 +49,9 @@ const Button: React.FC<ButtonProps> = ({
         className: refactedClassName(),
         ...extraProps(),
     }
+    const buttonContent = renderButtonContent()
 
-    return <button {...elementProps}>{children}</button>
+    return <button {...elementProps}>{buttonContent}</button>
 }
 
 export default Button
