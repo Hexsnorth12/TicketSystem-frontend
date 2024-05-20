@@ -6,15 +6,14 @@ import { usePagination } from '../../../hooks/usePagination'
  * 因此，考慮分批載入資料的時候，需要分頁元件來幫助我們在不同頁面之間切換。
  */
 interface PaginationProps {
-    withEllipsis?: boolean
     page: number
-    pageSize: number
+    withEllipsis?: boolean
+    pageSize: number | undefined
     total: number
     onChange: (pageNumber: number) => void
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-    withEllipsis,
     page,
     pageSize,
     total,
@@ -24,8 +23,8 @@ const Pagination: React.FC<PaginationProps> = ({
         usePagination({
             page,
             pageSize,
+            withEllipsis: false,
             total,
-            withEllipsis,
             onChange,
         })
 
@@ -34,11 +33,12 @@ const Pagination: React.FC<PaginationProps> = ({
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <nav
-                        className="isolate inline-flex gap-3 -space-x-px rounded-md shadow-sm"
+                        className="isolate inline-flex -space-x-px rounded-md shadow-sm"
                         aria-label="Pagination">
                         <button
                             disabled={page === 1}
-                            onClick={page === 1 ? undefined : handleClickPrev}
+                            type="button"
+                            onClick={handleClickPrev}
                             className={`relative inline-flex items-center rounded-l-md px-2 py-2 ${page === 0 ? 'text-gray-4' : 'text-white '} focus:z-20 focus:outline-offset-0`}>
                             <span className="sr-only">Previous</span>
                             <ChevronLeftIcon
@@ -47,28 +47,19 @@ const Pagination: React.FC<PaginationProps> = ({
                             />
                         </button>
                         {items.map((item) => {
-                            if (item.type === 'page') {
-                                return (
-                                    <button
-                                        key={item.page}
-                                        // $isCurrent={item.isCurrent}
-                                        onClick={item.onClick}
-                                        className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${item.isCurrent ? 'text-primary' : 'text-white'} rounded-lg hover:bg-gray-300 focus:z-20 focus:outline-offset-0 ${item.isCurrent ? 'bg-gray-3 text-primary' : 'text-white'}`}>
-                                        {item.page}
-                                    </button>
-                                )
-                            }
                             return (
-                                <div key={item.page} className="text-white">
-                                    ...
-                                </div>
+                                <button
+                                    key={item.page}
+                                    onClick={item.onClick} // 不需要對頁數進行更改
+                                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${item.isCurrent ? 'bg-gray-3 text-primary' : 'text-white'} rounded-lg  hover:bg-gray-3 focus:z-20 focus:outline-offset-0`}>
+                                    {item.page}
+                                </button>
                             )
                         })}
                         <button
+                            type="button"
                             disabled={page === totalPage}
-                            onClick={
-                                page === totalPage ? undefined : handleClickNext
-                            }
+                            onClick={handleClickNext}
                             className={`relative inline-flex items-center rounded-r-md px-2 py-2 ${page === page - 1 ? 'text-gray-4' : 'text-white '}   focus:z-20 focus:outline-offset-0`}>
                             <span className="sr-only">Next</span>
                             <ChevronRightIcon
