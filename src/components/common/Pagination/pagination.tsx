@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 interface PaginationProps {
