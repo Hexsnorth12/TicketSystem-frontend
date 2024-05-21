@@ -11,7 +11,7 @@ import type { CartButton } from '@/types'
 const { DEFAULT_ICON_HEIGHT, DEFAULT_ICON_WIDTH, ICON_DISABLED, ICON } =
     BUTTONS.CART
 
-export const CartBtn: React.FC<CartButton> = ({
+const CartBtn: React.FC<CartButton> = ({
     amount,
     className,
     onClick,
@@ -77,3 +77,5 @@ export const CartBtn: React.FC<CartButton> = ({
         </div>
     )
 }
+
+export default CartBtn

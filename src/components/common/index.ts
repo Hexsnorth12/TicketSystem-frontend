@@ -13,6 +13,9 @@ import MemberMenu from './MemberMenu/MemberMenu'
 import InputRegister from './InputRegister/InputRegister'
 import SelectInput from './Select/select'
 import Input from './Input/input'
+import Pagination from './Pagination/pagination'
+import CommentCard from './CommentCard/CommentCard'
+
 
 export {
     Modal,
@@ -31,4 +34,6 @@ export {
     Input,
     MemberMenu,
     InputRegister,
+    Pagination,
+    CommentCard,
 }

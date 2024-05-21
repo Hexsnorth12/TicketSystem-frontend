@@ -4,12 +4,12 @@ import { Button } from '../common'
 import type { ChatButton } from '@/types'
 import { useButton } from '@/hooks/button'
 
-export const ChatBtn: React.FC<ChatButton> = ({ disabled }) => {
+const ChatBtn: React.FC<ChatButton> = ({ disabled }) => {
     const { basicButtonProps } = useButton(disabled)
     const defaultStyle = buttonStyle()
 
     function buttonStyle() {
-        return !disabled ? 'border-gray-1 bg-gray-1 text-primary' : ''
+        return !disabled ? 'border-gray-1 bg-gray-1 text-primary my-3' : ''
     }
 
     function onClickHandler() {
@@ -32,3 +32,5 @@ export const ChatBtn: React.FC<ChatButton> = ({ disabled }) => {
         </div>
     )
 }
+
+export default ChatBtn
