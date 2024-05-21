@@ -1,0 +1,11 @@
+{
+  "/not-found": "app/not-found.js",
+  "/page": "app/page.js",
+  "/@modal/(.)login/page": "app/@modal/(.)login/page.js",
+  "/@modal/(.)signup/page": "app/@modal/(.)signup/page.js",
+  "/api/sign-in/route": "app/api/sign-in/route.js",
+  "/api/logout/route": "app/api/logout/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/cart/page": "app/cart/page.js",
+  "/user/info/page": "app/user/info/page.js"
+}
