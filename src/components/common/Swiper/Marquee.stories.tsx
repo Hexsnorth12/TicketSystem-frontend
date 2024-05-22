@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import Marquee from './Marquee' // Ensure the import path is correct
-import { Popcards } from '../../../definitions/marqueeData'
 // Ensure the meta object is initialized correctly and conforms to Meta<typeof Marquee>
 const meta: Meta<typeof Marquee> = {
     title: 'common/Marquee',

@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -26,7 +25,7 @@ const Marquee: React.FC = () => {
         setIsModalOpen(false)
     }
     return (
-        <div className="relative h-[240px] w-[375px] md:h-screen md:w-screen ">
+        <div className="relative h-[240px]  md:h-screen md:w-screen ">
             <Swiper
                 slidesPerView={1}
                 spaceBetween={50}
@@ -93,7 +92,7 @@ const Marquee: React.FC = () => {
                     </div>
                     {isModalOpen && (
                         <Modal onClose={handleModalClose}>
-                            <div className="mx-auto border-0 bg-gray-2 p-4">
+                            <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
                                 <Search />
                             </div>
                         </Modal>

@@ -41,7 +41,7 @@ export default function SearchForm() {
                 method="POST"
                 className="mx-auto mt-6 max-w-xl sm:mt-6 ">
                 <div className="grid grid-cols-1 items-end  gap-y-6 text-small1 text-gray-5 sm:grid-cols-2">
-                    <div className="mb-10  sm:col-span-2">
+                    <div className="mb-2  sm:col-span-2 md:mb-10">
                         <Input
                             rounded="full"
                             placeholder={'輸入關鍵字'}
@@ -148,27 +148,30 @@ export default function SearchForm() {
                         </div>
                     </div>
                 </div>
-
-                <div className="mt-10 flex justify-center gap-4">
-                    <div className="col-span-1 contents justify-center">
-                        <Button
-                            type="submit"
-                            title="表单按钮"
-                            onClick={handleOnclick}
-                            className="bg-gray-3 text-primary"
-                            name="Ticketbutton"
-                            value="取消">
-                            取消
-                        </Button>
-                        <Button
-                            type="submit"
-                            title="表单按钮"
-                            onClick={handleOnclick}
-                            className=""
-                            name="Ticketbutton"
-                            value="搜尋">
-                            搜尋
-                        </Button>
+                <div className="mt-5 grid items-end justify-center gap-y-2 text-small1 text-gray-5 md:mt-10 md:flex md:justify-center md:gap-x-8">
+                    <div className="col-span-1 flex flex-col md:col-span-2 md:flex-row md:justify-center md:space-x-8">
+                        <div className="col-span-3 grow text-white md:col-span-1">
+                            <Button
+                                type="submit"
+                                title="表单按钮"
+                                onClick={handleOnclick}
+                                className="bg-gray-3 text-primary"
+                                name="Ticketbutton"
+                                value="取消">
+                                取消
+                            </Button>
+                        </div>
+                        <div className="col-span-3 mt-2 grow text-white md:col-span-1 md:mt-0">
+                            <Button
+                                type="submit"
+                                title="表单按钮"
+                                onClick={handleOnclick}
+                                className=""
+                                name="Ticketbutton"
+                                value="搜尋">
+                                搜尋
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </form>
