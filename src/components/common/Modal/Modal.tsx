@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import type { FC, ReactNode } from 'react'
@@ -7,14 +6,19 @@ import { useRouter } from 'next/navigation'
 
 interface ModalProps {
     children: ReactNode
+    onClose?: () => void
 }
 
-const Modal: FC<ModalProps> = ({ children }) => {
+const Modal: FC<ModalProps> = ({ children, onClose }) => {
     const router = useRouter()
 
     const handleOnOpenChange = (open: boolean) => {
         if (!open) {
-            router.back()
+            if (onClose) {
+                onClose()
+            } else {
+                router.back()
+            }
         }
     }
 

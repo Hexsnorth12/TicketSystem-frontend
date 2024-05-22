@@ -24,6 +24,7 @@ const { SEARCH, FILTER, RECOMMED } = TYPES
 export const SearchBtn: React.FC<SearchButton> = ({
     disabled,
     type,
+    onClick,
     iconDimension,
     active,
     iconStyle,
@@ -63,11 +64,6 @@ export const SearchBtn: React.FC<SearchButton> = ({
         }
     }
 
-    function onClickHandler() {
-        openLink()
-    }
-    function openLink() {}
-
     return (
         <div className="inline-block">
             <Button
@@ -75,7 +71,7 @@ export const SearchBtn: React.FC<SearchButton> = ({
                 title={`social button - ${type}`}
                 className={`border-gray-4 bg-gray-3 p-2 hover:border-primary ${activeStyle}`}
                 disabled={disabled}
-                onClick={onClickHandler}>
+                onClick={onClick}>
                 <Image
                     alt={imgSrcProps.alt}
                     src={imgSrcProps.img}

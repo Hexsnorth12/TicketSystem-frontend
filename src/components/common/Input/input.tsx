@@ -39,7 +39,7 @@ const InputComponent: React.FC<InputProps> = ({
                 {label}
                 {required ? <span className="text-primary">*</span> : null}
             </label>
-            <div className="mt-2  md:mt-2.5">
+            <div className="mt-auto md:mt-2.5">
                 <input
                     value={value}
                     onChange={(e) => onChange(e.target.value)}

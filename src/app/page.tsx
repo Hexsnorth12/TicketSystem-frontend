@@ -19,7 +19,7 @@ import {
 
 import { generateImageSizeMap } from '../utils/imageUtils'
 import { verifySession } from '@/lib'
-import Marquee from '@components/common/Swiper/Marquee'
+import Marquee from '@/components/common/Swiper/Marquee'
 
 interface HeaderTitleProps {
     title: string

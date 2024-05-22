@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -6,16 +7,26 @@ import 'swiper/swiper-bundle.css'
 import { Pagination, Navigation } from 'swiper/modules'
 import { Popcards } from '../../../definitions/marqueeData'
 import Image from 'next/image'
-import '../Swiper/swiper-custom.css'
+import './swiper-custom.css'
 import { Input } from '@components/common'
 import { SearchBtn } from '@/components/Buttons'
+import { Modal } from '@components/common'
+import { Search } from '@components/forms'
 const Marquee: React.FC = () => {
     const [search, setSearch] = useState('')
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const handleSearchChange = (value: string) => {
         setSearch(value)
     }
+    const handleFilterClick = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleModalClose = () => {
+        setIsModalOpen(false)
+    }
     return (
-        <div className="relative h-screen w-screen">
+        <div className="relative h-[240px] w-[375px] md:h-screen md:w-screen ">
             <Swiper
                 slidesPerView={1}
                 spaceBetween={50}
@@ -30,9 +41,9 @@ const Marquee: React.FC = () => {
                 {Popcards.map((popcard, index) => (
                     <>
                         <SwiperSlide key={index}>
-                            <div className="relative h-screen w-screen">
+                            <div className="h-full w-full">
                                 <Image
-                                    layout="fill"
+                                    fill
                                     objectFit="cover"
                                     src={popcard.image}
                                     alt={popcard.name}
@@ -43,40 +54,50 @@ const Marquee: React.FC = () => {
                 ))}
             </Swiper>
             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center  bg-gradient-to-b from-black/60  via-black/0 to-black/60 text-center">
-                <div className="flex flex-col items-center space-y-4">
-                    <div className="text-header4 text-primary">
+                <div className="flex flex-col items-center md:space-y-4">
+                    <div className="text-btn2 text-primary md:text-header4">
                         看電影不孤單
                     </div>
-                    <div className="flex flex-row  items-end gap-x-4 font-sans text-header1 font-bold tracking-wide tracking-wide text-white">
+                    <div className="flex flex-row  items-end  gap-x-2 font-sans text-header4 font-bold tracking-wide tracking-wide text-white md:gap-x-4 md:text-header1">
                         電影揪團
-                        <div className="relative h-16 w-16">
+                        <div className="relative h-6 w-6 md:h-16 md:w-16">
                             <Image
-                                layout="fill" // required
+                                fill // required
                                 objectFit="cover" // change to suit your needs
                                 src="/assets/go.png"
                                 alt="go"
                             />
                         </div>
                     </div>
-                    <div className="pointer-events-auto relative mt-6 ">
+                    <div className=" pointer-events-auto absolute top-0 order-first mt-0 md:relative md:order-last md:mt-6">
                         <div>
-                            <div className="relative w-auto shadow-sm md:w-[526px]">
+                            <div className="relative shadow-sm">
                                 <Input
                                     type="text"
-                                    rounded="full"
+                                    rounded="none"
                                     value={search}
                                     onChange={handleSearchChange}
                                     placeholder="輸入關鍵字"
-                                    className="h-auto w-full py-4 md:h-16"
+                                    className="h-12 w-screen md:h-16 md:w-[526px] md:rounded-full md:py-4"
                                 />
                                 <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                                    <SearchBtn type="filter" />
+                                    <SearchBtn
+                                        type="filter"
+                                        onClick={handleFilterClick}
+                                    />
                                     <SearchBtn type="recommend" />
                                     <SearchBtn type="search" active={true} />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {isModalOpen && (
+                        <Modal onClose={handleModalClose}>
+                            <div className="mx-auto border-0 bg-gray-2 p-4">
+                                <Search />
+                            </div>
+                        </Modal>
+                    )}
                 </div>
             </div>
         </div>
