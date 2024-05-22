@@ -48,7 +48,15 @@ export type SocialButton = {
     iconDimension?: { width: number; height: number }
     iconStyle?: string
 }
-
+export type SearchButton = {
+    className?: string
+    onClick?: () => void
+    type: 'search' | 'filter' | 'recommend'
+    disabled?: boolean
+    active?: boolean
+    iconDimension?: { width: number; height: number }
+    iconStyle?: string
+}
 export type ChatButton = {
     disabled?: boolean
 }
