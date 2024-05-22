@@ -16,7 +16,6 @@ import Input from './Input/input'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 
-
 export {
     Modal,
     InputComponent,
