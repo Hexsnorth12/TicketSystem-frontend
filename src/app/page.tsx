@@ -5,7 +5,7 @@ import {
     mdiAccountMultipleOutline,
     mdiTicketConfirmation,
 } from '@mdi/js'
-import { Header } from '@components/layout'
+import { Header, NavBanner } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
 import GroupCard from '@components/common/Card/GroupCard'
@@ -93,6 +93,7 @@ const HomePage = async () => {
                     movies={Groupcards}
                     imageSizeMap={groupcardImageSizeMap}
                 />
+                <NavBanner type="join" />
                 <HeaderTitle
                     title="分票專區"
                     iconPath={mdiTicketConfirmation}
@@ -101,6 +102,7 @@ const HomePage = async () => {
                     movies={Sharecards}
                     imageSizeMap={sharecardImageSizeMap}
                 />
+                <NavBanner type="ticket" />
             </main>
         </>
     )
