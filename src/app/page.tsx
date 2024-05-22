@@ -19,7 +19,7 @@ import {
 
 import { generateImageSizeMap } from '../utils/imageUtils'
 import { verifySession } from '@/lib'
-import Marquee from '@components/common/Swiper/Marquee'
+import Marquee from '@/components/common/Swiper/Marquee'
 
 interface HeaderTitleProps {
     title: string
@@ -28,7 +28,7 @@ interface HeaderTitleProps {
 
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     return (
-        <div className="container flex items-center px-32 py-4">
+        <div className="container flex items-center py-2 md:px-32 md:py-4 ">
             <svg width="40" height="40" viewBox="0 0 24 24">
                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#00FFFF' }} />

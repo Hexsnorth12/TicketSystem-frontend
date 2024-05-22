@@ -1,6 +1,7 @@
 'use client'
 export * from './Navigate'
 export * from './SearchTag'
+export * from './Search'
 export * from './Helpers'
 export * from './SocialBtn'
 export * from './ChatBtn'

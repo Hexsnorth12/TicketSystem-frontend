@@ -5,7 +5,11 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 
 import { TypeTag } from '@/components/Buttons'
 import Tag from '@components/common/Tag/tag'
-import { truncateName, truncateContent } from '../../../utils/numberUtils'
+import {
+    truncateName,
+    truncateContent,
+    truncateContentMobile,
+} from '../../../utils/numberUtils'
 interface Movie {
     name: string
     image: string
@@ -21,45 +25,90 @@ interface CardProps {
 
 const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     return (
-        <div className="grid grid-cols-5 gap-4 px-32">
-            {movies.map((movie, index) => (
-                <div key={index} className="m-4 overflow-hidden rounded-lg p-4">
-                    <Link href="">
-                        <div className="relative">
-                            <Image
-                                src={movie.image}
-                                alt={movie.name}
-                                width={imageSizeMap[movie.image]?.width}
-                                height={imageSizeMap[movie.image]?.height}
-                                className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
-                            />
-                            {/* Border-primary with blur effect */}
-                            <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
-                        </div>
-                    </Link>
-                    <div className="text-start">
-                        <div className="mt-2 text-btn1 font-medium text-white">
-                            {truncateName(movie.name)}
-                        </div>
-                        <div className="text-small2 font-regular">
-                            <div className="text-gray-5">
-                                {truncateContent(movie.content)}
+        <>
+            {/* Desktop-Navbar */}
+            <div className="hidden md:grid md:grid-cols-5 md:gap-4 md:px-32">
+                {movies.map((movie, index) => (
+                    <div
+                        key={index}
+                        className="m-4 overflow-hidden rounded-lg p-4">
+                        <Link href="">
+                            <div className="relative">
+                                <Image
+                                    src={movie.image}
+                                    alt={movie.name}
+                                    width={imageSizeMap[movie.image]?.width}
+                                    height={imageSizeMap[movie.image]?.height}
+                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                />
+                                {/* Border-primary with blur effect */}
+                                <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>
-                            <div className="flex pt-3 text-white">
-                                <TypeTag tagName={movie.ticket} />
-                                <div className="flex items-center px-2">
-                                    <Tag
-                                        icon={FaMapMarkerAlt}
-                                        tagValue={movie.city}
-                                        iconColor="gray-4"
-                                    />
+                        </Link>
+                        <div className="text-start">
+                            <div className="mt-2 text-btn1 font-medium text-white">
+                                {truncateName(movie.name)}
+                            </div>
+                            <div className="text-small2 font-regular">
+                                <div className="text-gray-5">
+                                    {truncateContent(movie.content)}
+                                </div>
+                                <div className="flex text-white">
+                                    <TypeTag tagName={movie.ticket} />
+                                    <div className=" px-2">
+                                        <Tag
+                                            icon={FaMapMarkerAlt}
+                                            tagValue={movie.city}
+                                            iconColor="gray-4"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+            {/* Mobile-Navbar */}
+            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+                {movies.map((movie, index) => (
+                    <div key={index} className="mx-1 inline-block w-32">
+                        <Link href="">
+                            <div className="relative">
+                                <Image
+                                    src={movie.image}
+                                    alt={movie.name}
+                                    width={imageSizeMap[movie.image]?.width}
+                                    height={imageSizeMap[movie.image]?.height}
+                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                />
+                                {/* Border-primary with blur effect */}
+                                <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
+                            </div>
+                        </Link>
+                        <div className="text-start">
+                            <div className="mt-2 text-btn2 font-medium text-white">
+                                {truncateName(movie.name)}
+                            </div>
+                            <div className="text-small2 font-regular">
+                                <div className="text-gray-5">
+                                    {truncateContentMobile(movie.content)}
+                                </div>
+                                <div className="flex text-white">
+                                    <div>{movie.ticket}</div>
+                                    <div className=" px-2">
+                                        <Tag
+                                            icon={FaMapMarkerAlt}
+                                            tagValue={movie.city}
+                                            iconColor="gray-4"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
     )
 }
 

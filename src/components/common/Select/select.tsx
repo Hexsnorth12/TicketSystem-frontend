@@ -32,7 +32,7 @@ const SelectInput: React.FC<SelectProps> = ({
             value={selectedValue}
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
-                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-white px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
+                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-gray-1 px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
                 aria-label="city"
                 disabled={options.length === 0}>
                 <Select.Value placeholder={placeholder} />
@@ -41,7 +41,7 @@ const SelectInput: React.FC<SelectProps> = ({
                 </Select.Icon>
             </Select.Trigger>
             <Select.Portal>
-                <Select.Content className="overflow-hidden rounded-md bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                <Select.Content className="z-50 overflow-hidden rounded-md bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
                     <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
