@@ -22,7 +22,9 @@ export default function RootLayout({
     return (
         <StoreProviders>
             <html lang="en">
-                <body className={noto_Sans_TC.className}>{children}</body>
+                <body className={`${noto_Sans_TC.className} bg-gray-2`}>
+                    {children}
+                </body>
                 {modal}
             </html>
         </StoreProviders>
