@@ -1,8 +1,9 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
-import cartIcon from '@icon/cart_light.svg'
+import Cartbtn from '../../Buttons/CartBtn'
 
 interface HeaderProps {
     logoSrc: string
@@ -29,12 +30,13 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
                         <p className="text-white">一起揪團</p>
                     </Link>
                     <Link href={'/cart'}>
-                        <Image
+                        {/* <Image
                             src={cartIcon}
                             width={24}
                             height={24}
                             alt="navigate to cart page"
-                        />
+                        /> */}
+                        <Cartbtn amount={0} />
                     </Link>
                     {!isAuth ? (
                         <Link href="/login" scroll={false}>

@@ -1,7 +1,9 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { truncateName } from '../../../utils/numberUtils'
+import Chatbtn from '../../Buttons/ChatBtn'
 
 interface Movie {
     name: string
@@ -65,9 +67,8 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             </nav>
                         </div>
                     </div>
-                    <button className="rounded-lg bg-blue-500 text-white hover:bg-blue-600">
-                        聊聊
-                    </button>
+
+                    <Chatbtn />
                 </div>
             ))}
         </div>
