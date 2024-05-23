@@ -11,6 +11,7 @@ interface InputProps {
     onChange: (value: string) => void
     theme?: 'light' | 'dark'
     required?: boolean
+    name?: string
 }
 
 const InputComponent: React.FC<InputProps> = ({
@@ -21,11 +22,12 @@ const InputComponent: React.FC<InputProps> = ({
     onChange,
     theme = 'dark',
     required = false,
+    name = '',
 }) => {
     return (
         <div>
             <label
-                htmlFor={label}
+                htmlFor={name}
                 className={clsx(
                     'block text-small2 leading-150 text-white md:text-small1',
                     {
@@ -37,6 +39,7 @@ const InputComponent: React.FC<InputProps> = ({
             </label>
             <div className="mt-2  md:mt-2.5">
                 <input
+                    name={name}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     type={type}

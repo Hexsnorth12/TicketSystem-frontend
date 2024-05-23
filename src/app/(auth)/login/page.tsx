@@ -3,7 +3,7 @@ import { SignIn } from '@components/forms'
 
 const Page = () => {
     return (
-        <div className="mx-auto border p-4">
+        <div className="mx-auto p-4">
             <SignIn />
         </div>
     )

@@ -3,20 +3,23 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { useLazyLogoutQuery } from '@/services/apiSlice'
-import { refreshAuth } from '@/lib'
+import { signOut } from 'next-auth/react'
 
 const MemberMenu = () => {
     const [isExpand, setIsExpand] = useState(false)
-    const [logout] = useLazyLogoutQuery()
+    // const [logout] = useLazyLogoutQuery()
 
     const onToggleMenu = () => {
         setIsExpand((prev) => !prev)
     }
     const onLogout = async () => {
-        await logout({})
+        // await logout({})
         // await dispatch(userActions.login({ account: '', email: '', token: '' }))
-        refreshAuth()
+        // refreshAuth()
+        signOut({
+            redirect: true,
+            callbackUrl: `${window.location.origin}/login`,
+        })
     }
     return (
         <div className="relative">

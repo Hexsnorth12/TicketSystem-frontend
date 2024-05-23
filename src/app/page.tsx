@@ -18,8 +18,8 @@ import {
 } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
-import { verifySession } from '@/lib'
 import Marquee from '@components/common/Swiper/Marquee'
+import { getUserSession } from '@/lib/auth.actions'
 
 interface HeaderTitleProps {
     title: string
@@ -44,7 +44,9 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-    const { isAuth } = await verifySession()
+    const { session } = await getUserSession()
+
+    const isAuth = session?.user.accountType ? true : false
 
     const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
     const popcardImageSizeMap = generateImageSizeMap(

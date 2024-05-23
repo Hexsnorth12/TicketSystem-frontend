@@ -26,6 +26,7 @@ interface CardProps {
 }
 
 const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
+
     return (
         <Swiper
             slidesPerView={5}
