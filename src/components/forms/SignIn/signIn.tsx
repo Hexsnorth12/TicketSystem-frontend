@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/hooks/index'
 import { userActions } from '@/stores/slices/userSlice'
 import { useSignInMutation } from '@/services/apiSlice'
 import { refreshAuth } from '@/lib'
+import Button from '../../common/Button/button'
 
 export default function SingIn() {
     const dispatch = useAppDispatch()
@@ -51,12 +52,13 @@ export default function SingIn() {
                 className="mx-auto mt-6 min-w-96  sm:mt-6">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                        <button
-                            type="submit"
-                            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        <Button
+                            type="button"
+                            title="google"
+                            className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             onClick={handleGoogleLogin}>
                             Google
-                        </button>
+                        </Button>
                     </div>
                     <div className="flex items-center justify-center sm:col-span-2">
                         <div className="mr-4 flex-grow border-t border-gray-400"></div>
@@ -94,12 +96,12 @@ export default function SingIn() {
                         <div className="flex items-center">
                             <label
                                 htmlFor="message"
-                                className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
+                                className="block text-sm font-semibold leading-6 text-primary dark:text-gray-300">
                                 沒有帳號嗎？
                             </label>
                             <Link
                                 href="/signup"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-gray-900 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-300"
+                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-300"
                                 scroll={false}>
                                 註冊
                             </Link>
@@ -107,12 +109,13 @@ export default function SingIn() {
                     </div>
                 </div>
                 <div className="mt-10">
-                    <button
-                        type="submit"
-                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    <Button
+                        type="button"
+                        title="signin"
+                        className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}>
                         登入
-                    </button>
+                    </Button>
                 </div>
             </form>
         </>

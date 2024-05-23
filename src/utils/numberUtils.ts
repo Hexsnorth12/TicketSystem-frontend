@@ -11,3 +11,10 @@ export const truncateContent = (content: string): string => {
     }
     return content
 }
+
+export const truncateContentMobile = (content: string): string => {
+    if (content && content.length > 7) {
+        return content.slice(0, 7) + '...'
+    }
+    return content
+}

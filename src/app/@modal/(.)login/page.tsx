@@ -5,7 +5,7 @@ import { SignIn } from '@components/forms'
 const Page = () => {
     return (
         <Modal>
-            <div className="mx-auto border-0 bg-gray-5 p-4">
+            <div className="mx-auto border-0 bg-gray-2 p-4">
                 <SignIn />
             </div>
         </Modal>

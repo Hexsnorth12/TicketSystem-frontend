@@ -4,6 +4,8 @@ import { useSignUpMutation } from '@/services/modules/auth'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { InputComponent, Checkbox } from '../../common'
+import Button from '../../common/Button/button'
+
 export default function SignUp() {
     const [signUp] = useSignUpMutation()
     const router = useRouter()
@@ -106,12 +108,12 @@ export default function SignUp() {
                         <div className="flex items-center">
                             <label
                                 htmlFor="message"
-                                className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
+                                className="block text-sm font-semibold leading-6 text-primary dark:text-gray-300">
                                 已經有帳號了？
                             </label>
                             <Link
                                 href="/login"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 scroll={false}>
                                 登入
                             </Link>
@@ -119,11 +121,13 @@ export default function SignUp() {
                     </div>
                 </div>
                 <div className="mt-10">
-                    <button
-                        className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    <Button
+                        type="button"
+                        title="signUp"
+                        className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={handleSubmit}>
                         註冊
-                    </button>
+                    </Button>
                 </div>
             </form>
         </>

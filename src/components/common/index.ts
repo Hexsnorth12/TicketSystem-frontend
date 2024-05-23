@@ -17,7 +17,6 @@ import MyTicket from './MyTicket/MyTicke'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 
-
 export {
     Modal,
     InputComponent,

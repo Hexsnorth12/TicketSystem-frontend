@@ -1,10 +1,12 @@
 import { PropsWithChildren } from 'react'
 
 type Button = {
-    onClick?: () => void
+    type: 'button' | 'submit' | 'reset'
     title: string
-    className?: string
     disabled?: boolean
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void
+    className?: string
+    children?: React.ReactNode
 }
 
 interface GeneralButton extends Button {
@@ -48,7 +50,15 @@ export type SocialButton = {
     iconDimension?: { width: number; height: number }
     iconStyle?: string
 }
-
+export type SearchButton = {
+    className?: string
+    onClick?: () => void
+    type: 'search' | 'filter' | 'recommend'
+    disabled?: boolean
+    active?: boolean
+    iconDimension?: { width: number; height: number }
+    iconStyle?: string
+}
 export type ChatButton = {
     disabled?: boolean
 }

@@ -18,7 +18,7 @@ const InputComponent: React.FC<InputProps> = ({ label, value, onChange }) => {
             </div>
             <label
                 htmlFor="first-name"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                className="ms-2 text-sm font-medium text-white dark:text-gray-300">
                 {label}
             </label>
         </div>
