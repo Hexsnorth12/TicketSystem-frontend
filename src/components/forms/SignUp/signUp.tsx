@@ -106,12 +106,12 @@ export default function SignUp() {
                         <div className="flex items-center">
                             <label
                                 htmlFor="message"
-                                className="block text-small2 font-semibold leading-120 text-gray-5 md:text-small1">
+                                className="block text-small2 font-semibold leading-6 text-primary md:text-small1">
                                 已經有帳號了？
                             </label>
                             <Link
                                 href="/login"
-                                className="focus-visible:outline-indigo-60 block rounded-md px-3.5 text-center text-small2 font-semibold text-gray-300 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:text-small1"
+                                className="focus-visible:outline-indigo-60 block rounded-md px-3.5 text-center text-small2 font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:text-small1"
                                 scroll={false}>
                                 登入
                             </Link>
@@ -121,9 +121,9 @@ export default function SignUp() {
                 <div className="mt-10">
                     <Button
                         type={'button'}
-                        title="登入"
+                        title="signUp"
                         onClick={handleSubmit}
-                        className="w-full py-3 text-btn2 text-white md:text-btn1">
+                        className="w-full py-3 text-btn2 text-white md:text-btn1 rounded-md font-semibold">
                         註冊
                     </Button>
                 </div>

@@ -28,19 +28,10 @@ export default function SingIn() {
         const formData = new FormData(e.currentTarget)
         const credentials = Object.fromEntries(formData)
         //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
-        // try {
-        //     signIn('credentials', {
-        //         ...credentials,
-        //         redirect: true,
-        //         callbackUrl: `${window.location.origin}/`,
-        //     })
-        // } catch (error) {
-        //     console.log('ERROR', error)
-        // }
+
         const response = await signIn('credentials', {
             ...credentials,
             redirect: false,
-            // callbackUrl: `${window.location.origin}/`,
         })
 
         if (response?.error) {
@@ -64,17 +55,11 @@ export default function SingIn() {
             <form className="mx-auto mt-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                        {/* <button
-                            type="submit"
-                            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            onClick={handleGoogleLogin}>
-                            Google
-                        </button> */}
                         <Button
                             type={'button'}
                             title="登入"
                             onClick={handleGoogleLogin}
-                            className="flex w-full items-center justify-center py-3 text-btn2 text-white md:text-btn1">
+                            className="flex w-full items-center justify-center rounded-md py-3 text-btn2 text-white md:text-btn1">
                             <Image
                                 src={google_logo}
                                 width={18}
@@ -123,12 +108,12 @@ export default function SingIn() {
                         <div className="flex items-center py-2.5 ">
                             <label
                                 htmlFor="message"
-                                className="block text-small2 font-semibold leading-120 text-gray-5 md:text-small1 ">
+                                className="block text-small2 font-semibold leading-6 text-primary md:text-small1">
                                 沒有帳號嗎？
                             </label>
                             <Link
                                 href="/signup"
-                                className="focus-visible:outline-indigo-60 block rounded-md px-3.5 text-center text-small2 font-semibold text-gray-300 underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:text-small1"
+                                className="focus-visible:outline-indigo-60 block rounded-md px-3.5 text-center text-small2 font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:text-small1"
                                 scroll={false}>
                                 註冊
                             </Link>
@@ -142,13 +127,11 @@ export default function SingIn() {
                 ) : null}
                 <div className="mt-10">
                     <Button
-                        name="login"
-                        value="login"
+                        name="signin"
+                        value="登入"
                         type={'submit'}
-                        title="登入"
-                        className="w-full py-3 text-btn2 text-white md:text-btn1">
-                        登入
-                    </Button>
+                        title="signin"
+                        className="w-full rounded-md py-3 text-btn2 font-semibold text-white md:text-btn1"></Button>
                 </div>
             </form>
         </>

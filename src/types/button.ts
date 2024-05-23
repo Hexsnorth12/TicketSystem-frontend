@@ -1,10 +1,12 @@
 import { PropsWithChildren } from 'react'
 
 type Button = {
-    onClick?: () => void
+    type: 'button' | 'submit' | 'reset'
     title: string
-    className?: string
     disabled?: boolean
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void
+    className?: string
+    children?: React.ReactNode
 }
 
 interface GeneralButton extends Button {
