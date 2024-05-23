@@ -30,7 +30,6 @@ interface CardProps {
 }
 
 const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
-
     return (
         <>
             {/* Desktop-Navbar */}

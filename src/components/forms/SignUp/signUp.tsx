@@ -123,7 +123,7 @@ export default function SignUp() {
                         type={'button'}
                         title="signUp"
                         onClick={handleSubmit}
-                        className="w-full py-3 text-btn2 text-white md:text-btn1 rounded-md font-semibold">
+                        className="w-full rounded-md py-3 text-btn2 font-semibold text-white md:text-btn1">
                         註冊
                     </Button>
                 </div>
