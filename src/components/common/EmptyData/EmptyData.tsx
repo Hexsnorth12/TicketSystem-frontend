@@ -3,7 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import empty from '@images/empty.png'
-import Button from '../Button/button'
+import Button from '../Button'
 
 interface EmptyDataProps {}
 
