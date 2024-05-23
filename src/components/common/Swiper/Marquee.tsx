@@ -68,7 +68,7 @@ const Marquee: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <div className=" pointer-events-auto absolute top-0 order-first mt-0 md:relative md:order-last md:mt-6">
+                    <div className=" pointer-events-auto absolute top-1 order-first mt-0 md:relative md:order-last md:mt-6">
                         <div>
                             <div className="relative shadow-sm">
                                 <Input
