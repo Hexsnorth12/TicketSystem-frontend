@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         async session({ session, token }) {
-            session.user = token.user
+            session.user = token.user as User
             return session
         },
     },
