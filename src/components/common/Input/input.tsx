@@ -12,6 +12,7 @@ interface InputProps {
     theme?: 'light' | 'dark'
     rounded?: 'full' | 'none' | 'md'
     required?: boolean
+    name?: string
     className?: string // Add className prop
 }
 
@@ -24,12 +25,13 @@ const InputComponent: React.FC<InputProps> = ({
     theme = 'dark',
     rounded = 'md',
     required = false,
+    name = '',
     className, // Add className prop
 }) => {
     return (
         <div>
             <label
-                htmlFor={label}
+                htmlFor={name}
                 className={clsx(
                     'block text-small2 leading-150 text-white md:text-small1',
                     {
@@ -41,6 +43,7 @@ const InputComponent: React.FC<InputProps> = ({
             </label>
             <div className="mt-auto md:mt-2.5">
                 <input
+                    name={name}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     type={type}

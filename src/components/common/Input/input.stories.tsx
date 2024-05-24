@@ -24,6 +24,7 @@ export const Primary: Story = {
         rounded: 'full',
         onChange: () => {},
         placeholder: '請輸入電子郵箱',
+        name: 'email',
     },
 }
 
@@ -35,5 +36,6 @@ export const Required: Story = {
         onChange: () => {},
         placeholder: '請輸入電子郵箱',
         required: true,
+        name: 'email',
     },
 }
