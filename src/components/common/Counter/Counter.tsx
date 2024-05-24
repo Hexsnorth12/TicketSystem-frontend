@@ -38,7 +38,7 @@ const Counter: React.FC<CounterProps> = ({
     }
 
     return (
-        <div className="flex w-full justify-between space-x-[44px] rounded-lg border border-gray-4 px-2 py-4 md:w-auto md:py-2.5 ">
+        <div className="flex w-full justify-between space-x-[44px] rounded-lg border border-[1px] border-gray-4 px-2 py-4 md:w-auto md:py-2.5 ">
             <button onClick={handleDecrement}>
                 <Image
                     src={minus}
