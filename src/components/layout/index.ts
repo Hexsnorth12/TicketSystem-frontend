@@ -1,3 +1,5 @@
 import Header from './Header/Header'
+import NavBanner from './NavBanner'
+import Footer from './Footer'
 
-export { Header }
+export { Header, Footer, NavBanner }

@@ -2,8 +2,10 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
-import '@/styles/globals.css'
+import { Footer } from '@/components/layout'
 import StoreProviders from '@/components/common/StoreProviders'
+
+import '@/styles/globals.css'
 
 const noto_Sans_TC = Noto_Sans_TC({ subsets: ['latin'] })
 
@@ -23,7 +25,9 @@ export default function RootLayout({
         <StoreProviders>
             <html lang="en">
                 <body className={`${noto_Sans_TC.className} bg-gray-2`}>
-                    {children} {modal}
+                    {children}
+                    {modal}
+                    <Footer />
                 </body>
             </html>
         </StoreProviders>
