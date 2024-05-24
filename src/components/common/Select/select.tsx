@@ -20,7 +20,6 @@ const SelectInput: React.FC<SelectProps> = ({
     onSelectChange,
     options,
 }) => {
-    console.log(options, 'options')
     const [selectedValue, setSelectedValue] = React.useState<string>('')
 
     const handleChange = (value: string) => {
