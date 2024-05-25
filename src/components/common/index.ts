@@ -15,6 +15,7 @@ import SelectInput from './Select/select'
 import Input from './Input/input'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
 
 export {
     Modal,
@@ -34,4 +35,5 @@ export {
     InputRegister,
     Pagination,
     CommentCard,
+    Breadcrumbs,
 }
