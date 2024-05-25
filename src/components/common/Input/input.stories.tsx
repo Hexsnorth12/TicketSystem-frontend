@@ -21,8 +21,10 @@ export const Primary: Story = {
         label: '訂閱電子報',
         type: 'text',
         value: '',
+        rounded: 'full',
         onChange: () => {},
         placeholder: '請輸入電子郵箱',
+        name: 'email',
     },
 }
 
@@ -34,5 +36,6 @@ export const Required: Story = {
         onChange: () => {},
         placeholder: '請輸入電子郵箱',
         required: true,
+        name: 'email',
     },
 }

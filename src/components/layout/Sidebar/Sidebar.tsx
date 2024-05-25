@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                         height={80}
                     />
                 </div>
-                <p className="text-center text-header5 font-medium tracking-[2px] text-white md:text-header4 md:leading-120">
+                <p className="text-center text-header5 font-medium tracking-wider text-white md:text-header4 md:leading-120">
                     王小明
                 </p>
             </div>

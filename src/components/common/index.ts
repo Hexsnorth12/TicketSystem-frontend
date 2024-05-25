@@ -1,8 +1,8 @@
 import Modal from './Modal/Modal'
 import InputComponent from './Input/input'
-import Tab, { TabPanel } from './Tab/tab'
+import Tab from './Tab/basicTabs'
 import Tag from './Tag/tag'
-import Button from './Button/button'
+import Button from './Button'
 import Checkbox from './Checkbox/checkbox'
 import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
@@ -22,7 +22,6 @@ export {
     InputComponent,
     Tab,
     Tag,
-    TabPanel,
     Button,
     Checkbox,
     Marquee,

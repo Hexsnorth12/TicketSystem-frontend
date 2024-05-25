@@ -35,7 +35,6 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
         }
         return ''
     }, [userInfo.birthDate])
-
     useEffect(() => {
         if (!state) return
 

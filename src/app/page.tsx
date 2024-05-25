@@ -5,7 +5,7 @@ import {
     mdiAccountMultipleOutline,
     mdiTicketConfirmation,
 } from '@mdi/js'
-import { Header } from '@components/layout'
+import { Header, NavBanner } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
 import GroupCard from '@components/common/Card/GroupCard'
@@ -18,8 +18,8 @@ import {
 } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
-import { verifySession } from '@/lib'
-import Marquee from '@components/common/Swiper/Marquee'
+import { getUserSession } from '@/lib/auth.actions'
+import Marquee from '@/components/common/Swiper/Marquee'
 
 interface HeaderTitleProps {
     title: string
@@ -28,7 +28,7 @@ interface HeaderTitleProps {
 
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     return (
-        <div className="container flex items-center px-32 py-4">
+        <div className="container flex items-center py-2 md:px-32 md:py-4 ">
             <svg width="40" height="40" viewBox="0 0 24 24">
                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#00FFFF' }} />
@@ -44,7 +44,9 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-    const { isAuth } = await verifySession()
+    const { session } = await getUserSession()
+
+    const isAuth = session?.user.accountType ? true : false
 
     const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
     const popcardImageSizeMap = generateImageSizeMap(
@@ -77,7 +79,7 @@ const HomePage = async () => {
 
     return (
         <>
-            <Header logoSrc="/assets/Movie go.png" isAuth={isAuth} />
+            <Header logoSrc="/assets/movie-go-logo.png" isAuth={isAuth} />
 
             <main className="min-h-screen bg-gray-2 pt-[88px]">
                 <Marquee />
@@ -93,6 +95,7 @@ const HomePage = async () => {
                     movies={Groupcards}
                     imageSizeMap={groupcardImageSizeMap}
                 />
+                <NavBanner type="join" />
                 <HeaderTitle
                     title="分票專區"
                     iconPath={mdiTicketConfirmation}
@@ -101,6 +104,7 @@ const HomePage = async () => {
                     movies={Sharecards}
                     imageSizeMap={sharecardImageSizeMap}
                 />
+                <NavBanner type="ticket" />
             </main>
         </>
     )

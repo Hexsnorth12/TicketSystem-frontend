@@ -7,6 +7,8 @@ export const serverCode: Server = {
     SUCCESS: '6000',
     NOT_LOGGED_IN: '6303',
     TOKEN_INVALID: '6302',
+    TOKEN_EXPIRED: '',
+    PASSWORD_NOT_MATCH: '6202',
 }
 
 export const BASE_URL = 'https://ticketsystembackend-zz2vrjpjsa-de.a.run.app/'

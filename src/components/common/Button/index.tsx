@@ -37,8 +37,8 @@ const Button: React.FC<ButtonProps> = ({
         return cn(defaultStyle, className)
     }
 
-    function onClickHandler() {
-        if (onClick) !disabled && onClick()
+    function onClickHandler(event: React.MouseEvent<HTMLElement>) {
+        if (onClick && !disabled) onClick(event)
     }
 
     const elementProps = {

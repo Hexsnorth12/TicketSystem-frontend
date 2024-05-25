@@ -1,24 +1,34 @@
-import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
-import Tab from './tab'
+import * as React from 'react'
+import Tab from './basicTabs'
+import MovieTab from './movieDetail'
 
-const meta = {
+export default {
     title: 'common/Tab',
-    component: Tab,
-
-    parameters: {
-        nextjs: {
-            appDirectory: true,
-        },
-        layout: 'centered',
+    component: { Tab, MovieTab },
+}
+const tabs = [
+    {
+        label: '電影介紹',
+        Component: <div>Hello, I am tab 1</div>,
     },
-} satisfies Meta<typeof Tab>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Primary: Story = {
-    args: {
-        children: <p>到期票卷</p>,
+    {
+        label: '評價',
+        Component: <div>Hello, I am tab 2</div>,
     },
+]
+
+export const Primary = () => {
+    return (
+        <div className="bg-inherit">
+            <Tab tabs={tabs} />
+        </div>
+    )
+}
+
+export const Movie = () => {
+    return (
+        <div className="bg-black">
+            <MovieTab tabs={tabs} />
+        </div>
+    )
 }
