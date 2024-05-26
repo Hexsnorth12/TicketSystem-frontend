@@ -16,6 +16,7 @@ import Input from './Input/input'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
+import Rating from './Rating/Rating'
 
 export {
     Modal,
@@ -36,4 +37,5 @@ export {
     Pagination,
     CommentCard,
     Breadcrumbs,
+    Rating,
 }
