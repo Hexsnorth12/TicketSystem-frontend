@@ -1,9 +1,11 @@
 import React from 'react'
 import { Sidebar, Header } from '@/components/layout'
-import { verifySession } from '@/lib'
+import { getUserSession } from '@/lib/auth.actions'
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-    const { isAuth } = await verifySession()
+    const { session } = await getUserSession()
+    const isAuth = session?.user.accountType ? true : false
+
     return (
         <>
             <Header logoSrc="/assets/Movie go.png" isAuth={isAuth} />
