@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Image from 'next/image'
-import empty from '/assets/empty.png'
-import Button from '../Button/button'
+import empty from '@images/empty.png'
+import Button from '../Button'
 
 interface EmptyDataProps {}
 

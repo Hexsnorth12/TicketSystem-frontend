@@ -45,6 +45,21 @@ export const BUTTONS = {
         LINE_ICON: '/icons/buttons/line.png',
         LINK_ICON: '/icons/buttons/link.png',
     },
+    SEARCH: {
+        DEFAULT_ICON_WIDTH: 24,
+        DEFAULT_ICON_HEIGHT: 24,
+        TYPES: {
+            SEARCH: 'search',
+            FILTER: 'filter',
+            RECOMMED: 'recommend',
+        },
+        SEARCH_ALT: 'Search icon',
+        FILTER_ALT: 'Filter icon',
+        RECOMMED_ALT: 'Recommend icon',
+        SEARCH_ICON: '/icons/buttons/search.png',
+        FILTER_ICON: '/icons/buttons/filter.png',
+        RECOMMED_ICON: '/icons/buttons/recommed.png',
+    },
 
     CLOSE: {
         DEFAULT_ICON_WIDTH: 24,
