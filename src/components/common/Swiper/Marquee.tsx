@@ -10,7 +10,7 @@ import './swiper-custom.css'
 import { Input } from '@components/common'
 import { SearchBtn } from '@/components/Buttons'
 import { Modal } from '@components/common'
-import { Search } from '@components/forms'
+import { SearchForm } from '@components/forms'
 const Marquee: React.FC = () => {
     const [search, setSearch] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -93,7 +93,7 @@ const Marquee: React.FC = () => {
                     {isModalOpen && (
                         <Modal onClose={handleModalClose}>
                             <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
-                                <Search />
+                                <SearchForm />
                             </div>
                         </Modal>
                     )}
