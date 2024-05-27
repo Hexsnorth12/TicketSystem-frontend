@@ -17,8 +17,10 @@ import MyTicket from './MyTicket/MyTicke'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
+import Rating from './Rating/Rating'
 import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
+import PaginationWrapper from './Pagination/PaginationWrapper'
 
 export {
     Modal,
@@ -40,6 +42,8 @@ export {
     Pagination,
     CommentCard,
     Breadcrumbs,
+    Rating,
     Counter,
     PrevPage,
+    PaginationWrapper,
 }

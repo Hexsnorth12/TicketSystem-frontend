@@ -57,8 +57,12 @@ export const authOptions: NextAuthOptions = {
                     ) {
                         throw new Error((error as { message: string }).message)
                     }
+                    const err = error as Response
+                    const errorData = await err.json()
 
-                    throw new Error('Invalid user')
+                    throw new Error(
+                        `status: ${errorData.status}; message: ${errorData.message}`,
+                    )
                 }
             },
         }),
