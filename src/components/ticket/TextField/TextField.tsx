@@ -15,11 +15,7 @@ const TextField: React.FC<TextFieldProps> = ({
     labelStyle,
 }) => {
     return (
-        <div
-            className={cn(
-                'mb-3 pb-3 md:mb-6 md:pb-6',
-                containerStyle,
-            )}>
+        <div className={cn('mb-3 pb-3 md:mb-6 md:pb-6', containerStyle)}>
             <p
                 className={cn(
                     'mb-2 text-small2 leading-150 text-gray-5 md:mb-3 md:text-small1',
