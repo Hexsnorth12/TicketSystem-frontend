@@ -8,7 +8,7 @@ export const pathMap: Map = {
     info: '會員資料',
     tickets: '我的電影票',
     favorite: '我的收藏',
-    myComments: '我的評論',
+    comments: '我的評論',
     sharedTicket: '線上分票',
     myoOrganize: '我的揪團',
 }

@@ -20,6 +20,7 @@ import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
 import Rating from './Rating/Rating'
 import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
+import PaginationWrapper from './Pagination/PaginationWrapper'
 
 export {
     Modal,
@@ -44,4 +45,5 @@ export {
     Rating,
     Counter,
     PrevPage,
+    PaginationWrapper,
 }

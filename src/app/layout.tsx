@@ -33,7 +33,7 @@ export default async function RootLayout({
                         logoSrc="/assets/movie-go-logo.png"
                         isAuth={isAuth}
                     />
-                    <main className="min-h-screen bg-gray-2 pt-[88px]">
+                    <main className=" bg-gray-2 pt-[88px]">
                         {children}
                         {modal}
                     </main>

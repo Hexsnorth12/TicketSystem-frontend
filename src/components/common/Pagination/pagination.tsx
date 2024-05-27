@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { usePagination } from '../../../hooks/usePagination'
@@ -30,7 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({
         })
 
     return (
-        <div className="flex items-center justify-between border-t border-gray-200 bg-inherit px-4 py-3 sm:px-6">
+        <div className="flex items-center justify-between bg-inherit px-4 py-3 sm:px-6">
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <nav
