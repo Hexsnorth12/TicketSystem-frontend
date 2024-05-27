@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import Button from '../../common/Button/button'
+import Button from '@components/common/Button'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import MovieTag from '../MovieTag/MovieTag'
@@ -30,7 +30,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
     }
 
     return (
-        <div className="relative h-[312px] w-full md:h-[600px] ">
+        <div className="relative h-full w-full ">
             {movies.map((movie, index) => {
                 return (
                     <div key={index} className="relative h-full w-full">
@@ -38,7 +38,6 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                             className="absolute -inset-4 bg-cover bg-center blur-lg"
                             style={{
                                 backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1)), url(${movie.image})`,
-                                padding: '-16px', // 设置padding为0
                             }}></div>
                         <div className="relative inset-0 flex h-full items-center justify-center bg-cover bg-center md:absolute md:inline-flex md:hidden">
                             <Image
@@ -50,7 +49,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                 className="rounded-lg transition-opacity duration-300"
                             />
                         </div>
-                        <div className="relative z-10 grid h-full grid-flow-col grid-rows-6 content-center gap-4">
+                        <div className="relative z-10  grid h-full grid-flow-col grid-rows-6 content-center gap-4 ">
                             <div className="row-span-6 hidden items-center justify-center md:inline-flex">
                                 <Image
                                     src={movie.image}
@@ -62,7 +61,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                 />
                             </div>
                             <div className="col-span-1 row-span-1 flex items-center justify-start ">
-                                <div className="flex items-center justify-center gap-x-2">
+                                <div className="flex  items-center justify-center gap-x-2">
                                     <MovieTag label="科幻類" />
                                     <Image
                                         src={star}

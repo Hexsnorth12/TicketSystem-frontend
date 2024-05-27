@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { truncateName } from '../../../utils/numberUtils'
 import Button from '../../common/Button'
@@ -10,6 +11,7 @@ import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 
 interface Movie {
+    id: number
     name: string
     image: string
     type: string
@@ -22,6 +24,16 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
+    const router = useRouter() // 获取路由对象
+    const handleMovieDetail = (id: number) => {
+        // 假设你的 Popcards 数组中每个对象都有一个唯一的 id 属性
+
+        const selectedMovie = movies.find((movie) => movie.id === id)
+        if (selectedMovie) {
+            // 跳转到指定路由，并将电影 id 作为路由参数传递
+            router.push(`/movies/${selectedMovie.id}`)
+        }
+    }
     return (
         <>
             {/* Desktop-Navbar */}
@@ -81,7 +93,10 @@ const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                         <Button
                                             type="button"
                                             title="立即購票"
-                                            className="py-1">
+                                            className="py-1"
+                                            onClick={() =>
+                                                handleMovieDetail(movie.id)
+                                            }>
                                             立即購票
                                         </Button>
                                     </div>
@@ -95,7 +110,7 @@ const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
             <div className="block overflow-x-scroll whitespace-nowrap md:hidden">
                 {movies.map((movie, index) => (
                     <div key={index} className="mx-1 inline-block w-32">
-                        <Link href="">
+                        <Link href={`/movies/${movie.id}`}>
                             <div className="relative">
                                 <Image
                                     src={movie.image}
@@ -130,7 +145,8 @@ const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                 <Button
                                     type="button"
                                     title="立即購票"
-                                    className="hidden py-1">
+                                    className="hidden py-1"
+                                    onClick={() => handleMovieDetail(movie.id)}>
                                     立即購票
                                 </Button>
                             </div>
