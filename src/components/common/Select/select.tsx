@@ -31,7 +31,7 @@ const SelectInput: React.FC<SelectProps> = ({
             value={selectedValue}
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
-                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-gray-1 px-[15px] text-[13px] leading-none shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
+                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-gray-1 px-[15px] text-[13px] leading-none text-white shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
                 aria-label="city"
                 disabled={options.length === 0}>
                 <Select.Value placeholder={placeholder} />
