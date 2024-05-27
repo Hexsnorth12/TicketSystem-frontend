@@ -10,7 +10,7 @@ import google_logo from '@icon/google_logo.svg'
 import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
 
-export default function SingIn() {
+export default function SignIn() {
     const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')

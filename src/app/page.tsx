@@ -5,7 +5,7 @@ import {
     mdiAccountMultipleOutline,
     mdiTicketConfirmation,
 } from '@mdi/js'
-import { Header, NavBanner } from '@components/layout'
+import { NavBanner } from '@components/layout'
 import Card from '@components/common/Card/Card'
 import RecCard from '@components/common/Card/RecCard'
 import GroupCard from '@components/common/Card/GroupCard'
@@ -18,7 +18,6 @@ import {
 } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
-import { getUserSession } from '@/lib/auth.actions'
 import Marquee from '@/components/common/Swiper/Marquee'
 
 interface HeaderTitleProps {
@@ -44,9 +43,6 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-    const { session } = await getUserSession()
-
-    const isAuth = session?.user.accountType ? true : false
 
     const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
     const popcardImageSizeMap = generateImageSizeMap(
@@ -79,33 +75,26 @@ const HomePage = async () => {
 
     return (
         <>
-            <Header logoSrc="/assets/movie-go-logo.png" isAuth={isAuth} />
-
-            <main className="min-h-screen bg-gray-2 pt-[88px]">
-                <Marquee />
-                <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-                <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
-                <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-                <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
-                <HeaderTitle
-                    title="一起揪團"
-                    iconPath={mdiAccountMultipleOutline}
-                />
-                <GroupCard
-                    movies={Groupcards}
-                    imageSizeMap={groupcardImageSizeMap}
-                />
-                <NavBanner type="join" />
-                <HeaderTitle
-                    title="分票專區"
-                    iconPath={mdiTicketConfirmation}
-                />
-                <ShareCard
-                    movies={Sharecards}
-                    imageSizeMap={sharecardImageSizeMap}
-                />
-                <NavBanner type="ticket" />
-            </main>
+            <Marquee />
+            <HeaderTitle title="熱門電影" iconPath={mdiFire} />
+            <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
+            <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
+            <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
+            <HeaderTitle
+                title="一起揪團"
+                iconPath={mdiAccountMultipleOutline}
+            />
+            <GroupCard
+                movies={Groupcards}
+                imageSizeMap={groupcardImageSizeMap}
+            />
+            <NavBanner type="join" />
+            <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
+            <ShareCard
+                movies={Sharecards}
+                imageSizeMap={sharecardImageSizeMap}
+            />
+            <NavBanner type="ticket" />
         </>
     )
 }

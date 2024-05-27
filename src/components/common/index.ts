@@ -1,6 +1,6 @@
 import Modal from './Modal/Modal'
 import InputComponent from './Input/input'
-import Tab from './Tab/basicTabs'
+import BasicTabs from './Tab/basicTabs'
 import Tag from './Tag/tag'
 import Button from './Button'
 import Checkbox from './Checkbox/checkbox'
@@ -16,11 +16,13 @@ import Input from './Input/input'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
+import Counter from './Counter/Counter'
+import PrevPage from './PrevPage/PrevPage'
 
 export {
     Modal,
     InputComponent,
-    Tab,
+    BasicTabs,
     Tag,
     Button,
     Checkbox,
@@ -36,4 +38,6 @@ export {
     Pagination,
     CommentCard,
     Breadcrumbs,
+    Counter,
+    PrevPage,
 }
