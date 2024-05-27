@@ -13,6 +13,7 @@ import MemberMenu from './MemberMenu/MemberMenu'
 import InputRegister from './InputRegister/InputRegister'
 import SelectInput from './Select/select'
 import Input from './Input/input'
+import MyTicket from './MyTicket/MyTicke'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
@@ -35,6 +36,7 @@ export {
     Input,
     MemberMenu,
     InputRegister,
+    MyTicket,
     Pagination,
     CommentCard,
     Breadcrumbs,

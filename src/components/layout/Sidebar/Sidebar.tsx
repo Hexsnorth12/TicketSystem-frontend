@@ -7,7 +7,7 @@ interface SidebarProps {}
 
 const Sidebar: React.FC<SidebarProps> = () => {
     return (
-        <div className="w-full md:w-4/12 md:px-6 md:py-8">
+        <div className="w-full md:px-6 md:py-8">
             <div className="mb-4 md:mb-6">
                 <div className="mx-auto mb-4 h-[83px] w-[80px] rounded-full bg-gradient-to-b from-primary to-gray-6 p-[3px] md:h-[123px] md:w-[120px]">
                     <Image
