@@ -96,7 +96,7 @@ const BasicTabs: React.FC<BasicTabsProps> = ({ tabs }) => {
         }),
     )
     return (
-        <Box className="block w-full">
+        <Box className=" w-full">
             <StyledTabs
                 value={value}
                 onChange={handleChange}
