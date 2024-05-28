@@ -41,21 +41,126 @@ const config: Config = {
             },
 
             fontSize: {
-                header1: '64px',
-                header2: '48px',
-                header3: '32px',
-                header4: '28px',
-                header5: '20px',
-                btn1: '18px',
-                btn2: '16px',
-                body: '18px',
-                small1: '16px',
-                small2: '14px',
-                number1: '72px',
-                number2: '54px',
-                number3: '40px',
-                number4: '20px',
-                number5: '16px',
+                header1: [
+                    '64px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '4px',
+                        fontWeight: '700',
+                    },
+                ],
+                header2: [
+                    '48px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '4px',
+                        fontWeight: '700',
+                    },
+                ],
+                header3: [
+                    '32px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '3px',
+                        fontWeight: '500',
+                    },
+                ],
+                header4: [
+                    '28px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '2px',
+                        fontWeight: '700',
+                    },
+                ],
+                header5: [
+                    '20px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '2px',
+                        fontWeight: '500',
+                    },
+                ],
+                btn1: [
+                    '18px',
+                    {
+                        lineHeight: '1.5',
+                        letterSpacing: '2px',
+                        fontWeight: '500',
+                    },
+                ],
+                btn2: [
+                    '16px',
+                    {
+                        lineHeight: '1.5',
+                        letterSpacing: '2px',
+                        fontWeight: '500',
+                    },
+                ],
+                body: [
+                    '18px',
+                    {
+                        lineHeight: '1.5',
+                        letterSpacing: '2px',
+                        fontWeight: '400',
+                    },
+                ],
+                small1: [
+                    '16px',
+                    {
+                        lineHeight: '1.5',
+                        letterSpacing: '1px',
+                        fontWeight: '400',
+                    },
+                ],
+                small2: [
+                    '14px',
+                    {
+                        lineHeight: '1.5',
+                        letterSpacing: '1px',
+                        fontWeight: '400',
+                    },
+                ],
+                number1: [
+                    '72px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '0px',
+                        fontWeight: '700',
+                    },
+                ],
+                number2: [
+                    '54px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '0px',
+                        fontWeight: '700',
+                    },
+                ],
+                number3: [
+                    '40px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '0px',
+                        fontWeight: '700',
+                    },
+                ],
+                number4: [
+                    '20px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '0px',
+                        fontWeight: '700',
+                    },
+                ],
+                number5: [
+                    '16px',
+                    {
+                        lineHeight: '1.2',
+                        letterSpacing: '0px',
+                        fontWeight: '700',
+                    },
+                ],
             },
             fontWeight: {
                 bold: '700',

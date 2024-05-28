@@ -43,31 +43,31 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-    const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
-    const popcardImageSizeMap = generateImageSizeMap(
-        popcardImageSources,
+    const popCardImageSources = Popcards.map((PopCards) => PopCards.image)
+    const popCardImageSizeMap = generateImageSizeMap(
+        popCardImageSources,
         240,
         320,
     )
-    const reccardImageSources = Reccards.map((Reccards) => Reccards.image)
-    const reccardImageSizeMap = generateImageSizeMap(
-        reccardImageSources,
+    const recCardImageSources = Reccards.map((RecCards) => RecCards.image)
+    const recCardImageSizeMap = generateImageSizeMap(
+        recCardImageSources,
         240,
         320,
     )
-    const groupcardImageSources = Groupcards.map(
-        (Groupcards) => Groupcards.image,
+    const groupCardImageSources = Groupcards.map(
+        (GroupCards) => GroupCards.image,
     )
-    const groupcardImageSizeMap = generateImageSizeMap(
-        groupcardImageSources,
+    const groupCardImageSizeMap = generateImageSizeMap(
+        groupCardImageSources,
         288,
         173,
     )
-    const sharecardImageSources = Sharecards.map(
-        (Sharecards) => Sharecards.image,
+    const shareCardImageSources = Sharecards.map(
+        (ShareCards) => ShareCards.image,
     )
-    const sharecardImageSizeMap = generateImageSizeMap(
-        sharecardImageSources,
+    const shareCardImageSizeMap = generateImageSizeMap(
+        shareCardImageSources,
         160,
         160,
     )
@@ -76,22 +76,22 @@ const HomePage = async () => {
         <>
             <Marquee />
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
+            <Card movies={Popcards} imageSizeMap={popCardImageSizeMap} />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
+            <RecCard movies={Reccards} imageSizeMap={recCardImageSizeMap} />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}
             />
             <GroupCard
                 movies={Groupcards}
-                imageSizeMap={groupcardImageSizeMap}
+                imageSizeMap={groupCardImageSizeMap}
             />
             <NavBanner type="join" />
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
             <ShareCard
                 movies={Sharecards}
-                imageSizeMap={sharecardImageSizeMap}
+                imageSizeMap={shareCardImageSizeMap}
             />
             <NavBanner type="ticket" />
         </>

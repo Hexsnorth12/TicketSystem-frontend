@@ -1,7 +1,9 @@
+'use client'
+
 import React from 'react'
 import { IconType } from 'react-icons'
 interface TagProps {
-    icon: IconType
+    icon: IconType | string
     tagValue: string
     iconColor: string
 }
