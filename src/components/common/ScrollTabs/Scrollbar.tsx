@@ -109,9 +109,11 @@ const Scrollbar: React.FC<ScrollbarProps> = () => {
                     />
                 </li>
                 <li className="inline-block text-white  hover:text-primary md:flex md:justify-between md:border-b md:border-gray-3 md:py-4">
-                    <p className="text-nowrap text-small2 md:text-btn2">
+                    <Link
+                        href={'/user/comments'}
+                        className="text-nowrap text-small2 md:text-btn2">
                         我的評論
-                    </p>
+                    </Link>
                     <Image
                         src={arrow}
                         width={24}

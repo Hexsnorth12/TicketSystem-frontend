@@ -6,7 +6,7 @@ import {
     truncateName,
     truncateContent,
     truncateContentMobile,
-} from '../../../utils/numberUtils'
+} from '@/utils/numberUtils'
 import Tag from '@components/common/Tag/tag'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { Swiper, SwiperSlide } from 'swiper/react'
