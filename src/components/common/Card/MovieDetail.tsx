@@ -30,15 +30,15 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
     }
 
     return (
-        <div className="relative  w-full  ">
+        <div className=" h-full w-full">
             {movies.map((movie, index) => {
                 return (
                     <div
                         key={index}
-                        className="relative h-[312px] md:h-[600px] ">
+                        className="relative h-[312px]  md:h-[600px]">
                         <div className="relative h-full w-full">
                             <div
-                                className="absolute -inset-4 bg-cover bg-center blur-lg"
+                                className="absolute inset-0 bg-cover bg-center blur-lg"
                                 style={{
                                     backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1)), url(${movie.image})`,
                                 }}></div>
@@ -52,7 +52,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                     className="rounded-lg transition-opacity duration-300"
                                 />
                             </div>
-                            <div className="relative z-10  grid h-full grid-flow-col grid-rows-6 content-center gap-4 ">
+                            <div className="relative z-10  grid h-full grid-flow-col grid-rows-6 content-center gap-4 px-4 md:px-0">
                                 <div className="row-span-6 hidden items-center justify-center md:inline-flex">
                                     <Image
                                         src={movie.image}
@@ -79,12 +79,12 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 row-span-1 flex items-center justify-start border-b-[1px] border-white">
+                                <div className="col-span-2 row-span-1 flex items-center justify-start border-b-[1px] border-white md:col-span-1">
                                     <div className=" text-headline5 text-white md:text-header2 md:font-bold">
                                         {movie.name}
                                     </div>
                                 </div>
-                                <div className="col-span-2 row-span-1 flex items-center justify-start">
+                                <div className="col-span-2 row-span-1 flex items-center justify-start md:col-span-1">
                                     <div className="flex">
                                         <div className={bellota.className}>
                                             <div className="flex items-center justify-center gap-x-2 text-center">
@@ -126,7 +126,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                         </Button>
                                     </div>
                                 </div>
-                                <div className="col-span-2 row-span-1 mt-8">
+                                <div className="col-span-2 row-span-1 mt-8 md:col-span-1">
                                     <div className="mt-4 flex flex-col items-center gap-y-2 md:flex-row md:justify-start md:gap-x-2">
                                         <div className="w-full md:basis-1/5">
                                             <Counter

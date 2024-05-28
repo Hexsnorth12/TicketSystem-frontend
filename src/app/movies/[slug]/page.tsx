@@ -48,7 +48,7 @@ const DetailsPage = ({ params }: { params: { slug: string } }) => {
         },
     ]
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className=" flex w-auto flex-col items-center justify-center">
             <div className="mb-96 h-80 w-full md:mb-0 md:h-full">
                 <MovieDetailCard movies={data} />
             </div>
