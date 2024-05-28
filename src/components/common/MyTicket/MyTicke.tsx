@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import location from '@icon/location.svg'
 import fakeImage from '@images/groupcard1.png'
-import Button from '../Button/button'
+import { Button } from '@/components/common'
 
 interface MyTicketProps {}
 

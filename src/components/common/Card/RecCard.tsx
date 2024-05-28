@@ -1,13 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { FaMapMarkerAlt } from 'react-icons/fa'
+
+import { TypeTag } from '@/components/Buttons'
 import Tag from '@components/common/Tag/tag'
 import {
     truncateName,
     truncateContent,
     truncateContentMobile,
 } from '../../../utils/numberUtils'
-import { FaMapMarkerAlt } from 'react-icons/fa'
 interface Movie {
     name: string
     image: string
@@ -52,7 +54,7 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                     {truncateContent(movie.content)}
                                 </div>
                                 <div className="flex text-white">
-                                    <div>{movie.ticket}</div>
+                                    <TypeTag tagName={movie.ticket} />
                                     <div className=" px-2">
                                         <Tag
                                             icon={FaMapMarkerAlt}

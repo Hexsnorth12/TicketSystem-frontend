@@ -94,3 +94,7 @@ export type ArrowButton = {
     disabled?: boolean
     iconStyle?: string
 }
+
+export type TypeTag = {
+    tagName: string
+}

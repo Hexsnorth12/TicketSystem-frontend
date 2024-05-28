@@ -1,10 +1,11 @@
 'use client' // This is a client component 👈🏽
+
 import React, { useState } from 'react'
 import { useSignUpMutation } from '@/services/modules/auth'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { InputComponent, Checkbox } from '../../common'
-import Button from '../../common/Button/button'
+import { Button } from '@/components/common'
 
 export default function SignUp() {
     const [signUp] = useSignUpMutation()
@@ -51,15 +52,12 @@ export default function SignUp() {
     }
     return (
         <>
-            <div className="mx-auto min-w-96  text-center">
-                <h2 className="text-number5 font-bold tracking-tight text-white sm:text-header4 dark:text-gray-300">
+            <div className="text-center">
+                <h2 className="text-header5 font-bold tracking-wide text-white md:text-header4">
                     建立新帳號
                 </h2>
             </div>
-            <form
-                action="#"
-                method="POST"
-                className="mx-auto mt-6 min-w-96  sm:mt-6">
+            <form action="#" method="POST" className="mx-auto mt-6">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                         <div>
@@ -108,12 +106,12 @@ export default function SignUp() {
                         <div className="flex items-center">
                             <label
                                 htmlFor="message"
-                                className="block text-sm font-semibold leading-6 text-primary dark:text-gray-300">
+                                className="block text-small2 font-semibold leading-6 text-primary md:text-small1">
                                 已經有帳號了？
                             </label>
                             <Link
                                 href="/login"
-                                className="block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="focus-visible:outline-indigo-60 block rounded-md px-3.5 text-center text-small2 font-semibold text-primary underline shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:text-small1"
                                 scroll={false}>
                                 登入
                             </Link>
@@ -122,10 +120,10 @@ export default function SignUp() {
                 </div>
                 <div className="mt-10">
                     <Button
-                        type="button"
+                        type={'button'}
                         title="signUp"
-                        className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={handleSubmit}>
+                        onClick={handleSubmit}
+                        className="w-full rounded-md py-3 text-btn2 font-semibold text-white md:text-btn1">
                         註冊
                     </Button>
                 </div>

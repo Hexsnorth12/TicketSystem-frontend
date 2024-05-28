@@ -25,9 +25,9 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
     return (
         <Dialog.Root open onOpenChange={handleOnOpenChange}>
             <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 z-50 bg-black/70" />
+                <Dialog.Overlay className="fixed inset-0 z-50 overflow-auto bg-black/70" />
 
-                <Dialog.DialogContent className="fixed left-1/2 top-1/2 z-50 mt-6 -translate-x-1/2 -translate-y-1/2  bg-white">
+                <Dialog.DialogContent className="fixed left-1/2 top-1/2 z-50 mt-6 -translate-x-1/2 -translate-y-1/2  overflow-y-scroll bg-white scrollbar">
                     {children}
                 </Dialog.DialogContent>
             </Dialog.Portal>

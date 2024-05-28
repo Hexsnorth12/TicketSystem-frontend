@@ -3,20 +3,23 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { useLazyLogoutQuery } from '@/services/apiSlice'
-import { refreshAuth } from '@/lib'
+import { signOut } from 'next-auth/react'
 
 const MemberMenu = () => {
     const [isExpand, setIsExpand] = useState(false)
-    const [logout] = useLazyLogoutQuery()
+    // const [logout] = useLazyLogoutQuery()
 
     const onToggleMenu = () => {
         setIsExpand((prev) => !prev)
     }
     const onLogout = async () => {
-        await logout({})
+        // await logout({})
         // await dispatch(userActions.login({ account: '', email: '', token: '' }))
-        refreshAuth()
+        // refreshAuth()
+        signOut({
+            redirect: true,
+            callbackUrl: `${window.location.origin}/login`,
+        })
     }
     return (
         <div className="relative">
@@ -43,8 +46,13 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white">
-                        <Link href="/search" scroll={false}>
-                            搜尋頁
+                        <Link href="/user/tickets" scroll={false}>
+                            我的票券
+                        </Link>
+                    </li>
+                    <li className="border-b-2 border-gray-4 py-3 text-white">
+                        <Link href="/user/comments" scroll={false}>
+                            我的評論
                         </Link>
                     </li>
                     <li

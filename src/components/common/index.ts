@@ -1,8 +1,8 @@
 import Modal from './Modal/Modal'
 import InputComponent from './Input/input'
-import Tab, { TabPanel } from './Tab/tab'
+import BasicTabs from './Tab/basicTabs'
 import Tag from './Tag/tag'
-import Button from './Button/button'
+import Button from './Button'
 import Checkbox from './Checkbox/checkbox'
 import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
@@ -16,13 +16,17 @@ import Input from './Input/input'
 import MyTicket from './MyTicket/MyTicke'
 import Pagination from './Pagination/pagination'
 import CommentCard from './CommentCard/CommentCard'
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
+import Rating from './Rating/Rating'
+import Counter from './Counter/Counter'
+import PrevPage from './PrevPage/PrevPage'
+import PaginationWrapper from './Pagination/PaginationWrapper'
 
 export {
     Modal,
     InputComponent,
-    Tab,
+    BasicTabs,
     Tag,
-    TabPanel,
     Button,
     Checkbox,
     Marquee,
@@ -37,4 +41,9 @@ export {
     MyTicket,
     Pagination,
     CommentCard,
+    Breadcrumbs,
+    Rating,
+    Counter,
+    PrevPage,
+    PaginationWrapper,
 }

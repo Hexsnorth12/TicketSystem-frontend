@@ -1,22 +1,20 @@
 import React from 'react'
 import { UserInfoForm } from '@/components/forms'
-import { cookies } from 'next/headers'
-import { serverFetch } from '@/utils'
 import type { UserInfo } from '@/types'
+import fetchClient from '@/lib/fetchClient'
+import { getUserSession } from '@/lib/auth.actions'
+import { BASE_URL } from '@/definitions'
 
 const Page = async () => {
-    //await verifySession()
-    const token = cookies().get('token')?.value || ''
-
-    const data: UserInfo = await serverFetch('api/v1/user', token, {
+    const { session } = await getUserSession()
+    const response = await fetchClient({
         method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            Pragma: 'no-cache',
-            Expires: '0',
-        },
-        nextConfig: { tags: ['info'] },
+        url: `${BASE_URL}api/v1/user`,
+        token: session?.user?.token,
+        tags: ['info'],
     })
+
+    const { data } = (await response.json()) as { data: UserInfo }
 
     return (
         <div className="border-gray-3 py-6 md:border md:px-[60px] md:py-[60px]">
