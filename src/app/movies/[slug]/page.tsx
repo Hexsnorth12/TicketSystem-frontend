@@ -4,30 +4,31 @@ import MovieDetailTab from '@components/common/Tab/movieDetail'
 import { Popcards } from '@/definitions/movieData'
 import { useEffect, useState } from 'react'
 import CommentGroup from '@components/layout/CommentGroup/CommentGroup'
-
 import * as React from 'react'
-import Box from '@mui/material/Box'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
 import MovieDescriptionCard from '@/components/common/Card/MovieDescription'
 
-async function Page(slug: string) {
+// 定義 Movie 接口
+interface Movie {
+    id: number
+    name: string
+    image: string
+    type: string
+    rank: number
+    price: number
+}
+
+async function Page(slug: string): Promise<Movie | null> {
     const id = parseInt(slug, 10)
     const movie = Popcards.find((movie) => movie.id === id)
-    return movie || {}
+    return movie || null
 }
 const DetailsPage = ({ params }: { params: { slug: string } }) => {
-    const [value, setValue] = React.useState(0)
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue)
-    }
-    const [data, setData] = useState<any[]>([])
+    const [data, setData] = useState<Movie[]>([])
 
     useEffect(() => {
         async function fetchData() {
             const movieData = await Page(params.slug)
-            setData(movieData ? [movieData] : [])
+            setData(movieData ? [movieData as Movie] : [])
         }
 
         fetchData()

@@ -33,8 +33,10 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
         <div className="relative  w-full  ">
             {movies.map((movie, index) => {
                 return (
-                    <div className="relative h-[312px] md:h-[600px] ">
-                        <div key={index} className="relative h-full w-full">
+                    <div
+                        key={index}
+                        className="relative h-[312px] md:h-[600px] ">
+                        <div className="relative h-full w-full">
                             <div
                                 className="absolute -inset-4 bg-cover bg-center blur-lg"
                                 style={{

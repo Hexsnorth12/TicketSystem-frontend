@@ -20,7 +20,9 @@ const MovieDescriptionCard: React.FC<CardProps> = ({ movies }) => {
         <div className="flex items-center justify-center">
             {movies.map((movie, index) => {
                 return (
-                    <div className="flex flex-col gap-y-6 md:gap-y-10">
+                    <div
+                        className="flex flex-col gap-y-6 md:gap-y-10 "
+                        key={index}>
                         <div
                             key={index}
                             className="flex flex-row flex-wrap  gap-2 ">
