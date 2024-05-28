@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import Button from '../../common/Button/button'
+import { Button } from '@/components/common'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import MovieTag from '../MovieTag/MovieTag'

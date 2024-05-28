@@ -1,9 +1,10 @@
 'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { truncateName } from '../../../utils/numberUtils'
-import Button from '../../common/Button'
+import { Button } from '@/components/common'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'

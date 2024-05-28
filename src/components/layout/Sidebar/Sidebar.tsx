@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import avatar from '@images/avatar.jpg'
-import Scrollbar from '../../common/ScrollTabs/Scrollbar'
+import ScrollTabs from '@/components/common/ScrollTabs/ScrollTabs'
 
 interface SidebarProps {}
 
@@ -23,7 +23,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 </p>
             </div>
             <div className="-mx-3 border-b border-gray-3 py-3 md:mx-0 md:rounded-lg md:border md:px-4">
-                <Scrollbar />
+                <ScrollTabs />
             </div>
         </div>
     )
