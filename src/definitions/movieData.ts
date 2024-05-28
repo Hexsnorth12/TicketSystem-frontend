@@ -1,33 +1,43 @@
 export const Popcards = [
     {
+        id: 1,
         name: '熱門電影名稱1',
         type: '劇情片',
         rank: 1,
         image: '/assets/popcard1.jpg',
+        price: 800,
     },
     {
+        id: 2,
         name: '熱門電影名稱2',
         type: '喜劇片',
         rank: 2,
         image: '/assets/popcard2.jpg',
+        price: 700,
     },
     {
+        id: 3,
         name: '熱門電影名稱3',
         type: '動作片',
         rank: 3,
         image: '/assets/popcard3.jpg',
+        price: 600,
     },
     {
+        id: 4,
         name: '熱門電影名稱4',
         type: '科幻片',
         rank: 4,
         image: '/assets/popcard4.jpg',
+        price: 800,
     },
     {
+        id: 5,
         name: '熱門電影名稱5',
         type: '愛情片',
         rank: 5,
         image: '/assets/popcard5.jpg',
+        price: 500,
     },
 ]
 

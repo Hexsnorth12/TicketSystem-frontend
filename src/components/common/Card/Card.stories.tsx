@@ -3,6 +3,8 @@ import Card from './Card'
 import GroupCard from './GroupCard'
 import RecCard from './RecCard'
 import MovieDetailCard from './MovieDetail'
+import MovieDescriptionCard from './MovieDescription'
+
 import { Popcards, Reccards, Groupcards } from '@/definitions/movieData'
 import { MovieDetailCards } from '@/definitions/movieDetailData'
 import { generateImageSizeMap } from '@/utils'
@@ -35,4 +37,7 @@ export const Rec = () => {
 }
 export const MovieDetail = () => {
     return <MovieDetailCard movies={MovieDetailCards} />
+}
+export const MovieDescription = () => {
+    return <MovieDescriptionCard movies={MovieDetailCards} />
 }
