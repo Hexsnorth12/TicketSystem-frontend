@@ -19,7 +19,7 @@ export const Primary = () => {
 export const Group = () => {
     return (
         <section>
-            <div className="scrollbar grid grid-cols-1 gap-4 overflow-y-scroll md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 overflow-y-scroll scrollbar md:grid-cols-2">
                 <div className="">
                     <MyComment
                         productName="比悲傷更悲傷的故事"

@@ -46,8 +46,13 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white">
-                        <Link href="/search" scroll={false}>
-                            搜尋頁
+                        <Link href="/user/tickets" scroll={false}>
+                            我的票券
+                        </Link>
+                    </li>
+                    <li className="border-b-2 border-gray-4 py-3 text-white">
+                        <Link href="/user/comments" scroll={false}>
+                            我的評論
                         </Link>
                     </li>
                     <li
