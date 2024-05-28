@@ -52,7 +52,7 @@ const DetailsPage = ({ params }: { params: { slug: string } }) => {
             <div className="mb-96 h-80 w-full md:mb-0 md:h-full">
                 <MovieDetailCard movies={data} />
             </div>
-            <div className="flex w-full justify-center md:mt-0">
+            <div className="flex w-full justify-center md:mt-0 md:w-10/12">
                 <MovieDetailTab tabs={tabs} />
             </div>
         </div>
