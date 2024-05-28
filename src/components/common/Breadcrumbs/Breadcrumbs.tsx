@@ -25,9 +25,12 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = () => {
             <li className="text-white" key={path + i}>
                 <Link
                     href={`/user/${path}`}
-                    className={clsx('text-small2 leading-150 tracking-wide', {
-                        'text-gray-5': i === paths.length - 1,
-                    })}>
+                    className={clsx(
+                        'text-small2 leading-150 tracking-wide hover:text-primary',
+                        {
+                            'text-gray-5': i === paths.length - 1,
+                        },
+                    )}>
                     {path}
                 </Link>
                 {i !== paths.length - 1 ? (

@@ -43,7 +43,6 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-
     const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
     const popcardImageSizeMap = generateImageSizeMap(
         popcardImageSources,

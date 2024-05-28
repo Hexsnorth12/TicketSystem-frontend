@@ -68,7 +68,7 @@ const Marquee: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <div className=" pointer-events-auto absolute top-1 order-first mt-0 md:relative md:order-last md:mt-6">
+                    <div className=" pointer-events-auto absolute top-1 order-first -mt-2 md:relative md:order-last md:mt-6">
                         <div>
                             <div className="relative shadow-sm">
                                 <Input
@@ -77,7 +77,7 @@ const Marquee: React.FC = () => {
                                     value={search}
                                     onChange={handleSearchChange}
                                     placeholder="輸入關鍵字"
-                                    className="h-12 w-screen md:h-16 md:w-[526px] md:rounded-full md:py-4"
+                                    className="h-12 w-screen py-5 md:h-16 md:w-[526px] md:rounded-full"
                                 />
                                 <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
                                     <SearchBtn
