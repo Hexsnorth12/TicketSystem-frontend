@@ -26,13 +26,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     const router = useRouter() // 获取路由对象
     const handleMovieDetail = (id: number) => {
-        // 假设你的 Popcards 数组中每个对象都有一个唯一的 id 属性
-
-        const selectedMovie = movies.find((movie) => movie.id === id)
-        if (selectedMovie) {
-            // 跳转到指定路由，并将电影 id 作为路由参数传递
-            router.push(`/movies/${selectedMovie.id}`)
-        }
+        router.push(`/movies/${id}`)
     }
     return (
         <>
