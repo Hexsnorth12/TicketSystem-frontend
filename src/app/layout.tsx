@@ -28,12 +28,13 @@ export default async function RootLayout({
     return (
         <StoreProviders>
             <html lang="en">
-                <body className={`${noto_Sans_TC.className} bg-gray-2`}>
+                <body
+                    className={`${noto_Sans_TC.className} flex flex-col bg-gray-2`}>
                     <Header
                         logoSrc="/assets/movie-go-logo.png"
                         isAuth={isAuth}
                     />
-                    <main className=" bg-gray-2 pt-[88px]">
+                    <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
                         {children}
                         {modal}
                     </main>
