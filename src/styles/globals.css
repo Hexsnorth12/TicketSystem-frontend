@@ -39,4 +39,8 @@ body {
     .text-balance {
         text-wrap: balance;
     }
+    .h-2-3-bottom {
+        height: 66.67%;
+        margin-top: auto;
+    }
 }
