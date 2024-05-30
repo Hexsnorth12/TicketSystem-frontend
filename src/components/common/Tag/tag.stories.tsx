@@ -21,5 +21,6 @@ export const Primary: Story = {
         icon: FaMapMarkerAlt,
         tagValue: '台北',
         iconColor: 'gray-4',
+        position: 'center'
     },
 }
