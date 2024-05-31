@@ -13,7 +13,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                     <Image
                         src={avatar}
                         alt="avatar"
-                        className="h-full w-full rounded-full"
+                        className="h-full w-full rounded-full object-cover"
                         width={80}
                         height={80}
                     />
