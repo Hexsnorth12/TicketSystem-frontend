@@ -3,7 +3,24 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
+import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
+
+//TODO: 寫好購物車status後需刪除此資料
+const dummyCartItems = [
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+]
 
 interface HeaderProps {
     logoSrc: string
@@ -12,6 +29,12 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [showCartModal, setShowCartModal] = useState(false)
+
+    function showCartModalHandler(show = false) {
+        setShowCartModal(show)
+    }
+
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
             <div className="container relative flex items-center justify-between px-4">
@@ -58,9 +81,19 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
                     <Link href="/gatherings">
                         <p className="text-white">一起揪團</p>
                     </Link>
-                    <Link href="/cart">
-                        <Cartbtn amount={0} />
-                    </Link>
+                    <div
+                        className="relative"
+                        onMouseEnter={() => showCartModalHandler(true)}
+                        onMouseLeave={() => showCartModalHandler()}>
+                        <Link href="/cart">
+                            <Cartbtn amount={0} />
+                        </Link>
+                        <CartModal
+                            visible={showCartModal}
+                            items={dummyCartItems}
+                            leaveModalHandler={() => showCartModalHandler()}
+                        />
+                    </div>
                     {!isAuth ? (
                         <Link href="/login" scroll={false}>
                             <div
