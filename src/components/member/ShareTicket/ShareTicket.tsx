@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import fakeImage from '@images/groupcard1.png'
 import { Button, Tag } from '@/components/common'
 import { FaMapMarkerAlt } from 'react-icons/fa'
@@ -7,8 +10,9 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 interface pageProps {}
 
 const Page: React.FC<pageProps> = () => {
+    const router = useRouter()
     return (
-        <div className="bg-gray-3 p-4 md:flex md:items-start md:justify-between md:px-10 md:py-8">
+        <div className="flex-wrap rounded-lg bg-gray-3 p-4 md:flex md:items-end md:justify-between md:gap-4 md:px-10 md:py-8">
             <div>
                 <div className="mb-4 flex">
                     <Image
@@ -29,7 +33,7 @@ const Page: React.FC<pageProps> = () => {
                         <p className="text-number5">2022-01-01</p>
                     </div>
                 </div>
-                <div className="mb-4 flex space-x-2">
+                <div className="mb-4 flex space-x-2 md:mb-0">
                     <div className="flex text-start">
                         <div className="space-x-1 bg-gray-4 px-3 py-1">
                             <span className="text-number5 leading-120 text-primary">
@@ -55,18 +59,22 @@ const Page: React.FC<pageProps> = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-6 flex md:m-0">
+            <div className="mt-6 flex flex-col space-y-3 md:m-0 md:flex-row md:space-y-0">
                 <Button
                     type={'button'}
                     title={'退票'}
-                    onClick={() => {}}
+                    onClick={() => {
+                        router.push('sharedTicket/publish/1')
+                    }}
                     className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
                     <span className="font-medium tracking-wider">上架分票</span>
                 </Button>
                 <Button
                     type={'button'}
                     title={'退票'}
-                    onClick={() => {}}
+                    onClick={() => {
+                        router.push('/createCode/1')
+                    }}
                     className="mr-3 w-full border-white py-2 text-btn2 font-medium text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1 ">
                     <span className="font-medium tracking-wider">
                         取得分票碼
