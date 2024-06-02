@@ -4,10 +4,15 @@ import React from 'react'
 import Image from 'next/image'
 import { Counter, Button } from '@/components/common'
 import fackImg from '@images/groupcard1.png'
+import { useRouter } from 'next/navigation'
 
 interface PublishFormProps {}
 
 const PublishForm: React.FC<PublishFormProps> = () => {
+    const router = useRouter()
+    const handleClose = () => {
+        router.back()
+    }
     return (
         <div>
             <h2 className="my-2 text-header5 text-white md:my-3">
@@ -58,7 +63,7 @@ const PublishForm: React.FC<PublishFormProps> = () => {
             <div className="flex justify-center">
                 <Button
                     type="button"
-                    onClick={() => {}}
+                    onClick={handleClose}
                     className="mr-4"
                     title="cancel">
                     <span>取消</span>

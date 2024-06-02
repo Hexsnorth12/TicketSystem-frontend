@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Modal, Button } from '@components/common'
 import close_gray from '@icon/close_gray.svg'
+import { useRouter } from 'next/navigation'
 
 interface ModalContentProps {
     children: React.ReactNode
@@ -18,10 +19,17 @@ const ModalContent: React.FC<ModalContentProps> = ({
     onConfirm,
     hasCancel = false,
 }) => {
+    const router = useRouter()
+
+    const handleClose = () => {
+        router.back()
+    }
     return (
         <Modal>
-            <div className="container relative overflow-y-scroll rounded-lg border bg-gray-2 p-6 scrollbar-hidden md:py-10">
-                <div className="absolute right-1 top-1">
+            <div className="container relative overflow-y-scroll rounded-lg bg-gray-2 px-3 py-6 scrollbar-hidden md:p-10">
+                <div
+                    className="absolute right-[10px] top-[10px] cursor-pointer"
+                    onClick={handleClose}>
                     <Image
                         src={close_gray}
                         alt="close"
@@ -29,21 +37,22 @@ const ModalContent: React.FC<ModalContentProps> = ({
                         width={24}
                     />
                 </div>
-                <div className="mx-auto border align-middle">
+                <div className="mx-auto mb-[100px] md:mb-[200px]">
                     {tittle && (
-                        <h3 className="align-middle text-header5 text-white">
-                            tittle
+                        <h3 className="mb-6 text-center text-header5 text-white md:mb-10 md:text-header4">
+                            {tittle}
                         </h3>
                     )}
                     {children}
                 </div>
-                <div className="flex">
+                <div className="flex justify-center">
                     {hasCancel ? (
                         <Button
                             type={'button'}
                             title={'cancel'}
-                            onClick={() => {}}>
-                            <span>取消</span>
+                            onClick={handleClose}
+                            className="border-0 bg-gray-3 text-primary">
+                            <span>關閉</span>
                         </Button>
                     ) : null}
                     {onConfirm ? (
