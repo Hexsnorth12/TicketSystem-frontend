@@ -29,6 +29,7 @@ export type NavigateButton = PropsWithChildren<{
     iconStyle?: string
     iconDimension?: { width: number; height: number }
     disabled?: boolean
+    buttonStyle?: string
 }>
 
 export type TagButton = PropsWithChildren<{
