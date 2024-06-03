@@ -7,11 +7,10 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { styled } from '@mui/material/styles'
-import Counter from '../Counter/Counter'
 
 interface InputProps {
-    columns: any[]
-    dataSource: any[]
+    columns: []
+    dataSource: []
 }
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {

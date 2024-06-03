@@ -1,10 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState, ReactNode } from 'react'
+import React from 'react'
 import Table from './table'
 import CartTable from './cartTable'
-import Button from '@components/common/Button'
-import { MdDelete } from 'react-icons/md'
-import { number } from 'zod'
+
 const meta = {
     title: 'common/Table',
     component: Table,

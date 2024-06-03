@@ -11,11 +11,27 @@ import Counter from '../Counter/Counter'
 import Image from 'next/image'
 import Button from '@components/common/Button'
 import { MdDelete } from 'react-icons/md'
-interface InputProps {
-    columns: any[]
-    dataSource: any[]
+interface Column {
+    title: string
+    dataIndex: keyof DataSource
+    key: string
 }
 
+interface DataSource {
+    key: string
+    name: {
+        image: string
+        title: string
+        subtitle: string
+    }
+    number: number
+    price: number
+}
+
+interface InputProps {
+    columns: Column[]
+    dataSource: DataSource[]
+}
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -25,11 +41,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         color: theme.palette.common.white,
     },
 }))
-
-interface InputProps {
-    columns: any[]
-    dataSource: any[]
-}
 
 const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
     const [numberStates, setNumberStates] = useState<{ [key: string]: number }>(
@@ -43,7 +54,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
         }))
     }
 
-    const renderPrice = (data: any) => {
+    const renderPrice = (data: DataSource) => {
         if (
             typeof numberStates[data.key] !== 'number' ||
             typeof data.price !== 'number'
@@ -52,7 +63,31 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
         }
         return `${numberStates[data.key] * data.price} NT`
     }
-
+    const renderName = (name: {
+        image: string
+        title: string
+        subtitle: string
+    }) => (
+        <div className="flex items-center justify-start">
+            <div className="grid grid-flow-col grid-rows-2 items-center gap-4">
+                <div className="row-span-2 flex justify-center">
+                    <Image
+                        src={name.image}
+                        alt={name.title}
+                        width={100}
+                        height={100}
+                        className="rounded-lg"
+                    />
+                </div>
+                <div className="col-span-1 flex justify-start truncate text-body md:text-xl">
+                    <div>{name.title}</div>
+                </div>
+                <div className="col-span-1 flex justify-start">
+                    {name.subtitle}
+                </div>
+            </div>
+        </div>
+    )
     return (
         <TableContainer>
             <Table
@@ -74,40 +109,13 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                     {dataSource.map((data) => (
                         <TableRow key={data.key}>
                             {columns.map((column) => {
-                                const { dataIndex } = column
-                                const foundCellData = column.render
-                                    ? column.render(data[dataIndex])
-                                    : data[dataIndex]
-
+                                const cellData =
+                                    data[column.dataIndex as keyof DataSource]
                                 return (
                                     <StyledTableCell key={column.key}>
-                                        {column.key === 'name' ? (
-                                            <div className="flex items-center justify-start">
-                                                <div className="grid grid-flow-col grid-rows-2 items-center gap-4">
-                                                    <div className="row-span-2 flex justify-center">
-                                                        <Image
-                                                            src={
-                                                                data.name.image
-                                                            }
-                                                            alt={
-                                                                data.name.title
-                                                            }
-                                                            width={100}
-                                                            height={100}
-                                                            className="rounded-lg"
-                                                        />
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start text-body md:text-xl">
-                                                        <div className="overflow-hidden text-ellipsis">
-                                                            {data.name.title}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start">
-                                                        {data.name.subtitle}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ) : column.key === 'number' ? (
+                                        {column.dataIndex === 'name' ? (
+                                            renderName(data.name)
+                                        ) : column.dataIndex === 'number' ? (
                                             <Counter
                                                 onValueChange={(newValue) =>
                                                     handleNumberChange(
@@ -122,10 +130,10 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                                 minValue={1}
                                                 maxValue={999}
                                             />
-                                        ) : column.key === 'price' ? (
+                                        ) : column.dataIndex === 'price' ? (
                                             renderPrice(data)
                                         ) : (
-                                            foundCellData
+                                            cellData
                                         )}
                                     </StyledTableCell>
                                 )
