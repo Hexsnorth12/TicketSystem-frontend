@@ -4,7 +4,7 @@ import React, { useMemo, useEffect, useTransition } from 'react'
 import { useForm, FieldPath } from 'react-hook-form'
 import { useFormState } from 'react-dom'
 import { format, parseISO } from 'date-fns'
-import { InputRegister } from '@/components/common'
+import { InputRegister, Button } from '@/components/common'
 import { State, getUserForm } from '@/lib'
 import type { UserInfo } from '@/types'
 
@@ -113,11 +113,15 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
                     /> */}
                 </div>
             </div>
-            <button
-                type="submit"
-                className="mt-3 w-full rounded-md bg-primary px-6 py-2.5 text-white md:mt-6">
-                Submit
-            </button>
+            <div className="flex justify-center">
+                <Button
+                    className="mt-10"
+                    type={'button'}
+                    title={'confirm'}
+                    onClick={() => {}}>
+                    <span>確認</span>
+                </Button>
+            </div>
         </form>
     )
 }

@@ -33,7 +33,7 @@ const InputComponent: React.FC<InputProps> = ({
             <label
                 htmlFor={name}
                 className={clsx(
-                    'block text-small2 leading-150 text-white md:text-small1',
+                    'mb-2 block text-small2 leading-150 text-white md:text-small1',
                     {
                         'text-gray-900': theme === 'light',
                     },

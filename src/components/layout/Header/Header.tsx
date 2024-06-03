@@ -3,9 +3,26 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
+import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
+
+//TODO: 寫好購物車status後需刪除此資料
+const dummyCartItems = [
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+]
 
 interface HeaderProps {
     logoSrc: string
@@ -16,12 +33,20 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
+
+    const [showCartModal, setShowCartModal] = useState(false)
+
     const onLogout = async () => {
         signOut({
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
         })
     }
+
+    function showCartModalHandler(show = false) {
+        setShowCartModal(show)
+    }
+
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
             <div className="container relative flex items-center justify-between px-4">
@@ -72,9 +97,19 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             一起揪團
                         </a>
                     </Link>
-                    <Link href="/cart">
-                        <Cartbtn amount={0} />
-                    </Link>
+                    <div
+                        className="relative"
+                        onMouseEnter={() => showCartModalHandler(true)}
+                        onMouseLeave={() => showCartModalHandler()}>
+                        <Link href="/cart">
+                            <Cartbtn amount={0} />
+                        </Link>
+                        <CartModal
+                            visible={showCartModal}
+                            items={dummyCartItems}
+                            leaveModalHandler={() => showCartModalHandler()}
+                        />
+                    </div>
                     {!isAuth ? (
                         <Link href="/login" scroll={false}>
                             <div

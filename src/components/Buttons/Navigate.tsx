@@ -25,6 +25,7 @@ export const Navigate: React.FC<NavigateButton> = ({
     iconStyle,
     iconDimension,
     disabled,
+    buttonStyle,
 }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const { setIconDimension, changeIconStyle, basicButtonProps } = useButton(
@@ -33,7 +34,7 @@ export const Navigate: React.FC<NavigateButton> = ({
         DEFAULT_ICON_HEIGHT,
     )
 
-    const buttonStyle = `flex gap-2 bg-gray-1 ${icon && 'pr-3'} ${className}`
+    const btnStyle = `flex gap-2 bg-gray-1 ${icon && 'pr-3'} ${buttonStyle}`
     const img = iconImg()
     const { iconWidth, iconHeight } = setIconDimension(iconDimension)
     const iconClassName = changeIconStyle(iconStyle)
@@ -55,13 +56,14 @@ export const Navigate: React.FC<NavigateButton> = ({
             href={href}
             {...basicButtonProps}
             onMouseOver={mouseOverHandler}
-            onMouseLeave={mouseLeaveHandler}>
+            onMouseLeave={mouseLeaveHandler}
+            className={className}>
             <Button
                 type="button"
                 title="navigation"
                 disabled={disabled}
                 onClick={onClick}
-                className={buttonStyle}>
+                className={btnStyle}>
                 {children}
                 {icon && (
                     <Image
