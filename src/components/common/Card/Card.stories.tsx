@@ -1,9 +1,9 @@
 import React from 'react'
 import Card from './Card'
 import GroupCard from './GroupCard'
-import RecCard from './RecCard'
-import MovieDetailCard from './MovieDetail'
 import MovieDescriptionCard from './MovieDescription'
+import MovieDetailCard from './MovieDetail'
+import RecCard from './RecCard'
 
 import { Popcards, Reccards, Groupcards } from '@/definitions/movieData'
 import { MovieDetailCards } from '@/definitions/movieDetailData'
@@ -32,12 +32,12 @@ export const Group = () => {
         <GroupCard movies={Groupcards} imageSizeMap={groupcardImageSizeMap} />
     )
 }
-export const Rec = () => {
-    return <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
-}
 export const MovieDetail = () => {
     return <MovieDetailCard movies={MovieDetailCards} />
 }
 export const MovieDescription = () => {
     return <MovieDescriptionCard movies={MovieDetailCards} />
+}
+export const Rec = () => {
+    return <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
 }
