@@ -4,6 +4,8 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import { Footer, Header } from '@/components/layout'
 import StoreProviders from '@/components/common/StoreProviders'
+import ClientSessionProvider from '@/components/common/ClientSessionProvider'
+
 import { getUserSession } from '@/lib/auth.actions'
 
 import '@/styles/globals.css'
@@ -30,15 +32,18 @@ export default async function RootLayout({
             <html lang="en">
                 <body
                     className={`${noto_Sans_TC.className} flex flex-col bg-gray-2`}>
-                    <Header
-                        logoSrc="/assets/movie-go-logo.png"
-                        isAuth={isAuth}
-                    />
-                    <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
-                        {children}
-                        {modal}
-                    </main>
-                    <Footer />
+                    <ClientSessionProvider session={session}>
+                        {' '}
+                        <Header
+                            logoSrc="/assets/movie-go-logo.png"
+                            isAuth={isAuth}
+                        />
+                        <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
+                            {children}
+                            {modal}
+                        </main>
+                        <Footer />
+                    </ClientSessionProvider>
                 </body>
             </html>
         </StoreProviders>

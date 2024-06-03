@@ -5,15 +5,17 @@ import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 interface HeaderProps {
     logoSrc: string
     isAuth: boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
+    const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const isAuth = !!session
     const onLogout = async () => {
         signOut({
             redirect: true,

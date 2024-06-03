@@ -2,15 +2,17 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
-import google_logo from '@icon/google_logo.svg'
+import GoogleSignInButton from '../../Buttons/GoogleBtn'
 import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
 
-export default function SignIn() {
+interface SignInProps {
+    callbackUrl: string
+}
+const SignIn = ({ callbackUrl }: SignInProps) => {
     const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')
@@ -19,7 +21,7 @@ export default function SignIn() {
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-    const handleGoogleLogin = () => {}
+    // const handleGoogleLogin = () => {}
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
@@ -37,9 +39,9 @@ export default function SignIn() {
         if (response?.error) {
             setErrorMessage(response.error)
         } else {
-            const callbackUrl = searchParams.get('callbackUrl') || '/'
-
             setErrorMessage('')
+            setIsAuth(true) // Update isAuth state
+            const callbackUrl = searchParams.get('callbackUrl') || '/'
             refreshAuth(callbackUrl)
         }
     }
@@ -55,20 +57,9 @@ export default function SignIn() {
             <form className="mx-auto mt-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div className="sm:col-span-2">
-                        <Button
-                            type={'button'}
-                            title="登入"
-                            onClick={handleGoogleLogin}
-                            className="flex w-full items-center justify-center rounded-md py-3 text-btn2 text-white md:text-btn1">
-                            <Image
-                                src={google_logo}
-                                width={18}
-                                height={18}
-                                alt="use google account login align-middle"
-                                className="-mb-0.5 mr-2"
-                            />
-                            <span>Google</span>
-                        </Button>
+                        <GoogleSignInButton callbackUrl={callbackUrl}>
+                            Google
+                        </GoogleSignInButton>
                     </div>
                     <div className="flex items-center justify-center sm:col-span-2">
                         <div className="mr-4 flex-grow border-t border-gray-400"></div>
@@ -137,3 +128,4 @@ export default function SignIn() {
         </>
     )
 }
+export default SignIn
