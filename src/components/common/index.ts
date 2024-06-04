@@ -21,6 +21,7 @@ import Rating from './Rating/Rating'
 import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
 import PaginationWrapper from './Pagination/PaginationWrapper'
+import MultipleSelect from './MultipleSelect/MultipleSelect'
 
 export {
     Modal,
@@ -46,4 +47,5 @@ export {
     Counter,
     PrevPage,
     PaginationWrapper,
+    MultipleSelect,
 }
