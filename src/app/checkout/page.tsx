@@ -100,6 +100,8 @@ const CheckoutPage = () => {
                                 <li className="flex gap-x-3">總金額:315 NT</li>
                                 <div className="h-px flex-auto bg-gray-100" />
                             </ul>
+                        </div>
+                        <div className="mt-3 w-full  rounded-lg  p-4  text-white md:mt-0 ">
                             <Delivery />
                         </div>
                     </div>
