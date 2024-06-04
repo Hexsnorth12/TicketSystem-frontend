@@ -113,9 +113,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                     data[column.dataIndex as keyof DataSource]
                                 return (
                                     <StyledTableCell key={column.key}>
-                                        {column.dataIndex === 'name' ? (
-                                            renderName(data.name)
-                                        ) : column.dataIndex === 'number' ? (
+                                        {column.dataIndex === 'number' ? (
                                             <Counter
                                                 onValueChange={(newValue) =>
                                                     handleNumberChange(
@@ -132,6 +130,11 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                             />
                                         ) : column.dataIndex === 'price' ? (
                                             renderPrice(data)
+                                        ) : typeof cellData === 'object' &&
+                                          'image' in cellData &&
+                                          'title' in cellData &&
+                                          'subtitle' in cellData ? (
+                                            renderName(cellData)
                                         ) : (
                                             cellData
                                         )}

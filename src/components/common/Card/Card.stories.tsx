@@ -1,3 +1,4 @@
+import type { Meta } from '@storybook/react'
 import React from 'react'
 import Card from './Card'
 import GroupCard from './GroupCard'
@@ -18,12 +19,19 @@ const groupcardImageSizeMap = generateImageSizeMap(
 )
 const reccardImageSources = Reccards.map((Reccards) => Reccards.image)
 const reccardImageSizeMap = generateImageSizeMap(reccardImageSources, 240, 320)
-
-export default {
+const meta = {
     title: 'common/Card',
     component: Card,
-}
 
+    parameters: {
+        nextjs: {
+            appDirectory: true,
+        },
+        layout: 'centered',
+    },
+} satisfies Meta<typeof Card>
+
+export default meta
 export const Primary = () => {
     return <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
 }

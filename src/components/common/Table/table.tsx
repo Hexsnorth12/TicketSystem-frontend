@@ -7,10 +7,21 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { styled } from '@mui/material/styles'
+interface Column {
+    title: string
+    dataIndex: keyof DataSource
+    key: string
+}
+interface DataSource {
+    key: string
+    name: string
+    number: number
+    price: number
+}
 
 interface InputProps {
-    columns: []
-    dataSource: []
+    columns: Column[]
+    dataSource: DataSource[]
 }
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -42,9 +53,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                         <TableRow key={data.key}>
                             {columns.map((column) => {
                                 const { dataIndex } = column
-                                const foundCellData = column.render
-                                    ? column.render(data[dataIndex])
-                                    : data[dataIndex]
+                                const foundCellData = data[dataIndex]
                                 return (
                                     <StyledTableCell key={column.key}>
                                         {foundCellData}

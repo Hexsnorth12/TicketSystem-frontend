@@ -1,3 +1,4 @@
+import type { Meta } from '@storybook/react'
 import React from 'react'
 import Table from './table'
 import CartTable from './cartTable'
@@ -14,7 +15,44 @@ const meta = {
     },
 } satisfies Meta<typeof Table>
 
-const columns = [
+//沒圖片的
+const dataSourceBasic = [
+    {
+        key: '1',
+        name: '哥吉拉與金剛 : 新帝國',
+        number: 32,
+        price: 32,
+    },
+    {
+        key: '2',
+        name: '哥吉拉與金剛 : 新帝國',
+        number: 42,
+        price: 32,
+    },
+    {
+        key: '3',
+        name: '哥吉拉與金剛 : 新帝國',
+        number: 32,
+        price: 32,
+    },
+]
+interface Column {
+    title: string
+    dataIndex: keyof DataSource
+    key: string
+}
+
+interface DataSource {
+    key: string
+    name: {
+        image: string
+        title: string
+        subtitle: string
+    }
+    number: number
+    price: number
+}
+const columns: Column[] = [
     {
         title: '商品名稱',
         dataIndex: 'name',
@@ -31,8 +69,8 @@ const columns = [
         key: 'price',
     },
 ]
-//有圖片的
-const dataSource = [
+
+const dataSource: DataSource[] = [
     {
         key: '1',
         name: {
@@ -62,27 +100,6 @@ const dataSource = [
         },
         number: 2,
         price: 200,
-    },
-]
-//沒圖片的
-const dataSourceBasic = [
-    {
-        key: '1',
-        name: '哥吉拉與金剛 : 新帝國',
-        number: 32,
-        price: 32,
-    },
-    {
-        key: '2',
-        name: '哥吉拉與金剛 : 新帝國',
-        number: 42,
-        price: 32,
-    },
-    {
-        key: '3',
-        name: '哥吉拉與金剛 : 新帝國',
-        number: 32,
-        price: 32,
     },
 ]
 
