@@ -1,6 +1,5 @@
 import React from 'react'
 import CheckoutTable from '@components/common/Table/checkoutTable'
-import { Button } from '@/components/common/index'
 import { Delivery } from '@/components/forms'
 
 const CheckoutPage = () => {

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
@@ -7,10 +7,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { styled } from '@mui/material/styles'
-import Counter from '../Counter/Counter'
 import Image from 'next/image'
-import Button from '@components/common/Button'
-import { MdDelete } from 'react-icons/md'
 import Chip from '@/components/common/Chip/chip'
 interface Column {
     title: string
