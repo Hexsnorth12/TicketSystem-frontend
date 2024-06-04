@@ -110,21 +110,20 @@ export default function ForgetPassWord() {
                         </label>
                         <div className="mt-auto md:mt-2.5">
                             <textarea
-                                className="border-1 ring-black-300/10 block h-full w-full w-full resize rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
+                                className="border-1 ring-black-300/10 block h-full w-full w-full resize-y rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
                                 name="postContent"
                             />
                         </div>
                     </div>
-
-                    <div className="place-content-end sm:col-span-1">
-                        <Button
-                            name="checkout"
-                            value="確認送出訂單"
-                            type={'submit'}
-                            title="checkout"
-                            className="w-full rounded-md py-3 text-btn2 font-semibold text-white md:text-btn1"
-                        />
-                    </div>
+                </div>{' '}
+                <div className="mt-6 flex items-center justify-end gap-x-6">
+                    <Button
+                        name="checkout"
+                        value="確認送出訂單"
+                        type={'submit'}
+                        title="checkout"
+                        className="py-3 text-btn2 font-semibold text-white md:text-btn1"
+                    />
                 </div>
             </div>
         </>
