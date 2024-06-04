@@ -29,8 +29,8 @@ const MultipleSelect: React.FC<Props> = ({
     }
     return (
         <div>
-            <h5 className="mb-3 text-small1 text-white">{title}</h5>
-            <div className="flex flex-col rounded-lg border border-gray-3 p-4">
+            <h5 className="mb-3 hidden text-small1 text-white">{title}</h5>
+            <div className="flex flex-row rounded-lg border border-gray-3 p-4 md:flex-col">
                 {options.map(({ label, value }) => (
                     <Checkbox
                         key={label}
