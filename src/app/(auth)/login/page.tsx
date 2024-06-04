@@ -5,7 +5,7 @@ const Page = () => {
     return (
         <div className="mx-auto p-4">
             <Suspense>
-                <SignIn />
+                <SignIn callbackUrl={''} />
             </Suspense>
         </div>
     )

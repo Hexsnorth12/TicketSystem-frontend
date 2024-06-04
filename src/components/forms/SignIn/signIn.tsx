@@ -29,7 +29,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         const credentials = Object.fromEntries(formData)
-        //TODO: 後續要另外處理身份辨認跳轉到不同頁 ( 後台 or 首頁 )
 
         const response = await signIn('credentials', {
             ...credentials,
@@ -40,7 +39,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             setErrorMessage(response.error)
         } else {
             setErrorMessage('')
-            setIsAuth(true) // Update isAuth state
             const callbackUrl = searchParams.get('callbackUrl') || '/'
             refreshAuth(callbackUrl)
         }
