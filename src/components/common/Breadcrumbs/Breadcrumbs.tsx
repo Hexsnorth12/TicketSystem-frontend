@@ -13,10 +13,13 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = () => {
     const [paths, setPaths] = useState<string[]>([])
 
     useEffect(() => {
-        const processPaths: string[] = pathname.split('/').map((path) => {
-            if (path === '') return pathMap['home']
-            return pathMap[path]
-        })
+        const processPaths: string[] = pathname
+            .replace(/\/\d+$/, '')
+            .split('/')
+            .map((path) => {
+                if (path === '') return pathMap['home']
+                return pathMap[path]
+            })
         setPaths(processPaths)
     }, [pathname])
 

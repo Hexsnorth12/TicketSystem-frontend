@@ -11,6 +11,7 @@ export const pathMap: Map = {
     comments: '我的評論',
     sharedTicket: '線上分票',
     myoOrganize: '我的揪團',
+    publish: '上架分票',
 }
 
 export const memberPath = [

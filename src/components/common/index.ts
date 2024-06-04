@@ -22,6 +22,7 @@ import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
 import PaginationWrapper from './Pagination/PaginationWrapper'
 import MultipleSelect from './MultipleSelect/MultipleSelect'
+import ModalContent from './Modal/ModalContent'
 
 export {
     Modal,
@@ -48,4 +49,5 @@ export {
     PrevPage,
     PaginationWrapper,
     MultipleSelect,
+    ModalContent
 }
