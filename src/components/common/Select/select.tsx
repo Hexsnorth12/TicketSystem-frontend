@@ -42,26 +42,28 @@ const SelectInput: React.FC<SelectProps> = ({
             <Select.Portal>
                 <Select.Content
                     className="z-50 mt-1 overflow-hidden rounded-md bg-gray-1 text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
-                    position="popper">
+                    position="popper"
+                    style={{ width: 'var(--radix-select-trigger-width)' }}>
                     <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
                     <Select.Viewport className="p-[5px]">
                         <Select.Group>
-                            <Select.Label className="text-mauve11 px-[25px] text-xs leading-[25px]">
+                            <Select.Label className="flex justify-center px-[25px] text-sm leading-[25px]">
                                 {label}
                             </Select.Label>
                             {options.map((option, index) => (
                                 <SelectItem
                                     key={index}
                                     value={option}
-                                    onClick={() => handleChange(option)}>
+                                    onClick={() => handleChange(option)}
+                                    className="flex justify-center border border-transparent px-[25px]  text-xs leading-[25px] hover:border-primary">
                                     {option}
                                 </SelectItem>
                             ))}
                         </Select.Group>
                     </Select.Viewport>
-                    <Select.ScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+                    <Select.ScrollDownButton className="text-violet11 flex  h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronDownIcon />
                     </Select.ScrollDownButton>
                 </Select.Content>

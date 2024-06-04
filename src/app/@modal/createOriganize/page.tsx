@@ -22,7 +22,7 @@ const Page: React.FC<pageProps> = () => {
                     />
                     <p className="small2 text-white">新增照片</p>
                 </div>
-                <form action="位置" className='space-y-3'>
+                <form action="位置" className="space-y-3">
                     <SelectInput
                         placeholder="請選擇"
                         label={'位置'}
