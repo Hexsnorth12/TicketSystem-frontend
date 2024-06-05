@@ -5,6 +5,8 @@ import { BASE_URL } from '@/definitions'
 import { jwt } from '@/utils'
 import fetchClient from './fetchClient'
 import { serverCode } from '@/definitions'
+import GoogleProvider from "next-auth/providers/google";
+
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -66,6 +68,10 @@ export const authOptions: NextAuthOptions = {
                 }
             },
         }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+          }),
     ],
     callbacks: {
         async jwt({ token, user }) {
