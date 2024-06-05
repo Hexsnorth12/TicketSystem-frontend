@@ -31,9 +31,10 @@ const SelectInput: React.FC<SelectProps> = ({
             value={selectedValue}
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
-                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-gray-1 px-[15px] text-[13px] leading-none text-white shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
+                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex w-full items-center justify-between gap-[5px] rounded border border-gray-3 bg-gray-1 px-4 py-3 text-body leading-none text-white shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
                 aria-label="city"
-                disabled={options.length === 0}>
+                disabled={options.length === 0}
+                asChild={false}>
                 <Select.Value placeholder={placeholder} />
                 <Select.Icon className="text-violet11">
                     <ChevronDownIcon />
@@ -47,9 +48,9 @@ const SelectInput: React.FC<SelectProps> = ({
                     <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
-                    <Select.Viewport className="p-[5px]">
+                    <Select.Viewport className="rounded-lg border border-gray-3">
                         <Select.Group>
-                            <Select.Label className="flex justify-center px-[25px] text-sm leading-[25px]">
+                            <Select.Label className="flex justify-start text-body">
                                 {label}
                             </Select.Label>
                             {options.map((option, index) => (
@@ -57,7 +58,7 @@ const SelectInput: React.FC<SelectProps> = ({
                                     key={index}
                                     value={option}
                                     onClick={() => handleChange(option)}
-                                    className="flex justify-center border border-transparent px-[25px]  text-xs leading-[25px] hover:border-primary">
+                                    className="flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:text-primary">
                                     {option}
                                 </SelectItem>
                             ))}
