@@ -34,7 +34,7 @@ const DatePickerModal: React.FC<Props> = ({
     }
 
     return visible ? (
-        <Modal>
+        <Modal onClose={() => {}}>
             <div className="container relative overflow-y-scroll rounded-lg bg-gray-2 px-3 py-6 scrollbar-hidden md:p-10">
                 {title && (
                     <h3 className="mb-6 text-center text-header5 text-white md:mb-5 md:text-header4">
