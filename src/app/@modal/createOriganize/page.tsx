@@ -1,19 +1,38 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
+import { useForm, Controller, FieldValues } from 'react-hook-form'
 import {
     ModalContent,
     SelectInput,
-    InputComponent,
+    SelectBox,
     Button,
+    TextArea,
+    InputRegister,
 } from '@/components/common'
 import add_primary from '@icon/add_primary.svg'
+import { JOIN_OPTIONS } from '@/definitions/joinForm'
 
 interface pageProps {}
 
-const list = ['北部', '中部', '南部', '東部', '離島']
+// export interface FormValues extends FieldValues {
+//     title: string
+//     location: string
+//     movie: string
+//     time: string
+//     person: string
+//     isBought: string
+//     description: string
+// }
 
 const Page: React.FC<pageProps> = () => {
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FieldValues>()
+    const onSubmit = (data: FieldValues) => console.log(data)
     return (
         <ModalContent tittle="">
             <div className="flex min-w-[279px] flex-col px-3 md:flex-row md:items-center md:justify-between md:gap-10 md:py-[34px]">
@@ -28,66 +47,109 @@ const Page: React.FC<pageProps> = () => {
                     <p className="small2 text-white">新增照片</p>
                 </div>
                 <form
-                    action="位置"
+                    onSubmit={handleSubmit(onSubmit)}
+                    action=""
                     className="w-full space-y-3 overflow-y-scroll md:max-h-[480px]  md:pr-10 md:scrollbar">
                     <h4 className="mb-10 hidden border-b border-gray-3 py-4 text-header4 text-gray-4 md:block">
                         新增活動標題
                     </h4>
-                    <InputComponent
+                    <InputRegister
                         label="標題"
                         type="text"
-                        value=""
-                        onChange={() => {}}
-                        placeholder="新增活動標題"
+                        placeholder={'新增活動標題'}
+                        registerKey="title"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
                     />
-                    <div>
-                        <p className="mb-2 text-small2 text-gray-5">位置</p>
-                        <SelectInput
-                            placeholder="請選擇"
-                            label={''}
-                            options={list}
-                            onSelectChange={() => {}}
+                    <SelectBox title="位置">
+                        <Controller
+                            name="location"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.locationOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
                         />
-                    </div>
-                    <div>
-                        <p className="mb-2 text-small2 text-gray-5">電影名稱</p>
-                        <SelectInput
-                            placeholder="請選擇"
-                            label={''}
-                            options={list}
-                            onSelectChange={() => {}}
+                    </SelectBox>
+                    <SelectBox title="電影名稱">
+                        <Controller
+                            name="movie"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.movieOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
                         />
-                    </div>
-                    <div>
-                        <p className="mb-2 text-small2 text-gray-5">時間</p>
-                        <SelectInput
-                            placeholder="請選擇"
-                            label={''}
-                            options={list}
-                            onSelectChange={() => {}}
+                    </SelectBox>
+                    <SelectBox title="時間">
+                        <Controller
+                            name="time"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.timeOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
                         />
-                    </div>
-                    <div>
-                        <p className="mb-2 text-small2 text-gray-5">人數</p>
-                        <SelectInput
-                            placeholder="請選擇"
-                            label={''}
-                            options={list}
-                            onSelectChange={() => {}}
+                    </SelectBox>
+                    <SelectBox title="人數">
+                        <Controller
+                            name="person"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.personOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
                         />
-                    </div>
-                    <div>
-                        <p className="mb-2 text-small2 text-gray-5">是否買票</p>
-                        <SelectInput
-                            placeholder="請選擇"
-                            label={''}
-                            options={list}
-                            onSelectChange={() => {}}
+                    </SelectBox>
+                    <SelectBox title="是否買票">
+                        <Controller
+                            name="isBought"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.isBought}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
                         />
-                    </div>
+                    </SelectBox>
+                    <TextArea
+                        label="描述"
+                        placeholder="新增活動內容"
+                        registerKey={'description'}
+                        register={register}
+                        required={true}
+                    />
                     <div className="flex justify-center">
                         <Button
-                            type={'button'}
+                            type={'submit'}
+                            name="submit"
+                            value="submit"
                             title={'confirm'}
                             onClick={() => {}}>
                             <span>確認</span>

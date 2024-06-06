@@ -22,6 +22,8 @@ import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
 import PaginationWrapper from './Pagination/PaginationWrapper'
 import ModalContent from './Modal/ModalContent'
+import TextArea from './TextArea/TextArea'
+import SelectBox from './Select/selectBox'
 
 export {
     Modal,
@@ -47,5 +49,7 @@ export {
     Counter,
     PrevPage,
     PaginationWrapper,
-    ModalContent
+    ModalContent,
+    TextArea,
+    SelectBox,
 }

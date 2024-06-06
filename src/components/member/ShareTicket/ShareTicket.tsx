@@ -64,7 +64,7 @@ const Page: React.FC<pageProps> = () => {
                     type={'button'}
                     title={'上架分票'}
                     onClick={() => {
-                        router.push('sharedTicket/publish/1')
+                        router.push('sharedTicket/publish/1', { scroll: false })
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
                     <span className="font-medium tracking-wider">上架分票</span>
@@ -73,7 +73,7 @@ const Page: React.FC<pageProps> = () => {
                     type={'button'}
                     title={'取得分票碼'}
                     onClick={() => {
-                        router.push('/createOriganize')
+                        router.push('/createCode/1', { scroll: false })
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 font-medium text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1 ">
                     <span className="font-medium tracking-wider">
