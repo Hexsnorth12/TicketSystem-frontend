@@ -2,6 +2,7 @@
 
 import React from 'react'
 import * as Select from '@radix-ui/react-select'
+import clsx from 'clsx'
 import {
     CheckIcon,
     ChevronDownIcon,
@@ -12,6 +13,7 @@ interface SelectProps {
     label: string
     options: string[] // 將 options 改為 string 的數組形式
     onSelectChange: (selectedValue: string) => void // 使用函數類型來描述 onSelectChange，它接收一個 string 參數並且不返回任何值
+    className?: string // Add className prop
 }
 
 const SelectInput: React.FC<SelectProps> = ({
@@ -19,6 +21,7 @@ const SelectInput: React.FC<SelectProps> = ({
     label,
     onSelectChange,
     options,
+    className, // Add className prop
 }) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('')
 
@@ -31,7 +34,10 @@ const SelectInput: React.FC<SelectProps> = ({
             value={selectedValue}
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
-                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex h-[35px] w-full items-center justify-center gap-[5px] rounded bg-gray-1 px-[15px] text-[13px] leading-none text-white shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary"
+                className={clsx(
+                    'hover:bg-mauve3 border-1 ring-black-300/10 block inline-flex h-full w-full items-center rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary data-[placeholder]:text-body md:px-4 md:py-2.5 md:text-body',
+                    className, // Apply custom className
+                )}
                 aria-label="city"
                 disabled={options.length === 0}>
                 <Select.Value placeholder={placeholder} />

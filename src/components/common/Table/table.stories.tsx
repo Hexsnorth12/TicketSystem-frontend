@@ -2,6 +2,7 @@ import type { Meta } from '@storybook/react'
 import React from 'react'
 import Table from './table'
 import CartTable from './cartTable'
+import CheckoutTable from './checkoutTable'
 
 const meta = {
     title: 'common/Table',
@@ -108,6 +109,9 @@ export default meta
 export const Peimary = () => {
     return <Table columns={columns} dataSource={dataSourceBasic} />
 }
-export const CustomContent = () => {
+export const Cart = () => {
     return <CartTable columns={columns} dataSource={dataSource} />
+}
+export const Checkout = () => {
+    return <CheckoutTable columns={columns} dataSource={dataSource} />
 }
