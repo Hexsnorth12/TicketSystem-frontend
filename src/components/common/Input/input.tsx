@@ -13,6 +13,7 @@ interface InputProps {
     rounded?: 'full' | 'none' | 'md'
     required?: boolean
     name?: string
+    disabled?: boolean
     className?: string // Add className prop
 }
 
@@ -26,6 +27,7 @@ const InputComponent: React.FC<InputProps> = ({
     rounded = 'md',
     required = false,
     name = '',
+    disabled = false,
     className, // Add className prop
 }) => {
     return (
@@ -43,6 +45,7 @@ const InputComponent: React.FC<InputProps> = ({
             </label>
             <div className="mt-auto md:mt-2.5">
                 <input
+                    disabled={disabled}
                     name={name}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}

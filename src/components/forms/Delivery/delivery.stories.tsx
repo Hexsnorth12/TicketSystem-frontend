@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Checkbox from './checkbox'
+import Delivery from './delivery'
 
 const meta = {
-    title: 'common/Checkbox',
-    component: Checkbox,
+    title: 'forms/delivery',
+    component: Delivery,
 
     parameters: {
         nextjs: {
@@ -11,15 +11,11 @@ const meta = {
         },
         layout: 'centered',
     },
-} satisfies Meta<typeof Checkbox>
+} satisfies Meta<typeof Delivery>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {
-        label: '訂閱電子報',
-        checked: true,
-        onChange: () => {},
-    },
+    args: {},
 }

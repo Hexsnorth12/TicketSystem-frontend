@@ -21,6 +21,7 @@ import Rating from './Rating/Rating'
 import Counter from './Counter/Counter'
 import PrevPage from './PrevPage/PrevPage'
 import PaginationWrapper from './Pagination/PaginationWrapper'
+import MultipleSelect from './MultipleSelect/MultipleSelect'
 import ModalContent from './Modal/ModalContent'
 import TextArea from './TextArea/TextArea'
 import SelectBox from './Select/selectBox'
@@ -52,4 +53,6 @@ export {
     ModalContent,
     TextArea,
     SelectBox,
+    MultipleSelect,
+    ModalContent
 }

@@ -6,7 +6,7 @@ import { MemberMenu } from '@/components/common'
 import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 //TODO: 寫好購物車status後需刪除此資料
 const dummyCartItems = [
@@ -29,8 +29,11 @@ interface HeaderProps {
     isAuth: boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
+    const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const isAuth = !!session
+
     const [showCartModal, setShowCartModal] = useState(false)
 
     const onLogout = async () => {
