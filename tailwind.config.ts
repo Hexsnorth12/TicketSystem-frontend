@@ -32,6 +32,7 @@ const config: Config = {
             colors: {
                 primary: '#0FF',
                 secondary: '#00A9B4',
+                loader: '#00A9B4',
                 'gray-1': '#151515',
                 'gray-2': '#1E1E1E',
                 'gray-3': '#333',
@@ -174,6 +175,16 @@ const config: Config = {
             borderRadius: {
                 primary: '20px',
                 secondary: '40px',
+            },
+            keyframes: {
+                load: {
+                    '0%': { left: '0', height: '30px', width: '15px' },
+                    '50%': { height: '8px', width: '40px' },
+                    '100%': { left: '235px', height: '30px', width: '15px' },
+                },
+            },
+            animation: {
+                load: 'load .7s infinite alternate ease-in-out',
             },
         },
     },
