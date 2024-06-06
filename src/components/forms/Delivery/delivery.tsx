@@ -69,10 +69,9 @@ export default function ForgetPassWord() {
                         </label>
                         <div className="mt-auto md:mt-2.5">
                             <SelectInput
-                                placeholder={'線上付款'}
+                                placeholder="線上付款"
                                 options={option}
                                 label={'付款方式'}
-                                placeholder="線上付款"
                                 onSelectChange={handlePayMethodChange}
                             />
                         </div>
