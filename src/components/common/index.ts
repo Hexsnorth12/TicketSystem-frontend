@@ -54,5 +54,4 @@ export {
     TextArea,
     SelectBox,
     MultipleSelect,
-    ModalContent
 }
