@@ -149,7 +149,7 @@ const Page: React.FC<pageProps> = () => {
                         <Button
                             type={'submit'}
                             name="submit"
-                            value="submit"
+                            value="確認"
                             title={'confirm'}
                             onClick={() => {}}>
                             <span>確認</span>

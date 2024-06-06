@@ -26,7 +26,7 @@ const TextArea: React.FC<TextAreaProps<FieldValues>> = ({
                 {label}
                 {required ? <span className="text-primary">*</span> : null}
             </label>
-            <div className="min-h-[120px] rounded-lg border border-gray-3 bg-gray-3 py-2 pl-3 md:min-h-[200px] md:py-3 md:pl-4">
+            <div className="min-h-[120px] w-full rounded-lg border border-gray-3 bg-gray-3 py-2 pl-3 md:min-h-[200px] md:py-3 md:pl-4">
                 <textarea
                     {...register(registerKey)}
                     name={registerKey}
