@@ -38,7 +38,7 @@ const Counter: React.FC<CounterProps> = ({
     }
 
     return (
-        <div className="flex w-full justify-between space-x-[44px] rounded-lg border border-[1px] border-gray-4 px-2 py-4 md:w-auto md:py-2.5 ">
+        <div className="flex w-full justify-between rounded-lg border border-gray-4 px-2 py-4 md:w-auto md:py-2.5 ">
             <button onClick={handleDecrement}>
                 <Image
                     src={minus}
@@ -48,7 +48,7 @@ const Counter: React.FC<CounterProps> = ({
                     className="md:h-6 md:w-6"
                 />
             </button>
-            <p className="min-w-[2em] text-center text-number5 leading-120 text-white md:text-number4">
+            <p className="text-center text-number5 leading-120 text-white md:min-w-[2em] md:text-number4">
                 {value}
             </p>
             <button onClick={handleIncrement}>

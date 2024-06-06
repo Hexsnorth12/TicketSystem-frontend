@@ -7,8 +7,17 @@ export const pathMap: Map = {
     user: '會員中心',
     info: '會員資料',
     tickets: '我的電影票',
-    favorite: '我的收藏',
+    favorites: '我的收藏',
     comments: '我的評論',
     sharedTicket: '線上分票',
     myoOrganize: '我的揪團',
+    publish: '上架分票',
 }
+
+export const memberPath = [
+    ['info', '會員資料'],
+    ['tickets', '我的電影票'],
+    ['favorites', '我的收藏'],
+    ['comments', '我的評論'],
+    ['sharedTicket', '線上分票'],
+]
