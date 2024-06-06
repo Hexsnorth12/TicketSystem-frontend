@@ -71,6 +71,7 @@ export default function ForgetPassWord() {
                             <SelectInput
                                 options={option}
                                 label={'付款方式'}
+                                placeholder="線上付款"
                                 onSelectChange={handlePayMethodChange}
                             />
                         </div>
@@ -80,7 +81,7 @@ export default function ForgetPassWord() {
                         <InputComponent
                             name={'phone'}
                             label={'收件人手機'}
-                            type={'number'}
+                            type={'text'}
                             value={phone}
                             onChange={handlePhoneChange}
                         />
