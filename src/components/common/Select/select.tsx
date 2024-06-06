@@ -35,7 +35,7 @@ const SelectInput: React.FC<SelectProps> = ({
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
                 className={clsx(
-                    'hover:bg-mauve3 border-1 ring-black-300/10 block inline-flex h-full w-full justify-between items-center rounded-md border-gray-3 bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 placeholder:text-small2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:placeholder:text-body md:text-body',
+                    'hover:bg-mauve3 border-1 ring-black-300/10 inline-flex h-full w-full items-center justify-between rounded-md border-gray-3 bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-small2 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:text-body md:placeholder:text-body',
                     className, // Apply custom className
                 )}
                 aria-label="city"
