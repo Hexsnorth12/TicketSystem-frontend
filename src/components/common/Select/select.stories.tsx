@@ -1,5 +1,7 @@
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import SelectInput from './select'
+import SelectBox from './selectBox'
 
 const meta = {
     title: 'common/Select',
@@ -26,5 +28,21 @@ export const Primary: Story = {
         label: '縣市',
         options: priceOptions,
         onSelectChange: () => {},
+    },
+}
+
+export const HasBox: Story = {
+    args: {
+        placeholder: '訂閱電子報',
+        label: '縣市',
+        options: priceOptions,
+        onSelectChange: () => {},
+    },
+    render: function Render(args) {
+        return (
+            <SelectBox title="縣市">
+                <SelectInput {...args} />
+            </SelectBox>
+        )
     },
 }
