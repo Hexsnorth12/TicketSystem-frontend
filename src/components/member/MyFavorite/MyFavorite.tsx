@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { truncateName } from '@/utils'
-import { Movie } from '@/types'
+import { Product } from '@/types'
 
 interface MyFavoriteProps {
     movie: Movie

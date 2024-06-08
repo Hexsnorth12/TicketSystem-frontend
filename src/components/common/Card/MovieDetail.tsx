@@ -11,41 +11,31 @@ import Counter from '../Counter/Counter'
 import Tag from '../Tag/tag'
 import { IoCartOutline } from 'react-icons/io5'
 import { CiHeart } from 'react-icons/ci'
-
-interface Movie {
-    name: string
-    image: string
-    type: string
-    rank: number
-    price: number
-}
+import { ProductDetail } from '@/types'
+import fackImg from '@images/groupcard1.png'
 
 interface CardProps {
-    movies: Movie[]
+    movie: ProductDetail
 }
 
-const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
+const MovieDetailCard: React.FC<CardProps> = ({ movie }) => {
     const handleOnclick = () => {
         console.log('onclick！')
     }
 
     return (
         <div className=" h-full w-full">
-            {movies.map((movie, index) => {
-                return (
-                    <div
-                        key={index}
-                        className="relative h-[312px]  md:h-[600px]">
+            <div className="relative h-[312px]  md:h-[600px]">
                         <div className="relative h-full w-full">
                             <div
                                 className="absolute inset-0 bg-cover bg-center blur-lg"
                                 style={{
-                                    backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1)), url(${movie.image})`,
+                            backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1)), url(${fackImg})`,
                                 }}></div>
                             <div className="relative inset-0 flex h-full items-center justify-center bg-cover bg-center md:absolute md:inline-flex md:hidden">
                                 <Image
-                                    src={movie.image}
-                                    alt={movie.name}
+                            src={fackImg}
+                            alt={movie.title}
                                     width={200}
                                     height={264}
                                     objectFit="contain"
@@ -55,8 +45,8 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                             <div className="relative z-10  grid h-full grid-flow-col grid-rows-6 content-center gap-4 px-4 md:px-0">
                                 <div className="row-span-6 hidden items-center justify-center md:inline-flex">
                                     <Image
-                                        src={movie.image}
-                                        alt={movie.name}
+                                src={fackImg}
+                                alt={movie.title}
                                         width={360}
                                         height={480}
                                         objectFit="contain"
@@ -81,7 +71,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                                 </div>
                                 <div className="col-span-2 row-span-1 flex items-center justify-start border-b-[1px] border-white md:col-span-1">
                                     <div className=" text-headline5 text-white md:text-header2 md:font-bold">
-                                        {movie.name}
+                                {movie.title}
                                     </div>
                                 </div>
                                 <div className="col-span-2 row-span-1 flex items-center justify-start md:col-span-1">
@@ -169,8 +159,6 @@ const MovieDetailCard: React.FC<CardProps> = ({ movies }) => {
                             </div>
                         </div>
                     </div>
-                )
-            })}
         </div>
     )
 }

@@ -5,8 +5,7 @@ import { BASE_URL } from '@/definitions'
 import { jwt } from '@/utils'
 import fetchClient from './fetchClient'
 import { serverCode } from '@/definitions'
-import GoogleProvider from "next-auth/providers/google";
-
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -24,22 +23,15 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const response = await fetchClient({
+                    const data = await fetchClient({
                         method: 'POST',
-                        url: `${BASE_URL}api/v1/user/login`,
+                        url: 'api/v1/user/login',
                         body: JSON.stringify(credentials),
                     })
-                    if (!response.ok) {
-                        throw response
-                    }
-                    const data = await response.json()
 
                     if (!data.data) throw data
 
-                    if (response.ok && data.data) {
-                        return data.data
-                    }
-                    return null
+                    return data.data
                 } catch (error) {
                     if (
                         (
@@ -71,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-          }),
+        }),
     ],
     callbacks: {
         async jwt({ token, user }) {
@@ -108,15 +100,12 @@ export const authOptions: NextAuthOptions = {
 // TODO: 等後端實作再詳細處理
 async function refreshAccessToken(token: JWT) {
     try {
-        const response = await fetchClient({
+        const refreshedAccessToken: { token: string } = await fetchClient({
             method: 'POST',
-            url: BASE_URL + '/api/refresh',
+            url: BASE_URL + 'api/refresh',
             token: token.accessToken,
         })
 
-        if (!response.ok) throw response
-
-        const refreshedAccessToken: { token: string } = await response.json()
         const { exp } = jwt.decode(refreshedAccessToken.token)
         const user = token.user as User
         return {
