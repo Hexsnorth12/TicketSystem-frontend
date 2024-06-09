@@ -3,15 +3,11 @@
 
 // TODO: 這邊保留部分跟API 不同的屬性，避免直接拿掉導致相關的組件壞掉，有改到相關組件再順便回來改這裡
 export interface Product {
-    id: string // 要拿掉 , 等於 _id
     _id: string
-    name: string // 要拿掉 , 等於 title
     title: string
-    image: string // 要拿掉 , 等於 photoPath
     photoPath: string
     type: string
-    date: string // 要拿掉 , 沒有這個屬性
-    isAvailable: boolean // 要拿掉 , 沒有這個屬性
+    isAvailable: boolean // 要請後端新增
 }
 
 export interface ProductDetail extends Product {
@@ -33,7 +29,13 @@ export interface ProductDetail extends Product {
     confirmations: string[]
     cancelPolicies: string[]
     certificates: string[]
-    plans: string[]
+    plans: ProductPlan[]
     tags: string[]
     brief: string
+}
+
+type ProductPlan = {
+    name: string
+    discount: number
+    headCount: number
 }

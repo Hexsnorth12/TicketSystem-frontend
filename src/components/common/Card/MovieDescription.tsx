@@ -3,21 +3,12 @@ import React from 'react'
 import Image from 'next/image'
 import Chip from '@components/common/Chip/chip'
 import { ProductDetail } from '@/types'
-import fackImg from '@images/groupcard1.png'
-
-interface Movie {
-    name: string
-    image: string
-    type: string
-    rank: number
-    price: number
-}
 
 interface CardProps {
-    movie: ProductDetail
+    product: ProductDetail
 }
 
-const MovieDescriptionCard: React.FC<CardProps> = ({ movie }) => {
+const MovieDescriptionCard: React.FC<CardProps> = ({ product }) => {
     return (
         <div className="flex items-center justify-center">
             <div className="flex flex-col gap-y-6 md:gap-y-10 ">
@@ -88,8 +79,8 @@ const MovieDescriptionCard: React.FC<CardProps> = ({ movie }) => {
                         <Image
                             layout="responsive" // required
                             objectFit="cover" // change to suit your needs
-                            src={fackImg}
-                            alt={movie.title}
+                            src={product.photoPath}
+                            alt={product.title}
                             width={1076}
                             height={640}
                             className="rounded-lg"
@@ -102,8 +93,8 @@ const MovieDescriptionCard: React.FC<CardProps> = ({ movie }) => {
                         <Image
                             layout="responsive" // required
                             objectFit="cover" // change to suit your needs
-                            src={fackImg}
-                            alt={movie.title}
+                            src={product.photoPath}
+                            alt={product.title}
                             width={1076}
                             height={640}
                             className="rounded-lg"

@@ -41,10 +41,10 @@ export const Group = () => {
     )
 }
 export const MovieDetail = () => {
-    return <MovieDetailCard movie={DummyProductDetail} />
+    return <MovieDetailCard product={DummyProductDetail} />
 }
 export const MovieDescription = () => {
-    return <MovieDescriptionCard movie={DummyProductDetail} />
+    return <MovieDescriptionCard product={DummyProductDetail} />
 }
 export const Rec = () => {
     return <RecCard movies={Reccards} imageSizeMap={reccardImageSizeMap} />
