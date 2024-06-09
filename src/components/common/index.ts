@@ -6,7 +6,6 @@ import Button from './Button'
 import Checkbox from './Checkbox/checkbox'
 import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
-import RecCard from './Card/RecCard'
 import GroupCard from './Card/GroupCard'
 import ShareCard from './Card/ShareCard'
 import MemberMenu from './MemberMenu/MemberMenu'
@@ -35,7 +34,6 @@ export {
     Checkbox,
     Marquee,
     Card,
-    RecCard,
     GroupCard,
     ShareCard,
     SelectInput,
