@@ -102,7 +102,7 @@ async function refreshAccessToken(token: JWT) {
     try {
         const refreshedAccessToken: { token: string } = await fetchClient({
             method: 'POST',
-            url: BASE_URL + 'api/refresh',
+            url: 'api/refresh',
             token: token.accessToken,
         })
 
