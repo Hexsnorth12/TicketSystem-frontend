@@ -5,8 +5,7 @@ import { BASE_URL } from '@/definitions'
 import { jwt } from '@/utils'
 import fetchClient from './fetchClient'
 import { serverCode } from '@/definitions'
-import GoogleProvider from "next-auth/providers/google";
-
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -71,14 +70,20 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-          }),
+        }),
     ],
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
                 token.user = user
+                token.refreshToken = user.refreshToken
+                const { iat, exp } = (await jwt.decode(user.token)) as {
+                    iat: number
+                    exp: number
+                }
+                token.iat = iat
+                token.exp = exp
             }
-
             const accessTokenExpires = token.exp as number
             const currentUnixTimestamp = Math.floor(Date.now() / 1000)
             const accessTokenHasExpired =
@@ -105,27 +110,28 @@ export const authOptions: NextAuthOptions = {
     },
 }
 
-// TODO: 等後端實作再詳細處理
 async function refreshAccessToken(token: JWT) {
     try {
         const response = await fetchClient({
             method: 'POST',
-            url: BASE_URL + '/api/refresh',
-            token: token.accessToken,
+            url: BASE_URL + 'v1/user/refresh',
+            token: token.refreshToken,
         })
 
         if (!response.ok) throw response
 
-        const refreshedAccessToken: { token: string } = await response.json()
-        const { exp } = jwt.decode(refreshedAccessToken.token)
+        const {
+            data: { token: refreshedAccessToken },
+        } = await response.json()
+        const { exp } = jwt.decode(refreshedAccessToken)
         const user = token.user as User
         return {
             ...token,
             user: {
                 ...user,
-                token: refreshedAccessToken.token,
+                token: refreshedAccessToken,
             },
-            accessToken: refreshedAccessToken.token,
+            accessToken: refreshedAccessToken,
             exp,
         }
     } catch (error) {
