@@ -69,8 +69,14 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.user = user
+                token.refreshToken = user.refreshToken
+                const { iat, exp } = (await jwt.decode(user.token)) as {
+                    iat: number
+                    exp: number
+                }
+                token.iat = iat
+                token.exp = exp
             }
-
             const accessTokenExpires = token.exp as number
             const currentUnixTimestamp = Math.floor(Date.now() / 1000)
             const accessTokenHasExpired =
@@ -97,7 +103,6 @@ export const authOptions: NextAuthOptions = {
     },
 }
 
-// TODO: 等後端實作再詳細處理
 async function refreshAccessToken(token: JWT) {
     try {
         const refreshedAccessToken: { token: string } = await fetchClient({
@@ -112,9 +117,9 @@ async function refreshAccessToken(token: JWT) {
             ...token,
             user: {
                 ...user,
-                token: refreshedAccessToken.token,
+                token: refreshedAccessToken,
             },
-            accessToken: refreshedAccessToken.token,
+            accessToken: refreshedAccessToken,
             exp,
         }
     } catch (error) {

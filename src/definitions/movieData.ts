@@ -259,7 +259,7 @@ export const favorites = [
     },
     {
         name: '電影名稱4',
-        id: '3',
+        id: '4',
         price: 800,
         date: '2024/04/03',
         image: '/assets/sharecard4.jpg',

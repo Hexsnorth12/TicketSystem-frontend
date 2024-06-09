@@ -62,18 +62,18 @@ const Page: React.FC<pageProps> = () => {
             <div className="mt-6 flex flex-col space-y-3 md:m-0 md:flex-row md:space-y-0">
                 <Button
                     type={'button'}
-                    title={'退票'}
+                    title={'上架分票'}
                     onClick={() => {
-                        router.push('sharedTicket/publish/1')
+                        router.push('sharedTicket/publish/1', { scroll: false })
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
                     <span className="font-medium tracking-wider">上架分票</span>
                 </Button>
                 <Button
                     type={'button'}
-                    title={'退票'}
+                    title={'取得分票碼'}
                     onClick={() => {
-                        router.push('/createCode/1')
+                        router.push('/createCode/1', { scroll: false })
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 font-medium text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1 ">
                     <span className="font-medium tracking-wider">

@@ -9,7 +9,7 @@ const ChipComponent: React.FC<InputProps> = ({ value, onDelete }) => {
     return (
         <div className="flex h-8 items-center justify-center rounded-lg border-[1px] border-primary">
             <label className="flex w-full items-center justify-between gap-2 px-3 py-1 text-small2 font-regular leading-5 text-white">
-                {value}
+                <span className="flex-grow text-center">{value}</span>
                 {onDelete && (
                     <button
                         onClick={() => onDelete(value)}
@@ -21,5 +21,4 @@ const ChipComponent: React.FC<InputProps> = ({ value, onDelete }) => {
         </div>
     )
 }
-
 export default ChipComponent
