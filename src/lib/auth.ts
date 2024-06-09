@@ -1,7 +1,6 @@
 import type { NextAuthOptions, User } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { BASE_URL } from '@/definitions'
 import { jwt } from '@/utils'
 import fetchClient from './fetchClient'
 import { serverCode } from '@/definitions'
@@ -31,7 +30,10 @@ export const authOptions: NextAuthOptions = {
 
                     if (!data.data) throw data
 
-                    return data.data
+                    if (data.data) {
+                        return data.data
+                    }
+                    return null
                 } catch (error) {
                     if (
                         (
@@ -69,14 +71,8 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.user = user
-                token.refreshToken = user.refreshToken
-                const { iat, exp } = (await jwt.decode(user.token)) as {
-                    iat: number
-                    exp: number
-                }
-                token.iat = iat
-                token.exp = exp
             }
+
             const accessTokenExpires = token.exp as number
             const currentUnixTimestamp = Math.floor(Date.now() / 1000)
             const accessTokenHasExpired =
@@ -103,23 +99,27 @@ export const authOptions: NextAuthOptions = {
     },
 }
 
+// TODO: 等後端實作再詳細處理
 async function refreshAccessToken(token: JWT) {
     try {
-        const refreshedAccessToken: { token: string } = await fetchClient({
+        const response = await fetchClient({
             method: 'POST',
-            url: 'api/refresh',
+            url: '/api/refresh',
             token: token.accessToken,
         })
 
+        if (!response.ok) throw response
+
+        const refreshedAccessToken: { token: string } = await response.json()
         const { exp } = jwt.decode(refreshedAccessToken.token)
         const user = token.user as User
         return {
             ...token,
             user: {
                 ...user,
-                token: refreshedAccessToken,
+                token: refreshedAccessToken.token,
             },
-            accessToken: refreshedAccessToken,
+            accessToken: refreshedAccessToken.token,
             exp,
         }
     } catch (error) {
