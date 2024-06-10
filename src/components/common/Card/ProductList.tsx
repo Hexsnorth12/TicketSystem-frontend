@@ -1,10 +1,7 @@
-'use client'
-
+// /components/ProductList.tsx
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FaMapMarkerAlt } from 'react-icons/fa'
-
 import { TypeTag } from '@/components/Buttons'
 import Tag from '@components/common/Tag/tag'
 import {
@@ -12,36 +9,57 @@ import {
     truncateContent,
     truncateContentMobile,
 } from '../../../utils/numberUtils'
-interface Movie {
-    name: string
-    image: string
-    content: string
-    city: string
-    ticket: string
+import { FaMapMarkerAlt } from 'react-icons/fa'
+
+type Tag = {
+    tagId: string
 }
 
-interface CardProps {
-    movies: Movie[]
-    imageSizeMap: { [key: string]: { width: number; height: number } }
+type Product = {
+    _id: string
+    title: string
+    type: string
+    genre: string
+    theater: string
+    brief: string
+    vendor: string
+    price: number
+    amount: number
+    soldAmount: number
+    isLaunched: boolean
+    isPublic: boolean
+    recommendWeight: number
+    sellEndAt: string
+    sellStartAt: string
+    endAt: string
+    startAt: string
+    tags: Tag[]
+    photoPath: string
 }
 
-const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
+type ProductListProps = {
+    products: Product[]
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
     return (
         <>
             {/* Desktop-Navbar */}
             <div className="hidden md:grid md:grid-cols-5 md:gap-4 md:px-32">
-                {movies.map((movie, index) => (
+                {products.map((product) => (
                     <div
-                        key={index}
+                        key={product._id}
                         className="m-4 overflow-hidden rounded-lg p-4">
                         <Link href="">
-                            <div className="relative">
+                            <div className="relative h-[210px] w-[160px]">
                                 <Image
-                                    src={movie.image}
-                                    alt={movie.name}
-                                    width={imageSizeMap[movie.image]?.width}
-                                    height={imageSizeMap[movie.image]?.height}
-                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                    src={product.photoPath}
+                                    alt={product.title}
+                                    layout="fill"
+                                    // width={240}
+                                    // height={320}
+                                    objectFit="cover"
+                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -49,18 +67,19 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         </Link>
                         <div className="text-start">
                             <div className="mt-2 text-btn1 font-medium text-white">
-                                {truncateName(movie.name)}
+                                {truncateName(product.title)}
                             </div>
                             <div className="text-small2 font-regular">
                                 <div className="text-gray-5">
-                                    {truncateContent(movie.content)}
+                                    {' '}
+                                    {truncateContent(product.brief)}
                                 </div>
-                                <div className="flex text-white">
-                                    <TypeTag tagName={movie.ticket} />
-                                    <div className=" px-2">
+                                <div className="text-white">
+                                    <TypeTag tagName={product.type} />
+                                    <div className="pt-2">
                                         <Tag
                                             icon={FaMapMarkerAlt}
-                                            tagValue={movie.city}
+                                            tagValue={product.theater}
                                             iconColor="gray-4"
                                         />
                                     </div>
@@ -72,16 +91,16 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
             </div>
             {/* Mobile-Navbar */}
             <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
-                {movies.map((movie, index) => (
-                    <div key={index} className="mx-1 inline-block w-32">
+                {products.map((product) => (
+                    <div key={product._id} className="mx-1 inline-block w-32">
                         <Link href="">
-                            <div className="relative">
+                            <div className="relative h-[160px] w-[120px]">
                                 <Image
-                                    src={movie.image}
-                                    alt={movie.name}
-                                    width={imageSizeMap[movie.image]?.width}
-                                    height={imageSizeMap[movie.image]?.height}
-                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                    src={product.photoPath}
+                                    alt={product.title}
+                                    layout="fill"
+                                    objectFit="cover"
+                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -89,18 +108,19 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         </Link>
                         <div className="text-start">
                             <div className="mt-2 text-btn2 font-medium text-white">
-                                {truncateName(movie.name)}
+                                {truncateName(product.title)}
                             </div>
                             <div className="text-small2 font-regular">
                                 <div className="text-gray-5">
-                                    {truncateContentMobile(movie.content)}
+                                    {' '}
+                                    {truncateContentMobile(product.brief)}
                                 </div>
-                                <div className="flex text-white">
-                                    <div>{movie.ticket}</div>
-                                    <div className=" px-2">
+                                <div className="text-white">
+                                    <TypeTag tagName={product.type} />
+                                    <div className="py-2">
                                         <Tag
                                             icon={FaMapMarkerAlt}
-                                            tagValue={movie.city}
+                                            tagValue={product.theater}
                                             iconColor="gray-4"
                                         />
                                     </div>
@@ -114,4 +134,4 @@ const RecCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     )
 }
 
-export default RecCard
+export default ProductList
