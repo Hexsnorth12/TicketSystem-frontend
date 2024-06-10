@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Button, Input, SelectInput } from '@/components/common'
 import { TaiwanCities } from '@/definitions/taiwanCities'
+import Link from 'next/link'
 
 export default function SearchForm() {
     const [name, setname] = useState('')
@@ -162,15 +163,17 @@ export default function SearchForm() {
                             </Button>
                         </div>
                         <div className="col-span-3 mt-2 grow text-white md:col-span-1 md:mt-0">
-                            <Button
-                                type="submit"
-                                title="表单按钮"
-                                onClick={handleOnclick}
-                                className=""
-                                name="Ticketbutton"
-                                value="搜尋">
-                                搜尋
-                            </Button>
+                            <Link href="/search">
+                                <Button
+                                    type="submit"
+                                    title="表单按钮"
+                                    onClick={handleOnclick}
+                                    className=""
+                                    name="Ticketbutton"
+                                    value="搜尋">
+                                    搜尋
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
