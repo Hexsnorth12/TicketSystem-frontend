@@ -172,6 +172,7 @@ const JoinPage = () => {
                 {dummyData.events.map((item, index) => {
                     return (
                         <Event
+                            key={index}
                             img={item.img}
                             title={item.title}
                             movie={item.movie}
@@ -202,9 +203,11 @@ const JoinPage = () => {
                     </div>
                 </div>
                 {/* 地圖 */}
-                <img
+                <Image
                     src="/icons/join/dummy_map_should_be_deleted.png"
                     alt="dummy map"
+                    width={1500}
+                    height={1000}
                     style={{
                         width: '100%',
                         height: '100%',

@@ -14,7 +14,7 @@ const Event: React.FC<Props> = ({
     movie,
     img,
 }) => {
-    const formatedTime = formatJoinEventDate(time);
+    const formatedTime = formatJoinEventDate(time)
     console.log('formatedTime: ', formatedTime)
     return (
         <div className="flex gap-4">
