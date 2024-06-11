@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import ProductList from '@/components/common/Card/ProductList'
 import fetchClient from '@/lib/fetchClient'
 import { getUserSession } from '@/lib/auth.actions'
-import { BASE_URL } from '@/definitions'
 
 type Product = {
     limit: number

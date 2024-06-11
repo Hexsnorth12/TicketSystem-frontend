@@ -3,7 +3,6 @@ import { UserInfoForm } from '@/components/forms'
 import type { UserInfo } from '@/types'
 import fetchClient from '@/lib/fetchClient'
 import { getUserSession } from '@/lib/auth.actions'
-import { BASE_URL } from '@/definitions'
 
 const Page = async () => {
     const { session } = await getUserSession()
