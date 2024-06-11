@@ -6,8 +6,8 @@ export const truncateName = (name: string): string => {
 }
 
 export const truncateContent = (content: string): string => {
-    if (content && content.length > 12) {
-        return content.slice(0, 12) + '...'
+    if (content && content.length > 8) {
+        return content.slice(0, 8) + '...'
     }
     return content
 }

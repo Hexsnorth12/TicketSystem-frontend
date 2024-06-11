@@ -42,6 +42,8 @@ const ProductPage: React.FC = () => {
                     limit: '10',
                     page: '1',
                     isPublic: 'true',
+                    sortField: 'recommendWeight',
+                    sortOrder: 'asc',
                 })
 
                 const { data } = await fetchClient({
