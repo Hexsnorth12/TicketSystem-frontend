@@ -45,18 +45,12 @@ const ProductPage: React.FC = () => {
                     isPublic: 'true',
                 })
 
-                const response = await fetchClient({
+                const { data } = await fetchClient({
                     method: 'GET',
-                    url: `${BASE_URL}api/v1/product?${params.toString()}`,
+                    url: `api/v1/product?${params.toString()}`,
                     token,
                     tags: ['product'],
                 })
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`)
-                }
-
-                const { data } = await response.json()
 
                 if (data && data.products) {
                     setProducts(data.products)
