@@ -7,18 +7,13 @@ import {
 } from '@mdi/js'
 import { NavBanner } from '@components/layout'
 import Card from '@components/common/Card/Card'
-import RecCard from '@components/common/Card/RecCard'
 import GroupCard from '@components/common/Card/GroupCard'
 import ShareCard from '@components/common/Card/ShareCard'
-import {
-    Popcards,
-    Reccards,
-    Groupcards,
-    Sharecards,
-} from '../definitions/movieData'
+import { Popcards, Groupcards, Sharecards } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
 import Marquee from '@/components/common/Swiper/Marquee'
+import ProductPage from './product/page'
 
 interface HeaderTitleProps {
     title: string
@@ -49,12 +44,6 @@ const HomePage = async () => {
         240,
         320,
     )
-    const recCardImageSources = Reccards.map((RecCards) => RecCards.image)
-    const recCardImageSizeMap = generateImageSizeMap(
-        recCardImageSources,
-        240,
-        320,
-    )
     const groupCardImageSources = Groupcards.map(
         (GroupCards) => GroupCards.image,
     )
@@ -78,7 +67,7 @@ const HomePage = async () => {
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
             <Card movies={Popcards} imageSizeMap={popCardImageSizeMap} />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecCard movies={Reccards} imageSizeMap={recCardImageSizeMap} />
+            <ProductPage />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}

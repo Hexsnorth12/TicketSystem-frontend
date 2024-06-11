@@ -7,24 +7,24 @@ export default {
     component: MyFavorite,
 }
 const dummyData = {
-    name: '電影名稱1',
-    id: '3',
+    title: '沙丘3',
+    _id: '6665805ad23d0fe8146bcc0e',
     price: 800,
-    date: '2024/04/03',
-    image: fakeImage.src,
+    startAt: '2024-06-19T16:34:02.686Z',
+    endAt: '2024-07-20T14:34:02.685Z',
+    photoPath: fakeImage.src,
     type: '科幻',
-    city: '台北市',
     isAvailable: true,
 }
 
 const InvalidData = {
-    name: '電影名稱1',
-    id: '3',
+    title: '沙丘3',
+    _id: '6665805ad23d0fe8146bcc0e',
     price: 800,
-    date: '2024/04/03',
-    image: fakeImage.src,
+    startAt: '2024-06-19T16:34:02.686Z',
+    endAt: '2024-07-20T14:34:02.685Z',
+    photoPath: fakeImage.src,
     type: '科幻',
-    city: '台北市',
     isAvailable: false,
 }
 
@@ -32,7 +32,7 @@ export const Primary = () => {
     return (
         <div className="bg-bray-1 container">
             <ul className="flex">
-                <MyFavorite movie={dummyData} />
+                <MyFavorite product={dummyData} />
             </ul>
         </div>
     )
@@ -42,7 +42,7 @@ export const Invalid = () => {
     return (
         <div className="bg-bray-1 container">
             <ul className="flex">
-                <MyFavorite movie={InvalidData} />
+                <MyFavorite product={InvalidData} />
             </ul>
         </div>
     )

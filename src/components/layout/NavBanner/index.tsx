@@ -36,8 +36,11 @@ const NavBanner: React.FC<Props> = ({ type }) => {
                 <div className="content-container mt-4 text-center text-small2 text-[#858585] md:text-btn1">
                     {CONTENT[type]}
                 </div>
-                <div className="navigation-container mt-6 text-center">
-                    <Navigate href={HREF[type]} icon className="bg-transparent">
+                <div className="navigation-container mt-6 flex justify-center text-center">
+                    <Navigate
+                        href={HREF[type]}
+                        icon
+                        buttonStyle="bg-transparent">
                         {BUTTON[type]}
                     </Navigate>
                 </div>

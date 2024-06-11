@@ -4,8 +4,11 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import { Footer, Header } from '@/components/layout'
 import StoreProviders from '@/components/common/StoreProviders'
+import ClientSessionProvider from '@/components/common/ClientSessionProvider'
+import DateProvider from '@/components/layout/DateProvider'
 import { getUserSession } from '@/lib/auth.actions'
-
+import { Suspense } from 'react'
+import Loading from './loading'
 import '@/styles/globals.css'
 
 const noto_Sans_TC = Noto_Sans_TC({ subsets: ['latin'] })
@@ -27,20 +30,27 @@ export default async function RootLayout({
     const isAuth = session?.user.accountType ? true : false
     return (
         <StoreProviders>
-            <html lang="en">
-                <body
-                    className={`${noto_Sans_TC.className} flex flex-col bg-gray-2`}>
-                    <Header
-                        logoSrc="/assets/movie-go-logo.png"
-                        isAuth={isAuth}
-                    />
-                    <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
-                        {children}
-                        {modal}
-                    </main>
-                    <Footer />
-                </body>
-            </html>
+            <DateProvider>
+                <html lang="en">
+                    <body
+                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-1`}>
+                        <ClientSessionProvider session={session}>
+                            {' '}
+                            <Header
+                                logoSrc="/assets/movie-go-logo.png"
+                                isAuth={isAuth}
+                            />
+                            <Suspense fallback={<Loading />}>
+                                <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
+                                    {children}
+                                    {modal}
+                                </main>
+                            </Suspense>
+                            <Footer />
+                        </ClientSessionProvider>
+                    </body>
+                </html>
+            </DateProvider>
         </StoreProviders>
     )
 }

@@ -1,10 +1,10 @@
 import type { NextAuthOptions, User } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { BASE_URL } from '@/definitions'
 import { jwt } from '@/utils'
 import fetchClient from './fetchClient'
 import { serverCode } from '@/definitions'
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -22,19 +22,15 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const response = await fetchClient({
+                    const data = await fetchClient({
                         method: 'POST',
-                        url: `${BASE_URL}api/v1/user/login`,
+                        url: 'api/v1/user/login',
                         body: JSON.stringify(credentials),
                     })
-                    if (!response.ok) {
-                        throw response
-                    }
-                    const data = await response.json()
 
                     if (!data.data) throw data
 
-                    if (response.ok && data.data) {
+                    if (data.data) {
                         return data.data
                     }
                     return null
@@ -65,6 +61,10 @@ export const authOptions: NextAuthOptions = {
                     )
                 }
             },
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
     ],
     callbacks: {
@@ -104,7 +104,7 @@ async function refreshAccessToken(token: JWT) {
     try {
         const response = await fetchClient({
             method: 'POST',
-            url: BASE_URL + '/api/refresh',
+            url: '/api/refresh',
             token: token.accessToken,
         })
 

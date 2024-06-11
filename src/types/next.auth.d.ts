@@ -12,6 +12,7 @@ declare module 'next-auth' {
         email: string
         accountType: string
         token: string
+        refreshToken: string
     }
 }
 

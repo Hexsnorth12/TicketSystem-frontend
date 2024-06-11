@@ -11,6 +11,8 @@ import { Input } from '@components/common'
 import { SearchBtn } from '@/components/Buttons'
 import { Modal } from '@components/common'
 import { SearchForm } from '@components/forms'
+import Link from 'next/link'
+
 const Marquee: React.FC = () => {
     const [search, setSearch] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -38,18 +40,16 @@ const Marquee: React.FC = () => {
                 modules={[Pagination, Navigation]}
                 className="h-full w-full">
                 {Popcards.map((popcard, index) => (
-                    <>
-                        <SwiperSlide key={index}>
-                            <div className="h-full w-full">
-                                <Image
-                                    fill
-                                    objectFit="cover"
-                                    src={popcard.image}
-                                    alt={popcard.name}
-                                />
-                            </div>
-                        </SwiperSlide>
-                    </>
+                    <SwiperSlide key={index}>
+                        <div className="h-full w-full">
+                            <Image
+                                fill
+                                objectFit="cover"
+                                src={popcard.image}
+                                alt={popcard.name}
+                            />
+                        </div>
+                    </SwiperSlide>
                 ))}
             </Swiper>
             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center  bg-gradient-to-b from-black/60  via-black/0 to-black/60 text-center">
@@ -85,7 +85,12 @@ const Marquee: React.FC = () => {
                                         onClick={handleFilterClick}
                                     />
                                     <SearchBtn type="recommend" />
-                                    <SearchBtn type="search" active={true} />
+                                    <Link href="/search">
+                                        <SearchBtn
+                                            type="search"
+                                            active={true}
+                                        />
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -3,15 +3,50 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
+import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
+import avatar from '@images/avatar.jpg'
+import { signOut, useSession } from 'next-auth/react'
+
+//TODO: 寫好購物車status後需刪除此資料
+const dummyCartItems = [
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+    {
+        img: '/assets/groupcard1.png',
+        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
+        amount: 300,
+        type: '劇情片',
+    },
+]
 
 interface HeaderProps {
     logoSrc: string
     isAuth: boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
+    const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const isAuth = !!session
+
+    const [showCartModal, setShowCartModal] = useState(false)
+
+    const onLogout = async () => {
+        signOut({
+            redirect: true,
+            callbackUrl: `${window.location.origin}/login`,
+        })
+    }
+
+    function showCartModalHandler(show = false) {
+        setShowCartModal(show)
+    }
+
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
             <div className="container relative flex items-center justify-between px-4">
@@ -52,15 +87,29 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
-                    <Link href="/movies">
-                        <p className="text-white">電影總表</p>
+                    <Link href="/movies" legacyBehavior>
+                        <a className="movies-link text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            電影總表
+                        </a>
                     </Link>
-                    <Link href="/gatherings">
-                        <p className="text-white">一起揪團</p>
+                    <Link href="/gatherings" legacyBehavior>
+                        <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            一起揪團
+                        </a>
                     </Link>
-                    <Link href="/cart">
-                        <Cartbtn amount={0} />
-                    </Link>
+                    <div
+                        className="relative"
+                        onMouseEnter={() => showCartModalHandler(true)}
+                        onMouseLeave={() => showCartModalHandler()}>
+                        <Link href="/cart">
+                            <Cartbtn amount={0} />
+                        </Link>
+                        <CartModal
+                            visible={showCartModal}
+                            items={dummyCartItems}
+                            leaveModalHandler={() => showCartModalHandler()}
+                        />
+                    </div>
                     {!isAuth ? (
                         <Link href="/login" scroll={false}>
                             <div
@@ -77,27 +126,85 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, isAuth }) => {
 
             {/* Mobile-Sidebar */}
             <div
-                className={`fixed mt-3 h-full w-[75%] transform bg-gray-2 transition-transform duration-300 md:hidden ${
+                className={`fixed mt-4 h-full w-[75%] transform bg-gray-2 transition-transform duration-300 md:hidden ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}>
-                <nav className="flex flex-col space-y-4 p-4">
-                    <Link href="/movies" className="block px-4 py-2 text-white">
+                <nav className="flex flex-col space-y-4 p-4 text-center">
+                    {isAuth && (
+                        <ul className="right-0 top-auto rounded-lg bg-gray-1 p-4 text-center md:h-auto md:w-[160px]">
+                            {isAuth && (
+                                <div
+                                    className={
+                                        'mx-auto mb-4 h-[48px] w-[48px] rounded-full bg-gradient-to-b from-primary to-gray-6 p-[3px]'
+                                    }>
+                                    <Image
+                                        src={avatar}
+                                        alt="avatar"
+                                        className={
+                                            'h-full w-full rounded-full object-cover'
+                                        }
+                                        width={48}
+                                        height={48}
+                                    />
+                                </div>
+                            )}
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/info" scroll={false}>
+                                    會員資料
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/tickets" scroll={false}>
+                                    我的電影票
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/favorites" scroll={false}>
+                                    我的收藏
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/comments" scroll={false}>
+                                    我的評論
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/sharedTicket" scroll={false}>
+                                    線上分票
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link href="/user/mygroups" scroll={false}>
+                                    我的揪團
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
+                    <Link
+                        href="/movies"
+                        className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
                         電影總表
                     </Link>
                     <Link
                         href="/gatherings"
-                        className="block px-4 py-2 text-white">
+                        className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
                         一起揪團
                     </Link>
-                    {!isAuth ? (
+                    {!isAuth && (
                         <Link
                             href="/login"
                             className="block px-4 py-2 text-white"
                             scroll={false}>
                             會員登入
                         </Link>
-                    ) : (
-                        <MemberMenu />
+                    )}
+                    {isAuth && (
+                        <Link
+                            href="/login"
+                            className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
+                            onClick={onLogout}>
+                            會員登出
+                        </Link>
                     )}
                 </nav>
             </div>
