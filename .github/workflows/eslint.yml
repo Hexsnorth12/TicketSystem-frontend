@@ -39,8 +39,8 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm install  
+      - name: Fix code style issues with Prettier
+        run: npm run format
       - name: Run Prettier check
         run: npx prettier --check "**/*.tsx"
-      - name: Fix code style issues with Prettier
-        run: npx prettier --write "**/*.tsx"
         
