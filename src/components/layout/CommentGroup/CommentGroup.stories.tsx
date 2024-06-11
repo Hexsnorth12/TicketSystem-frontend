@@ -31,6 +31,6 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
     args: {
-        pageIndex: 1,
+        productId: '6665817fd23d0fe8146bcc80',
     },
 }
