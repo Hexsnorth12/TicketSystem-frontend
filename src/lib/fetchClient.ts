@@ -1,4 +1,5 @@
 import { getSession, signOut } from 'next-auth/react'
+import { BASE_URL } from '@/definitions'
 
 interface fetchClientProps {
     method?: string
@@ -18,12 +19,12 @@ async function fetchClient({
     try {
         const session = await getSession()
         const accessToken = token || session?.user.token
-        const response = await fetch(url.toString(), {
+        const response = await fetch(BASE_URL + url.toString(), {
             method: method,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + accessToken,
+                ...(accessToken && { Authorization: 'Bearer ' + accessToken }),
             },
             body: body || undefined,
             ...(tags && { next: { tags } }),
@@ -32,8 +33,8 @@ async function fetchClient({
         if (!response.ok) {
             throw response
         }
-
-        return response
+        const data = await response.json()
+        return data
     } catch (error) {
         if (error instanceof Response) {
             if (error.status === 401) {

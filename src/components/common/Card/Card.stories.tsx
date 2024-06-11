@@ -6,7 +6,7 @@ import MovieDescriptionCard from './MovieDescription'
 import MovieDetailCard from './MovieDetail'
 
 import { Popcards, Groupcards } from '@/definitions/movieData'
-import { MovieDetailCards } from '@/definitions/movieDetailData'
+import { DummyProductDetail } from '@/definitions/movieDetailData'
 import { generateImageSizeMap } from '@/utils'
 const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
 const popcardImageSizeMap = generateImageSizeMap(popcardImageSources, 240, 320)
@@ -38,8 +38,8 @@ export const Group = () => {
     )
 }
 export const MovieDetail = () => {
-    return <MovieDetailCard movies={MovieDetailCards} />
+    return <MovieDetailCard product={DummyProductDetail} />
 }
 export const MovieDescription = () => {
-    return <MovieDescriptionCard movies={MovieDetailCards} />
+    return <MovieDescriptionCard product={DummyProductDetail} />
 }

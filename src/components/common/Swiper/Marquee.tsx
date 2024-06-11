@@ -40,18 +40,16 @@ const Marquee: React.FC = () => {
                 modules={[Pagination, Navigation]}
                 className="h-full w-full">
                 {Popcards.map((popcard, index) => (
-                    <>
-                        <SwiperSlide key={index}>
-                            <div className="h-full w-full">
-                                <Image
-                                    fill
-                                    objectFit="cover"
-                                    src={popcard.image}
-                                    alt={popcard.name}
-                                />
-                            </div>
-                        </SwiperSlide>
-                    </>
+                    <SwiperSlide key={index}>
+                        <div className="h-full w-full">
+                            <Image
+                                fill
+                                objectFit="cover"
+                                src={popcard.image}
+                                alt={popcard.name}
+                            />
+                        </div>
+                    </SwiperSlide>
                 ))}
             </Swiper>
             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center  bg-gradient-to-b from-black/60  via-black/0 to-black/60 text-center">
