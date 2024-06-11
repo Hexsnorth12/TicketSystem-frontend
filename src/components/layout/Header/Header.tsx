@@ -7,22 +7,60 @@ import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
+import { useCartStore } from '../../../stores/useCartStore'
+import useProductStore from '../../../stores/productStore'
+import useFromStore from '../../../hooks/useFromStore'
 
-//TODO: 寫好購物車status後需刪除此資料
-const dummyCartItems = [
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-]
+import { ProductInfo, ApiResponseItem } from '@/types/cart'
+import { CartItem } from '@/types/product'
+
+//FIXME: 在使用前定义 mapCartItemToProductInfo 函数
+const apiResponse = {
+    items: [
+        {
+            product: {
+                _id: '665323ce2cff52b99ea393c8',
+                title: '這是個很棒的電影名稱喔',
+                type: 'preScreeningMeeting',
+                genre: 'action',
+                price: 1100,
+                soldAmount: 0,
+                amount: 100,
+                isLaunched: true,
+                photoPath: '/assets/popcard2.jpg',
+                sellStartAt: '2024-06-10T12:06:41.541Z',
+                sellEndAt: '2024-06-10T12:06:41.541Z',
+                isAvailable: false,
+            },
+            amount: 2200,
+        },
+    ],
+}
+console.log(useProductStore, 'useProductStore')
+
+function mapApiResponseItemToProductInfo(item: ApiResponseItem): ProductInfo {
+    return {
+        _id: item.product._id,
+        img: item.product.photoPath,
+        name: item.product.title,
+        amount: item.amount, // 购物车中的数量
+        type: item.product.type,
+        genre: item.product.genre,
+        price: item.product.price,
+        soldAmount: item.product.soldAmount,
+        totalAmount: item.product.amount, // 产品的总数量
+        isLaunched: item.product.isLaunched,
+        sellStartAt: item.product.sellStartAt,
+        sellEndAt: item.product.sellEndAt,
+        title: item.product.title, // 添加缺失的属性
+        photoPath: item.product.photoPath, // 添加缺失的属性
+        isAvailable: item.product.isAvailable, // 添加缺失的属性
+    }
+}
+const productInfos: ProductInfo[] = apiResponse.items.map(
+    mapApiResponseItemToProductInfo,
+)
+console.log(productInfos, 'productInfos')
 
 interface HeaderProps {
     logoSrc: string
@@ -46,6 +84,20 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
+    const totalItems = useFromStore(
+        useCartStore,
+        (state) => state.totalItems,
+        0,
+    ) // 提供初始值 0
+    console.log(totalItems, 'totalItems')
+
+    const cart = useCartStore((state) => state.cart)
+
+    // 计算购物车中商品的总价格
+    const total = cart.reduce(
+        (acc, product) => acc + product.price * (product.quantity as number),
+        0,
+    )
 
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
@@ -83,7 +135,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     />
                 </Link>
                 <Link href="/cart" className="flex md:hidden">
-                    <Cartbtn amount={0} />
+                    <Cartbtn amount={totalItems ?? 0} />
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
@@ -102,11 +154,13 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                         onMouseEnter={() => showCartModalHandler(true)}
                         onMouseLeave={() => showCartModalHandler()}>
                         <Link href="/cart">
-                            <Cartbtn amount={0} />
+                            <Cartbtn amount={totalItems} />
                         </Link>
                         <CartModal
                             visible={showCartModal}
-                            items={dummyCartItems}
+                            items={productInfos}
+                            totalItems={totalItems}
+                            total={total}
                             leaveModalHandler={() => showCartModalHandler()}
                         />
                     </div>

@@ -13,16 +13,16 @@ import Tag from '../Tag/tag'
 import { IoCartOutline } from 'react-icons/io5'
 import { CiHeart } from 'react-icons/ci'
 import { ProductDetail } from '@/types'
-
+import { useCartStore } from '../../../stores/useCartStore'
 interface CardProps {
     product: ProductDetail
 }
 
 const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const handleOnclick = () => {
-        console.log('onclick！')
+        addToCart(product)
     }
-
+    const addToCart = useCartStore((state) => state.addToCart)
     const plans = useMemo(() => {
         return product.plans.map((item, index) => (
             <Button

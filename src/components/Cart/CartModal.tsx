@@ -10,8 +10,12 @@ import CartModalItem from './CartModalItem'
 export const CartModal: React.FC<Props> = ({
     visible,
     items,
+    totalItems,
+    total,
     leaveModalHandler,
 }) => {
+    console.log(items, 'items')
+
     function showModal() {
         return visible ? 'md:flex' : 'md:hidden'
     }
@@ -50,6 +54,7 @@ export const CartModal: React.FC<Props> = ({
                             <CartModalItem
                                 key={index}
                                 productInfo={item}
+                                totalItems={totalItems}
                                 className={borderStyle}
                             />
                         )
@@ -58,12 +63,12 @@ export const CartModal: React.FC<Props> = ({
 
                 <div className="mb-3 flex w-full justify-between rounded-[4px] bg-gray-1 px-3 py-2 font-normal text-white">
                     <p>
-                        總計{' '}
-                        <span className="text-primary">{totalQuantity}</span>{' '}
+                        總計 <span className="text-primary">{totalItems}</span>{' '}
                         項商品
                     </p>
                     <p>
-                        NT$ <span className="text-primary">{totalAmount}</span>
+                        NT${' '}
+                        <span className="text-primary">{total.toFixed(2)}</span>
                     </p>
                 </div>
 

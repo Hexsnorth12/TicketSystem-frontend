@@ -34,8 +34,13 @@ export interface ProductDetail extends Product {
     brief: string
 }
 
-type ProductPlan = {
+export interface ProductPlan {
     name: string
     discount: number
     headCount: number
+}
+// 擴展 CartItem 接口
+export interface CartItem extends ProductDetail {
+    quantity: number
+    selectedPlan?: ProductPlan // 可選的選擇方案
 }

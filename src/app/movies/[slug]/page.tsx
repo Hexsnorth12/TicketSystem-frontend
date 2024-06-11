@@ -2,9 +2,11 @@ import MovieDetailCard from '@/components/common/Card/MovieDetail'
 import MovieDetailTab from '@components/common/Tab/movieDetail'
 import CommentGroup from '@components/layout/CommentGroup/CommentGroup'
 import * as React from 'react'
+
 import MovieDescriptionCard from '@/components/common/Card/MovieDescription'
 import fetchClient from '@/lib/fetchClient'
 import { ProductDetail } from '@/types/index'
+import useProductStore from '../../../stores/productStore'
 
 // 定義 Movie 接口
 
