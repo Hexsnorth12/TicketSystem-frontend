@@ -25,6 +25,7 @@ import MultipleSelect from './MultipleSelect/MultipleSelect'
 import ModalContent from './Modal/ModalContent'
 import TextArea from './TextArea/TextArea'
 import SelectBox from './Select/selectBox'
+import EmptyData from './EmptyData/EmptyData'
 
 export {
     Modal,
@@ -54,4 +55,5 @@ export {
     TextArea,
     SelectBox,
     MultipleSelect,
+    EmptyData,
 }

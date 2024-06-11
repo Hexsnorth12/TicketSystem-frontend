@@ -22,5 +22,9 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        message: '沒有資料',
+        buttonMessage: '前往首頁',
+        resetURL: '/',
+    },
 }
