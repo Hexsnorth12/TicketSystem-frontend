@@ -9,3 +9,12 @@ export function formatTimeString(date: Date) {
     if (minutes < 10) minutes = '0' + minutes
     return `${hours}:${minutes}`
 }
+
+export function formatJoinEventDate(date: Date) {
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const eventDate = date.getDate()
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    return `${year}.${month}.${eventDate} ${hour}:${minute}`
+}

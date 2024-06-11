@@ -33,7 +33,7 @@ export default async function RootLayout({
             <DateProvider>
                 <html lang="en">
                     <body
-                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-2`}>
+                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-1`}>
                         <ClientSessionProvider session={session}>
                             {' '}
                             <Header

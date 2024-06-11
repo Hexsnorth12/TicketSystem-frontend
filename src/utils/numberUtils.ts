@@ -18,3 +18,10 @@ export const truncateContentMobile = (content: string): string => {
     }
     return content
 }
+
+export const truncateJoinEvent = (content: string): string => {
+    if (content && content.length > 10) {
+        return content.slice(0, 10) + '...'
+    }
+    return content
+}
