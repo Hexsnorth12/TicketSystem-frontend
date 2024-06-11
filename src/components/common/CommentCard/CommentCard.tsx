@@ -1,12 +1,12 @@
 'use client'
 
 import React from 'react'
-import Image, { StaticImageData } from 'next/image'
+import Image from 'next/image'
 import star from '@icon/star_gray.svg'
 import clsx from 'clsx'
 
 interface CommentCardProps {
-    avatar: StaticImageData
+    avatar: string
     userName: string
     comment: string
     stars?: number
