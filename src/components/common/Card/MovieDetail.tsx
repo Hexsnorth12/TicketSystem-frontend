@@ -22,7 +22,6 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const handleOnclick = () => {
         console.log('onclick！')
     }
-    console.log('res', product)
 
     const plans = useMemo(() => {
         return product.plans.map((item, index) => (
