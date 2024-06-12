@@ -56,11 +56,12 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                                     src={product.photoPath}
                                     alt={product.title}
                                     layout="fill"
-                                    // width={240}
-                                    // height={320}
                                     objectFit="cover"
                                     className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300"
                                 />
+                                <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
+                                    <TypeTag tagName={product.genre} />
+                                </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>
@@ -74,7 +75,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                                     {' '}
                                     {truncateContent(product.brief)}
                                 </div>
-                                <div className="text-white">
+                                <div className="flex text-white">
                                     <TypeTag tagName={product.type} />
                                     <div className="pt-2">
                                         <Tag
@@ -102,6 +103,9 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                                     objectFit="cover"
                                     className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300"
                                 />
+                                <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
+                                    <TypeTag tagName={product.genre} />
+                                </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>
