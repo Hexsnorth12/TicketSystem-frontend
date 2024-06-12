@@ -35,11 +35,12 @@ const SelectInput: React.FC<SelectProps> = ({
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
                 className={clsx(
-                    'hover:bg-mauve3 border-1 ring-black-300/10 block inline-flex h-full w-full items-center rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary data-[placeholder]:text-body md:px-4 md:py-2.5 md:text-body',
+                    'hover:bg-mauve3 border-1 ring-black-300/10 inline-flex h-full w-full items-center justify-between rounded-md border-gray-3 bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-small2 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:text-body md:placeholder:text-body',
                     className, // Apply custom className
                 )}
                 aria-label="city"
-                disabled={options.length === 0}>
+                disabled={options.length === 0}
+                asChild={false}>
                 <Select.Value placeholder={placeholder} />
                 <Select.Icon className="text-violet11">
                     <ChevronDownIcon />
@@ -50,22 +51,23 @@ const SelectInput: React.FC<SelectProps> = ({
                     <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
-                    <Select.Viewport className="p-[5px]">
+                    <Select.Viewport className="rounded-lg border border-gray-3">
                         <Select.Group>
-                            <Select.Label className="text-mauve11 px-[25px] text-xs leading-[25px]">
+                            <Select.Label className="flex justify-start text-body">
                                 {label}
                             </Select.Label>
                             {options.map((option, index) => (
                                 <SelectItem
                                     key={index}
                                     value={option}
-                                    onClick={() => handleChange(option)}>
+                                    onClick={() => handleChange(option)}
+                                    className="flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:text-primary">
                                     {option}
                                 </SelectItem>
                             ))}
                         </Select.Group>
                     </Select.Viewport>
-                    <Select.ScrollDownButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+                    <Select.ScrollDownButton className="text-violet11 flex  h-[25px] cursor-default items-center justify-center bg-white">
                         <ChevronDownIcon />
                     </Select.ScrollDownButton>
                 </Select.Content>

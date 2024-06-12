@@ -49,7 +49,7 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/collects" scroll={false}>
+                        <Link href="/user/favorites" scroll={false}>
                             我的收藏
                         </Link>
                     </li>
@@ -59,7 +59,7 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/onlinetickets" scroll={false}>
+                        <Link href="/user/sharedTicket" scroll={false}>
                             線上分票
                         </Link>
                     </li>

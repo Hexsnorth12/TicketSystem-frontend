@@ -5,25 +5,26 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { truncateName } from '@/utils'
-import { Movie } from '@/types'
+import { Product } from '@/types'
 
 interface MyFavoriteProps {
-    movie: Movie
+    product: Product
 }
 
-const MyFavorite: React.FC<MyFavoriteProps> = ({ movie }) => {
+const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
     return (
         <li
+            key={product._id}
             className={clsx('relative rounded-lg bg-gray-1', {
                 'before:absolute before:top-0  before:z-20 before:flex before:h-full before:w-full before:items-center before:justify-center before:text-header5 before:text-white before:content-["已失效"]':
-                    !movie.isAvailable,
+                    !product.isAvailable,
                 'after:absolute after:top-0 after:z-10 after:h-full after:w-full after:rounded-lg after:bg-black after:opacity-60 after:content-[""]':
-                    !movie.isAvailable,
+                    !product.isAvailable,
             })}>
             <Link href={''} className="">
                 <div className="relative rounded-t-lg">
                     <Image
-                        src={movie.image}
+                        src={product.photoPath}
                         alt="movie picture"
                         width={216}
                         height={129}
@@ -34,9 +35,9 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ movie }) => {
                     </p>
                 </div>
                 <div className="border-b border-gray-3 px-3 py-3 md:py-4">
-                    <p className="text-small2 text-gray-5">{movie.type}</p>
+                    <p className="text-small2 text-gray-5">{product.type}</p>
                     <p className="text-btn2 text-white">
-                        {truncateName(movie.name)}
+                        {truncateName(product.title)}
                     </p>
                 </div>
                 <div className="flex px-2 py-2">

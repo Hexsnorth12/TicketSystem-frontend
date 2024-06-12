@@ -7,7 +7,8 @@ import StoreProviders from '@/components/common/StoreProviders'
 import ClientSessionProvider from '@/components/common/ClientSessionProvider'
 import DateProvider from '@/components/layout/DateProvider'
 import { getUserSession } from '@/lib/auth.actions'
-
+import { Suspense } from 'react'
+import Loading from './loading'
 import '@/styles/globals.css'
 
 const noto_Sans_TC = Noto_Sans_TC({ subsets: ['latin'] })
@@ -32,17 +33,19 @@ export default async function RootLayout({
             <DateProvider>
                 <html lang="en">
                     <body
-                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-2`}>
+                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-1`}>
                         <ClientSessionProvider session={session}>
                             {' '}
                             <Header
                                 logoSrc="/assets/movie-go-logo.png"
                                 isAuth={isAuth}
                             />
-                            <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
-                                {children}
-                                {modal}
-                            </main>
+                            <Suspense fallback={<Loading />}>
+                                <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
+                                    {children}
+                                    {modal}
+                                </main>
+                            </Suspense>
                             <Footer />
                         </ClientSessionProvider>
                     </body>
