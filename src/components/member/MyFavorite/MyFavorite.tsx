@@ -1,17 +1,37 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { truncateName } from '@/utils'
 import { Product } from '@/types'
+import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
+import { useSession } from 'next-auth/react'
 
 interface MyFavoriteProps {
     product: Product
 }
 
 const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
+    const [isFavorite, setIsFavorite] = useState(true)
+    const [removeFavorite, { isLoading }] = useRemoveFavoriteMutation()
+    const { data: session } = useSession()
+
+    const handleUpdateFavorite = async () => {
+        try {
+            setIsFavorite(false)
+            await removeFavorite({
+                productId: product._id,
+                token: session?.accessToken ?? '',
+            }).unwrap()
+        } catch (error) {
+            setIsFavorite(true)
+        }
+    }
     return (
         <li
             key={product._id}
@@ -20,8 +40,9 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
                     !product.isAvailable,
                 'after:absolute after:top-0 after:z-10 after:h-full after:w-full after:rounded-lg after:bg-black after:opacity-60 after:content-[""]':
                     !product.isAvailable,
+                hidden: !isFavorite,
             })}>
-            <Link href={''} className="">
+            <Link href={''}>
                 <div className="relative rounded-t-lg">
                     <Image
                         src={product.photoPath}
@@ -30,7 +51,9 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
                         height={129}
                         className="rounded-t-lg"
                     />
-                    <p className="absolute right-1 top-1 z-30 text-small2 text-gray-4 hover:text-primary">
+                    <p
+                        onClick={handleUpdateFavorite}
+                        className="absolute right-1 top-1 z-30 text-small2 text-gray-4 hover:text-primary">
                         移除
                     </p>
                 </div>

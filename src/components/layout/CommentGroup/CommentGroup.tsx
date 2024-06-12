@@ -1,7 +1,7 @@
 import React from 'react'
 import { CommentCard, EmptyData } from '@components/common'
 
-import fetchClient from '@/lib/fetchClient'
+import fetchServer from '@/lib/fetchServer'
 import { PaginationWrapper } from '@/components/common'
 import { Comment } from '@/types'
 
@@ -15,9 +15,10 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
     const {
         data: { comments, totalCount },
     }: { data: { comments: Comment[]; totalCount: number; page: number } } =
-        await fetchClient({
+        await fetchServer({
             method: 'GET',
             url: `api/v1/comment?limit=${10}&page=${pageIndex}&status=active&productIds=${productId}`,
+            isTakeToken: false,
         })
 
     if (comments.length === 0) {
