@@ -33,6 +33,7 @@ export interface ProductDetail extends Product {
     plans: ProductPlan[]
     tags: string[]
     brief: string
+    isFavorite: boolean
 }
 
 type ProductPlan = {
