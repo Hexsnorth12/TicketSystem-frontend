@@ -1,9 +1,6 @@
-'use server'
-
-import { BASE_URL } from '@/definitions'
 import { ZodError, z } from 'zod'
 import { State } from '@/types'
-import { getUserSession } from '@/lib/auth.actions'
+import fetchClient from '@/lib/fetchClient'
 
 const joinFormSchema = z.object({
     name: z
@@ -21,7 +18,7 @@ const joinFormSchema = z.object({
     lineId: z
         .string({ message: 'LINE ID格式不正確' })
         .min(1, { message: '請輸入LINE ID' }),
-    groupId: z.string().min(1),
+    group: z.string(),
 })
 
 export const getJoinForm = async (
@@ -29,22 +26,17 @@ export const getJoinForm = async (
     formData: FormData,
 ): Promise<State> => {
     try {
-        const { session } = await getUserSession()
         const payload = joinFormSchema.parse(Object.fromEntries(formData))
-
-        await fetch(`${BASE_URL}api/v1/group/join/${payload.groupId}`, {
-            method: 'patch',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${session!.accessToken}`,
-            },
+        await fetchClient({
+            method: 'PATCH',
+            url: `api/v1/group/join/${payload.group}`,
             body: JSON.stringify({
                 name: payload.name,
-                nickName: payload.nickName,
+                nickname: payload.nickName,
                 phone: payload.phone,
                 lineId: payload.lineId,
             }),
-        }).then((res) => res.json())
+        })
 
         return {
             status: 'success',

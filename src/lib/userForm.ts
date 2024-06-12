@@ -1,7 +1,4 @@
-'use server'
-
 import { BASE_URL } from '@/definitions'
-import { cookies } from 'next/headers'
 import { formatISO, parse } from 'date-fns'
 import { ZodError, z } from 'zod'
 import { revalidateTag } from 'next/cache'

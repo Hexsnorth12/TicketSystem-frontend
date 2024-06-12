@@ -16,7 +16,7 @@ async function fetchClient({
     body = '',
     token,
     tags,
-    isTakeToken = false,
+    isTakeToken = true,
 }: fetchClientProps) {
     try {
         const session = await getSession()

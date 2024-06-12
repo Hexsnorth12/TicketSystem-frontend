@@ -6,6 +6,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useForm, FieldPath, FieldValues } from 'react-hook-form'
 import { useFormState } from 'react-dom'
 import clsx from 'clsx'
+import { useRouter } from 'next/navigation'
 import { ModalContent, Button, InputRegister, Tag } from '@/components/common'
 import { bellota } from '@/components/fonts'
 import account_gray from '@icon/account_gray.svg'
@@ -18,7 +19,7 @@ export interface FormValues {
     nickName: string
     phone: number
     lineId: string
-    groupId: string
+    group: string
 }
 
 interface pageProps {
@@ -26,12 +27,15 @@ interface pageProps {
 }
 
 const Page: React.FC<pageProps> = ({ searchParams }) => {
+    //URL 傳入 group id
     const groupId = searchParams!.groupId
+
+    const router = useRouter()
+
     const {
         register,
         formState: { errors },
         setError,
-        reset,
     } = useForm<FieldValues>()
     const [state, formAction] = useFormState<State, FormData>(getJoinForm, null)
 
@@ -46,7 +50,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
             })
         }
         if (state.status === 'success') {
-            reset()
+            router.push('success?state=true&callback=user/sharedTicket')
         }
     }, [state, setError])
 
@@ -112,7 +116,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                     </div>
                 </div>
                 <form
-                    action={formAction}
+                    action={(formData) => formAction(formData)}
                     className="md:border-t md:border-gray-3 md:pt-6">
                     <h4 className="md:header-4 mb-2 text-btn1 text-white md:mb-6">
                         我要參加
@@ -140,7 +144,6 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                         />
                     </div>
                     <div className="mb-3 flex flex-col gap-3 md:mb-6 md:flex-row md:justify-between md:gap-4">
-                        {' '}
                         <InputRegister
                             label="聯絡電話"
                             type="text"
@@ -162,14 +165,15 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                             required={true}
                         />
                     </div>
-                    <div className="hidden">
+                    <div className="absolute opacity-0">
                         <InputRegister
-                            label="groupId"
+                            label="group"
                             type="text"
                             placeholder={''}
-                            registerKey="groupId"
+                            registerKey="group"
                             register={register}
                             defaultValue={groupId}
+                            errors={errors}
                             required={true}
                         />
                     </div>
