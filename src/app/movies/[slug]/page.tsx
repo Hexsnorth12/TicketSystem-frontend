@@ -21,9 +21,12 @@ const Page = async ({ params }: { params: { slug: string } }) => {
         },
         {
             label: '評價',
-            Component: <CommentGroup />,
+            Component: <CommentGroup productId={params.slug} />,
         },
     ]
+
+    //如果使用 redux 從client發送更新，可以把 <CommentGroup pageIndex={1} /> 和pagination ，從pagination
+    // 更新 page 重新發送 rtk query
     return (
         <div className=" flex w-auto flex-col items-center justify-center">
             <div className="mb-96 h-80 w-full md:mb-0 md:h-full">

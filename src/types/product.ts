@@ -1,3 +1,4 @@
+import { UserComment } from './user'
 // 基本的商品資料型別，依需求繼承擴充
 // 使用在 card, movieDetail等商品相關 api
 
@@ -38,4 +39,14 @@ type ProductPlan = {
     name: string
     discount: number
     headCount: number
+}
+
+export type Comment = {
+    _id: string
+    rating: number
+    content: string
+    status: string
+    createAt: string
+    updateAt: string
+    user: UserComment
 }

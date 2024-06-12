@@ -30,5 +30,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        productId: '6665817fd23d0fe8146bcc80',
+    },
 }
