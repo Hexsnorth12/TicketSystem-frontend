@@ -24,6 +24,7 @@ import MultipleSelect from './MultipleSelect/MultipleSelect'
 import ModalContent from './Modal/ModalContent'
 import TextArea from './TextArea/TextArea'
 import SelectBox from './Select/selectBox'
+import DatePicker from './DatePicker'
 
 export {
     Modal,
@@ -52,4 +53,5 @@ export {
     TextArea,
     SelectBox,
     MultipleSelect,
+    DatePicker,
 }

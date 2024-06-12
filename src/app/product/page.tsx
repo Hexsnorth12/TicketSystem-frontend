@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import ProductList from '@/components/common/Card/ProductList'
 import fetchClient from '@/lib/fetchClient'
 import { getUserSession } from '@/lib/auth.actions'
-import { BASE_URL } from '@/definitions'
 
 type Product = {
     limit: number
@@ -45,18 +44,12 @@ const ProductPage: React.FC = () => {
                     isPublic: 'true',
                 })
 
-                const response = await fetchClient({
+                const { data } = await fetchClient({
                     method: 'GET',
-                    url: `${BASE_URL}api/v1/product?${params.toString()}`,
+                    url: `api/v1/product?${params.toString()}`,
                     token,
                     tags: ['product'],
                 })
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`)
-                }
-
-                const { data } = await response.json()
 
                 if (data && data.products) {
                     setProducts(data.products)

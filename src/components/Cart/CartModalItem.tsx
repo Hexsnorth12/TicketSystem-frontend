@@ -6,15 +6,19 @@ import { cn } from '@/utils'
 import Image from 'next/image'
 import { useCartStore } from '../../stores/useCartStore'
 import { FaTrashAlt } from 'react-icons/fa'
-const CartModalItem: React.FC<Props> = ({
-    productInfo,
-    className,
-    totalItems,
-}) => {
+const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
     // const { img, name, type, amount } = productInfo
-    const productName = truncateCartProductName(productInfo.name, 10)
+    console.log(productInfo, 'productInfosss')
 
-    function truncateCartProductName(name: string, length: number): string {
+    const productName = truncateCartProductName(productInfo.title, 10)
+    function truncateCartProductName(
+        name: string | undefined,
+        length: number,
+    ): string {
+        if (typeof name !== 'string') {
+            return '' // Handle undefined or non-string names gracefully
+        }
+
         const truncatedName = name.slice(0, length)
         return name.length > length ? truncatedName + '...' : name
     }
@@ -33,7 +37,14 @@ const CartModalItem: React.FC<Props> = ({
         confirmations: [],
         cancelPolicies: [],
         certificates: [],
-        plans: [],
+        plans: [
+            // Correctly structured array of plan objects
+            {
+                name: '', // String for name
+                discount: 0, // String for discount
+                headCount: 0, // String or number for head count based on definition
+            },
+        ],
         tags: [],
         brief: 'Brief',
     }
@@ -45,7 +56,7 @@ const CartModalItem: React.FC<Props> = ({
             )}>
             <div className="h-[68px] w-[68px] overflow-hidden rounded-lg">
                 <Image
-                    src={productInfo.img}
+                    src={productInfo.photoPath}
                     alt="cart product img"
                     width={68}
                     height={68}
@@ -59,7 +70,7 @@ const CartModalItem: React.FC<Props> = ({
             </div>
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                 <p className="text-white">{productName}</p>
-                <p className="text-gray-5">{productInfo.type}</p>
+                <p className="text-gray-5">{productInfo.quantity}</p>
                 <p className="text-primary">NT$ {productInfo.price}</p>
             </div>
             <button
