@@ -1,26 +1,61 @@
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import Image from 'next/image'
-import Button from '@components/common/Button'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
+import { IoCartOutline } from 'react-icons/io5'
+import { CiHeart } from 'react-icons/ci'
+import { FaHeart } from 'react-icons/fa'
+import { useSession } from 'next-auth/react'
+import Button from '@components/common/Button'
 import MovieTag from '../MovieTag/MovieTag'
 import star from '@icon/star_gray.svg'
 import { bellota } from '../../fonts'
 import Counter from '../Counter/Counter'
 import Tag from '../Tag/tag'
-import { IoCartOutline } from 'react-icons/io5'
-import { CiHeart } from 'react-icons/ci'
 import { ProductDetail } from '@/types'
+import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
 
 interface CardProps {
     product: ProductDetail
 }
 
 const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
+    const [isFavorite, setIsFavorite] = useState(product?.isFavorite || false)
+    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
+    const [removeFavorite, { isLoading: isLoadingRemove }] =
+        useRemoveFavoriteMutation()
+    const { data: session } = useSession()
     const handleOnclick = () => {
         console.log('onclick！')
+    }
+
+    const handleUpdateFavorite = async () => {
+        if (!isFavorite) {
+            try {
+                setIsFavorite(true)
+                await addFavorite({
+                    productId: product._id,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            } catch (error) {
+                setIsFavorite(false)
+            }
+        } else {
+            try {
+                setIsFavorite(false)
+                await removeFavorite({
+                    productId: product._id,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            } catch (error) {
+                setIsFavorite(true)
+            }
+        }
     }
 
     const plans = useMemo(() => {
@@ -137,10 +172,17 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                                         <Button
                                             type="button"
                                             title="按钮"
-                                            onClick={handleOnclick}
-                                            className="flex w-full items-center justify-center py-2 text-center">
+                                            onClick={handleUpdateFavorite}
+                                            className="flex w-full items-center justify-center py-2 text-center"
+                                            disabled={
+                                                isLoading || isLoadingRemove
+                                            }>
                                             <Tag
-                                                icon={CiHeart}
+                                                icon={
+                                                    isFavorite
+                                                        ? FaHeart
+                                                        : CiHeart
+                                                }
                                                 tagValue="收藏"
                                                 iconColor="inherit"
                                             />
