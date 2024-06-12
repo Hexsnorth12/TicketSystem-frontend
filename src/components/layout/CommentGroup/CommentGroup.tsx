@@ -37,7 +37,6 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
                 ))}
             </div>
             <PaginationWrapper
-                page={pageIndex}
                 size={10}
                 total={totalCount}
                 withEllipsis={true}

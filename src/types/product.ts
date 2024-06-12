@@ -50,3 +50,13 @@ export type Comment = {
     updateAt: string
     user: UserComment
 }
+
+export interface ProductFavorite extends Product {
+    genre: string
+    price: number
+    soldAmount: number
+    amount: number
+    isLaunched: boolean
+    sellStartAt: string
+    sellEndAt: string
+}

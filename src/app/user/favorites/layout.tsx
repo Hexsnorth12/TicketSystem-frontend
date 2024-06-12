@@ -5,14 +5,8 @@ const Layout = async ({
     pagination,
 }: {
     children: React.ReactNode
-    pagination: React.ReactNode
 }) => {
-    return (
-        <section>
-            {children}
-            <div className="mt-4 flex justify-center">{pagination}</div>
-        </section>
-    )
+    return <section>{children}</section>
 }
 
 export default Layout

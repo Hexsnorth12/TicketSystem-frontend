@@ -10,7 +10,6 @@ interface PaginationWrapperProps {
     size: number
     total: number
     withEllipsis?: boolean
-    page?: number
 }
 
 const PaginationWrapper: React.FC<PaginationWrapperProps> = (props) => {
@@ -19,7 +18,7 @@ const PaginationWrapper: React.FC<PaginationWrapperProps> = (props) => {
     const currentPage = Number(searchParams.get('page') || 1)
     const pathname = usePathname()
     const router = useRouter()
-    console.log('searchParams', pathname)
+
     const handlePageChange = (page: number) => {
         router.push(`${pathname}?page=${page}`)
     }
