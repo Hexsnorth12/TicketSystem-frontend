@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
         const isDisabled = disabled
             ? 'border-gray-2 bg-gray-2 text-gray-4'
             : 'border-primary hover:bg-primary hover:text-gray-1 bg-transparent text-white'
-        const defaultStyle = `py-3 px-5 rounded-full border tracking-widest text-lg items-center ${isDisabled}`
+        const defaultStyle = `py-3 px-5 rounded-full border tracking-widest text-btn2 md:text-btn1 items-center ${isDisabled}`
         return cn(defaultStyle, className)
     }
 

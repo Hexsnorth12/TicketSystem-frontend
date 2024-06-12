@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
+import clsx from 'clsx'
 import { IconType } from 'react-icons'
 interface TagProps {
     icon: IconType | string
     tagValue: string
     iconColor: string
     position?: 'left' | 'right' | 'center'
+    textStyle?: string
 }
 
 const tagPosition = {
@@ -20,6 +22,7 @@ const Tag: React.FC<TagProps> = ({
     tagValue,
     iconColor,
     position = 'center',
+    textStyle = '',
 }) => {
     return (
         <div>
@@ -30,7 +33,7 @@ const Tag: React.FC<TagProps> = ({
                     className={`h-5 w-5 flex-none text-${iconColor}`}
                     aria-hidden="true"
                 />
-                {tagValue}
+                <span className={textStyle}>{tagValue}</span>
             </li>
         </div>
     )

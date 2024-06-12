@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { formatISO, parse } from 'date-fns'
 import { ZodError, z } from 'zod'
 import { revalidateTag } from 'next/cache'
+import { getUserSession } from '@/lib/auth.actions'
 
 export type State =
     | {
@@ -42,14 +43,14 @@ export const getUserForm = async (
     formData: FormData,
 ): Promise<State> => {
     try {
-        const token = cookies().get('token')?.value || ''
+        const { session } = await getUserSession()
         const payload = userFormSchema.parse(Object.fromEntries(formData))
 
         await fetch(`${BASE_URL}api/v1/user`, {
             method: 'patch',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${session!.accessToken}`,
             },
             body: JSON.stringify({
                 ...payload,
