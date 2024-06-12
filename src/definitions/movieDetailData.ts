@@ -39,4 +39,5 @@ export const DummyProductDetail = {
     date: '',
     isAvailable: false,
     rank: 3.8,
+    isFavorite: false,
 }

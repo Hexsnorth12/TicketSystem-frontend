@@ -7,6 +7,7 @@ interface fetchClientProps {
     body?: string
     token?: string
     tags?: string[]
+    isTakeToken?: boolean
 }
 
 async function fetchClient({
@@ -15,16 +16,18 @@ async function fetchClient({
     body = '',
     token,
     tags,
+    isTakeToken = false,
 }: fetchClientProps) {
     try {
         const session = await getSession()
         const accessToken = token || session?.user.token
-        const response = await fetch(BASE_URL + url.toString(), {
+        const response = await fetch(BASE_URL + url, {
             method: method,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                ...(accessToken && { Authorization: 'Bearer ' + accessToken }),
+                ...(isTakeToken &&
+                    accessToken && { Authorization: 'Bearer ' + accessToken }),
             },
             body: body || undefined,
             ...(tags && { next: { tags } }),
