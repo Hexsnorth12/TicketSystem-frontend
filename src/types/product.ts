@@ -8,18 +8,20 @@ export interface Product {
     title: string
     photoPath: string
     type: string
+    price?: number
+    startAt?: string
+    endAt?: string
+    recommendWeight?: number
+    isPublic?: boolean
     isAvailable: boolean // 要請後端新增
 }
 
 export interface ProductDetail extends Product {
     rank: number // FIXED: 資料沒有這項屬性
-    price: number
     soldAmount: number
     genre: string
     theater: string
     amount: number
-    startAt: string
-    endAt: string
     sellStartAt: string
     sellEndAt: string
     isLaunched: boolean
@@ -50,4 +52,19 @@ export type Comment = {
     createAt: string
     updateAt: string
     user: UserComment
+}
+
+export type Ticket = {
+    _id: string
+    productId: string
+    userId: string
+    orderId: string
+    status: string
+    isPublished: boolean
+    expiredAt: string
+    writeOffAt: string
+    writeOffStaffId: string
+    giverId: string
+    product: Product
+    shareCode: string
 }
