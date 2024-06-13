@@ -7,6 +7,7 @@ const useScrollFetch = (
     limit: number,
     page: number,
     dataName: string,
+    status: string,
 ) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<boolean>(false)
@@ -15,7 +16,10 @@ const useScrollFetch = (
 
     useEffect(() => {
         // 防止重複請求
-        if (page <= 1) return
+        if (page <= 1) {
+            setDataList(prevData)
+            return
+        }
 
         const fetchProducts = async () => {
             try {
@@ -24,7 +28,7 @@ const useScrollFetch = (
                 const params = new URLSearchParams({
                     limit: limit.toString(),
                     page: page.toString(),
-                    status: 'verified',
+                    status,
                 })
 
                 const data = await fetchClient({
@@ -47,7 +51,7 @@ const useScrollFetch = (
         }
 
         fetchProducts()
-    }, [page])
+    }, [page, status])
 
     return { loading, error, dataList, hasMore }
 }

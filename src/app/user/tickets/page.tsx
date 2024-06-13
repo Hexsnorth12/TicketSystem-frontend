@@ -4,17 +4,20 @@ import clsx from 'clsx'
 import { Ticket } from '@/types'
 import fetchClient from '@/lib/fetchClient'
 
-interface pageProps {}
+interface pageProps {
+    searchParams?: { [key: string]: string }
+}
 
 const PAGE_LIMIT = 10
 
-const Page: React.FC<pageProps> = async () => {
+const Page: React.FC<pageProps> = async ({ searchParams }) => {
+    const status = searchParams?.status ?? 'unverified'
     const {
         data: { tickets },
     }: { data: { tickets: Ticket[]; page: number; totalCount: number } } =
         await fetchClient({
             method: 'GET',
-            url: `api/v1/ticket?page=1&limit=${PAGE_LIMIT}&status=verified`,
+            url: `api/v1/ticket?page=1&limit=${PAGE_LIMIT}&status=${status}`,
         })
 
     return (

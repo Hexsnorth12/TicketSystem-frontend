@@ -1,12 +1,19 @@
 import React from 'react'
 import Image from 'next/image'
+import { format, parseISO, formatDistanceToNow } from 'date-fns'
+import { zhTW } from 'date-fns/locale'
 import location from '@icon/location.svg'
-import fakeImage from '@images/groupcard1.png'
 import { Button } from '@/components/common'
+import { Ticket } from '@/types'
+import { useRouter } from 'next/navigation'
 
-interface MyTicketProps {}
+interface MyTicketProps {
+    ticket: Ticket
+}
 
-const MyTicket: React.FC<MyTicketProps> = () => {
+const MyTicket: React.FC<MyTicketProps> = ({ ticket }) => {
+    const router = useRouter()
+
     return (
         <div className="rounded-lg bg-gray-3 p-4 md:px-10 md:py-8">
             <div className="md:mb-6 md:flex md:justify-between md:gap-10">
@@ -14,7 +21,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                     <div className="mb-6 flex items-center md:mb-8">
                         <div className="mr-4 rounded-lg md:hidden">
                             <Image
-                                src={fakeImage}
+                                src={ticket.product.photoPath}
                                 width={132}
                                 height={80}
                                 alt="ticket image"
@@ -23,7 +30,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                         </div>
                         <div>
                             <h5 className="mb-2 text-btn2 font-medium text-white md:text-header5 md:leading-120">
-                                比悲傷更悲傷的故事
+                                {ticket.product.title}
                             </h5>
                             <div className="flex gap-1">
                                 <Image
@@ -34,7 +41,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                                     alt="location"
                                 />
                                 <p className="text-small2 text-white">
-                                    美麗華大直影城
+                                    {ticket.product.theater}
                                 </p>
                             </div>
                         </div>
@@ -48,7 +55,10 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                                     時間
                                 </span>
                                 <span className="text-number5 font-bold leading-120 text-white">
-                                    Feb 24 19:30
+                                    {format(
+                                        ticket.product.startAt as string,
+                                        'yyyy-MM-dd',
+                                    )}
                                 </span>
                             </div>
                             <div className="grow space-x-2">
@@ -56,7 +66,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                                     數量
                                 </span>
                                 <span className="text-number5 font-bold leading-120 text-white">
-                                    2
+                                    1
                                 </span>
                             </div>
                         </div>
@@ -66,7 +76,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                                     訂單編號
                                 </span>
                                 <span className="text-number5 font-bold leading-120 text-white">
-                                    1234567890
+                                    {ticket.orderId}
                                 </span>
                             </div>
                             <div className="grow space-x-2">
@@ -74,7 +84,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                                     金額
                                 </span>
                                 <span className="text-number5 font-bold leading-120 text-white">
-                                    1020
+                                    {ticket.product.price}
                                 </span>
                             </div>
                         </div>
@@ -82,7 +92,7 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                 </div>
                 <div className="hidden rounded-lg md:block">
                     <Image
-                        src={fakeImage}
+                        src={ticket.product.photoPath}
                         width={267}
                         height={160}
                         alt="ticket image"
@@ -96,10 +106,13 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                 <div className="flex text-start">
                     <div className="space-x-1 bg-gray-4 px-3 py-1">
                         <span className="text-number5 leading-120 text-primary">
-                            1
+                            {formatDistanceToNow(parseISO(ticket.expiredAt), {
+                                addSuffix: true,
+                                locale: zhTW,
+                            })}
                         </span>
                         <span className="text-small2 tracking-wide text-white">
-                            日後到期
+                            到期
                         </span>
                     </div>
                 </div>
@@ -116,7 +129,9 @@ const MyTicket: React.FC<MyTicketProps> = () => {
                     <Button
                         type={'button'}
                         title={'詳細'}
-                        onClick={() => {}}
+                        onClick={() => {
+                            router.push(`/ticketDetail/${ticket._id}`)
+                        }}
                         className="w-full py-2 md:w-auto md:py-3">
                         <span className="font-medium tracking-wider">詳細</span>
                     </Button>

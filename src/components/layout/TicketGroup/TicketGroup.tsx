@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback } from 'react'
 import { FixedSizeList as List } from 'react-window'
+import { useSearchParams } from 'next/navigation'
 import { MyTicket, EmptyData } from '@/components/common'
 import { Ticket } from '@/types'
 import useScrollFetch from '@/hooks/useScrollFetch'
@@ -12,13 +13,19 @@ interface TicketGroupProps {
 }
 
 const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
+    const searchParams = useSearchParams()
+    const status = searchParams.get('status') || 'unverified'
+
     const [currentPage, setCurrentPage] = useState(1)
-    const { loading, error, dataList, hasMore } = useScrollFetch(
+
+    const { loading, dataList, hasMore } = useScrollFetch(
         tickets,
-        10,
+        pageLimit,
         currentPage,
         'tickets',
+        status,
     )
+
     const observer = useRef<IntersectionObserver>()
     const lastPostRef = useCallback(
         (node: HTMLDivElement) => {
@@ -39,7 +46,11 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
     )
 
     if (dataList.length === 0) {
-        return <EmptyData message="尚無評論" hasButton={false} />
+        return (
+            <div className="md:h-[600px]">
+                <EmptyData message="尚無評論" hasButton={false} />
+            </div>
+        )
     }
 
     return (
@@ -51,30 +62,23 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                     itemSize={300}
                     width="100%"
                     itemData={dataList}
-                    outerRef={lastPostRef}
-                    itemKey={(data: Ticket) => data._id}>
+                    outerRef={lastPostRef}>
                     {({ index }) => {
                         if (dataList.length === index + 1) {
                             return (
                                 <div ref={lastPostRef}>
-                                    <MyTicket />
+                                    <MyTicket ticket={dataList[index]} />
                                 </div>
                             )
                         } else {
                             return (
                                 <div>
-                                    <MyTicket />
+                                    <MyTicket ticket={dataList[index]} />
                                 </div>
                             )
                         }
                     }}
                 </List>
-                {/* <MyTicket />
-                <MyTicket />
-                <MyTicket />
-                <MyTicket />
-                <MyTicket />
-                <MyTicket /> */}
             </div>
         </div>
     )
