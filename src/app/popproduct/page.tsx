@@ -1,6 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useEffect, useState } from 'react'
-import ProductList from '@/components/common/Card/ProductList'
+import PopProductList from '@/components/common/Card/PopProductList'
 import fetchClient from '@/lib/fetchClient'
 import { getUserSession } from '@/lib/auth.actions'
 
@@ -27,22 +27,22 @@ type Product = {
     tags: { tagId: string }[]
     photoPath: string
 }
-const ProductPage: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([])
+
+const PopProductPage: React.FC = () => {
+    const [popproducts, setPopProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchPopProducts = async () => {
             try {
                 const { session } = await getUserSession()
                 const token = session?.user?.token
-                // 定義參數
                 const params = new URLSearchParams({
                     limit: '10',
                     page: '1',
                     isPublic: 'true',
-                    sortField: 'recommendWeight',
+                    sortField: 'soldAmount',
                     sortOrder: 'asc',
                 })
 
@@ -54,7 +54,15 @@ const ProductPage: React.FC = () => {
                 })
 
                 if (data && data.products) {
-                    setProducts(data.products)
+                    const updatedProducts = data.products.map(
+                        (product: Product) => ({
+                            ...product,
+                            photoPath: product.photoPath.startsWith('/')
+                                ? product.photoPath
+                                : `/${product.photoPath}`,
+                        }),
+                    )
+                    setPopProducts(updatedProducts)
                 } else {
                     setError('未找到商品')
                 }
@@ -65,7 +73,7 @@ const ProductPage: React.FC = () => {
             }
         }
 
-        fetchProducts()
+        fetchPopProducts()
     }, [])
 
     if (loading) {
@@ -76,11 +84,7 @@ const ProductPage: React.FC = () => {
         return <div>{error}</div>
     }
 
-    return (
-        <>
-            <ProductList products={products} />
-        </>
-    )
+    return <PopProductList products={popproducts} />
 }
 
-export default ProductPage
+export default PopProductPage

@@ -37,11 +37,11 @@ type Product = {
     photoPath: string
 }
 
-type ProductListProps = {
+type RecProductListProps = {
     products: Product[]
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
     return (
         <>
             {/* Desktop-Navbar */}
@@ -138,4 +138,4 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
     )
 }
 
-export default ProductList
+export default RecProductList

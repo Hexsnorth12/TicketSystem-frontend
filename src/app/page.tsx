@@ -6,14 +6,14 @@ import {
     mdiTicketConfirmation,
 } from '@mdi/js'
 import { NavBanner } from '@components/layout'
-import Card from '@components/common/Card/Card'
 import GroupCard from '@components/common/Card/GroupCard'
 import ShareCard from '@components/common/Card/ShareCard'
-import { Popcards, Groupcards, Sharecards } from '../definitions/movieData'
+import { Groupcards, Sharecards } from '../definitions/movieData'
 
 import { generateImageSizeMap } from '../utils/imageUtils'
 import Marquee from '@/components/common/Swiper/Marquee'
-import ProductPage from './product/page'
+import PopProductPage from './popproduct/page'
+import RecProductPage from './recproduct/page'
 
 interface HeaderTitleProps {
     title: string
@@ -38,12 +38,6 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 }
 
 const HomePage = async () => {
-    const popCardImageSources = Popcards.map((PopCards) => PopCards.image)
-    const popCardImageSizeMap = generateImageSizeMap(
-        popCardImageSources,
-        240,
-        320,
-    )
     const groupCardImageSources = Groupcards.map(
         (GroupCards) => GroupCards.image,
     )
@@ -65,9 +59,9 @@ const HomePage = async () => {
         <>
             <Marquee />
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <Card movies={Popcards} imageSizeMap={popCardImageSizeMap} />
+            <PopProductPage />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <ProductPage />
+            <RecProductPage />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}
