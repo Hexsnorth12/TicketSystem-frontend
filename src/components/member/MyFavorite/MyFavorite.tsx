@@ -4,21 +4,21 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import { isFuture, parseISO } from 'date-fns'
 import { truncateName } from '@/utils'
-import { Product } from '@/types'
+import { ProductFavorite } from '@/types'
 import {
-    useAddFavoriteMutation,
     useRemoveFavoriteMutation,
 } from '@/services/modules/user'
 import { useSession } from 'next-auth/react'
 
 interface MyFavoriteProps {
-    product: Product
+    product: ProductFavorite
 }
 
 const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
     const [isFavorite, setIsFavorite] = useState(true)
-    const [removeFavorite, { isLoading }] = useRemoveFavoriteMutation()
+    const [removeFavorite] = useRemoveFavoriteMutation()
     const { data: session } = useSession()
 
     const handleUpdateFavorite = async () => {
@@ -36,10 +36,10 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
         <li
             key={product._id}
             className={clsx('relative rounded-lg bg-gray-1', {
-                'before:absolute before:top-0  before:z-20 before:flex before:h-full before:w-full before:items-center before:justify-center before:text-header5 before:text-white before:content-["已失效"]':
-                    !product.isAvailable,
+                'before:absolute before:top-0  before:z-20 before:flex before:h-full before:w-full before:items-center before:justify-center before:text-header5 before:text-white before:content-["已停售"]':
+                    isFuture(parseISO(product.sellEndAt)),
                 'after:absolute after:top-0 after:z-10 after:h-full after:w-full after:rounded-lg after:bg-black after:opacity-60 after:content-[""]':
-                    !product.isAvailable,
+                    isFuture(parseISO(product.sellEndAt)),
                 hidden: !isFavorite,
             })}>
             <Link href={''}>

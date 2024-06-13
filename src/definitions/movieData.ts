@@ -235,7 +235,6 @@ export const favorites = [
         image: '/assets/sharecard1.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
     {
         name: '電影名稱2',
@@ -245,7 +244,6 @@ export const favorites = [
         image: '/assets/sharecard2.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
     {
         name: '電影名稱3',
@@ -255,7 +253,6 @@ export const favorites = [
         image: '/assets/sharecard3.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
     {
         name: '電影名稱4',
@@ -265,7 +262,6 @@ export const favorites = [
         image: '/assets/sharecard4.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
     {
         name: '電影名稱5',
@@ -275,7 +271,6 @@ export const favorites = [
         image: '/assets/sharecard5.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
     {
         name: '電影名稱6',
@@ -285,6 +280,5 @@ export const favorites = [
         image: '/assets/sharecard6.jpg',
         type: '科幻',
         city: '台北市',
-        isAvailable: true,
     },
 ]

@@ -22,7 +22,7 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
     const renderFavorites = favorites.map((product) => (
         <MyFavorite key={product._id} product={product} />
     ))
-    console.log('favorites', favorites)
+
     if (favorites.length === 0) {
         return (
             <EmptyData

@@ -8,7 +8,6 @@ export interface Product {
     title: string
     photoPath: string
     type: string
-    isAvailable: boolean // 要請後端新增
 }
 
 export interface ProductDetail extends Product {
