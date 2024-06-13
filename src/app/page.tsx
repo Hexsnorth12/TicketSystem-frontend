@@ -1,4 +1,5 @@
-import React from 'react'
+'use client' // This is a client component 👈🏽
+import React, { useEffect, useState } from 'react'
 import {
     mdiFire,
     mdiHeartCircle,
@@ -8,12 +9,16 @@ import {
 import { NavBanner } from '@components/layout'
 import GroupCard from '@components/common/Card/GroupCard'
 import ShareCard from '@components/common/Card/ShareCard'
+import PopProductList from '@components/common/Card/PopProductList'
+import RecProductList from '@components/common/Card/RecProductList'
 import { Groupcards, Sharecards } from '../definitions/movieData'
-
+import {
+    fetchPopProducts,
+    fetchRecProducts,
+    Product,
+} from '../definitions/movieData'
 import { generateImageSizeMap } from '../utils/imageUtils'
 import Marquee from '@/components/common/Swiper/Marquee'
-import PopProductPage from './popproduct/page'
-import RecProductPage from './recproduct/page'
 
 interface HeaderTitleProps {
     title: string
@@ -37,7 +42,35 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     )
 }
 
-const HomePage = async () => {
+const HomePage: React.FC = () => {
+    const [popproducts, setPopProducts] = useState<Product[]>([])
+    const [recproducts, setRecProducts] = useState<Product[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [popProducts, recProducts] = await Promise.all([
+                    fetchPopProducts(),
+                    fetchRecProducts(),
+                ])
+                setPopProducts(popProducts)
+                setRecProducts(recProducts)
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unknown error occurred.')
+                }
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [])
+
     const groupCardImageSources = Groupcards.map(
         (GroupCards) => GroupCards.image,
     )
@@ -55,13 +88,21 @@ const HomePage = async () => {
         160,
     )
 
+    if (loading) {
+        return <div>加載中...</div>
+    }
+
+    if (error) {
+        return <div>{error}</div>
+    }
+
     return (
         <>
             <Marquee />
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <PopProductPage />
+            <PopProductList products={popproducts} />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecProductPage />
+            <RecProductList products={recproducts} />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}

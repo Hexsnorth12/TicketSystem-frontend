@@ -5,11 +5,9 @@ import GroupCard from './GroupCard'
 import MovieDescriptionCard from './MovieDescription'
 import MovieDetailCard from './MovieDetail'
 
-import { Popcards, Groupcards } from '@/definitions/movieData'
+import { Groupcards } from '@/definitions/movieData'
 import { DummyProductDetail } from '@/definitions/movieDetailData'
 import { generateImageSizeMap } from '@/utils'
-const popcardImageSources = Popcards.map((Popcards) => Popcards.image)
-const popcardImageSizeMap = generateImageSizeMap(popcardImageSources, 240, 320)
 const groupcardImageSources = Groupcards.map((Groupcards) => Groupcards.image)
 const groupcardImageSizeMap = generateImageSizeMap(
     groupcardImageSources,
@@ -29,9 +27,6 @@ const meta = {
 } satisfies Meta<typeof Card>
 
 export default meta
-export const Primary = () => {
-    return <Card movies={Popcards} imageSizeMap={popcardImageSizeMap} />
-}
 export const Group = () => {
     return (
         <GroupCard movies={Groupcards} imageSizeMap={groupcardImageSizeMap} />
