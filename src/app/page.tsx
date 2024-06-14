@@ -7,15 +7,17 @@ import {
     mdiTicketConfirmation,
 } from '@mdi/js'
 import { NavBanner } from '@components/layout'
-import GroupCard from '@components/common/Card/GroupCard'
 import ShareCard from '@components/common/Card/ShareCard'
 import PopProductList from '@components/common/Card/PopProductList'
 import RecProductList from '@components/common/Card/RecProductList'
-import { Groupcards, Sharecards } from '../definitions/movieData'
+import GroupProductList from '@components/common/Card/GroupProductList'
+import { Sharecards } from '../definitions/movieData'
 import {
     fetchPopProducts,
     fetchRecProducts,
+    fetchGroupProducts,
     Product,
+    Group,
 } from '../definitions/movieData'
 import { generateImageSizeMap } from '../utils/imageUtils'
 import Marquee from '@/components/common/Swiper/Marquee'
@@ -45,18 +47,23 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
 const HomePage: React.FC = () => {
     const [popproducts, setPopProducts] = useState<Product[]>([])
     const [recproducts, setRecProducts] = useState<Product[]>([])
+    const [groupproducts, setGroupProducts] = useState<Group[]>([])
+
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [popProducts, recProducts] = await Promise.all([
-                    fetchPopProducts(),
-                    fetchRecProducts(),
-                ])
+                const [popProducts, recProducts, groupProducts] =
+                    await Promise.all([
+                        fetchPopProducts(),
+                        fetchRecProducts(),
+                        fetchGroupProducts(),
+                    ])
                 setPopProducts(popProducts)
                 setRecProducts(recProducts)
+                setGroupProducts(groupProducts)
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message)
@@ -71,14 +78,6 @@ const HomePage: React.FC = () => {
         fetchData()
     }, [])
 
-    const groupCardImageSources = Groupcards.map(
-        (GroupCards) => GroupCards.image,
-    )
-    const groupCardImageSizeMap = generateImageSizeMap(
-        groupCardImageSources,
-        288,
-        173,
-    )
     const shareCardImageSources = Sharecards.map(
         (ShareCards) => ShareCards.image,
     )
@@ -107,10 +106,7 @@ const HomePage: React.FC = () => {
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}
             />
-            <GroupCard
-                movies={Groupcards}
-                imageSizeMap={groupCardImageSizeMap}
-            />
+            <GroupProductList groups={groupproducts} />
             <NavBanner type="join" />
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
             <ShareCard
