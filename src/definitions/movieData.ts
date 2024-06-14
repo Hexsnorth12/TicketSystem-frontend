@@ -111,7 +111,7 @@ export const fetchRecProducts = async (): Promise<Product[]> => {
     }
 };
 
-export const fetchGroupProducts = async (): Promise<Product[]> => {
+export const fetchGroupProducts = async (): Promise<Group[]> => {
     try {
         const { session } = await getUserSession();
         const token = session?.user?.token;
