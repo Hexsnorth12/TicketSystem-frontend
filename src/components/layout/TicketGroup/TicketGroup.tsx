@@ -56,13 +56,12 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
     return (
         <div className="overflow-y-scroll scrollbar-hidden md:h-[600px] md:gap-10 md:pr-10 md:scrollbar md:scrollbar-block">
             <div className="flex flex-col gap-[18px]">
-                <List
+                {/* <List
                     height={600}
-                    itemCount={dataList.length}
-                    itemSize={300}
-                    width="100%"
-                    itemData={dataList}
-                    outerRef={lastPostRef}>
+                    itemCount={window.innerHeight}
+                    itemSize={250}
+                    width={450}
+                    itemData={dataList}>
                     {({ index }) => {
                         if (dataList.length === index + 1) {
                             return (
@@ -78,7 +77,37 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                             )
                         }
                     }}
-                </List>
+                </List> */}
+                {dataList.map((ticket, index) => {
+                    if (dataList.length === index + 1) {
+                        return (
+                            <>
+                                <div
+                                    key={ticket._id}
+                                    ref={lastPostRef}
+                                    className="border border-white">
+                                    <MyTicket ticket={ticket} />
+                                </div>
+                                {loading ? (
+                                    <h1 className="text-center text-white">
+                                        讀取中...
+                                    </h1>
+                                ) : null}
+                                {!hasMore ? (
+                                    <h1 className="text-center text-white">
+                                        沒有更多了
+                                    </h1>
+                                ) : null}
+                            </>
+                        )
+                    } else {
+                        return (
+                            <div key={ticket._id}>
+                                <MyTicket ticket={ticket} />
+                            </div>
+                        )
+                    }
+                })}
             </div>
         </div>
     )
