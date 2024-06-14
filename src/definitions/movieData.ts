@@ -257,3 +257,47 @@ export const favorites = [
         isAvailable: true,
     },
 ]
+
+export const dummyTicketList: Ticket[] = [
+    {
+        _id: 'asdfasdfasd',
+        productId: 'cdscsdcsdc',
+        userId: '123235564364567',
+        orderId: 'iiddidididi',
+        status: 'unverified',
+        isPublished: false,
+        expiredAt: '2024-06-13T12:50:23.685Z',
+        writeOffAt: '2024-06-13T12:50:23.685Z',
+        writeOffStaffId: 'rrr',
+        giverId: 'iiddidididi',
+        product: {
+            _id: '66570169343ccb01f586dfed',
+            title: '這是個很棒的電影名稱',
+            theater: '信義威秀',
+            price: 1100,
+            startAt: '2024-08-13T16:00:00.000Z',
+            recommendWeight: 1,
+            isPublic: false,
+            photoPath: '',
+            type: '',
+        },
+        shareCode: '112315641231',
+    },
+]
+
+export const dummyTicketDetail: TicketDetail = {
+    _id: '23h4iuh2iu5hih1ui4hi',
+    userId: 'userIdddisieowofen',
+    orderId: '$orderIdwgefiowehpfuuew',
+    productId: 'productIdoiwjnfpewfuioed',
+    status: 'unverified',
+    isPublished: false,
+    title: 'testproduct',
+    photoPath: 'testproduct',
+    theater: 'testproduct',
+    price: 2000,
+    expiredAt: '2024-06-15T14:50:23.685Z',
+    startAt: '2024-06-15T16:50:23.686Z',
+    purchaseAt: '2024-06-15T12:50:23.686Z',
+    purchaseAmount: 11,
+}
