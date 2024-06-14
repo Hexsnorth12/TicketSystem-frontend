@@ -63,7 +63,7 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                                     key={ticket._id}
                                     ref={lastPostRef}
                                     className="border border-white">
-                                    <MyTicket ticket={ticket} />
+                                    <MyTicket ticket={ticket} status={status} />
                                 </div>
                                 {loading ? (
                                     <h1 className="text-center text-white">
@@ -80,7 +80,7 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                     } else {
                         return (
                             <div key={ticket._id}>
-                                <MyTicket ticket={ticket} />
+                                <MyTicket ticket={ticket} status={status} />
                             </div>
                         )
                     }

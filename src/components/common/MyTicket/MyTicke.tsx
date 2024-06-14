@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { format, parseISO, formatDistanceToNow } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
+import clsx from 'clsx'
 import location from '@icon/location.svg'
 import { Button } from '@/components/common'
 import { Ticket } from '@/types'
@@ -9,9 +10,10 @@ import { useRouter } from 'next/navigation'
 
 interface MyTicketProps {
     ticket: Ticket
+    status: string
 }
 
-const MyTicket: React.FC<MyTicketProps> = ({ ticket }) => {
+const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
     const router = useRouter()
 
     return (
@@ -123,7 +125,9 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket }) => {
                         type={'button'}
                         title={'退票'}
                         onClick={() => {}}
-                        className="mr-3 w-full bg-gray-1 py-2 text-primary hover:text-white md:w-auto md:py-3 md:text-btn1">
+                        className={clsx('mr-3 w-full bg-gray-1 py-2 text-primary hover:text-white md:w-auto md:py-3 md:text-btn1', {
+                            'hidden': status !== 'unverified',
+                        })}>
                         <span className="font-medium tracking-wider">退票</span>
                     </Button>
                     <Button

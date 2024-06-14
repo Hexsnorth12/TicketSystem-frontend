@@ -66,27 +66,29 @@ const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
                     </span>
                 </p>
             </TextField>
-            <TextField
-                label={'現場換/驗票'}
-                containerStyle="md:border-b md:border-gray-4">
-                <div className="flex flex-col gap-3 md:flex-row md:items-center">
-                    <span className="text-small2 leading-150 text-white md:text-small1">
-                        選擇數量
-                    </span>
-                    <Counter
-                        onValueChange={handleUpdateCounter}
-                        minValue={1}
-                        maxValue={1}
-                    />
-                    <Button
-                        type="button"
-                        title="驗票教學"
-                        onClick={handleGetCode}
-                        className=" w-full border-0 bg-gray-1 px-4 py-2 text-btn2 font-medium leading-150 text-primary md:w-auto md:px-5 md:py-3 md:text-btn2">
-                        取得驗證碼
-                    </Button>
-                </div>
-            </TextField>
+            {ticketDetail.status === 'unverified' ? (
+                <TextField
+                    label={'現場換/驗票'}
+                    containerStyle="md:border-b md:border-gray-4">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                        <span className="text-small2 leading-150 text-white md:text-small1">
+                            選擇數量
+                        </span>
+                        <Counter
+                            onValueChange={handleUpdateCounter}
+                            minValue={1}
+                            maxValue={1}
+                        />
+                        <Button
+                            type="button"
+                            title="驗票教學"
+                            onClick={handleGetCode}
+                            className=" w-full border-0 bg-gray-1 px-4 py-2 text-btn2 font-medium leading-150 text-primary md:w-auto md:px-5 md:py-3 md:text-btn2">
+                            取得驗證碼
+                        </Button>
+                    </div>
+                </TextField>
+            ) : null}
             <div className="">
                 <p className="mb-3 text-small2 leading-150 text-gray-5 md:text-small1">
                     線上分票
