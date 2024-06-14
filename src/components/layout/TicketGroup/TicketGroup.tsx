@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useRef, useCallback } from 'react'
-import { FixedSizeList as List } from 'react-window'
 import { useSearchParams } from 'next/navigation'
 import { MyTicket, EmptyData } from '@/components/common'
 import { Ticket } from '@/types'
@@ -56,28 +55,6 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
     return (
         <div className="overflow-y-scroll scrollbar-hidden md:h-[600px] md:gap-10 md:pr-10 md:scrollbar md:scrollbar-block">
             <div className="flex flex-col gap-[18px]">
-                {/* <List
-                    height={600}
-                    itemCount={window.innerHeight}
-                    itemSize={250}
-                    width={450}
-                    itemData={dataList}>
-                    {({ index }) => {
-                        if (dataList.length === index + 1) {
-                            return (
-                                <div ref={lastPostRef}>
-                                    <MyTicket ticket={dataList[index]} />
-                                </div>
-                            )
-                        } else {
-                            return (
-                                <div>
-                                    <MyTicket ticket={dataList[index]} />
-                                </div>
-                            )
-                        }
-                    }}
-                </List> */}
                 {dataList.map((ticket, index) => {
                     if (dataList.length === index + 1) {
                         return (
