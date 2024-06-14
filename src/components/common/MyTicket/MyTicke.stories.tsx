@@ -22,5 +22,6 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
     args: {
         ticket: dummyTicketList[0],
+        status: 'unverified',
     },
 }
