@@ -1,5 +1,6 @@
 import fetchClient from '@/lib/fetchClient';
 import { getUserSession } from '@/lib/auth.actions';
+import { Ticket, TicketDetail } from '@/types';
 
 export type Product = {
     limit: number;
