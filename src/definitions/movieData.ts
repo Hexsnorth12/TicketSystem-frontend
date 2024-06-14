@@ -111,7 +111,7 @@ export const fetchRecProducts = async (): Promise<Product[]> => {
     }
 };
 
-export const fetchGroupProducts = async (): Promise<Product[]> => {
+export const fetchGroupProducts = async (): Promise<Group[]> => {
     try {
         const { session } = await getUserSession();
         const token = session?.user?.token;
@@ -135,7 +135,7 @@ export const fetchGroupProducts = async (): Promise<Product[]> => {
                 ...group,
                 placeholderImg: group.placeholderImg.startsWith('/')
                     ? group.placeholderImg
-                    : `/${group.placeholderImg}`,
+                    : `${group.placeholderImg}`,
             }));
         } else {
             throw new Error('未找到商品');
