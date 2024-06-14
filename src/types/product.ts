@@ -8,18 +8,20 @@ export interface Product {
     title: string
     photoPath: string
     type: string
-    isAvailable: boolean // 要請後端新增
+    price?: number
+    startAt?: string
+    endAt?: string
+    recommendWeight?: number
+    isPublic?: boolean
+    theater?: string
+    isAvailable?: boolean // 要請後端新增
 }
 
 export interface ProductDetail extends Product {
     rank: number // FIXED: 資料沒有這項屬性
-    price: number
     soldAmount: number
     genre: string
-    theater: string
     amount: number
-    startAt: string
-    endAt: string
     sellStartAt: string
     sellEndAt: string
     isLaunched: boolean
@@ -50,4 +52,43 @@ export type Comment = {
     createAt: string
     updateAt: string
     user: UserComment
+}
+
+export type Ticket = {
+    _id: string
+    productId: string
+    userId: string
+    orderId: string
+    status: 'unverified' | 'expired' | 'refunded' // 對應 可使用 | 已失效 ｜ 已退票
+    isPublished: boolean
+    expiredAt: string
+    writeOffAt: string
+    writeOffStaffId: string
+    giverId: string
+    product: Product
+    shareCode: string
+}
+
+export type TicketDetail = {
+    _id: string
+    userId: string
+    orderId: string
+    productId: string
+    status:
+        | 'unverified' // 未核銷使用
+        | 'verified' // 已核銷使用
+        | 'refunded' // 已取消且有退款
+        | 'expired' // 已過期
+        | 'cancelled' // 已取消且無退款
+        | 'pending' // 發生問題的票券
+        | 'transfer' // 正在分票，等待被別人取票，無法被任何人使用
+    isPublished: boolean
+    title: string
+    photoPath: string
+    theater: string
+    price: number
+    expiredAt: string
+    startAt: string
+    purchaseAt: string
+    purchaseAmount: number
 }

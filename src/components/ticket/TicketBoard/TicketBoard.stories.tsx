@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import TicketBoard from './TicketBoard'
+import { dummyTicketDetail } from '@/definitions/movieData'
 
 const meta = {
     title: 'ticket/TicketBoard',
@@ -24,5 +25,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        ticketDetail: dummyTicketDetail,
+    },
 }

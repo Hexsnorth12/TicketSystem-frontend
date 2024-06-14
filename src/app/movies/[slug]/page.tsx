@@ -5,6 +5,7 @@ import * as React from 'react'
 import MovieDescriptionCard from '@/components/common/Card/MovieDescription'
 import fetchClient from '@/lib/fetchClient'
 import { ProductDetail } from '@/types/index'
+import { PostComment } from '@/components/forms'
 
 // 定義 Movie 接口
 
@@ -21,7 +22,12 @@ const Page = async ({ params }: { params: { slug: string } }) => {
         },
         {
             label: '評價',
-            Component: <CommentGroup productId={params.slug} />,
+            Component: (
+                <>
+                    <PostComment productId={params.slug}/>
+                    <CommentGroup productId={params.slug} />
+                </>
+            ),
         },
     ]
 
