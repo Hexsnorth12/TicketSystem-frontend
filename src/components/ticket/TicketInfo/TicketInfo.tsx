@@ -1,18 +1,21 @@
 import React from 'react'
 import Image from 'next/image'
 import clsx from 'clsx'
-import fackImg from '@images/groupcard1.png'
 import { bellota } from '@/components/fonts'
+import { TicketDetail } from '@/types'
+import { format } from 'date-fns'
 
-interface Props {}
+interface TicketInfoProps {
+    ticketDetail: TicketDetail
+}
 
-const Page: React.FC<Props> = () => {
+const TicketInfo: React.FC<TicketInfoProps> = ({ ticketDetail }) => {
     return (
         <div className="rounded-lg bg-gray-3 p-4 md:p-6">
             <div className="mb-4 flex flex-col gap-4 md:gap-6">
                 <div className="rounded-lg md:h-[198px]">
                     <Image
-                        src={fackImg}
+                        src={ticketDetail.photoPath}
                         height={80}
                         width={132}
                         alt="ticket picture"
@@ -21,10 +24,10 @@ const Page: React.FC<Props> = () => {
                 </div>
                 <div>
                     <h3 className="mb-2 text-small1 font-medium leading-150 tracking-wider text-white md:mb-3 md:text-header5 md:leading-120">
-                        比悲傷更悲傷的故事
+                        {ticketDetail.title}
                     </h3>
                     <h4 className="text-small2 leading-150 tracking-wide text-gray-5">
-                        大直美麗華影城
+                        {ticketDetail.theater}
                     </h4>
                 </div>
             </div>
@@ -38,7 +41,7 @@ const Page: React.FC<Props> = () => {
                             'text-number5 font-bold leading-120 text-primary',
                             bellota.className,
                         )}>
-                        2
+                        {ticketDetail.purchaseAmount}
                     </span>
                     <span className="text-small2 leading-120 tracking-wide text-white">
                         張
@@ -55,7 +58,7 @@ const Page: React.FC<Props> = () => {
                             'text-number5 font-bold leading-150 text-white',
                             bellota.className,
                         )}>
-                        2024.03.26
+                        {format(ticketDetail.startAt, 'yyyy-MM-dd')}
                     </span>
                 </div>
                 <div className="mb-6 flex space-x-1 md:mb-4">
@@ -76,7 +79,7 @@ const Page: React.FC<Props> = () => {
                                 'text-number5 font-bold leading-150  text-white',
                                 bellota.className,
                             )}>
-                            043343290842
+                            {ticketDetail.orderId}
                         </span>
                     </div>
                     <div className="flex justify-between">
@@ -88,7 +91,7 @@ const Page: React.FC<Props> = () => {
                                 'text-number5 font-bold leading-150 text-white',
                                 bellota.className,
                             )}>
-                            2024.03.26
+                            {format(ticketDetail.purchaseAt, 'yyyy-MM-dd')}
                         </span>
                     </div>
                     <div className="flex justify-between">
@@ -100,7 +103,7 @@ const Page: React.FC<Props> = () => {
                                 'text-number5 font-bold leading-150 text-white',
                                 bellota.className,
                             )}>
-                            NT$980
+                            {`NT$${ticketDetail.price}`}
                         </span>
                     </div>
                 </div>
@@ -109,4 +112,4 @@ const Page: React.FC<Props> = () => {
     )
 }
 
-export default Page
+export default TicketInfo

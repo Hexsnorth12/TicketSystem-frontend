@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import MyTicke from './MyTicke'
+import { dummyTicketList } from '@/definitions/movieData'
 
 const meta = {
     title: 'common/MyTicke',
@@ -19,5 +20,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-    args: {},
+    args: {
+        ticket: dummyTicketList[0],
+        status: 'unverified',
+    },
 }
