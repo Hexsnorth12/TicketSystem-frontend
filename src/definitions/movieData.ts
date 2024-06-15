@@ -26,6 +26,23 @@ export type Product = {
     photoPath: string;
 };
 
+export type Group = {
+    _id: string
+    title: string
+    movieTitle: string
+    amount: number
+    placeholderImg: string
+    location: string
+    hasTicket: boolean
+    time: string
+    endAt: string
+    startAt: string
+    vacancy: number
+    status: string
+    content: string
+    participantCount: number
+};
+
 export const fetchPopProducts = async (): Promise<Product[]> => {
     try {
         const { session } = await getUserSession();
@@ -94,48 +111,39 @@ export const fetchRecProducts = async (): Promise<Product[]> => {
     }
 };
 
-export const Groupcards = [
-    {
-        name: '沙丘2',
-        type: '劇院',
-        city: '台北市',
-        date: '2024.03.22 20:15',
-        people: '2/4',
-        content:
-            '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard1.png',
-    },
-    {
-        name: '功夫熊貓4',
-        type: '劇院',
-        city: '台北市',
-        date: '2024.03.22 20:15',
-        people: '2/4',
-        content:
-            '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard2.png',
-    },
-    {
-        name: '可憐的東西',
-        type: '劇院',
-        city: '台北市',
-        date: '2024.03.22 20:15',
-        people: '2/4',
-        content:
-            '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard3.png',
-    },
-    {
-        name: '關於，半夜夢見林默娘乘著海湧把垃圾全丟進我的未來這件塑，好像是真的',
-        type: '劇院',
-        city: '台北市',
-        date: '2024.03.22 20:15',
-        people: '2/4',
-        content:
-            '另外，還有陰謀論者認為，《帝國浩劫：美國內戰》其實是「影子政府」的「預示性調控」（Predictive Programming），讓美國民眾為即將到來的真正內戰做好心理準備。劇情虛實難辨的《帝國浩劫：美國內戰》，或許正是如今紛亂的世界最需要的電影！',
-        image: '/assets/groupcard4.jpg',
-    },
-]
+export const fetchGroupProducts = async (): Promise<Group[]> => {
+    try {
+        const { session } = await getUserSession();
+        const token = session?.user?.token;
+        const params = new URLSearchParams({
+            limit: '10',
+            page: '1',
+            isPublic: 'true',
+            sortField: 'createdAt',
+            sortOrder: 'desc',
+        });
+
+        const { data } = await fetchClient({
+            method: 'GET',
+            url: `api/v1/group?${params.toString()}`,
+            token,
+            tags: ['group'],
+        });
+
+        if (data && data.groups) {
+            return data.groups.map((group: Group) => ({
+                ...group,
+                placeholderImg: group.placeholderImg.startsWith('/')
+                    ? group.placeholderImg
+                    : `/${group.placeholderImg}`,
+            }));
+        } else {
+            throw new Error('未找到商品');
+        }
+    } catch (err) {
+        throw new Error('獲取商品失敗');
+    }
+};
 
 export const Sharecards = [
     {

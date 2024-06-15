@@ -1,19 +1,10 @@
 import type { Meta } from '@storybook/react'
 import React from 'react'
 import Card from './Card'
-import GroupCard from './GroupCard'
 import MovieDescriptionCard from './MovieDescription'
 import MovieDetailCard from './MovieDetail'
 
-import { Groupcards } from '@/definitions/movieData'
 import { DummyProductDetail } from '@/definitions/movieDetailData'
-import { generateImageSizeMap } from '@/utils'
-const groupcardImageSources = Groupcards.map((Groupcards) => Groupcards.image)
-const groupcardImageSizeMap = generateImageSizeMap(
-    groupcardImageSources,
-    288,
-    173,
-)
 const meta = {
     title: 'common/Card',
     component: Card,
@@ -27,11 +18,6 @@ const meta = {
 } satisfies Meta<typeof Card>
 
 export default meta
-export const Group = () => {
-    return (
-        <GroupCard movies={Groupcards} imageSizeMap={groupcardImageSizeMap} />
-    )
-}
 export const MovieDetail = () => {
     return <MovieDetailCard product={DummyProductDetail} />
 }
