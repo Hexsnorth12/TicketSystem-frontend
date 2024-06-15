@@ -1,4 +1,4 @@
-'use client'
+// /components/ProductList.tsx
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,22 +14,28 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 
-interface Movie {
-    name: string
-    image: string
+type Group = {
+    _id: string
+    title: string
+    movieTitle: string
+    amount: number
+    placeholderImg: string
+    location: string
+    hasTicket: boolean
+    time: string
+    endAt: string
+    startAt: string
+    vacancy: number
+    status: string
     content: string
-    type: string
-    city: string
-    date: string
-    people: string
+    participantCount: number
 }
 
-interface CardProps {
-    movies: Movie[]
-    imageSizeMap: { [key: string]: { width: number; height: number } }
+type GroupProductListProps = {
+    groups: Group[]
 }
 
-const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
+const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
     return (
         <>
             {/* Desktop-Navbar */}
@@ -43,52 +49,47 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         type: 'fraction',
                     }}
                     navigation={true}
-                    modules={[Navigation]}
-                    className="">
-                    {movies.map((movie, index) => (
+                    modules={[Navigation]}>
+                    {groups.map((group) => (
                         <div
-                            key={index}
+                            key={group._id}
                             className="m-4 overflow-hidden rounded-lg p-4">
                             <Link href="">
-                                <SwiperSlide key={index}>
-                                    <div className="relative">
+                                <SwiperSlide key={group._id} className="mx-3">
+                                    <div className="relative h-[173px] w-[288px]">
                                         <Image
-                                            src={movie.image}
-                                            alt={movie.name}
-                                            width={
-                                                imageSizeMap[movie.image]?.width
-                                            }
-                                            height={
-                                                imageSizeMap[movie.image]
-                                                    ?.height
-                                            }
+                                            src={group.placeholderImg}
+                                            alt={group.title}
+                                            layout="fill"
+                                            objectFit="cover"
                                             className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
                                         />
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                     </div>
-
                                     <div className="text-start">
                                         <div className="mt-2 text-btn1 font-medium text-white">
-                                            {truncateName(movie.name)}
+                                            {truncateName(group.movieTitle)}
                                         </div>
                                         <div className="text-small2 font-regular">
                                             <div className="text-gray-5">
-                                                {truncateContent(movie.content)}
+                                                {truncateContent(group.content)}
                                             </div>
                                             <div className="flex justify-between text-primary">
-                                                <div>{movie.date}</div>
+                                                <div>{group.time}</div>
                                                 <p className="px-2">
-                                                    {movie.people}
+                                                    {group.vacancy}
                                                 </p>
                                             </div>
 
                                             <div className="flex text-white">
-                                                <div>{movie.type}</div>
+                                                <div>{group.title}</div>
                                                 <div className=" px-2">
                                                     <Tag
                                                         icon={FaMapMarkerAlt}
-                                                        tagValue={movie.city}
+                                                        tagValue={
+                                                            group.location
+                                                        }
                                                         iconColor="gray-4"
                                                     />
                                                 </div>
@@ -102,48 +103,47 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                 </Swiper>
             </div>
             {/* Mobile-Navbar */}
-            <div className="block overflow-x-scroll whitespace-nowrap md:hidden">
-                {movies.map((movie, index) => (
-                    <div key={index} className="mx-1 inline-block w-32">
+            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+                {groups.map((group) => (
+                    <div key={group._id} className="mx-1 inline-block">
                         <Link href="">
-                            <div className="relative">
+                            <div className="relative h-[129px] w-[216px]">
                                 <Image
-                                    src={movie.image}
-                                    alt={movie.name}
-                                    width={imageSizeMap[movie.image]?.width}
-                                    height={imageSizeMap[movie.image]?.height}
+                                    src={group.placeholderImg}
+                                    alt={group.title}
+                                    layout="fill"
+                                    objectFit="cover"
                                     className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>
-
-                            <div className="text-start">
-                                <div className="mt-2 text-btn2 font-medium text-white">
-                                    {truncateName(movie.name)}
+                        </Link>
+                        <div className="text-start">
+                            <div className="mt-2 text-btn2 font-medium text-white">
+                                {truncateName(group.movieTitle)}
+                            </div>
+                            <div className="text-small2 font-regular">
+                                <div className="text-gray-5">
+                                    {truncateContentMobile(group.content)}
                                 </div>
-                                <div className="text-small2 font-regular">
-                                    <div className="text-gray-5">
-                                        {truncateContentMobile(movie.content)}
-                                    </div>
-                                    <div className="flex justify-between text-primary">
-                                        <div>{truncateContent(movie.date)}</div>
-                                        <p className="px-2">{movie.people}</p>
-                                    </div>
+                                <div className="flex justify-between text-primary">
+                                    <div>{truncateContent(group.time)}</div>
+                                    <p className="px-2">{group.vacancy}</p>
+                                </div>
 
-                                    <div className="flex text-white">
-                                        <div>{movie.type}</div>
-                                        <div className=" px-2">
-                                            <Tag
-                                                icon={FaMapMarkerAlt}
-                                                tagValue={movie.city}
-                                                iconColor="gray-4"
-                                            />
-                                        </div>
+                                <div className="flex text-white">
+                                    <div>{group.title}</div>
+                                    <div className=" px-2">
+                                        <Tag
+                                            icon={FaMapMarkerAlt}
+                                            tagValue={group.location}
+                                            iconColor="gray-4"
+                                        />
                                     </div>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -151,4 +151,4 @@ const GroupCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
     )
 }
 
-export default GroupCard
+export default PopProductList
