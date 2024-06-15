@@ -34,7 +34,7 @@ const Page: React.FC<pageProps> = () => {
         },
     ]
     return (
-        <div className=" py-6 md:py-0 md:pl-[60px]">
+        <div className=" py-6 md:py-0">
             <div className="flex gap-2">
                 <BasicTabs tabs={tabs} />
             </div>

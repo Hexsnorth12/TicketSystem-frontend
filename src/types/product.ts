@@ -55,8 +55,10 @@ export interface Comment {
 }
 
 export interface SelfComment extends Comment {
-    title: string
-    photoPath: string
+    product: {
+        title: string
+        photoPath: string
+    }
 }
 export interface ProductFavorite extends Product {
     genre: string
