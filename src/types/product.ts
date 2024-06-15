@@ -54,6 +54,16 @@ export type Comment = {
     user: UserComment
 }
 
+export interface ProductFavorite extends Product {
+    genre: string
+    price: number
+    soldAmount: number
+    amount: number
+    isLaunched: boolean
+    sellStartAt: string
+    sellEndAt: string
+}
+
 export type Ticket = {
     _id: string
     productId: string
