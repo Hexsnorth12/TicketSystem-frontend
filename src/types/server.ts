@@ -10,3 +10,11 @@ export interface FetchOptions {
     body?: BodyInit
     nextConfig?: NextFetchRequestConfig
 }
+export interface fetchPayload {
+    method?: string
+    url: string
+    body?: string
+    token?: string
+    tags?: string[]
+    isTakeToken?: boolean
+}

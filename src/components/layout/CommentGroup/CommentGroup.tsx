@@ -1,7 +1,7 @@
 import React from 'react'
 import { CommentCard, EmptyData } from '@components/common'
 
-import fetchClient from '@/lib/fetchClient'
+import fetchServer from '@/lib/fetchServer'
 import { PaginationWrapper } from '@/components/common'
 import { Comment } from '@/types'
 
@@ -15,9 +15,10 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
     const {
         data: { comments, totalCount },
     }: { data: { comments: Comment[]; totalCount: number; page: number } } =
-        await fetchClient({
+        await fetchServer({
             method: 'GET',
             url: `api/v1/comment?limit=${10}&page=${pageIndex}&status=active&productIds=${productId}`,
+            isTakeToken: false,
         })
 
     if (comments.length === 0) {
@@ -25,19 +26,19 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
     }
     return (
         <>
-            <div className="flex flex-col gap-3 md:flex-row md:gap-6">
+            <div className="flex flex-col flex-wrap gap-3 md:grid md:grid-cols-3 md:flex-row md:gap-6">
                 {comments.map((comment) => (
-                    <CommentCard
-                        key={comment._id}
-                        avatar={comment.user.avatarPath}
-                        userName={comment.user.account}
-                        comment={comment.content}
-                        stars={comment.rating}
-                    />
+                    <div className="" key={comment._id}>
+                        <CommentCard
+                            avatar={comment.user.avatarPath}
+                            userName={comment.user.account}
+                            comment={comment.content}
+                            stars={comment.rating}
+                        />
+                    </div>
                 ))}
             </div>
             <PaginationWrapper
-                page={pageIndex}
                 size={10}
                 total={totalCount}
                 withEllipsis={true}
