@@ -7,19 +7,19 @@ import {
     mdiTicketConfirmation,
 } from '@mdi/js'
 import { NavBanner } from '@components/layout'
-import ShareCard from '@components/common/Card/ShareCard'
 import PopProductList from '@components/common/Card/PopProductList'
 import RecProductList from '@components/common/Card/RecProductList'
 import GroupProductList from '@components/common/Card/GroupProductList'
-import { Sharecards } from '../definitions/movieData'
+import TicketProductList from '@components/common/Card/TicketProductList'
 import {
     fetchPopProducts,
     fetchRecProducts,
     fetchGroupProducts,
+    fetchTicketProducts,
     Product,
     Group,
+    Ticket,
 } from '../definitions/movieData'
-import { generateImageSizeMap } from '../utils/imageUtils'
 import Marquee from '@/components/common/Swiper/Marquee'
 
 interface HeaderTitleProps {
@@ -48,6 +48,7 @@ const HomePage: React.FC = () => {
     const [popproducts, setPopProducts] = useState<Product[]>([])
     const [recproducts, setRecProducts] = useState<Product[]>([])
     const [groupproducts, setGroupProducts] = useState<Group[]>([])
+    const [ticketproducts, setTicketProducts] = useState<Ticket[]>([])
 
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
@@ -55,15 +56,21 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [popProducts, recProducts, groupProducts] =
-                    await Promise.all([
-                        fetchPopProducts(),
-                        fetchRecProducts(),
-                        fetchGroupProducts(),
-                    ])
+                const [
+                    popProducts,
+                    recProducts,
+                    groupProducts,
+                    ticketProducts,
+                ] = await Promise.all([
+                    fetchPopProducts(),
+                    fetchRecProducts(),
+                    fetchGroupProducts(),
+                    fetchTicketProducts(),
+                ])
                 setPopProducts(popProducts)
                 setRecProducts(recProducts)
                 setGroupProducts(groupProducts)
+                setTicketProducts(ticketProducts)
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message)
@@ -77,15 +84,6 @@ const HomePage: React.FC = () => {
 
         fetchData()
     }, [])
-
-    const shareCardImageSources = Sharecards.map(
-        (ShareCards) => ShareCards.image,
-    )
-    const shareCardImageSizeMap = generateImageSizeMap(
-        shareCardImageSources,
-        160,
-        160,
-    )
 
     if (loading) {
         return <div>加載中...</div>
@@ -109,10 +107,7 @@ const HomePage: React.FC = () => {
             <GroupProductList groups={groupproducts} />
             <NavBanner type="join" />
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
-            <ShareCard
-                movies={Sharecards}
-                imageSizeMap={shareCardImageSizeMap}
-            />
+            <TicketProductList tickets={ticketproducts} />
             <NavBanner type="ticket" />
         </>
     )

@@ -65,6 +65,7 @@ export interface ProductFavorite extends Product {
 }
 
 export type Ticket = {
+    photoPath: string
     _id: string
     productId: string
     userId: string

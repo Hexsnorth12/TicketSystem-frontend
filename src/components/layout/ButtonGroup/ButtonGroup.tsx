@@ -5,8 +5,7 @@ import clsx from 'clsx'
 import { Button } from '@/components/common'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-interface ButtonGroupProps {
-}
+interface ButtonGroupProps {}
 
 const ButtonGroup: React.FC<ButtonGroupProps> = () => {
     const router = useRouter()
