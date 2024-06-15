@@ -135,7 +135,7 @@ export const fetchGroupProducts = async (): Promise<Group[]> => {
                 ...group,
                 placeholderImg: group.placeholderImg.startsWith('/')
                     ? group.placeholderImg
-                    : `/${group.placeholderImg}`,
+                    : `${group.placeholderImg}`,
             }));
         } else {
             throw new Error('未找到商品');
