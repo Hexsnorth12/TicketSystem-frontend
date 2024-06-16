@@ -14,8 +14,6 @@ export const CartModal: React.FC<Props> = ({
     total,
     leaveModalHandler,
 }) => {
-    console.log(items, 'items')
-
     function showModal() {
         return visible ? 'md:flex' : 'md:hidden'
     }

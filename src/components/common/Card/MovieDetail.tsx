@@ -49,8 +49,6 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         setSelectPrice(product.price * selectedPlan.discount)
         setConter(1)
     }
-    console.log(conter, 'd')
-
     const handleOnclick = () => {
         addToCart(product, selectPlan, conter)
     }

@@ -36,7 +36,6 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const totalItems = useCartStore((state) => state.totalItems)
 
     const cart = useCartStore((state) => state.cart)
-    console.log(cart, 'cart')
 
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
