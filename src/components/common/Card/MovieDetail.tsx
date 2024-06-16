@@ -34,7 +34,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
 
     const [selectPlan, setSelectPlan] = useState(product.plans[0])
     const [selectPrice, setSelectPrice] = useState(
-        product.price * selectPlan.discount,
+        product.price !== undefined ? product.price * selectPlan.discount : 0,
     )
     const [conter, setConter] = useState(1)
 
@@ -46,7 +46,11 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         selectedPlan: ProductPlan,
     ) => {
         setSelectPlan(selectedPlan)
-        setSelectPrice(product.price * selectedPlan.discount)
+        setSelectPrice(
+            product.price !== undefined
+                ? product.price * selectPlan.discount
+                : 0,
+        )
         setConter(1)
     }
     const handleOnclick = () => {

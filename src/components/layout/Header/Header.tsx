@@ -3,13 +3,12 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
-import { CartModal } from '@/components/Cart'
+import { CartModal } from '@/components/Cart/CartModal'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '../../../stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
-
 
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
@@ -50,13 +49,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
 
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
         if (selectedPlan && selectedPlan.discount) {
-            return (
-                acc + product.price * selectedPlan.discount * product.quantity
-            )
+            return acc + price * selectedPlan.discount * product.quantity
         }
         // 如果没有折扣信息，按原价计算
-        return acc + product.price * product.quantity
+        return acc + price * product.quantity
     }, 0)
 
     return (

@@ -52,7 +52,6 @@ export const CartModal: React.FC<Props> = ({
                             <CartModalItem
                                 key={index}
                                 productInfo={item}
-                                totalItems={totalItems}
                                 className={borderStyle}
                             />
                         )

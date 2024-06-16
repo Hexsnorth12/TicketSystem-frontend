@@ -13,7 +13,7 @@ interface Actions {
         selectedPlan: ProductPlan,
         conter: number,
     ) => void
-    removeFromCart: (product: ProductDetail) => void
+    removeFromCart: (product: CartItem, selectedPlan: ProductPlan) => void
 }
 
 //初始化預設狀態
@@ -70,10 +70,7 @@ export const useCartStore = create<State & Actions>()(
                     }))
                 }
             },
-            removeFromCart: (
-                product: ProductDetail,
-                selectedPlan: ProductPlan,
-            ) => {
+            removeFromCart: (product: CartItem, selectedPlan: ProductPlan) => {
                 const { cart } = get()
                 const cartItem = cart.find(
                     (item: CartItem) =>

@@ -7,9 +7,6 @@ import Image from 'next/image'
 import { useCartStore } from '../../stores/useCartStore'
 import { FaTrashAlt } from 'react-icons/fa'
 const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
-    // const { img, name, type, amount } = productInfo
-    console.log(productInfo, 'productInfosss')
-
     const productName = truncateCartProductName(productInfo.title, 10)
     function truncateCartProductName(
         name: string | undefined,
@@ -53,7 +50,9 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
                 <p className="text-white">{productName}</p>
                 <p className="text-gray-5">{productInfo.quantity}</p>
                 <p className="text-primary">
-                    NT$ {productInfo.price * productInfo.selectedPlan.discount}
+                    NT${' '}
+                    {(productInfo.price as number) *
+                        productInfo.selectedPlan.discount}
                 </p>
                 <p className="text-small2 text-gray-5">
                     {productInfo.selectedPlan.name}
