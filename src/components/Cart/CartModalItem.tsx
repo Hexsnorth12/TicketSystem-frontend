@@ -35,7 +35,7 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
                 'flex  gap-3 border-b border-b-gray-4 pb-3',
                 className,
             )}>
-            <div className="h-[74px] w-[68px] overflow-hidden rounded-lg">
+            <div className="h-[68px] w-[68px] overflow-hidden rounded-lg">
                 <Image
                     src={productInfo.photoPath}
                     alt="cart product img"
