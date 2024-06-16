@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
@@ -8,6 +8,8 @@ import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '../../../stores/useCartStore'
+import { useLazyGetInfoQuery } from '@/services/modules/user'
+
 
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
@@ -22,6 +24,15 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const isAuth = !!session
 
     const [showCartModal, setShowCartModal] = useState(false)
+
+    const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            getInfo({ token: session?.accessToken ?? '' })
+        }
+        getUserInfo()
+    }, [getInfo])
 
     const onLogout = async () => {
         signOut({
@@ -122,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </div>
                         </Link>
                     ) : (
-                        <MemberMenu />
+                        <MemberMenu userInfo={userInfo} />
                     )}
                 </nav>
             </div>
@@ -141,7 +152,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                         'mx-auto mb-4 h-[48px] w-[48px] rounded-full bg-gradient-to-b from-primary to-gray-6 p-[3px]'
                                     }>
                                     <Image
-                                        src={avatar}
+                                        src={userInfo?.imgUrl ?? avatar}
                                         alt="avatar"
                                         className={
                                             'h-full w-full rounded-full object-cover'
