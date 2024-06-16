@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import clsx from 'clsx'
 import avatar from '@images/avatar.jpg'
 import ScrollTabs from '@/components/common/ScrollTabs/ScrollTabs'
@@ -21,9 +21,10 @@ const Sidebar: React.FC<SidebarProps> = () => {
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
     const [isHover, setIsHover] = useState(false)
 
+    const { data: session } = useSession()
+
     useEffect(() => {
         const getUserInfo = async () => {
-            const session = await getSession()
             const token = session?.accessToken || ''
             getInfo({ token })
         }
@@ -40,8 +41,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
         if (!file) return
         const formData = new FormData()
         formData.append('avatar', file)
-        const session = await getSession()
+
         const token = session?.accessToken || ''
+
         const imageURL = await uploadImage(formData, 'user', token)
         await updateInfo({
             payload: {
