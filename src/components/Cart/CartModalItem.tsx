@@ -35,7 +35,7 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
                 'flex  gap-3 border-b border-b-gray-4 pb-3',
                 className,
             )}>
-            <div className="h-[68px] w-[68px] overflow-hidden rounded-lg">
+            <div className="h-[74px] w-[68px] overflow-hidden rounded-lg">
                 <Image
                     src={productInfo.photoPath}
                     alt="cart product img"
@@ -55,7 +55,9 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
                 <p className="text-primary">
                     NT$ {productInfo.price * productInfo.selectedPlan.discount}
                 </p>
-                {productInfo.selectedPlan.name}
+                <p className="text-small2 text-gray-5">
+                    {productInfo.selectedPlan.name}
+                </p>
             </div>
             <button
                 title="Remove Item"

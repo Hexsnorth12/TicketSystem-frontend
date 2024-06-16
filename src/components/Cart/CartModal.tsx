@@ -25,17 +25,17 @@ export const CartModal: React.FC<Props> = ({
         return lastItem ? 'border-b-0' : ''
     }
 
-    function getTotalQuantity() {
-        return items.length
-    }
+    // function getTotalQuantity() {
+    //     return items.length
+    // }
 
-    function getTotalAmnount() {
-        return items.reduce((acc, item) => acc + item.amount, 0)
-    }
+    // function getTotalAmnount() {
+    //     return items.reduce((acc, item) => acc + item.amount, 0)
+    // }
 
     const visibility = showModal()
-    const totalQuantity = getTotalQuantity()
-    const totalAmount = getTotalAmnount()
+    // const totalQuantity = getTotalQuantity()
+    // const totalAmount = getTotalAmnount()
     const containerStyle = cn(
         'absolute right-0 hidden w-[280px] flex-col',
         visibility,
@@ -67,8 +67,7 @@ export const CartModal: React.FC<Props> = ({
                         項商品
                     </p>
                     <p>
-                        NT${' '}
-                        <span className="text-primary">{total.toFixed(2)}</span>
+                        NT$ <span className="text-primary">{total}</span>
                     </p>
                 </div>
 

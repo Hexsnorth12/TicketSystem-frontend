@@ -8,41 +8,8 @@ import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '../../../stores/useCartStore'
-import useProductStore from '../../../stores/productStore'
-import useFromStore from '../../../hooks/useFromStore'
-
-import { ProductInfo, ApiResponseItem } from '@/types/cart'
-import { CartItem } from '@/types/product'
 
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
-const apiResponse = {
-    items: [],
-}
-console.log(useProductStore, 'useProductStore')
-
-function mapApiResponseItemToProductInfo(item: ApiResponseItem): ProductInfo {
-    return {
-        _id: item.product._id,
-        img: item.product.photoPath,
-        name: item.product.title,
-        amount: item.amount, // 购物车中的数量
-        type: item.product.type,
-        genre: item.product.genre,
-        price: item.product.price,
-        soldAmount: item.product.soldAmount,
-        totalAmount: item.product.amount, // 产品的总数量
-        isLaunched: item.product.isLaunched,
-        sellStartAt: item.product.sellStartAt,
-        sellEndAt: item.product.sellEndAt,
-        title: item.product.title, // 添加缺失的属性
-        photoPath: item.product.photoPath, // 添加缺失的属性
-        isAvailable: item.product.isAvailable, // 添加缺失的属性
-    }
-}
-const productInfos: ProductInfo[] = apiResponse.items.map(
-    mapApiResponseItemToProductInfo,
-)
-console.log(productInfos, 'productInfos')
 
 interface HeaderProps {
     logoSrc: string

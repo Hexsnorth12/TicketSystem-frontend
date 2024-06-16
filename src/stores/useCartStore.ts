@@ -8,7 +8,11 @@ interface State {
     totalPrice: number
 }
 interface Actions {
-    addToCart: (product: ProductDetail, selectedPlan?: ProductPlan) => void
+    addToCart: (
+        product: ProductDetail,
+        selectedPlan: ProductPlan,
+        conter: number,
+    ) => void
     removeFromCart: (product: ProductDetail) => void
 }
 
@@ -25,7 +29,11 @@ export const useCartStore = create<State & Actions>()(
             cart: INITIAL_STATE.cart,
             totalItems: INITIAL_STATE.totalItems,
             totalPrice: INITIAL_STATE.totalPrice,
-            addToCart: (product: ProductDetail, selectedPlan: ProductPlan) => {
+            addToCart: (
+                product: ProductDetail,
+                selectedPlan: ProductPlan,
+                conter: number,
+            ) => {
                 const { cart } = get()
                 const cartItem = cart.find(
                     (item: CartItem) =>
@@ -37,12 +45,12 @@ export const useCartStore = create<State & Actions>()(
                     const updatedCart = cart.map((item: CartItem) =>
                         item._id === product._id &&
                         item.selectedPlan.name === selectedPlan.name
-                            ? { ...item, quantity: item.quantity + 1 }
+                            ? { ...item, quantity: item.quantity + conter }
                             : item,
                     )
                     set((state) => ({
                         cart: updatedCart,
-                        totalItems: state.totalItems + 1,
+                        totalItems: state.totalItems + conter,
                         totalPrice:
                             state.totalPrice +
                             (product.price as number) * selectedPlan.discount,
@@ -50,15 +58,15 @@ export const useCartStore = create<State & Actions>()(
                 } else {
                     const updatedCart = [
                         ...cart,
-                        { ...product, quantity: 1, selectedPlan },
+                        { ...product, quantity: conter, selectedPlan },
                     ]
 
                     set((state) => ({
                         cart: updatedCart,
-                        totalItems: state.totalItems + 1,
+                        totalItems: state.totalItems + conter,
                         totalPrice:
                             state.totalPrice +
-                            product.price * selectedPlan.discount,
+                            (product.price as number) * selectedPlan.discount,
                     }))
                 }
             },
@@ -93,7 +101,7 @@ export const useCartStore = create<State & Actions>()(
                         totalItems: state.totalItems - 1,
                         totalPrice:
                             state.totalPrice -
-                            product.price * selectedPlan.discount,
+                            (product.price as number) * selectedPlan.discount,
                     }))
                 }
             },

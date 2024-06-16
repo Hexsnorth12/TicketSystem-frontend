@@ -36,15 +36,23 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const [selectPrice, setSelectPrice] = useState(
         product.price * selectPlan.discount,
     )
-    const handleSelectClick = (
+    const [conter, setConter] = useState(1)
+
+    const handleConterClick = (value: number) => {
+        setConter(value)
+    }
+    const handleSelectPlanClick = (
         product: ProductDetail,
         selectedPlan: ProductPlan,
     ) => {
         setSelectPlan(selectedPlan)
         setSelectPrice(product.price * selectedPlan.discount)
+        setConter(1)
     }
+    console.log(conter, 'd')
+
     const handleOnclick = () => {
-        addToCart(product, selectPlan)
+        addToCart(product, selectPlan, conter)
     }
     const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {
@@ -76,12 +84,14 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                 key={index}
                 type="button"
                 title="按钮"
-                onClick={() => handleSelectClick(product, item)}
-                className="text-nowrap py-2 md:px-4 md:py-2">
+                onClick={() => handleSelectPlanClick(product, item)}
+                className={`text-nowrap py-2 focus:outline-none md:px-4 md:py-2 ${
+                    selectPlan.name === item.name ? 'bg-primary text-black' : ''
+                }`}>
                 <span>{item.name}</span>
             </Button>
         ))
-    }, [product.plans.length])
+    }, [product.plans.length, selectPlan])
 
     return (
         <div className=" h-full w-full">
@@ -160,8 +170,8 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                             <div className="mt-4 flex flex-col items-center gap-y-2 md:flex-row md:justify-start md:gap-x-2">
                                 <div className="w-full md:basis-1/5">
                                     <Counter
-                                        onValueChange={() => {}}
-                                        initialValue={1}
+                                        onValueChange={handleConterClick}
+                                        initialValue={conter}
                                         minValue={1}
                                         maxValue={999}
                                     />
