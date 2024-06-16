@@ -68,6 +68,7 @@ export type Ticket = {
         type: string
     }
     shareCode: string
+    count: number
 }
 
 
@@ -180,14 +181,13 @@ export const fetchTicketProducts = async (): Promise<Ticket[]> => {
         const params = new URLSearchParams({
             limit: '10',
             page: '1',
-            isPublished: 'false',
             sortField: 'createdAt',
             sortOrder: 'desc',
         });
 
         const { data } = await fetchClient({
             method: 'GET',
-            url: `api/v1/ticket?${params.toString()}`,
+            url: `api/v1/ticket-shared?${params.toString()}`,
             token,
             tags: ['ticekt'],
         });
@@ -290,6 +290,7 @@ export const dummyTicketList: Ticket[] = [
             type: '',
         },
         shareCode: '112315641231',
+        count: 2,
     },
 ]
 
