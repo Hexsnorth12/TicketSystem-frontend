@@ -44,7 +44,7 @@ type ProductPlan = {
     headCount: number
 }
 
-export type Comment = {
+export interface Comment {
     _id: string
     rating: number
     content: string
@@ -54,6 +54,12 @@ export type Comment = {
     user: UserComment
 }
 
+export interface SelfComment extends Comment {
+    product: {
+        title: string
+        photoPath: string
+    }
+}
 export interface ProductFavorite extends Product {
     genre: string
     price: number
