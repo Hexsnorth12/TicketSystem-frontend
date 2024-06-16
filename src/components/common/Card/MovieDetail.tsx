@@ -14,7 +14,7 @@ import star from '@icon/star_gray.svg'
 import { bellota } from '../../fonts'
 import Counter from '../Counter/Counter'
 import Tag from '../Tag/tag'
-import { ProductDetail } from '@/types'
+import { ProductDetail, ProductPlan } from '@/types'
 import { useCartStore } from '../../../stores/useCartStore'
 import {
     useAddFavoriteMutation,
@@ -31,8 +31,20 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const [removeFavorite, { isLoading: isLoadingRemove }] =
         useRemoveFavoriteMutation()
     const { data: session } = useSession()
+
+    const [selectPlan, setSelectPlan] = useState(product.plans[0])
+    const [selectPrice, setSelectPrice] = useState(
+        product.price * selectPlan.discount,
+    )
+    const handleSelectClick = (
+        product: ProductDetail,
+        selectedPlan: ProductPlan,
+    ) => {
+        setSelectPlan(selectedPlan)
+        setSelectPrice(product.price * selectedPlan.discount)
+    }
     const handleOnclick = () => {
-        addToCart(product)
+        addToCart(product, selectPlan)
     }
     const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {
@@ -64,7 +76,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                 key={index}
                 type="button"
                 title="按钮"
-                onClick={handleOnclick}
+                onClick={() => handleSelectClick(product, item)}
                 className="text-nowrap py-2 md:px-4 md:py-2">
                 <span>{item.name}</span>
             </Button>
@@ -130,7 +142,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                                             NT$
                                         </span>
                                         <span className="leading-1.5 text-number4 font-bold text-primary md:text-number3">
-                                            {product.price}
+                                            {selectPrice}
                                         </span>
                                     </div>
                                 </div>

@@ -16,25 +16,7 @@ import { CartItem } from '@/types/product'
 
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 const apiResponse = {
-    items: [
-        {
-            product: {
-                _id: '665323ce2cff52b99ea393c8',
-                title: '這是個很棒的電影名稱喔',
-                type: 'preScreeningMeeting',
-                genre: 'action',
-                price: 1100,
-                soldAmount: 0,
-                amount: 100,
-                isLaunched: true,
-                photoPath: '/assets/popcard2.jpg',
-                sellStartAt: '2024-06-10T12:06:41.541Z',
-                sellEndAt: '2024-06-10T12:06:41.541Z',
-                isAvailable: false,
-            },
-            amount: 2200,
-        },
-    ],
+    items: [],
 }
 console.log(useProductStore, 'useProductStore')
 
@@ -84,20 +66,21 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
-    const totalItems = useFromStore(
-        useCartStore,
-        (state) => state.totalItems,
-        0,
-    ) // 提供初始值 0
-    console.log(totalItems, 'totalItems')
+    const totalItems = useCartStore((state) => state.totalItems)
 
     const cart = useCartStore((state) => state.cart)
+    console.log(cart, 'cart')
 
-    // 计算购物车中商品的总价格
-    const total = cart.reduce(
-        (acc, product) => acc + product.price * (product.quantity as number),
-        0,
-    )
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        if (selectedPlan && selectedPlan.discount) {
+            return (
+                acc + product.price * selectedPlan.discount * product.quantity
+            )
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + product.price * product.quantity
+    }, 0)
 
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
@@ -158,7 +141,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                         </Link>
                         <CartModal
                             visible={showCartModal}
-                            items={productInfos}
+                            items={cart}
                             totalItems={totalItems}
                             total={total}
                             leaveModalHandler={() => showCartModalHandler()}

@@ -45,10 +45,9 @@ export interface ProductPlan {
 }
 
 // 擴展 CartItem 接口
-export interface CartItem extends ProductDetail {
+export interface CartItem extends Product {
     quantity: number
-    selectedPlan?: ProductPlan // 可選的選擇方案
-
+    selectedPlan: ProductPlan // 可選的選擇方案
 }
 export type Comment = {
     _id: string
@@ -107,5 +106,4 @@ export type TicketDetail = {
     startAt: string
     purchaseAt: string
     purchaseAmount: number
-
 }

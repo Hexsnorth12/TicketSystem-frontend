@@ -19,25 +19,24 @@ const INITIAL_STATE: State = {
     totalPrice: 0,
 }
 //使用 Zustand 創建商店，結合狀態介面和操作
-export const useCartStore = create(
-    persist<State & Actions>(
+export const useCartStore = create<State & Actions>()(
+    persist(
         (set, get) => ({
             cart: INITIAL_STATE.cart,
             totalItems: INITIAL_STATE.totalItems,
             totalPrice: INITIAL_STATE.totalPrice,
-            addToCart: (product: ProductDetail, selectedPlan?: ProductPlan) => {
-                const cart = get().cart
+            addToCart: (product: ProductDetail, selectedPlan: ProductPlan) => {
+                const { cart } = get()
                 const cartItem = cart.find(
-                    (item) =>
+                    (item: CartItem) =>
                         item._id === product._id &&
-                        item.selectedPlan?.name === selectedPlan?.name,
+                        item.selectedPlan.name === selectedPlan.name,
                 )
 
-                // If the item already exists in the Cart, increase its quantity
                 if (cartItem) {
-                    const updatedCart = cart.map((item) =>
+                    const updatedCart = cart.map((item: CartItem) =>
                         item._id === product._id &&
-                        item.selectedPlan?.name === selectedPlan?.name
+                        item.selectedPlan.name === selectedPlan.name
                             ? { ...item, quantity: item.quantity + 1 }
                             : item,
                     )
@@ -46,7 +45,7 @@ export const useCartStore = create(
                         totalItems: state.totalItems + 1,
                         totalPrice:
                             state.totalPrice +
-                            product.price * (selectedPlan?.discount || 1),
+                            (product.price as number) * selectedPlan.discount,
                     }))
                 } else {
                     const updatedCart = [
@@ -59,25 +58,34 @@ export const useCartStore = create(
                         totalItems: state.totalItems + 1,
                         totalPrice:
                             state.totalPrice +
-                            product.price * (selectedPlan?.discount || 1),
+                            product.price * selectedPlan.discount,
                     }))
                 }
             },
-            removeFromCart: (product: ProductDetail) => {
+            removeFromCart: (
+                product: ProductDetail,
+                selectedPlan: ProductPlan,
+            ) => {
                 const { cart } = get()
-                const cartItem = cart.find((item) => item._id === product._id)
-
+                const cartItem = cart.find(
+                    (item: CartItem) =>
+                        item._id === product._id &&
+                        item.selectedPlan.name === selectedPlan.name,
+                )
                 if (cartItem) {
                     let updatedCart = cart
                     if (cartItem.quantity > 1) {
-                        updatedCart = cart.map((item) =>
-                            item._id === product._id
+                        updatedCart = cart.map((item: CartItem) =>
+                            item._id === product._id &&
+                            item.selectedPlan.name === selectedPlan.name
                                 ? { ...item, quantity: item.quantity - 1 }
                                 : item,
                         )
                     } else {
                         updatedCart = cart.filter(
-                            (item) => item._id !== product._id,
+                            (item: CartItem) =>
+                                item._id !== product._id ||
+                                item.selectedPlan.name !== selectedPlan.name,
                         )
                     }
                     set((state) => ({
@@ -85,25 +93,13 @@ export const useCartStore = create(
                         totalItems: state.totalItems - 1,
                         totalPrice:
                             state.totalPrice -
-                            product.price *
-                                (cartItem.selectedPlan?.discount || 1),
+                            product.price * selectedPlan.discount,
                     }))
                 }
             },
         }),
         {
             name: 'cart-storage',
-            // getStorage: () => sessionStorage, (optional) by default the 'localStorage' is used
-            // version: 1, // State version number,
-            // migrate: (persistedState: unknown, version: number) => {
-            // 	if (version === 0) {
-            // 		// if the stored value is in version 0, we rename the field to the new name
-            // 		persistedState.totalProducts = persistedState.totalItems
-            // 		delete persistedState.totalItems
-            // 	}
-
-            // 	return persistedState as State & Actions
-            // },
         },
     ),
 )
