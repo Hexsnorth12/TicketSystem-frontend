@@ -3,44 +3,54 @@
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { format, parseISO, formatDistanceToNow } from 'date-fns'
+import { zhTW } from 'date-fns/locale'
 import fakeImage from '@images/groupcard1.png'
 import { Button, Tag } from '@/components/common'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+import { ShareOrder } from '@/types/product'
 
-interface pageProps {}
+interface pageProps {
+    order: ShareOrder
+}
 
-const Page: React.FC<pageProps> = () => {
+const Page: React.FC<pageProps> = ({ order }) => {
     const router = useRouter()
     return (
         <div className="flex-wrap rounded-lg bg-gray-3 p-4 md:flex md:items-end md:justify-between md:gap-4 md:px-10 md:py-8">
             <div>
                 <div className="mb-4 flex">
                     <Image
-                        src={fakeImage}
+                        src={order.photoPath}
                         alt="movie picture"
                         width={132}
                         height={80}
                         className="mr-4 rounded-lg"
                     />
                     <div className="flex grow flex-col justify-between text-white">
-                        <h4 className="text-btn2">哥吉拉大戰金剛</h4>
+                        <h4 className="text-btn2">{order.productName}</h4>
                         <Tag
                             icon={FaMapMarkerAlt}
-                            tagValue={'台北'}
+                            tagValue={order.theater}
                             iconColor={'gray-4 text-small2'}
                             position={'left'}
                         />
-                        <p className="text-number5">2022-01-01</p>
+                        <p className="text-number5">
+                            {format(parseISO(order.startAt), 'yyyy-MM-dd')}
+                        </p>
                     </div>
                 </div>
                 <div className="mb-4 flex space-x-2 md:mb-0">
                     <div className="flex text-start">
                         <div className="space-x-1 bg-gray-4 px-3 py-1">
                             <span className="text-number5 leading-120 text-primary">
-                                1
+                                {formatDistanceToNow(parseISO(order.startAt), {
+                                    addSuffix: true,
+                                    locale: zhTW,
+                                })}
                             </span>
                             <span className="text-small2 tracking-wide text-white">
-                                日後到期
+                                到期
                             </span>
                         </div>
                     </div>
@@ -50,7 +60,7 @@ const Page: React.FC<pageProps> = () => {
                                 擁有張數
                             </span>
                             <span className="text-number5 leading-120 text-primary">
-                                1
+                                {order.amount}
                             </span>
                             <span className="text-small2 tracking-wide text-white">
                                 張

@@ -109,3 +109,12 @@ export type TicketDetail = {
     purchaseAt: string
     purchaseAmount: number
 }
+
+export type ShareOrder = {
+    orderId: string
+    productName: string
+    photoPath: string
+    theater: string
+    startAt: string
+    amount: 7
+}
