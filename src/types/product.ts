@@ -44,12 +44,16 @@ export interface ProductPlan {
     headCount: number
 }
 
+<<<<<<< HEAD
 // 擴展 CartItem 接口
 export interface CartItem extends Product {
     quantity: number
     selectedPlan: ProductPlan // 可選的選擇方案
 }
 export type Comment = {
+=======
+export interface Comment {
+>>>>>>> develope
     _id: string
     rating: number
     content: string
@@ -59,6 +63,12 @@ export type Comment = {
     user: UserComment
 }
 
+export interface SelfComment extends Comment {
+    product: {
+        title: string
+        photoPath: string
+    }
+}
 export interface ProductFavorite extends Product {
     genre: string
     price: number
@@ -70,6 +80,7 @@ export interface ProductFavorite extends Product {
 }
 
 export type Ticket = {
+    photoPath: string
     _id: string
     productId: string
     userId: string

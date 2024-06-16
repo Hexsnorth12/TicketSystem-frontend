@@ -125,9 +125,12 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                         type={'button'}
                         title={'退票'}
                         onClick={() => {}}
-                        className={clsx('mr-3 w-full bg-gray-1 py-2 text-primary hover:text-white md:w-auto md:py-3 md:text-btn1', {
-                            'hidden': status !== 'unverified',
-                        })}>
+                        className={clsx(
+                            'mr-3 w-full bg-gray-1 py-2 text-primary hover:text-white md:w-auto md:py-3 md:text-btn1',
+                            {
+                                hidden: status !== 'unverified',
+                            },
+                        )}>
                         <span className="font-medium tracking-wider">退票</span>
                     </Button>
                     <Button

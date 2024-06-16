@@ -21,7 +21,7 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
         })
 
     return (
-        <div className=" py-6 md:py-0 md:pl-[60px]">
+        <div className=" py-6 md:py-0">
             <div className="flex gap-2">
                 <ButtonGroup />
             </div>

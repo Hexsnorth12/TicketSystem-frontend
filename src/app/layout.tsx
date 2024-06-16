@@ -33,19 +33,19 @@ export default async function RootLayout({
             <DateProvider>
                 <html lang="en">
                     <body
-                        className={`${noto_Sans_TC.className} flex flex-col bg-gray-1`}>
+                        className={`${noto_Sans_TC.className} flex h-screen flex-col bg-gray-2`}>
                         <ClientSessionProvider session={session}>
                             {' '}
                             <Header
                                 logoSrc="/assets/movie-go-logo.png"
                                 isAuth={isAuth}
                             />
-                            <Suspense fallback={<Loading />}>
-                                <main className="mb-8 bg-gray-2 pt-[88px] md:mb-[60px]">
+                            <main className="mb-8 grow bg-gray-2 pt-[88px] md:mb-[60px]">
+                                <Suspense fallback={<Loading />}>
                                     {children}
                                     {modal}
-                                </main>
-                            </Suspense>
+                                </Suspense>
+                            </main>
                             <Footer />
                         </ClientSessionProvider>
                     </body>
