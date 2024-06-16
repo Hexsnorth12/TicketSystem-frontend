@@ -1,16 +1,24 @@
 import React from 'react'
 import { TicketBoard, TicketInfo } from '@/components/ticket'
+import fetchClient from '@/lib/fetchClient'
+import { TicketDetail } from '@/types'
 
-interface Props {}
+interface PageProps {
+    params: { ticketId: string }
+}
 
-const Page: React.FC<Props> = () => {
+const Page: React.FC<PageProps> = async ({ params }) => {
+    const data: TicketDetail = await fetchClient({
+        method: 'GET',
+        url: `api/v1/ticket/${params.ticketId}`,
+    })
     return (
         <>
             <div className="md:w-4/12 md:pr-10">
-                <TicketInfo />
+                <TicketInfo ticketDetail={data} />
             </div>
             <div className="md:w-8/12">
-                <TicketBoard />
+                <TicketBoard ticketDetail={data} />
             </div>
         </>
     )

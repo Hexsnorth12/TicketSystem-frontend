@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Pagination } from '@/components/common'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 interface PaginationWrapperProps {
-    url: string
-    payload: { userId: string }
+    url?: string // 這個不用
+    payload?: { userId: string } // 這個不用
     size: number
     total: number
     withEllipsis?: boolean
@@ -13,17 +14,23 @@ interface PaginationWrapperProps {
 
 const PaginationWrapper: React.FC<PaginationWrapperProps> = (props) => {
     const { size, total, withEllipsis = false } = props
-    const [currentIndex] = useState(1)
+    const searchParams = useSearchParams()
+    const currentPage = Number(searchParams.get('page') || 1)
+    const pathname = usePathname()
+    const router = useRouter()
+
+    const handlePageChange = (page: number) => {
+        router.push(`${pathname}?page=${page}`)
+    }
+
     return (
         <>
             <Pagination
                 withEllipsis={withEllipsis}
-                page={currentIndex}
+                page={currentPage}
                 pageSize={size}
                 total={total}
-                onChange={(number) => {
-                    console.log(number)
-                }}
+                onChange={handlePageChange}
             />
         </>
     )

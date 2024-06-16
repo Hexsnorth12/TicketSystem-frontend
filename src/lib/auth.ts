@@ -71,6 +71,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.user = user
+                token.accessToken = user.token
             }
 
             const accessTokenExpires = token.exp as number
@@ -85,6 +86,7 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             session.user = token.user as User
+            session.accessToken = token.accessToken
             return session
         },
     },

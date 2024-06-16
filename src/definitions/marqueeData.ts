@@ -10,5 +10,5 @@ export const Popcards = [
     {
         name: '熱門電影名稱3',
         image: '/assets/slide3.jpg',
-    }
+    },
 ]

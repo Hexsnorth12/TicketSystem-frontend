@@ -208,7 +208,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                 </Link>
                             </li>
                             <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                                <Link href="/user/tickets" scroll={false}>
+                                <Link
+                                    href="/user/tickets?status=unverified"
+                                    scroll={false}>
                                     我的電影票
                                 </Link>
                             </li>

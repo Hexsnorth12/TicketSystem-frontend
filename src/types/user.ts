@@ -13,3 +13,7 @@ export interface UserInfo extends User {
     address: string
     imgUrl: string
 }
+
+export interface UserComment extends User {
+    avatarPath: string
+}

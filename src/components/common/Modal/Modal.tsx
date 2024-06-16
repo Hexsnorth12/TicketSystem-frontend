@@ -27,7 +27,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
             <Dialog.Portal>
                 <Dialog.Overlay className="fixed inset-0 z-50 overflow-auto bg-black/70" />
 
-                <Dialog.DialogContent className="fixed left-1/2 top-1/2 z-50 my-8 max-h-[calc(100vh-138px)] max-w-[327px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto  rounded-lg bg-gray-2 px-3 py-6 scrollbar md:max-h-[calc(100vh-231px)] md:max-w-[1296px] md:overflow-y-hidden">
+                <Dialog.DialogContent className="fixed left-1/2 top-1/2 z-50 my-8 max-h-[calc(100vh-138px)] max-w-[327px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto  rounded-lg bg-gray-2 px-3 py-6 scrollbar-hidden md:max-h-[calc(100vh-231px)] md:max-w-[1296px] md:overflow-y-hidden md:marker:scrollbar">
                     {children}
                 </Dialog.DialogContent>
             </Dialog.Portal>

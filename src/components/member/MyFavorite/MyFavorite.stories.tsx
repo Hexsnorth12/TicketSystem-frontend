@@ -1,31 +1,36 @@
 import React from 'react'
 import MyFavorite from './MyFavorite'
-import fakeImage from '@images/groupcard4.jpg'
 
 export default {
     title: 'member/MyFavorite',
     component: MyFavorite,
 }
 const dummyData = {
-    title: '沙丘3',
-    _id: '6665805ad23d0fe8146bcc0e',
-    price: 800,
-    startAt: '2024-06-19T16:34:02.686Z',
-    endAt: '2024-07-20T14:34:02.685Z',
-    photoPath: fakeImage.src,
-    type: '科幻',
-    isAvailable: true,
+    _id: '665b00748f529f5f17923acd',
+    title: '這是個很棒的電影名稱喔',
+    type: 'premier',
+    genre: 'action',
+    price: 1100,
+    soldAmount: 0,
+    amount: 100,
+    isLaunched: true,
+    photoPath: 'https://images.unsplash.com/photo-1554080353-a576cf803bda',
+    sellStartAt: '2024-06-13T12:50:23.686Z',
+    sellEndAt: '2024-06-13T12:50:23.686Z',
 }
 
 const InvalidData = {
-    title: '沙丘3',
-    _id: '6665805ad23d0fe8146bcc0e',
-    price: 800,
-    startAt: '2024-06-19T16:34:02.686Z',
-    endAt: '2024-07-20T14:34:02.685Z',
-    photoPath: fakeImage.src,
-    type: '科幻',
-    isAvailable: false,
+    _id: '665b00748f529f5f17923acd',
+    title: '這是個很棒的電影名稱喔',
+    type: 'premier',
+    genre: 'action',
+    price: 1100,
+    soldAmount: 0,
+    amount: 100,
+    isLaunched: true,
+    photoPath: 'https://images.unsplash.com/photo-1554080353-a576cf803bda',
+    sellStartAt: '2024-06-13T12:50:23.686Z',
+    sellEndAt: '2026-06-13T12:50:23.686Z',
 }
 
 export const Primary = () => {
