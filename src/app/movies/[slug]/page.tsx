@@ -24,7 +24,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
             label: '評價',
             Component: (
                 <>
-                    <PostComment productId={params.slug}/>
+                    <PostComment productId={params.slug} />
                     <CommentGroup productId={params.slug} />
                 </>
             ),

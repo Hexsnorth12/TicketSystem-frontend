@@ -1,6 +1,6 @@
 import fetchClient from '@/lib/fetchClient';
 import { getUserSession } from '@/lib/auth.actions';
-import { Ticket, TicketDetail } from '@/types';
+import { TicketDetail } from '@/types';
 
 export type Product = {
     limit: number;
@@ -42,6 +42,34 @@ export type Group = {
     content: string
     participantCount: number
 };
+
+export type Ticket = {
+    photoPath: string
+    _id: string
+    productId: string
+    userId: string
+    orderId: string
+    expiredAt: string
+    writeOffAt: string
+    writeOffStaffId: string
+    giverId: string
+    hasTicket: boolean
+    status: 'unverified' | 'expired' | 'refunded'
+    isPublished: boolean
+    product: {
+        _id: string
+        title: string
+        theater: string
+        price: number
+        startAt: string
+        recommendWeight: number
+        isPublic: boolean
+        photoPath: string
+        type: string
+    }
+    shareCode: string
+}
+
 
 export const fetchPopProducts = async (): Promise<Product[]> => {
     try {
@@ -133,7 +161,7 @@ export const fetchGroupProducts = async (): Promise<Group[]> => {
         if (data && data.groups) {
             return data.groups.map((group: Group) => ({
                 ...group,
-                placeholderImg: group.placeholderImg.startsWith('/')
+                placeholderImg: group.placeholderImg.startsWith('')
                     ? group.placeholderImg
                     : `${group.placeholderImg}`,
             }));
@@ -145,64 +173,39 @@ export const fetchGroupProducts = async (): Promise<Group[]> => {
     }
 };
 
-export const Sharecards = [
-    {
-        name: '電影名稱1',
-        number: '3',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard1.jpg',
-    },
-    {
-        name: '電影名稱2',
-        number: '1',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard2.jpg',
-    },
-    {
-        name: '電影名稱3',
-        number: '2',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard3.jpg',
-    },
-    {
-        name: '電影名稱4',
-        number: '3',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard4.jpg',
-    },
-    {
-        name: '電影名稱5',
-        number: '1',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard5.jpg',
-    },
-    {
-        name: '電影名稱6',
-        number: '2',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard6.jpg',
-    },
-    {
-        name: '電影名稱7',
-        number: '3',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard7.jpg',
-    },
-    {
-        name: '電影名稱8',
-        number: '1',
-        price: 800,
-        date: '2024/04/03',
-        image: '/assets/sharecard8.jpg',
-    },
-]
+export const fetchTicketProducts = async (): Promise<Ticket[]> => {
+    try {
+        const { session } = await getUserSession();
+        const token = session?.user?.token;
+        const params = new URLSearchParams({
+            limit: '10',
+            page: '1',
+            isPublished: 'false',
+            sortField: 'createdAt',
+            sortOrder: 'desc',
+        });
+
+        const { data } = await fetchClient({
+            method: 'GET',
+            url: `api/v1/ticket?${params.toString()}`,
+            token,
+            tags: ['ticekt'],
+        });
+
+        if (data && data.tickets) {
+            return data.tickets.map((ticket: Ticket) => ({
+                ...ticket,
+                photoPath: ticket.product.photoPath.startsWith('')
+                    ? ticket.product.photoPath
+                    : `${ticket.product.photoPath}`,
+            }));
+        } else {
+            throw new Error('未找到商品');
+        }
+    } catch (err) {
+        throw new Error('獲取商品失敗');
+    }
+};
 
 export const favorites = [
     {
@@ -264,6 +267,7 @@ export const favorites = [
 export const dummyTicketList: Ticket[] = [
     {
         _id: 'asdfasdfasd',
+        photoPath: '',
         productId: 'cdscsdcsdc',
         userId: '123235564364567',
         orderId: 'iiddidididi',
@@ -273,6 +277,7 @@ export const dummyTicketList: Ticket[] = [
         writeOffAt: '2024-06-13T12:50:23.685Z',
         writeOffStaffId: 'rrr',
         giverId: 'iiddidididi',
+        hasTicket: true,
         product: {
             _id: '66570169343ccb01f586dfed',
             title: '這是個很棒的電影名稱',
@@ -287,6 +292,8 @@ export const dummyTicketList: Ticket[] = [
         shareCode: '112315641231',
     },
 ]
+
+
 
 export const dummyTicketDetail: TicketDetail = {
     _id: '23h4iuh2iu5hih1ui4hi',
@@ -304,3 +311,4 @@ export const dummyTicketDetail: TicketDetail = {
     purchaseAt: '2024-06-15T12:50:23.686Z',
     purchaseAmount: 11,
 }
+

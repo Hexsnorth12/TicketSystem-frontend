@@ -7,9 +7,7 @@ import clsx from 'clsx'
 import { isFuture, parseISO } from 'date-fns'
 import { truncateName } from '@/utils'
 import { ProductFavorite } from '@/types'
-import {
-    useRemoveFavoriteMutation,
-} from '@/services/modules/user'
+import { useRemoveFavoriteMutation } from '@/services/modules/user'
 import { useSession } from 'next-auth/react'
 
 interface MyFavoriteProps {
