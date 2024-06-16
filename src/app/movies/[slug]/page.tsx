@@ -6,7 +6,7 @@ import MovieDescriptionCard from '@/components/common/Card/MovieDescription'
 import fetchServer from '@/lib/fetchServer'
 import { ProductDetail } from '@/types/index'
 // import useProductStore from '../../../stores/productStore'
-import { PostComment } from '@/common/from'
+import { PostComment } from '@/components/forms'
 
 // 定義 Movie 接口
 
