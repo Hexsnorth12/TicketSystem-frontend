@@ -44,16 +44,12 @@ export interface ProductPlan {
     headCount: number
 }
 
-<<<<<<< HEAD
 // 擴展 CartItem 接口
 export interface CartItem extends Product {
     quantity: number
     selectedPlan: ProductPlan // 可選的選擇方案
 }
-export type Comment = {
-=======
 export interface Comment {
->>>>>>> develope
     _id: string
     rating: number
     content: string
