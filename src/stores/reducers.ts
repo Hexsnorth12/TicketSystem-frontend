@@ -1,4 +1,4 @@
-import { combineReducers } from '@reduxjs/toolkit'
+import { combineReducers } from 'redux'
 import userSlice from './slices/userSlice'
 import { api, nextApi } from '@/services/apiSlice'
 
