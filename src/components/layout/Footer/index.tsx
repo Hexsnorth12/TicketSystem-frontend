@@ -6,16 +6,16 @@ import Image from 'next/image'
 
 const Footer: React.FC = () => {
     return (
-        <div className="footer-container  h-[275px] bg-gray-1">
-            <div className="footer-content-container container flex h-full flex-col">
-                <div className="footer-content flex flex-1 flex-col items-center justify-center gap-6">
+        <div className="footer-container bg-gray-1">
+            <div className="footer-content-container container flex flex-col">
+                <div className="footer-content mb-6 flex flex-1 flex-col items-center justify-center gap-6 pt-6 md:mb-12 md:pt-12">
                     <div className="footer-title-container">
                         <Image
                             src="/assets/movie-go-logo.png"
                             alt="Movie go logo"
                             width={75}
                             height={30}
-                            className="md:h-[59px] md:w-[176px]"
+                            className="h-[40px] w-[98px] md:h-[59px] md:w-[176px]"
                         />
                     </div>
                     <div className="social-media-btns-container flex gap-4">

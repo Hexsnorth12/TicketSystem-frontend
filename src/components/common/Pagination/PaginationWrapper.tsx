@@ -10,7 +10,6 @@ interface PaginationWrapperProps {
     size: number
     total: number
     withEllipsis?: boolean
-    page?: number
 }
 
 const PaginationWrapper: React.FC<PaginationWrapperProps> = (props) => {

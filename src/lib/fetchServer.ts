@@ -1,8 +1,8 @@
-import { getSession, signOut } from 'next-auth/react'
 import { BASE_URL } from '@/definitions'
+import { getUserSession } from '@/lib/auth.actions'
 import { fetchPayload } from '@/types'
 
-async function fetchClient({
+async function fetchServer({
     method = 'GET',
     url,
     body = '',
@@ -11,9 +11,8 @@ async function fetchClient({
     isTakeToken = true,
 }: fetchPayload) {
     try {
-        const session = await getSession()
+        const { session } = await getUserSession()
         const accessToken = token || session?.accessToken
-
         const response = await fetch(BASE_URL + url, {
             method: method,
             headers: {
@@ -33,10 +32,6 @@ async function fetchClient({
         return data
     } catch (error) {
         if (error instanceof Response) {
-            if (error.status === 401) {
-                signOut()
-            }
-
             throw error
         }
 
@@ -44,4 +39,4 @@ async function fetchClient({
     }
 }
 
-export default fetchClient
+export default fetchServer

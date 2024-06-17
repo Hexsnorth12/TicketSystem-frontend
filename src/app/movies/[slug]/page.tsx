@@ -3,13 +3,14 @@ import MovieDetailTab from '@components/common/Tab/movieDetail'
 import CommentGroup from '@components/layout/CommentGroup/CommentGroup'
 import * as React from 'react'
 import MovieDescriptionCard from '@/components/common/Card/MovieDescription'
-import fetchClient from '@/lib/fetchClient'
+import fetchServer from '@/lib/fetchServer'
 import { ProductDetail } from '@/types/index'
+import { PostComment } from '@/components/forms'
 
 // 定義 Movie 接口
 
 const Page = async ({ params }: { params: { slug: string } }) => {
-    const { data }: { data: ProductDetail } = await fetchClient({
+    const { data }: { data: ProductDetail } = await fetchServer({
         method: 'GET',
         url: `api/v1/product/${params.slug}`,
     })
@@ -21,7 +22,12 @@ const Page = async ({ params }: { params: { slug: string } }) => {
         },
         {
             label: '評價',
-            Component: <CommentGroup productId={params.slug} />,
+            Component: (
+                <>
+                    <PostComment productId={params.slug} />
+                    <CommentGroup productId={params.slug} />
+                </>
+            ),
         },
     ]
 

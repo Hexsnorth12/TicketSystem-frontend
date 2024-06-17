@@ -1,11 +1,24 @@
 'use client'
+
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import avatar from '@images/avatar.jpg'
 
-const MemberMenu = () => {
+interface MemberMenuProps {
+    userInfo?: {
+        name?: string
+        birthDate?: string
+        email?: string
+        gender?: string
+        phone?: string
+        address?: string
+        imgUrl?: string
+    }
+}
+
+const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
     const [isExpand, setIsExpand] = useState(false)
     // const [logout] = useLazyLogoutQuery()
 
@@ -29,7 +42,7 @@ const MemberMenu = () => {
                 }
                 onClick={onToggleMenu}>
                 <Image
-                    src={avatar}
+                    src={userInfo?.imgUrl ?? avatar}
                     alt="avatar"
                     className={'h-full w-full rounded-full object-cover'}
                     width={48}
@@ -44,7 +57,9 @@ const MemberMenu = () => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/tickets" scroll={false}>
+                        <Link
+                            href="/user/tickets?status=unverified"
+                            scroll={false}>
                             我的電影票
                         </Link>
                     </li>

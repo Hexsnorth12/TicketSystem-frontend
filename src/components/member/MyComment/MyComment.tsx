@@ -3,19 +3,20 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import fackImg from '@images/groupcard1.png'
 import { Rating } from '@/components/common'
 
 interface MyCommentProps {
     productName: string
     starts: number
     comment: string
+    photoPath: string
 }
 
 const MyComment: React.FC<MyCommentProps> = ({
     productName,
     starts,
     comment,
+    photoPath,
 }) => {
     return (
         <Link
@@ -23,7 +24,7 @@ const MyComment: React.FC<MyCommentProps> = ({
             className="flex h-full flex-col gap-3 rounded-lg bg-gray-3 p-6 md:gap-4 md:p-3">
             <div className="flex gap-4">
                 <Image
-                    src={fackImg}
+                    src={photoPath}
                     width={132}
                     height={80}
                     alt={'movie picture'}
