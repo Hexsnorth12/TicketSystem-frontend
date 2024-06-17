@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 import minus from '@icon/minus_light.svg'
@@ -20,7 +20,9 @@ const Counter: React.FC<CounterProps> = ({
     maxValue = 999,
 }) => {
     const [value, setValue] = useState(initialValue)
-
+    useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
     const handleDecrement = () => {
         if (value > minValue) {
             const newValue = value - 1

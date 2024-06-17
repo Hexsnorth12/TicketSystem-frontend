@@ -14,7 +14,8 @@ import star from '@icon/star_gray.svg'
 import { bellota } from '../../fonts'
 import Counter from '../Counter/Counter'
 import Tag from '../Tag/tag'
-import { ProductDetail } from '@/types'
+import { ProductDetail, ProductPlan, CartItem } from '@/types'
+import { useCartStore } from '@/stores/useCartStore'
 import {
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
@@ -30,10 +31,38 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const [removeFavorite, { isLoading: isLoadingRemove }] =
         useRemoveFavoriteMutation()
     const { data: session } = useSession()
-    const handleOnclick = () => {
-        console.log('onclick！')
+
+    const [selectPlan, setSelectPlan] = useState(product.plans[0])
+    const [selectPrice, setSelectPrice] = useState(
+        product.price !== undefined ? product.price * selectPlan.discount : 0,
+    )
+    const [conter, setConter] = useState(1)
+
+    const handleConterClick = (value: number) => {
+        setConter(value)
+    }
+    const handleSelectPlanClick = (
+        product: ProductDetail,
+        selectedPlan: ProductPlan,
+    ) => {
+        setSelectPlan(selectedPlan)
+        setSelectPrice(
+            product.price !== undefined
+                ? product.price * selectPlan.discount
+                : 0,
+        )
+        setConter(1)
     }
 
+    const handleOnclick = () => {
+        const cartItem: CartItem = {
+            ...product,
+            quantity: conter,
+            selectedPlan: selectPlan,
+        }
+        addToCart(cartItem, selectPlan, conter)
+    }
+    const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {
         if (!isFavorite) {
             try {
@@ -57,19 +86,20 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
             }
         }
     }
-
     const plans = useMemo(() => {
         return product.plans.map((item, index) => (
             <Button
                 key={index}
                 type="button"
                 title="按钮"
-                onClick={handleOnclick}
-                className="text-nowrap py-2 md:px-4 md:py-2">
+                onClick={() => handleSelectPlanClick(product, item)}
+                className={`text-nowrap py-2 focus:outline-none md:px-4 md:py-2 ${
+                    selectPlan.name === item.name ? 'bg-primary text-black' : ''
+                }`}>
                 <span>{item.name}</span>
             </Button>
         ))
-    }, [product.plans.length])
+    }, [product.plans.length, selectPlan])
 
     return (
         <div className=" h-full w-full">
@@ -130,7 +160,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                                             NT$
                                         </span>
                                         <span className="leading-1.5 text-number4 font-bold text-primary md:text-number3">
-                                            {product.price}
+                                            {selectPrice}
                                         </span>
                                     </div>
                                 </div>
@@ -148,8 +178,8 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                             <div className="mt-4 flex flex-col items-center gap-y-2 md:flex-row md:justify-start md:gap-x-2">
                                 <div className="w-full md:basis-1/5">
                                     <Counter
-                                        onValueChange={() => {}}
-                                        initialValue={1}
+                                        onValueChange={handleConterClick}
+                                        initialValue={conter}
                                         minValue={1}
                                         maxValue={999}
                                     />
