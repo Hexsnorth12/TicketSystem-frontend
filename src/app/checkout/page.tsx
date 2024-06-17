@@ -1,24 +1,10 @@
+'use client'
 import React from 'react'
 import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
-
+import { DataSource, Column } from '@/types/cart'
+import { useCartStore } from '@/stores/useCartStore'
 const CheckoutPage = () => {
-    interface Column {
-        title: string
-        dataIndex: keyof DataSource
-        key: string
-    }
-
-    interface DataSource {
-        key: string
-        name: {
-            image: string
-            title: string
-            subtitle: string
-        }
-        number: number
-        price: number
-    }
     const columns: Column[] = [
         {
             title: '商品名稱',
@@ -37,39 +23,39 @@ const CheckoutPage = () => {
         },
     ]
 
-    const dataSource: DataSource[] = [
-        {
-            key: '1',
-            name: {
-                image: '/assets/popcard1.jpg',
-                title: '哥吉拉與金剛 : 新帝國',
-                subtitle: '一人獨享',
-            },
-            number: 1,
-            price: 230,
-        },
-        {
-            key: '2',
-            name: {
-                image: '/assets/popcard2.jpg',
-                title: '魔鬼剋星：冰天凍地',
-                subtitle: '兩人同行',
-            },
-            number: 1,
-            price: 360,
-        },
-        {
-            key: '3',
-            name: {
-                image: '/assets/popcard3.jpg',
-                title: '特別總集篇 名偵探柯南 vs 名偵探柯南',
-                subtitle: '三人同行',
-            },
-            number: 2,
-            price: 200,
-        },
-    ]
+    const dataSource: DataSource[] = []
+    const cart = useCartStore((state) => state.cart)
+    cart.forEach((item) => {
+        console.log(item, 'itemitem')
 
+        const dataSourceItem: DataSource = {
+            key: item._id,
+            name: {
+                image: item.photoPath,
+                title: item.title,
+                subtitle: item.selectedPlan.name,
+            },
+            number: item.quantity,
+            price: (item.price as number) * item.selectedPlan.discount,
+        }
+
+        dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
+    })
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount) {
+            return acc + price * selectedPlan.discount * product.quantity
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
+    const originalTotal = cart.reduce((acc, product) => {
+        const price = product.price ?? 0
+        return acc + price * product.quantity
+    }, 0)
+
+    const discount = originalTotal - total
     return (
         <div className="relative isolate overflow-hidden py-16 sm:py-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-6">
@@ -87,17 +73,18 @@ const CheckoutPage = () => {
                             />
                         </div>
                         <div className="mt-3 w-full  rounded-lg bg-gray-3 p-4  text-white md:mt-0 ">
-                            {/* <div className="flex justify-end gap-x-4">
-                                <h4 className="flex-none text-body font-semibold leading-6 text-white md:text-3xl">
-                                    結算
-                                </h4>
-                            </div> */}
                             <ul
                                 role="list"
                                 className="mb-4 mt-10 grid grid-cols-1 justify-items-end gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
-                                <li className="flex gap-x-3">金額:350 NT</li>
-                                <li className="flex gap-x-3">折扣：-35 NT</li>
-                                <li className="flex gap-x-3">總金額:315 NT</li>
+                                <li className="flex gap-x-3">
+                                    原價:{originalTotal} NT
+                                </li>
+                                <li className="flex gap-x-3">
+                                    方案折扣：-{discount} NT
+                                </li>
+                                <li className="flex gap-x-3">
+                                    總金額:{total}NT
+                                </li>
                                 <div className="h-px flex-auto bg-gray-100" />
                             </ul>
                         </div>

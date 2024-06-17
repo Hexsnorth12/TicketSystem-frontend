@@ -20,6 +20,7 @@ interface Actions {
         selectedPlan: string,
         newQuantity: number,
     ) => void
+    mergeCarts: (serverCart: CartItem[]) => void
 }
 
 //初始化預設狀態
@@ -186,6 +187,43 @@ export const useCartStore = create<State & Actions>()(
                         }, 0),
                     }))
                 }
+            },
+            mergeCarts: (serverCart: CartItem[]) => {
+                const { cart } = get()
+                const mergedCart = [...cart]
+
+                serverCart.forEach((serverItem) => {
+                    const index = mergedCart.findIndex(
+                        (item) =>
+                            item._id === serverItem._id &&
+                            item.selectedPlan.name ===
+                                serverItem.selectedPlan.name,
+                    )
+
+                    if (index !== -1) {
+                        mergedCart[index] = {
+                            ...mergedCart[index],
+                            quantity:
+                                mergedCart[index].quantity +
+                                serverItem.quantity,
+                        }
+                    } else {
+                        mergedCart.push(serverItem)
+                    }
+                })
+
+                set((state) => ({
+                    cart: mergedCart,
+                    totalItems: mergedCart.reduce(
+                        (acc, item) => acc + item.quantity,
+                        0,
+                    ),
+                    totalPrice: mergedCart.reduce((acc, item) => {
+                        const itemPrice =
+                            (item.price as number) * item.selectedPlan.discount
+                        return acc + itemPrice * item.quantity
+                    }, 0),
+                }))
             },
         }),
         {

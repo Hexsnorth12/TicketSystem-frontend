@@ -9,15 +9,18 @@ import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
-
+import { CartItem } from '@/types'
+import fetchServer from '@/lib/fetchServer'
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
 interface HeaderProps {
     logoSrc: string
     isAuth: boolean
+    searchParams?: { [key: string]: string }
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
+const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
+    const pageIndex = searchParams?.page ? parseInt(searchParams.page) : 1
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
@@ -39,12 +42,30 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
             callbackUrl: `${window.location.origin}/login`,
         })
     }
+    const mergeCart = useCartStore((state) => state.mergeCarts)
+    useEffect(() => {
+        const fetchCartData = async () => {
+            if (isAuth) {
+                const response = await fetchServer({
+                    method: 'GET',
+                    url: `api/v1/cart?limit=8&page=${pageIndex}`,
+                })
+                const userCart = response.data
+                console.log(userCart, ' response.data')
+
+                if (userCart && userCart.items) {
+                    mergeCart(userCart.items)
+                }
+            }
+        }
+
+        fetchCartData()
+    }, [isAuth, pageIndex, mergeCart])
 
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
     const totalItems = useCartStore((state) => state.totalItems)
-
     const cart = useCartStore((state) => state.cart)
 
     const total = cart.reduce((acc, product) => {

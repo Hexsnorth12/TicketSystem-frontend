@@ -1,11 +1,10 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation'
 import CartTable from '@components/common/Table/cartTable'
-import { Button } from '@/components/common/index'
 import { useCartStore } from '@/stores/useCartStore'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { DataSource, Column } from '@/types/cart'
 const CartPage = () => {
     const cart = useCartStore((state) => state.cart)
     const { data: session } = useSession()
@@ -45,22 +44,6 @@ const CartPage = () => {
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
     })
 
-    interface Column {
-        title: string
-        dataIndex: keyof DataSource
-        key: string
-    }
-
-    interface DataSource {
-        key: string
-        name: {
-            image: string
-            title: string
-            subtitle: string
-        }
-        number: number
-        price: number
-    }
     const columns: Column[] = [
         {
             title: '商品名稱',
@@ -78,8 +61,6 @@ const CartPage = () => {
             key: 'price',
         },
     ]
-
-    const router = useRouter()
 
     return (
         <div className="mx-auto max-w-7xl px-6 lg:px-6">
