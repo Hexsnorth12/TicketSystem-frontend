@@ -7,6 +7,7 @@ import { CartModal } from '@/components/Cart'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
+import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
 
 //TODO: 寫好購物車status後需刪除此資料

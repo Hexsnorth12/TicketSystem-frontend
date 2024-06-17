@@ -5,6 +5,49 @@ import CartTable from '@components/common/Table/cartTable'
 import { Button } from '@/components/common/index'
 
 const CartPage = () => {
+
+import { useCartStore } from '@/stores/useCartStore'
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
+const CartPage = () => {
+    const cart = useCartStore((state) => state.cart)
+    const { data: session } = useSession()
+    const isAuth = !!session
+    const handleCheckoutPath = isAuth ? '/checkout' : '/login'
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount) {
+            return acc + price * selectedPlan.discount * product.quantity
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
+    const originalTotal = cart.reduce((acc, product) => {
+        const price = product.price ?? 0
+        return acc + price * product.quantity
+    }, 0)
+
+    const discount = originalTotal - total
+
+    const dataSource: DataSource[] = []
+    cart.forEach((item) => {
+        console.log(item, 'itemitem')
+
+        const dataSourceItem: DataSource = {
+            key: item._id,
+            name: {
+                image: item.photoPath,
+                title: item.title,
+                subtitle: item.selectedPlan.name,
+            },
+            number: item.quantity,
+            price: (item.price as number) * item.selectedPlan.discount,
+        }
+
+        dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
+    })
+>>>>>>> Stashed changes
     interface Column {
         title: string
         dataIndex: keyof DataSource
@@ -72,9 +115,7 @@ const CartPage = () => {
         },
     ]
     const router = useRouter()
-    const handleCheckout = () => {
-        router.push('/checkout')
-    }
+
     return (
         <div className="mx-auto max-w-7xl px-6 lg:px-6">
             <div className="mx-auto max-w-2xl lg:mx-0">
@@ -101,13 +142,9 @@ const CartPage = () => {
                             <li className="flex gap-x-3">總金額:315 NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
-                        <Button
-                            onClick={handleCheckout}
-                            type="button"
-                            title=""
-                            className="w-full">
+                        <Link href={handleCheckoutPath} className="w-full">
                             去買單
-                        </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
