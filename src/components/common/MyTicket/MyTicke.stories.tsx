@@ -11,18 +11,18 @@ const meta: Meta<typeof MyTicke> = {
             appDirectory: true,
         },
     },
-    decorators: [(story) => (
-        <div className="container h-lvh bg-black">{story()}</div>
-    )],
-};
+    decorators: [
+        (story) => <div className="container h-lvh bg-black">{story()}</div>,
+    ],
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
     args: {
         ticket: dummyTicketList[0],
         status: 'unverified',
     },
-};
+}
