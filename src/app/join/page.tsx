@@ -30,7 +30,8 @@ const JoinPage = () => {
 
     const [page, setPage] = useState(1)
     const [checkFilter, setCheckFilter] = useState(false)
-    // 帶新增相關邏輯
+    // TODO: 待新增相關邏輯
+    // eslint-disable-next-line
     const [scrollToBottom, setScrollToBottom] = useState(true)
 
     const [countries, setCountries] = useState<Tag[]>([])
@@ -65,6 +66,7 @@ const JoinPage = () => {
                     clearTimeout(resend)
                 }
             }
+            // eslint-disable-next-line
         } catch (error: any) {
             setError(error.message)
         }
@@ -92,7 +94,9 @@ const JoinPage = () => {
 
         const { startAt, endAt } = exportTimeRangeString(timeRange)
         // TODO: 待api更新後 更新此邏輯 目前篩選無效
+        // eslint-disable-next-line
         const movieTitles = () => {}
+        // eslint-disable-next-line
         const countries = () => {}
 
         const params = {

@@ -65,6 +65,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
     useEffect(() => {
         try {
             fetchDetail()
+            // eslint-disable-next-line
         } catch (error: any) {
             setEventError(error.message)
         }

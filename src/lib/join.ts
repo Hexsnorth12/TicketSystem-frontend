@@ -12,8 +12,11 @@ export const DEFAULTTIMERANGE = {
 export const getJoinEventList = async ({
     limit,
     page,
+    // eslint-disable-next-line
     startAt = '',
+    // eslint-disable-next-line
     endAt = '',
+    // eslint-disable-next-line
     movieTitle = '',
     title = '',
 }: {
@@ -51,6 +54,7 @@ export const getJoinEventList = async ({
         } else {
             throw new Error('取得活動資料失敗')
         }
+        // eslint-disable-next-line
     } catch (error: any) {
         return {
             status: 'failed',
@@ -78,6 +82,7 @@ export const getEventDetail = async (
         } else {
             throw new Error('取得活動資料失敗')
         }
+        // eslint-disable-next-line
     } catch (error: any) {
         return {
             status: 'failed',

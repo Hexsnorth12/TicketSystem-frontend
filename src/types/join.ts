@@ -29,6 +29,7 @@ type Status = 'success' | 'failed'
 
 export type Tag = { label: string; value: string }
 
+// eslint-disable-next-line
 export type EventList = [Event & { [key: string]: any }] | []
 
 export type JoinPageSuccess = {
