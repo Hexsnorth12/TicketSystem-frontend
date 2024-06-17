@@ -188,14 +188,16 @@ export const useCartStore = create<State & Actions>()(
                     }))
                 }
             },
-            mergeCarts: (serverCart: CartItem[]) => {
+            mergeCarts: (serverCart: any) => {
                 const { cart } = get()
                 const mergedCart = [...cart]
 
                 serverCart.forEach((serverItem) => {
+                    console.log(serverItem, 'serverItem')
+
                     const index = mergedCart.findIndex(
                         (item) =>
-                            item._id === serverItem._id &&
+                            item._id === serverItem.product._id &&
                             item.selectedPlan.name ===
                                 serverItem.selectedPlan.name,
                     )
@@ -204,8 +206,7 @@ export const useCartStore = create<State & Actions>()(
                         mergedCart[index] = {
                             ...mergedCart[index],
                             quantity:
-                                mergedCart[index].quantity +
-                                serverItem.quantity,
+                                mergedCart[index].quantity + serverItem.amount,
                         }
                     } else {
                         mergedCart.push(serverItem)
@@ -219,9 +220,16 @@ export const useCartStore = create<State & Actions>()(
                         0,
                     ),
                     totalPrice: mergedCart.reduce((acc, item) => {
+                        console.log(item, 'dddd')
+                        console.log(acc, 'acc')
+
+                        console.log(item.product, 'itemww')
+
                         const itemPrice =
-                            (item.price as number) * item.selectedPlan.discount
-                        return acc + itemPrice * item.quantity
+                            (item.product.price as number) * item.plan.discount
+                        console.log(itemPrice, 'itemPrice')
+
+                        return acc + itemPrice * item.amount
                     }, 0),
                 }))
             },
