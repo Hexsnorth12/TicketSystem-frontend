@@ -3,28 +3,14 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
-import { CartModal } from '@/components/Cart'
+import { CartModal } from '@/components/Cart/CartModal'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
 
-//TODO: 寫好購物車status後需刪除此資料
-const dummyCartItems = [
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-]
+//FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
 interface HeaderProps {
     logoSrc: string
@@ -57,6 +43,19 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
+    const totalItems = useCartStore((state) => state.totalItems)
+
+    const cart = useCartStore((state) => state.cart)
+
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount) {
+            return acc + price * selectedPlan.discount * product.quantity
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
 
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
@@ -94,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     />
                 </Link>
                 <Link href="/cart" className="flex md:hidden">
-                    <Cartbtn amount={0} />
+                    <Cartbtn amount={totalItems ?? 0} />
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
@@ -113,11 +112,13 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                         onMouseEnter={() => showCartModalHandler(true)}
                         onMouseLeave={() => showCartModalHandler()}>
                         <Link href="/cart">
-                            <Cartbtn amount={0} />
+                            <Cartbtn amount={totalItems} />
                         </Link>
                         <CartModal
                             visible={showCartModal}
-                            items={dummyCartItems}
+                            items={cart}
+                            totalItems={totalItems}
+                            total={total}
                             leaveModalHandler={() => showCartModalHandler()}
                         />
                     </div>

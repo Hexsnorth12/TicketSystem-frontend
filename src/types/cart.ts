@@ -1,12 +1,14 @@
-type ProductInfo = { img: string; name: string; amount: number; type: string }
+import { CartItem } from '@/types/product'
 
 export type CartModal = {
     visible: boolean
-    items: ProductInfo[]
+    items: CartItem[]
+    totalItems: number
+    total: number
     leaveModalHandler: () => void
 }
 
 export type CartModalItem = {
-    productInfo: ProductInfo
+    productInfo: CartItem
     className?: string
 }

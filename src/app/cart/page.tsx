@@ -3,9 +3,6 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import CartTable from '@components/common/Table/cartTable'
 import { Button } from '@/components/common/index'
-
-const CartPage = () => {
-
 import { useCartStore } from '@/stores/useCartStore'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -47,7 +44,7 @@ const CartPage = () => {
 
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
     })
->>>>>>> Stashed changes
+
     interface Column {
         title: string
         dataIndex: keyof DataSource
@@ -82,38 +79,6 @@ const CartPage = () => {
         },
     ]
 
-    const dataSource: DataSource[] = [
-        {
-            key: '1',
-            name: {
-                image: '/assets/popcard1.jpg',
-                title: '哥吉拉與金剛 : 新帝國',
-                subtitle: '一人獨享',
-            },
-            number: 1,
-            price: 230,
-        },
-        {
-            key: '2',
-            name: {
-                image: '/assets/popcard2.jpg',
-                title: '魔鬼剋星：冰天凍地',
-                subtitle: '兩人同行',
-            },
-            number: 1,
-            price: 360,
-        },
-        {
-            key: '3',
-            name: {
-                image: '/assets/popcard3.jpg',
-                title: '特別總集篇 名偵探柯南 vs 名偵探柯南',
-                subtitle: '三人同行',
-            },
-            number: 2,
-            price: 200,
-        },
-    ]
     const router = useRouter()
 
     return (
@@ -137,9 +102,13 @@ const CartPage = () => {
                         <ul
                             role="list"
                             className="mb-4 mt-10 grid grid-cols-1 gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
-                            <li className="flex gap-x-3">金額:350 NT</li>
-                            <li className="flex gap-x-3">折扣：-35 NT</li>
-                            <li className="flex gap-x-3">總金額:315 NT</li>
+                            <li className="flex gap-x-3">
+                                原價:{originalTotal} NT
+                            </li>
+                            <li className="flex gap-x-3">
+                                方案折扣：-{discount} NT
+                            </li>
+                            <li className="flex gap-x-3">總金額:{total} NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
                         <Link href={handleCheckoutPath} className="w-full">
