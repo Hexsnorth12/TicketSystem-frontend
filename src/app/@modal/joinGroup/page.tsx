@@ -1,18 +1,33 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useForm, FieldPath, FieldValues } from 'react-hook-form'
 import { useFormState } from 'react-dom'
-import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
-import { ModalContent, Button, InputRegister, Tag } from '@/components/common'
+
+import clsx from 'clsx'
+import {
+    ModalContent,
+    Button,
+    InputRegister,
+    Tag,
+    ErrorModal,
+} from '@/components/common'
 import { bellota } from '@/components/fonts'
 import account_gray from '@icon/account_gray.svg'
-import fakeImage from '@images/groupcard1.png'
 import { getJoinForm } from '@/lib'
-import { State } from '@/types'
+import { getEventDetail } from '@/lib/join'
+import { formatJoinEventDate } from '@/utils'
+
+import type {
+    Event,
+    EventDetailRes,
+    EventDetailSuccess,
+    JoinPageError,
+    State,
+} from '@/types'
 
 export interface FormValues {
     name: string
@@ -32,12 +47,28 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
     const router = useRouter()
 
+    const [eventDetail, setEventDetail] = useState<Partial<Event>>({})
+    const [eventError, setEventError] = useState('')
+
+    const haveTicketString = eventDetail?.haveTicket ? '已買票' : '未買票'
+    const formattedDate = formatJoinEventDate(
+        new Date(eventDetail?.time as string),
+    )
+
     const {
         register,
         formState: { errors },
         setError,
     } = useForm<FieldValues>()
     const [state, formAction] = useFormState<State, FormData>(getJoinForm, null)
+
+    useEffect(() => {
+        try {
+            fetchDetail()
+        } catch (error: any) {
+            setEventError(error.message)
+        }
+    }, [])
 
     useEffect(() => {
         if (!state) return
@@ -54,25 +85,50 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
         }
     }, [state, setError])
 
+    async function fetchDetail() {
+        const result = (await getEventDetail(groupId)) as EventDetailRes
+
+        if (result!.status === 'success') {
+            const success = result as EventDetailSuccess
+            setEventDetail(success.data)
+        } else {
+            const error = (result as JoinPageError).error
+            setEventError(error)
+        }
+    }
+
+    function closeModal() {
+        setEventError('')
+        router.back()
+    }
+
     return (
         <ModalContent tittle="">
+            {/* 錯誤彈窗 */}
+            {eventError && (
+                <ErrorModal onClose={closeModal} errorMsg={eventError} />
+            )}
+
             <div className="min-w-[279px] px-5 md:px-12 md:py-9">
                 <div className="mb-6 flex flex-col gap-4 md:flex-row">
                     <Image
-                        src={fakeImage}
+                        loader={() => eventDetail.placeholderImg as string}
+                        src={eventDetail.placeholderImg as string}
                         alt="group"
-                        className="w-full rounded-lg"
+                        width={288}
+                        height={173}
+                        className="rounded-lg"
                     />
                     <div className="max-h-[184px] overflow-y-scroll pr-6 scrollbar">
                         <h5 className="mb-1 text-small1 text-white md:mb-2 md:text-header5">
-                            下班一起看沙丘！上班好累喔～
+                            {eventDetail.title}
                         </h5>
                         <p className="mb-3 text-small2 text-gray-5 md:mb-4 md:text-small1">
-                            沙丘2
+                            {eventDetail.movieTitle}
                         </p>
                         <Tag
                             icon={FaMapMarkerAlt}
-                            tagValue={'欣欣秀泰'}
+                            tagValue={eventDetail.theater as string}
                             iconColor="gray-4"
                             position="left"
                             textStyle="text-small2 md:text-small1 text-white"
@@ -80,7 +136,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                         <div className="mb-3 mt-3 flex flex-col items-start gap-3 md:mb-4 md:mt-4 md:flex-row md:items-center">
                             <div className="flex-1 rounded-md bg-gray-3 px-3 py-1 ">
                                 <span className="text-nowrap text-small2 text-white">
-                                    已買票
+                                    {haveTicketString}
                                 </span>
                             </div>
                             <div className="flex w-full justify-between">
@@ -89,7 +145,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                         'text-number5 text-primary',
                                         bellota.className,
                                     )}>
-                                    2024.03.22 20:15
+                                    {formattedDate}
                                 </p>
                                 <div className="flex gap-1">
                                     <Image
@@ -103,15 +159,19 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                             'space-x-1 text-number5',
                                             bellota.className,
                                         )}>
-                                        <span className="text-primary">2</span>
+                                        <span className="text-primary">
+                                            {eventDetail.vacancy}
+                                        </span>
                                         <span className="text-gray-5">/</span>
-                                        <span className="text-gray-5">4</span>
+                                        <span className="text-gray-5">
+                                            {eventDetail.amount}
+                                        </span>
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <p className="text-small2 text-gray-5 md:text-small1">
-                            看了主管一整天的臭臉，需要用甜茶老公來洗眼睛3結束有精神的話，一起去吃friday!
+                            {eventDetail.content}
                         </p>
                     </div>
                 </div>

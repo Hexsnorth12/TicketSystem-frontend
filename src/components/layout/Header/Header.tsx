@@ -92,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             電影總表
                         </a>
                     </Link>
-                    <Link href="/gatherings" legacyBehavior>
+                    <Link href="/join" legacyBehavior>
                         <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             一起揪團
                         </a>
