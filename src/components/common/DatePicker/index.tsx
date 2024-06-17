@@ -1,23 +1,32 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import DatePickerModal from './DatePickerModal'
 import DatePickerInput from './DatePickerInput'
 import TimePickerInput from './TimePickerInput'
-
 import { datePickerStaticData } from '@/lib'
 import { formatDateString, formatTimeString } from '@/utils'
 
-const { DEFAULTDATE, STARTDATETITLE, ENDDATETITLE } = datePickerStaticData
+import type { DatePickerComponent as Props } from '@/types'
 
-const DatePicker: React.FC = () => {
+const {
+    DEFAULTDATE,
+    DEFAULTSTARTTIME,
+    DEFAULTENDTIME,
+    STARTDATETITLE,
+    ENDDATETITLE,
+} = datePickerStaticData
+
+const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
     const [renderStartDateModal, setRenderStartDateModal] = useState(false)
     const [renderEndDateModal, setRenderEndDateModal] = useState(false)
 
+    const [startFilter, setStartFilter] = useState(false)
+
     const [startDate, setStartDate] = useState(DEFAULTDATE)
     const [endDate, setEndDate] = useState(DEFAULTDATE)
-    const [startTime, setStartTime] = useState(DEFAULTDATE)
-    const [endTime, setEndTime] = useState(DEFAULTDATE)
+    const [startTime, setStartTime] = useState(DEFAULTSTARTTIME)
+    const [endTime, setEndTime] = useState(DEFAULTENDTIME)
 
     const startDateString = formatDateString(startDate)
     const endDateString = formatDateString(endDate)
@@ -31,21 +40,72 @@ const DatePicker: React.FC = () => {
         setRenderEndDateModal(show)
     }
 
-    // TODO: 待新增 判斷日期順序邏輯
+    function filterActivated() {
+        setStartFilter(true)
+    }
+
     function changeStartDate(date: Date) {
+        filterActivated()
         setStartDate(date)
+        toggleEndDateModalHandler(true)
     }
     function changeEndDate(date: Date) {
+        filterActivated()
+        if (startDate > date) {
+            onError('結束日期不可早於開始日期')
+            return
+        }
         setEndDate(date)
     }
 
-    // TODO: 待新增 判斷時間順序邏輯
     function setStartTimeHandler(date: Date) {
-        setStartTime(date)
+        filterActivated()
+        setStartTime(
+            new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+            ),
+        )
     }
     function setEndTimeHandler(date: Date) {
-        setEndTime(date)
+        filterActivated()
+        // TODO: api篩選需要更新
+        const endTime = new Date(
+            startTime.getFullYear(),
+            startTime.getMonth(),
+            startTime.getDate(),
+            date.getHours(),
+            date.getMinutes(),
+        )
+        if (startTime > endTime) {
+            onError('結束時間不可早於開始時間')
+            return
+        }
+        setEndTime(
+            new Date(
+                endDate.getFullYear(),
+                endDate.getMonth(),
+                endDate.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+            ),
+        )
     }
+
+    useEffect(() => {
+        if (startFilter) {
+            console.log(startDate, endDate, startTime, endTime)
+            setTimeRange({
+                startDate,
+                endDate,
+                startTime,
+                endTime,
+            })
+        }
+    }, [startDate, endDate, startTime, endTime])
 
     return (
         <div>

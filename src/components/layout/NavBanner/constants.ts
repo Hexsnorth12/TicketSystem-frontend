@@ -12,7 +12,7 @@ const BUTTON = {
 }
 const HREF = {
     // Should be revised in future
-    join: '/',
+    join: '/join',
     ticket: '/',
 }
 
