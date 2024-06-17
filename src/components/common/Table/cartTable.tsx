@@ -11,7 +11,6 @@ import Counter from '../Counter/Counter'
 import Image from 'next/image'
 import Button from '@components/common/Button'
 import { MdDelete } from 'react-icons/md'
-import { CartItem } from '@/types/product'
 import { useCartStore } from '@/stores/useCartStore'
 interface Column {
     title: string

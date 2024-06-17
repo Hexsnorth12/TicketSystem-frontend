@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { CartItem } from '@/types/product'
-import { ProductDetail, ProductPlan } from '@/types/product'
+import { ProductPlan } from '@/types/product'
 import { persist } from 'zustand/middleware'
 interface State {
     cart: CartItem[]
@@ -103,7 +103,7 @@ export const useCartStore = create<State & Actions>()(
                         updatedCart.splice(cartItemIndex, 1)
                     }
 
-                    set((state) => ({
+                    set(() => ({
                         cart: updatedCart,
                         totalItems: updatedCart.reduce(
                             (acc, item) => acc + item.quantity,
@@ -137,7 +137,7 @@ export const useCartStore = create<State & Actions>()(
                 )
 
                 if (cartItem) {
-                    set((state) => ({
+                    set(() => ({
                         cart: updatedCart,
                         totalItems: updatedCart.reduce(
                             (acc, item) => acc + item.quantity,

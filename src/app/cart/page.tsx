@@ -5,8 +5,6 @@ import CartTable from '@components/common/Table/cartTable'
 import { Button } from '@/components/common/index'
 import { useCartStore } from '@/stores/useCartStore'
 const CartPage = () => {
-    const totalItems = useCartStore((state) => state.totalItems)
-
     const cart = useCartStore((state) => state.cart)
     console.log(cart, 'cartcart')
 
