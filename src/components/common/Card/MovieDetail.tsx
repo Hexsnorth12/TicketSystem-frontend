@@ -14,8 +14,8 @@ import star from '@icon/star_gray.svg'
 import { bellota } from '../../fonts'
 import Counter from '../Counter/Counter'
 import Tag from '../Tag/tag'
-import { ProductDetail, ProductPlan } from '@/types'
-import { useCartStore } from '../../../stores/useCartStore'
+import { ProductDetail, ProductPlan, CartItem } from '@/types'
+import { useCartStore } from '@/stores/useCartStore'
 import {
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
@@ -53,8 +53,14 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         )
         setConter(1)
     }
+
     const handleOnclick = () => {
-        addToCart(product, selectPlan, conter)
+        const cartItem: CartItem = {
+            ...product,
+            quantity: conter,
+            selectedPlan: selectPlan,
+        }
+        addToCart(cartItem, selectPlan, conter)
     }
     const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {

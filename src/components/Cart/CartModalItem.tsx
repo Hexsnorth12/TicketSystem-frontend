@@ -4,7 +4,7 @@ import { CartItem } from '@/types/product'
 import type { CartModalItem as Props } from '@/types'
 import { cn } from '@/utils'
 import Image from 'next/image'
-import { useCartStore } from '../../stores/useCartStore'
+import { useCartStore } from '@/stores/useCartStore'
 import { FaTrashAlt } from 'react-icons/fa'
 const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
     const productName = truncateCartProductName(productInfo.title, 10)

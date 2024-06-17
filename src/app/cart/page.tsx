@@ -3,7 +3,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import CartTable from '@components/common/Table/cartTable'
 import { Button } from '@/components/common/index'
-import { useCartStore } from '../../stores/useCartStore'
+import { useCartStore } from '@/stores/useCartStore'
 const CartPage = () => {
     const totalItems = useCartStore((state) => state.totalItems)
 
@@ -19,6 +19,13 @@ const CartPage = () => {
         // 如果没有折扣信息，按原价计算
         return acc + price * product.quantity
     }, 0)
+    const originalTotal = cart.reduce((acc, product) => {
+        const price = product.price ?? 0
+        return acc + price * product.quantity
+    }, 0)
+
+    const discount = originalTotal - total
+
     const dataSource: DataSource[] = []
     cart.forEach((item) => {
         console.log(item, 'itemitem')
@@ -31,7 +38,7 @@ const CartPage = () => {
                 subtitle: item.selectedPlan.name,
             },
             number: item.quantity,
-            price: item.price * item.selectedPlan.discount,
+            price: (item.price as number) * item.selectedPlan.discount,
         }
 
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
@@ -95,9 +102,13 @@ const CartPage = () => {
                         <ul
                             role="list"
                             className="mb-4 mt-10 grid grid-cols-1 gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
-                            <li className="flex gap-x-3">金額:350 NT</li>
-                            <li className="flex gap-x-3">折扣：-35 NT</li>
-                            <li className="flex gap-x-3">總金額:315 NT</li>
+                            <li className="flex gap-x-3">
+                                原價:{originalTotal} NT
+                            </li>
+                            <li className="flex gap-x-3">
+                                方案折扣：-{discount} NT
+                            </li>
+                            <li className="flex gap-x-3">總金額:{total} NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
                         <Button

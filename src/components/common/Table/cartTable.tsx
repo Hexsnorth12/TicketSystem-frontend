@@ -11,6 +11,8 @@ import Counter from '../Counter/Counter'
 import Image from 'next/image'
 import Button from '@components/common/Button'
 import { MdDelete } from 'react-icons/md'
+import { CartItem } from '@/types/product'
+import { useCartStore } from '@/stores/useCartStore'
 interface Column {
     title: string
     dataIndex: keyof DataSource
@@ -46,22 +48,48 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
     const [numberStates, setNumberStates] = useState<{ [key: string]: number }>(
         {},
     )
+    const cart = useCartStore((state) => state.cart)
+    const removeAllFromCart = useCartStore((state) => state.removeAllFromCart)
+    const updateCartItemQuantity = useCartStore(
+        (state) => state.updateCartItemQuantity,
+    )
+    console.log(numberStates.number, 'numberStates')
 
-    const handleNumberChange = (key: string, newValue: number) => {
+    const handleNumberChange = (uniqueKey: string, newValue: number) => {
         setNumberStates((prevState) => ({
             ...prevState,
-            [key]: newValue,
+            [uniqueKey]: newValue,
         }))
+        const [id, name] = uniqueKey.split('-')
+        const itemToAdd = cart.find(
+            (item) => item._id === id && item.selectedPlan.name === name,
+        )
+        if (itemToAdd) {
+            updateCartItemQuantity(id, name, newValue)
+        }
     }
-
+    const handleRemove = (data: DataSource) => {
+        const itemToRemove = cart.find(
+            (item) =>
+                item._id === data.key &&
+                item.selectedPlan.name === data.name.subtitle,
+        )
+        if (itemToRemove) {
+            removeAllFromCart(itemToRemove, itemToRemove.selectedPlan)
+        }
+    }
     const renderPrice = (data: DataSource) => {
+        const uniqueKey = `${data.key}-${data.name.subtitle}`
+        const currentNumber = numberStates[uniqueKey] ?? data.number
+
         if (
-            typeof numberStates[data.key] !== 'number' ||
+            typeof currentNumber !== 'number' ||
             typeof data.price !== 'number'
         ) {
-            return `${data.number * data.price} NT`
+            return 'Invalid Data'
         }
-        return `${numberStates[data.key] * data.price} NT`
+
+        return `${currentNumber * data.price} NT`
     }
     const renderName = (name: {
         image: string
@@ -109,6 +137,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                     {dataSource.map((data) => (
                         <TableRow key={data.key}>
                             {columns.map((column) => {
+                                const uniqueKey = `${data.key}-${data.name.subtitle}`
                                 const cellData =
                                     data[column.dataIndex as keyof DataSource]
                                 return (
@@ -117,12 +146,12 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                             <Counter
                                                 onValueChange={(newValue) =>
                                                     handleNumberChange(
-                                                        data.key,
+                                                        uniqueKey,
                                                         newValue,
                                                     )
                                                 }
                                                 initialValue={
-                                                    numberStates[data.key] ||
+                                                    numberStates[uniqueKey] ||
                                                     data.number
                                                 }
                                                 minValue={1}
@@ -144,6 +173,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                             {/* 添加删除按钮 */}
                             <StyledTableCell>
                                 <Button
+                                    onClick={() => handleRemove(data)}
                                     type="button"
                                     title=""
                                     className="border-0">

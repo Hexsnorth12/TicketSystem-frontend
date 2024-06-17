@@ -9,11 +9,17 @@ interface State {
 }
 interface Actions {
     addToCart: (
-        product: ProductDetail,
+        product: CartItem,
         selectedPlan: ProductPlan,
         conter: number,
     ) => void
     removeFromCart: (product: CartItem, selectedPlan: ProductPlan) => void
+    removeAllFromCart: (product: CartItem, selectedPlan: ProductPlan) => void
+    updateCartItemQuantity: (
+        product: string,
+        selectedPlan: string,
+        newQuantity: number,
+    ) => void
 }
 
 //初始化預設狀態
@@ -29,31 +35,35 @@ export const useCartStore = create<State & Actions>()(
             cart: INITIAL_STATE.cart,
             totalItems: INITIAL_STATE.totalItems,
             totalPrice: INITIAL_STATE.totalPrice,
+
             addToCart: (
-                product: ProductDetail,
+                product: CartItem,
                 selectedPlan: ProductPlan,
                 conter: number,
             ) => {
                 const { cart } = get()
-                const cartItem = cart.find(
+                const cartItemIndex = cart.findIndex(
                     (item: CartItem) =>
                         item._id === product._id &&
                         item.selectedPlan.name === selectedPlan.name,
                 )
 
-                if (cartItem) {
-                    const updatedCart = cart.map((item: CartItem) =>
-                        item._id === product._id &&
-                        item.selectedPlan.name === selectedPlan.name
-                            ? { ...item, quantity: item.quantity + conter }
-                            : item,
-                    )
+                if (cartItemIndex !== -1) {
+                    const updatedCart = [...cart]
+                    updatedCart[cartItemIndex] = {
+                        ...updatedCart[cartItemIndex],
+                        quantity: updatedCart[cartItemIndex].quantity + conter,
+                    }
+
                     set((state) => ({
                         cart: updatedCart,
                         totalItems: state.totalItems + conter,
-                        totalPrice:
-                            state.totalPrice +
-                            (product.price as number) * selectedPlan.discount,
+                        totalPrice: updatedCart.reduce((acc, item) => {
+                            const itemPrice =
+                                (item.price as number) *
+                                item.selectedPlan.discount
+                            return acc + itemPrice * item.quantity
+                        }, 0),
                     }))
                 } else {
                     const updatedCart = [
@@ -64,41 +74,116 @@ export const useCartStore = create<State & Actions>()(
                     set((state) => ({
                         cart: updatedCart,
                         totalItems: state.totalItems + conter,
-                        totalPrice:
-                            state.totalPrice +
-                            (product.price as number) * selectedPlan.discount,
+                        totalPrice: updatedCart.reduce((acc, item) => {
+                            const itemPrice =
+                                (item.price as number) *
+                                item.selectedPlan.discount
+                            return acc + itemPrice * item.quantity
+                        }, 0),
                     }))
                 }
             },
+
             removeFromCart: (product: CartItem, selectedPlan: ProductPlan) => {
                 const { cart } = get()
+                const cartItemIndex = cart.findIndex(
+                    (item: CartItem) =>
+                        item._id === product._id &&
+                        item.selectedPlan.name === selectedPlan.name,
+                )
+
+                if (cartItemIndex !== -1) {
+                    const updatedCart = [...cart]
+                    if (updatedCart[cartItemIndex].quantity > 1) {
+                        updatedCart[cartItemIndex] = {
+                            ...updatedCart[cartItemIndex],
+                            quantity: updatedCart[cartItemIndex].quantity - 1,
+                        }
+                    } else {
+                        updatedCart.splice(cartItemIndex, 1)
+                    }
+
+                    set((state) => ({
+                        cart: updatedCart,
+                        totalItems: updatedCart.reduce(
+                            (acc, item) => acc + item.quantity,
+                            0,
+                        ),
+                        totalPrice: updatedCart.reduce((acc, item) => {
+                            const itemPrice =
+                                (item.price as number) *
+                                item.selectedPlan.discount
+                            return acc + itemPrice * item.quantity
+                        }, 0),
+                    }))
+                }
+            },
+
+            removeAllFromCart: (
+                product: CartItem,
+                selectedPlan: ProductPlan,
+            ) => {
+                const { cart } = get()
+                const updatedCart = cart.filter(
+                    (item: CartItem) =>
+                        item._id !== product._id ||
+                        item.selectedPlan.name !== selectedPlan.name,
+                )
+
                 const cartItem = cart.find(
                     (item: CartItem) =>
                         item._id === product._id &&
                         item.selectedPlan.name === selectedPlan.name,
                 )
+
                 if (cartItem) {
-                    let updatedCart = cart
-                    if (cartItem.quantity > 1) {
-                        updatedCart = cart.map((item: CartItem) =>
-                            item._id === product._id &&
-                            item.selectedPlan.name === selectedPlan.name
-                                ? { ...item, quantity: item.quantity - 1 }
-                                : item,
-                        )
-                    } else {
-                        updatedCart = cart.filter(
-                            (item: CartItem) =>
-                                item._id !== product._id ||
-                                item.selectedPlan.name !== selectedPlan.name,
-                        )
-                    }
                     set((state) => ({
                         cart: updatedCart,
-                        totalItems: state.totalItems - 1,
-                        totalPrice:
-                            state.totalPrice -
-                            (product.price as number) * selectedPlan.discount,
+                        totalItems: updatedCart.reduce(
+                            (acc, item) => acc + item.quantity,
+                            0,
+                        ),
+                        totalPrice: updatedCart.reduce((acc, item) => {
+                            const itemPrice =
+                                (item.price as number) *
+                                item.selectedPlan.discount
+                            return acc + itemPrice * item.quantity
+                        }, 0),
+                    }))
+                }
+            },
+
+            updateCartItemQuantity: (
+                productId: string,
+                planName: string,
+                newQuantity: number,
+            ) => {
+                const { cart } = get()
+                const cartItemIndex = cart.findIndex(
+                    (item: CartItem) =>
+                        item._id === productId &&
+                        item.selectedPlan.name === planName,
+                )
+
+                if (cartItemIndex !== -1) {
+                    const updatedCart = [...cart]
+                    updatedCart[cartItemIndex] = {
+                        ...updatedCart[cartItemIndex],
+                        quantity: newQuantity,
+                    }
+
+                    set((state) => ({
+                        cart: updatedCart,
+                        totalItems: updatedCart.reduce(
+                            (acc, item) => acc + item.quantity,
+                            0,
+                        ),
+                        totalPrice: state.cart.reduce((acc, item) => {
+                            const itemPrice =
+                                (item.price as number) *
+                                item.selectedPlan.discount
+                            return acc + itemPrice * item.quantity
+                        }, 0),
                     }))
                 }
             },
