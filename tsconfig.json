@@ -31,7 +31,8 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "src/components/common/Pagination/pagination.stories.jsx"
+        "src/components/common/Pagination/pagination.stories.jsx",
+        "node_modules/@types"
     ],
     "exclude": ["node_modules"],
     "tsc-alias": {
