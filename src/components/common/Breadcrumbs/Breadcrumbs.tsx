@@ -23,8 +23,8 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = () => {
                         name: pathMap['home'].name,
                     }
                 return {
-                    path: pathMap[path].path,
-                    name: pathMap[path].name,
+                    path: pathMap[path]?.path ?? '',
+                    name: pathMap[path]?.name ?? '',
                 }
             })
         console.log(processPaths)
