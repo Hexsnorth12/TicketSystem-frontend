@@ -26,6 +26,7 @@ type Ticket = {
         photoPath: string
     }
     shareCode: string
+    count: number
 }
 
 type TicketProductListProps = {
@@ -61,13 +62,12 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 </div>
                                 <div className="text-small2">
                                     <div className="flex items-center justify-center text-gray-5">
-                                        狀態
+                                        剩餘
                                         <nav className="px-2 text-number4 text-primary">
                                             {' '}
-                                            {
-                                                ticket.product.recommendWeight
-                                            }{' '}
+                                            {ticket.count}{' '}
                                         </nav>
+                                        張
                                     </div>
                                     <div className="flex items-center justify-center text-gray-5">
                                         NT$
@@ -115,11 +115,12 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                             </div>
                             <div className="text-small2">
                                 <div className="flex items-center justify-center text-gray-5">
-                                    劇院
+                                    剩餘
                                     <nav className="px-2 text-number4 text-primary">
                                         {' '}
-                                        {ticket.product.recommendWeight}{' '}
+                                        {ticket.count}{' '}
                                     </nav>
+                                    張
                                 </div>
                                 <div className="flex items-center justify-center text-gray-5">
                                     NT$

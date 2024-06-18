@@ -38,12 +38,17 @@ export interface ProductDetail extends Product {
     isFavorite: boolean
 }
 
-type ProductPlan = {
+export interface ProductPlan {
     name: string
     discount: number
     headCount: number
 }
 
+// 擴展 CartItem 接口
+export interface CartItem extends Product {
+    quantity: number
+    selectedPlan: ProductPlan // 可選的選擇方案
+}
 export interface Comment {
     _id: string
     rating: number

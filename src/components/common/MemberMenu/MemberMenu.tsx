@@ -1,11 +1,24 @@
 'use client'
+
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import avatar from '@images/avatar.jpg'
 
-const MemberMenu = () => {
+interface MemberMenuProps {
+    userInfo?: {
+        name?: string
+        birthDate?: string
+        email?: string
+        gender?: string
+        phone?: string
+        address?: string
+        imgUrl?: string
+    }
+}
+
+const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
     const [isExpand, setIsExpand] = useState(false)
     // const [logout] = useLazyLogoutQuery()
 
@@ -34,7 +47,7 @@ const MemberMenu = () => {
                 }
                 onClick={onToggleMenu}>
                 <Image
-                    src={avatar}
+                    src={userInfo?.imgUrl ?? avatar}
                     alt="avatar"
                     className={'h-full w-full rounded-full object-cover'}
                     width={48}

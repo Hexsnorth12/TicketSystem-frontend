@@ -24,6 +24,7 @@ import TextArea from './TextArea/TextArea'
 import SelectBox from './Select/selectBox'
 import EmptyData from './EmptyData/EmptyData'
 import DatePicker from './DatePicker'
+import ErrorModal from './ErrorModal'
 
 export {
     Modal,
@@ -51,5 +52,6 @@ export {
     SelectBox,
     MultipleSelect,
     EmptyData,
-    DatePicker
+    DatePicker,
+    ErrorModal,
 }

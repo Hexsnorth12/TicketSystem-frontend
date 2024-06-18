@@ -2,6 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { TypeTag } from '@/components/Buttons'
 import Tag from '@components/common/Tag/tag'
 import {
@@ -42,6 +43,10 @@ type RecProductListProps = {
 }
 
 const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
+    const router = useRouter() // 获取路由对象
+    const handleMovieDetail = (id: string) => {
+        router.push(`/movies/${id}`)
+    }
     return (
         <>
             {/* Desktop-Navbar */}
@@ -49,7 +54,9 @@ const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="m-4 overflow-hidden rounded-lg p-4">
+                        className="m-4 overflow-hidden rounded-lg p-4"
+                        onClick={() => handleMovieDetail(product._id)}
+                        style={{ cursor: 'pointer' }}>
                         <Link href="">
                             <div className="relative h-[210px] w-[160px]">
                                 <Image
