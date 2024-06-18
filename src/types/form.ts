@@ -15,6 +15,6 @@ export type State =
           // 成功回傳api但申請失敗
           status: '6516'
           message: string
-          data: {}
+          data: object
       }
     | null
