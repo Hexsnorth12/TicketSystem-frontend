@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -10,6 +10,7 @@ import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
 import { checkInvalidTimeRange, cn, exportTimeRangeString } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
+import { useScrollToBottom } from '@/hooks'
 
 import {
     EventList,
@@ -23,6 +24,10 @@ const LIMITAMOUNT = 10
 
 const JoinPage = () => {
     const router = useRouter()
+    const eventListContainer = useRef<HTMLDivElement>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [stopFetching, setStopFetching] = useState(false)
+    const [error, setError] = useState('')
 
     const [eventList, setEventList] = useState<EventList>([])
     const [addMoreSpace, setAddMoreSpace] = useState(false)
@@ -30,9 +35,6 @@ const JoinPage = () => {
 
     const [page, setPage] = useState(1)
     const [checkFilter, setCheckFilter] = useState(false)
-    // TODO: 待新增相關邏輯
-    // eslint-disable-next-line
-    const [scrollToBottom, setScrollToBottom] = useState(true)
 
     const [countries, setCountries] = useState<Tag[]>([])
     const [theaters, setTheaters] = useState<Tag[]>([])
@@ -43,14 +45,20 @@ const JoinPage = () => {
     const [movieTags, setMovieTags] = useState<string[]>([])
     const [title, setTitle] = useState<string>('')
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
-
     useEffect(() => {
         // TODO: 做loading spinner
         setIsLoading(true)
         fetchInitData()
     }, [])
+
+    // 拿下一頁資料
+    useEffect(() => {
+        const notFirstPage = page !== 1
+        if (notFirstPage && !stopFetching) {
+            if (checkFilter) getFilterEvent(true)
+            else fetchInitData()
+        }
+    }, [page, stopFetching])
 
     // 篩選條件更新後重新發送拿活動資料
     useEffect(() => {
@@ -58,7 +66,7 @@ const JoinPage = () => {
             if (checkFilter) {
                 const resend = setTimeout(() => {
                     setIsLoading(true)
-                    filterEvent()
+                    getFilterEvent()
                 }, 1200)
 
                 // 防止過多請求發送
@@ -72,17 +80,21 @@ const JoinPage = () => {
         }
     }, [timeRange, countryTags, theaterTags, movieTags])
 
+    // 拉到活動頁底部觸發callback
+    useScrollToBottom(eventListContainer, handleEventScrollToBottom)
+
     async function fetchInitData() {
         const queryString = {
             page,
             limit: LIMITAMOUNT,
         }
         const result = await getJoinEventList(queryString)
-        postGetEventData(result, true)
-        setIsLoading(false)
+        const isInitRender = page === 1
+
+        postGetEventData(result, isInitRender)
     }
 
-    async function filterEvent(withTitle = false) {
+    async function getFilterEvent(scrollBottom = false) {
         const { startDate, endDate, startTime, endTime } = timeRange
         const dateRangeError = startDate > endDate
         const timeRangeError = checkInvalidTimeRange(startTime, endTime)
@@ -93,7 +105,9 @@ const JoinPage = () => {
         }
 
         const { startAt, endAt } = exportTimeRangeString(timeRange)
-        // TODO: 待api更新後 更新此邏輯 目前篩選無效
+        const updatedPage = !scrollBottom ? 1 : page
+
+        // TODO: 待api更新後 更新此邏輯，目前篩選無法運作
         // eslint-disable-next-line
         const movieTitles = () => {}
         // eslint-disable-next-line
@@ -101,40 +115,42 @@ const JoinPage = () => {
 
         const params = {
             limit: LIMITAMOUNT,
-            page,
+            page: updatedPage,
             startAt,
             endAt,
-            title: withTitle ? title : '',
+            title,
         }
 
         const result = await getJoinEventList(params)
-        postGetEventData(result)
-
-        setIsLoading(false)
-        setPage(1)
-        setScrollToBottom(false)
-    }
-
-    function searchTitle() {
-        filterEvent(true)
+        postGetEventData(result, !scrollBottom)
     }
 
     function postGetEventData(result: GetEventListRes, initRender = false) {
         if (result!.status === 'success') {
             const success = result as JoinPageSuccess
-            const shouldAddMoreSpace = success.data.length > 6
+            const resEventList = success.events as EventList
+            const totalCount = success.totalCount
+            const noMoreData =
+                resEventList.length === 0 || totalCount <= LIMITAMOUNT
 
-            const eventList = success.data as EventList
-            if (initRender) {
-                setFilterOptions(eventList)
+            let updatedEventList = resEventList
+            if (!initRender) {
+                updatedEventList = [...eventList, ...resEventList] as EventList
             }
 
-            setEventList(eventList)
+            const shouldAddMoreSpace = updatedEventList.length > 6
+
+            if (initRender) setPage(1)
+            setStopFetching(noMoreData)
+            setEventList(updatedEventList)
+            setFilterOptions(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
         } else {
             const error = (result as JoinPageError).error
             setError(error)
         }
+
+        setIsLoading(false)
     }
 
     function closeErrorModal() {
@@ -147,6 +163,25 @@ const JoinPage = () => {
 
     function changeSearchContent(input: string) {
         setTitle(input)
+    }
+
+    function searchTitle() {
+        getFilterEvent(false)
+    }
+
+    const searchInputOnSubmitHandler: FormEventHandler<HTMLFormElement> = (
+        event,
+    ) => {
+        event.preventDefault()
+        searchTitle()
+    }
+
+    function handleEventScrollToBottom() {
+        if (!stopFetching) {
+            setPage((prevState) => {
+                return ++prevState
+            })
+        }
     }
 
     function openEventModal(id: string) {
@@ -269,6 +304,7 @@ const JoinPage = () => {
 
             {/* 活動列 */}
             <div
+                ref={eventListContainer}
                 className={cn(
                     'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
                     addMoreSpace && 'pb-[300px]',
@@ -297,25 +333,27 @@ const JoinPage = () => {
             {/* 地圖 */}
             <div className="relative flex-1 bg-white">
                 {/* 搜尋欄 */}
-                <div className="absolute left-6 top-6 inline-block">
-                    <div className="relative shadow-sm">
-                        <Input
-                            type="text"
-                            rounded="none"
-                            value={title}
-                            onChange={changeSearchContent}
-                            placeholder="輸入活動名稱"
-                            className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                            <SearchBtn
-                                type="search"
-                                active={true}
-                                onClick={searchTitle}
+                <form onSubmit={searchInputOnSubmitHandler}>
+                    <div className="absolute left-6 top-6 inline-block">
+                        <div className="relative shadow-sm">
+                            <Input
+                                type="text"
+                                rounded="none"
+                                value={title}
+                                onChange={changeSearchContent}
+                                placeholder="輸入活動名稱"
+                                className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
                             />
+                            <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                <SearchBtn
+                                    type="search"
+                                    active={true}
+                                    onClick={searchTitle}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 {/* 地圖 */}
                 <Image
                     src="/icons/join/dummy_map_should_be_deleted.png"

@@ -34,7 +34,8 @@ export type EventList = [Event & { [key: string]: any }] | []
 
 export type JoinPageSuccess = {
     status: Status
-    data: EventList
+    events: EventList
+    totalCount: number
 }
 
 export type JoinPageError = {

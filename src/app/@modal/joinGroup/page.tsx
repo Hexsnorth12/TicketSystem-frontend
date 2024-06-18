@@ -74,15 +74,19 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
     useEffect(() => {
         if (!state) return
 
-        if (state.status === 'error') {
+        const { status } = state
+        if (status === 'error') {
             state.errors?.forEach((error) => {
                 setError(error.path as FieldPath<FormValues>, {
                     message: error.message,
                 })
             })
         }
-        if (state.status === 'success') {
+        if (status === 'success') {
             router.push('success?state=true&callback=user/sharedTicket')
+        }
+        if (status === '6516') {
+            setEventError(state?.message)
         }
     }, [state, setError])
 

@@ -48,7 +48,8 @@ export const getJoinEventList = async ({
             if (data.groups) {
                 return {
                     status: 'success',
-                    data: data.groups,
+                    events: data.groups,
+                    totalCount: data.totalCount,
                 }
             }
         } else {
