@@ -189,15 +189,49 @@ export const useCartStore = create<State & Actions>()(
                     }))
                 }
             },
-            mergeCarts: (product: UserCartItem[]) => {
+
+            mergeCarts: (serverCart: UserCartItem[]) => {
                 const { cart } = get()
                 const mergedCart = [...cart]
 
-                const cartItemIndex = mergedCart.findIndex(
-                    (item: CartItem) =>
-                        item._id === productId &&
-                        item.selectedPlan.name === planName,
-                )
+                serverCart.forEach((serverItem: UserCartItem) => {
+                    const formattedItem = {
+                        ...serverItem.product,
+                        selectedPlan: serverItem.plan,
+                        quantity: serverItem.amount,
+                    }
+                    console.log(formattedItem, 'formattedItemformattedItem')
+
+                    const index = mergedCart.findIndex(
+                        (item) =>
+                            item._id === formattedItem._id &&
+                            item.selectedPlan.name ===
+                                formattedItem.selectedPlan.name,
+                    )
+
+                    if (index !== -1) {
+                        mergedCart[index] = {
+                            ...mergedCart[index],
+                            quantity:
+                                mergedCart[index].quantity +
+                                formattedItem.quantity,
+                        }
+                    } else {
+                        mergedCart.push(formattedItem)
+                    }
+                })
+                set(() => ({
+                    cart: mergedCart,
+                    totalItems: mergedCart.reduce(
+                        (acc, item) => acc + item.quantity,
+                        0,
+                    ),
+                    totalPrice: mergedCart.reduce((acc, item) => {
+                        const itemPrice =
+                            (item.price as number) * item.selectedPlan.discount
+                        return acc + itemPrice * item.quantity
+                    }, 0),
+                }))
             },
         }),
         {

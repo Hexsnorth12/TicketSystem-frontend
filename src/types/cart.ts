@@ -9,9 +9,9 @@ export type CartModal = {
 }
 //打user api 傳來的訊息
 export interface UserProductPlan {
-    discount: string
+    discount: number
     headCount: number
-    name: number
+    name: string
     _id: string
 }
 export interface UserProduct {

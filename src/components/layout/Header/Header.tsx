@@ -67,7 +67,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
         setShowCartModal(show)
     }
     const totalItems = useCartStore((state) => state.totalItems)
+    const totalPrice = useCartStore((state) => state.totalPrice)
     const cart = useCartStore((state) => state.cart)
+    console.log(cart, totalItems, totalPrice, 'ddddd')
 
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
