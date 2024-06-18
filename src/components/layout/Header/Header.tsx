@@ -34,6 +34,8 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     }, [getInfo])
 
     const onLogout = async () => {
+        setIsOpen(false)
+
         signOut({
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
@@ -232,7 +234,6 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     )}
                     {isAuth && (
                         <Link
-                            onClick={handleClick}
                             href="/login"
                             className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
                             onClick={onLogout}>

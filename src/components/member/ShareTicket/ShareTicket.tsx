@@ -2,10 +2,10 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { format, parseISO, formatDistanceToNow } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
-import { Button, Tag } from '@/components/common'
+import { Tag } from '@/components/common'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { ShareOrder } from '@/types/product'
 
@@ -14,7 +14,7 @@ interface pageProps {
 }
 
 const Page: React.FC<pageProps> = ({ order }) => {
-    const router = useRouter()
+    //const router = useRouter()
     return (
         <div className="flex-wrap rounded-lg bg-gray-3 p-4 md:flex md:items-end md:justify-between md:gap-4 md:px-10 md:py-8">
             <div>
@@ -43,10 +43,13 @@ const Page: React.FC<pageProps> = ({ order }) => {
                     <div className="flex text-start">
                         <div className="space-x-1 bg-gray-4 px-3 py-1">
                             <span className="text-number5 leading-120 text-primary">
-                                {formatDistanceToNow(parseISO(order.startAt), {
-                                    addSuffix: true,
-                                    locale: zhTW,
-                                })}
+                                {formatDistanceToNow(
+                                    parseISO(order.expiredAt),
+                                    {
+                                        addSuffix: true,
+                                        locale: zhTW,
+                                    },
+                                )}
                             </span>
                             <span className="text-small2 tracking-wide text-white">
                                 到期

@@ -122,5 +122,6 @@ export type ShareOrder = {
     photoPath: string
     theater: string
     startAt: string
+    expiredAt: string
     amount: 7
 }
