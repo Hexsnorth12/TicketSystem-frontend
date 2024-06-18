@@ -3,6 +3,7 @@ import { CartItem } from '@/types/product'
 import { UserCartItem } from '@/types/cart'
 import { ProductPlan } from '@/types/product'
 import { persist } from 'zustand/middleware'
+
 interface State {
     cart: CartItem[]
     totalItems: number
@@ -30,6 +31,7 @@ const INITIAL_STATE: State = {
     totalItems: 0,
     totalPrice: 0,
 }
+
 //使用 Zustand 創建商店，結合狀態介面和操作
 export const useCartStore = create<State & Actions>()(
     persist(

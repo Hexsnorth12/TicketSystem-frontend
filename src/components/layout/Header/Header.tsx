@@ -9,7 +9,6 @@ import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
-import { CartItem } from '@/types'
 import fetchServer from '@/lib/fetchServer'
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
@@ -51,10 +50,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
                     url: `api/v1/cart?limit=8&page=${pageIndex}`,
                 })
                 const userCart = response.data
-                console.log(userCart, ' response.data')
-
                 if (userCart && userCart.items) {
-                    console.log(userCart.items, ' response.data')
                     mergeCart(userCart.items)
                 }
             }
