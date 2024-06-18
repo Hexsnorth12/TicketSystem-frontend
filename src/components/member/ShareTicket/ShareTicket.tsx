@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { format, parseISO, formatDistanceToNow } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
-import fakeImage from '@images/groupcard1.png'
 import { Button, Tag } from '@/components/common'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { ShareOrder } from '@/types/product'
@@ -74,7 +73,9 @@ const Page: React.FC<pageProps> = ({ order }) => {
                     type={'button'}
                     title={'上架分票'}
                     onClick={() => {
-                        router.push('sharedTicket/publish/1', { scroll: false })
+                        router.push(`sharedTicket/publish/${order.orderId}`, {
+                            scroll: false,
+                        })
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
                     <span className="font-medium tracking-wider">上架分票</span>
@@ -82,9 +83,14 @@ const Page: React.FC<pageProps> = ({ order }) => {
                 <Button
                     type={'button'}
                     title={'取得分票碼'}
-                    onClick={() => {
-                        router.push('/createCode/1', { scroll: false })
-                    }}
+                    onClick={() =>
+                        router.push(
+                            `/createCode/?orderId=${order.orderId}productId=${order.productId}`,
+                            {
+                                scroll: false,
+                            },
+                        )
+                    }
                     className="mr-3 w-full border-white py-2 text-btn2 font-medium text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1 ">
                     <span className="font-medium tracking-wider">
                         取得分票碼

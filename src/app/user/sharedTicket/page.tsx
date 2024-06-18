@@ -1,6 +1,5 @@
 import React from 'react'
 import { ShareTicket } from '@/components/member'
-import { favorites } from '@/definitions/movieData'
 import { TicketCodeForm } from '@/components/forms'
 import BasicTabs from '@/components/common/Tab/movieDetail'
 import clsx from 'clsx'
@@ -14,7 +13,6 @@ const Page: React.FC<pageProps> = async () => {
         method: 'GET',
         url: `api/v1/user/share-tickets`,
     })
-    console.log('RES', data)
     const renderShareTickets = data.map((order) => (
         <ShareTicket key={order.orderId} order={order} />
     ))

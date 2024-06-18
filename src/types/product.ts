@@ -112,6 +112,7 @@ export type TicketDetail = {
 
 export type ShareOrder = {
     orderId: string
+    productId: string
     productName: string
     photoPath: string
     theater: string

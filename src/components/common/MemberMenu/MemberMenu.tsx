@@ -13,6 +13,8 @@ const MemberMenu = () => {
         setIsExpand((prev) => !prev)
     }
     const onLogout = async () => {
+        setIsExpand(false)
+
         // await logout({})
         // await dispatch(userActions.login({ account: '', email: '', token: '' }))
         // refreshAuth()
@@ -20,6 +22,9 @@ const MemberMenu = () => {
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
         })
+    }
+    const handleClick = () => {
+        setIsExpand(false)
     }
     return (
         <div className="relative">
@@ -39,34 +44,50 @@ const MemberMenu = () => {
             {isExpand ? (
                 <ul className="absolute right-0 top-auto rounded-lg bg-gray-1 px-4 text-center md:h-auto md:w-[160px]">
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/info" scroll={false}>
+                        <Link
+                            href="/user/info"
+                            scroll={false}
+                            onClick={handleClick}>
                             會員資料
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                         <Link
                             href="/user/tickets?status=unverified"
-                            scroll={false}>
+                            scroll={false}
+                            onClick={handleClick}>
                             我的電影票
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/favorites" scroll={false}>
+                        <Link
+                            href="/user/favorites"
+                            scroll={false}
+                            onClick={handleClick}>
                             我的收藏
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/comments" scroll={false}>
+                        <Link
+                            href="/user/comments"
+                            scroll={false}
+                            onClick={handleClick}>
                             我的評論
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/sharedTicket" scroll={false}>
+                        <Link
+                            href="/user/sharedTicket"
+                            scroll={false}
+                            onClick={handleClick}>
                             線上分票
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/mygroups" scroll={false}>
+                        <Link
+                            href="/user/mygroups"
+                            scroll={false}
+                            onClick={handleClick}>
                             我的揪團
                         </Link>
                     </li>

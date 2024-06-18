@@ -27,7 +27,6 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = () => {
                     name: pathMap[path].name,
                 }
             })
-        console.log(processPaths)
         setPaths(processPaths)
     }, [pathname])
 

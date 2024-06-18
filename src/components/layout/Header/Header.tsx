@@ -47,6 +47,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
         setShowCartModal(show)
     }
 
+    const handleClick = () => {
+        setIsOpen(false)
+    }
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
             <div className="container relative flex items-center justify-between px-4">
@@ -148,34 +151,46 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                     />
                                 </div>
                             )}
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/info" scroll={false}>
                                     會員資料
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link
                                     href="/user/tickets?status=unverified"
                                     scroll={false}>
                                     我的電影票
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/favorites" scroll={false}>
                                     我的收藏
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/comments" scroll={false}>
                                     我的評論
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/sharedTicket" scroll={false}>
                                     線上分票
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/mygroups" scroll={false}>
                                     我的揪團
                                 </Link>
@@ -183,17 +198,20 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                         </ul>
                     )}
                     <Link
+                        onClick={handleClick}
                         href="/movies"
                         className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
                         電影總表
                     </Link>
                     <Link
+                        onClick={handleClick}
                         href="/gatherings"
                         className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
                         一起揪團
                     </Link>
                     {!isAuth && (
                         <Link
+                            onClick={handleClick}
                             href="/login"
                             className="block px-4 py-2 text-white"
                             scroll={false}>
@@ -202,6 +220,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     )}
                     {isAuth && (
                         <Link
+                            onClick={handleClick}
                             href="/login"
                             className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
                             onClick={onLogout}>

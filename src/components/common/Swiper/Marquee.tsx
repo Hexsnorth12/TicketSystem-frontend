@@ -27,7 +27,7 @@ const Marquee: React.FC = () => {
         setIsModalOpen(false)
     }
     return (
-        <div className="relative h-[240px]  md:h-screen md:w-screen ">
+        <div className="relative h-[240px] md:h-screen">
             <Swiper
                 slidesPerView={1}
                 spaceBetween={50}
@@ -57,7 +57,7 @@ const Marquee: React.FC = () => {
                     <div className="text-btn2 text-primary md:text-header4">
                         看電影不孤單
                     </div>
-                    <div className="flex flex-row  items-end  gap-x-2 font-sans text-header4 font-bold tracking-wide tracking-wide text-white md:gap-x-4 md:text-header1">
+                    <div className="flex flex-row  items-end  gap-x-2 font-sans text-header4 font-bold tracking-wide text-white md:gap-x-4 md:text-header1">
                         電影揪團
                         <div className="relative h-6 w-6 md:h-16 md:w-16">
                             <Image
