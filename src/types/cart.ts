@@ -7,6 +7,33 @@ export type CartModal = {
     total: number
     leaveModalHandler: () => void
 }
+//打user api 傳來的訊息
+export interface UserProductPlan {
+    discount: string
+    headCount: number
+    name: number
+    _id: string
+}
+export interface UserProduct {
+    amount: number
+    genre: string
+    isLaunched: boolean
+    photoPath: string
+    price: number
+    sellEndAt: string
+    sellStartAt: string
+    soldAmount: number
+    title: string
+    type: string
+    _id: string
+}
+export type UserCartItem = {
+    amount: number
+    createdAt: string
+    plan: UserProductPlan
+    product: UserProduct
+    updatedAt: string
+}
 
 export type CartModalItem = {
     productInfo: CartItem

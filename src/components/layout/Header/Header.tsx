@@ -54,13 +54,14 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
                 console.log(userCart, ' response.data')
 
                 if (userCart && userCart.items) {
+                    console.log(userCart.items, ' response.data')
                     mergeCart(userCart.items)
                 }
             }
         }
 
         fetchCartData()
-    }, [isAuth, pageIndex, mergeCart])
+    }, [isAuth, pageIndex])
 
     function showCartModalHandler(show = false) {
         setShowCartModal(show)

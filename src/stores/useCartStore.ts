@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { CartItem } from '@/types/product'
+import { UserCartItem } from '@/types/cart'
 import { ProductPlan } from '@/types/product'
 import { persist } from 'zustand/middleware'
 interface State {
@@ -20,7 +21,7 @@ interface Actions {
         selectedPlan: string,
         newQuantity: number,
     ) => void
-    mergeCarts: (serverCart: CartItem[]) => void
+    mergeCarts: (product: UserCartItem[]) => void
 }
 
 //初始化預設狀態
@@ -188,42 +189,15 @@ export const useCartStore = create<State & Actions>()(
                     }))
                 }
             },
-            mergeCarts: (serverCart: CartItem[]) => {
+            mergeCarts: (product: UserCartItem[]) => {
                 const { cart } = get()
                 const mergedCart = [...cart]
 
-                serverCart.forEach((serverItem) => {
-                    const index = mergedCart.findIndex(
-                        (item) =>
-                            item._id === serverItem._id &&
-                            item.selectedPlan.name ===
-                                serverItem.selectedPlan.name,
-                    )
-
-                    if (index !== -1) {
-                        mergedCart[index] = {
-                            ...mergedCart[index],
-                            quantity:
-                                mergedCart[index].quantity +
-                                serverItem.quantity,
-                        }
-                    } else {
-                        mergedCart.push(serverItem)
-                    }
-                })
-
-                set((state) => ({
-                    cart: mergedCart,
-                    totalItems: mergedCart.reduce(
-                        (acc, item) => acc + item.quantity,
-                        0,
-                    ),
-                    totalPrice: mergedCart.reduce((acc, item) => {
-                        const itemPrice =
-                            (item.price as number) * item.selectedPlan.discount
-                        return acc + itemPrice * item.quantity
-                    }, 0),
-                }))
+                const cartItemIndex = mergedCart.findIndex(
+                    (item: CartItem) =>
+                        item._id === productId &&
+                        item.selectedPlan.name === planName,
+                )
             },
         }),
         {

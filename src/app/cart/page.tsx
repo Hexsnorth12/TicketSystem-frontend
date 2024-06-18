@@ -5,6 +5,7 @@ import { useCartStore } from '@/stores/useCartStore'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { DataSource, Column } from '@/types/cart'
+import { Button } from '@/components/common'
 const CartPage = () => {
     const cart = useCartStore((state) => state.cart)
     const { data: session } = useSession()
@@ -92,9 +93,11 @@ const CartPage = () => {
                             <li className="flex gap-x-3">總金額:{total} NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
-                        <Link href={handleCheckoutPath} className="w-full">
-                            去買單
-                        </Link>
+                        <Button type="button" title="">
+                            <Link href={handleCheckoutPath} className="w-full">
+                                去買單
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </div>
