@@ -12,12 +12,12 @@ import { checkInvalidTimeRange, cn, exportTimeRangeString } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
+import { MOVIES, THEATERS, COUNTRIES } from '@/definitions'
 import {
     EventList,
     GetEventListRes,
     JoinPageError,
     JoinPageSuccess,
-    Tag,
 } from '@/types'
 
 const LIMITAMOUNT = 10
@@ -36,11 +36,7 @@ const JoinPage = () => {
     const [page, setPage] = useState(1)
     const [checkFilter, setCheckFilter] = useState(false)
 
-    const [countries, setCountries] = useState<Tag[]>([])
-    const [theaters, setTheaters] = useState<Tag[]>([])
-    const [movies, setMovies] = useState<Tag[]>([])
-
-    const [countryTags, setCountryTags] = useState<string[]>([])
+    const [countryTag, setCountryTag] = useState<string>('')
     const [theaterTags, setTheaterTags] = useState<string[]>([])
     const [movieTags, setMovieTags] = useState<string[]>([])
     const [title, setTitle] = useState<string>('')
@@ -48,15 +44,15 @@ const JoinPage = () => {
     useEffect(() => {
         // TODO: 做loading spinner
         setIsLoading(true)
-        fetchInitData()
+        getAllEvents()
     }, [])
 
     // 拿下一頁資料
     useEffect(() => {
         const notFirstPage = page !== 1
         if (notFirstPage && !stopFetching) {
-            if (checkFilter) getFilterEvent(true)
-            else fetchInitData()
+            if (checkFilter) getFilterEvents(true)
+            else getAllEvents()
         }
     }, [page, stopFetching])
 
@@ -66,7 +62,7 @@ const JoinPage = () => {
             if (checkFilter) {
                 const resend = setTimeout(() => {
                     setIsLoading(true)
-                    getFilterEvent()
+                    getFilterEvents()
                 }, 1200)
 
                 // 防止過多請求發送
@@ -78,12 +74,13 @@ const JoinPage = () => {
         } catch (error: any) {
             setError(error.message)
         }
-    }, [timeRange, countryTags, theaterTags, movieTags])
+    }, [timeRange, theaterTags, movieTags])
 
     // 拉到活動頁底部觸發callback
     useScrollToBottom(eventListContainer, handleEventScrollToBottom)
 
-    async function fetchInitData() {
+    // 拿所有活動，無篩選
+    async function getAllEvents() {
         const queryString = {
             page,
             limit: LIMITAMOUNT,
@@ -94,7 +91,8 @@ const JoinPage = () => {
         postGetEventData(result, isInitRender)
     }
 
-    async function getFilterEvent(scrollBottom = false) {
+    // 拿篩選後活動
+    async function getFilterEvents(scrollBottom = false) {
         const { startDate, endDate, startTime, endTime } = timeRange
         const dateRangeError = startDate > endDate
         const timeRangeError = checkInvalidTimeRange(startTime, endTime)
@@ -143,7 +141,6 @@ const JoinPage = () => {
             if (initRender) setPage(1)
             setStopFetching(noMoreData)
             setEventList(updatedEventList)
-            setFilterOptions(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
         } else {
             const error = (result as JoinPageError).error
@@ -166,7 +163,7 @@ const JoinPage = () => {
     }
 
     function searchTitle() {
-        getFilterEvent(false)
+        getFilterEvents(false)
     }
 
     const searchInputOnSubmitHandler: FormEventHandler<HTMLFormElement> = (
@@ -192,27 +189,6 @@ const JoinPage = () => {
         router.push('createOriganize')
     }
 
-    function setFilterOptions(eventList: EventList) {
-        const removeDuplicate: (type: string) => string[] = (type) => [
-            ...new Set(eventList.map((e) => e[type])),
-        ]
-
-        const movies = removeDuplicate('movieTitle')
-        const theaters = removeDuplicate('theater')
-        const countries = removeDuplicate('country')
-
-        const setOptionsList: (list: string[]) => Tag[] = (list) =>
-            list.map((option) => ({ label: option, value: option }))
-
-        const movieOptions = setOptionsList(movies)
-        const theaterOptions = setOptionsList(theaters)
-        const countryOptions = setOptionsList(countries)
-
-        setMovies(movieOptions)
-        setTheaters(theaterOptions)
-        setCountries(countryOptions)
-    }
-
     function updateTimeRange(dateRange: {
         startDate: Date
         endDate: Date
@@ -227,7 +203,8 @@ const JoinPage = () => {
         readyToFilter()
         switch (type) {
             case 'country':
-                setCountryTags(updatedInfo)
+                const updatedValue = updatedInfo.length ? updatedInfo[0] : ''
+                setCountryTag(updatedValue)
                 break
             case 'theater':
                 setTheaterTags(updatedInfo)
@@ -263,34 +240,37 @@ const JoinPage = () => {
                         title="縣市"
                         filter={
                             <MultipleSelect
+                                single
                                 title="縣市"
-                                options={countries}
-                                selectedValues={countryTags}
+                                options={COUNTRIES}
+                                selectedValues={[countryTag]}
                                 onSelectChange={(updatedInfo) =>
                                     updateTags('country', updatedInfo)
                                 }
                             />
                         }
                     />
-                    <FilterOption
-                        title="地點"
-                        filter={
-                            <MultipleSelect
-                                title="地點"
-                                options={theaters}
-                                selectedValues={theaterTags}
-                                onSelectChange={(updatedInfo) =>
-                                    updateTags('theater', updatedInfo)
-                                }
-                            />
-                        }
-                    />
+                    {!!countryTag && (
+                        <FilterOption
+                            title="地點"
+                            filter={
+                                <MultipleSelect
+                                    title="地點"
+                                    options={THEATERS[Number(countryTag)]}
+                                    selectedValues={theaterTags}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('theater', updatedInfo)
+                                    }
+                                />
+                            }
+                        />
+                    )}
                     <FilterOption
                         title="電影"
                         filter={
                             <MultipleSelect
                                 title="電影"
-                                options={movies}
+                                options={MOVIES}
                                 selectedValues={movieTags}
                                 onSelectChange={(updatedInfo) =>
                                     updateTags('movie', updatedInfo)
