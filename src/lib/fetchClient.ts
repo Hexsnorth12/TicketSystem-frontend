@@ -1,14 +1,6 @@
 import { getSession, signOut } from 'next-auth/react'
 import { BASE_URL } from '@/definitions'
-
-interface fetchClientProps {
-    method?: string
-    url: string
-    body?: string
-    token?: string
-    tags?: string[]
-    isTakeToken?: boolean
-}
+import { fetchPayload } from '@/types'
 
 async function fetchClient({
     method = 'GET',
@@ -17,10 +9,11 @@ async function fetchClient({
     token,
     tags,
     isTakeToken = true,
-}: fetchClientProps) {
+}: fetchPayload) {
     try {
         const session = await getSession()
-        const accessToken = token || session?.user.token
+        const accessToken = token || session?.accessToken
+
         const response = await fetch(BASE_URL + url, {
             method: method,
             headers: {

@@ -1,26 +1,50 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation'
 import CartTable from '@components/common/Table/cartTable'
-import { Button } from '@/components/common/index'
-
+import { useCartStore } from '@/stores/useCartStore'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { DataSource, Column } from '@/types/cart'
+import { Button } from '@/components/common'
 const CartPage = () => {
-    interface Column {
-        title: string
-        dataIndex: keyof DataSource
-        key: string
-    }
-
-    interface DataSource {
-        key: string
-        name: {
-            image: string
-            title: string
-            subtitle: string
+    const cart = useCartStore((state) => state.cart)
+    const { data: session } = useSession()
+    const isAuth = !!session
+    const handleCheckoutPath = isAuth ? '/checkout' : '/login'
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount) {
+            return acc + price * selectedPlan.discount * product.quantity
         }
-        number: number
-        price: number
-    }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
+    const originalTotal = cart.reduce((acc, product) => {
+        const price = product.price ?? 0
+        return acc + price * product.quantity
+    }, 0)
+
+    const discount = originalTotal - total
+
+    const dataSource: DataSource[] = []
+    cart.forEach((item) => {
+        console.log(item, 'itemitem')
+
+        const dataSourceItem: DataSource = {
+            key: item._id,
+            name: {
+                image: item.photoPath,
+                title: item.title,
+                subtitle: item.selectedPlan.name,
+            },
+            number: item.quantity,
+            price: (item.price as number) * item.selectedPlan.discount,
+        }
+
+        dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
+    })
+
     const columns: Column[] = [
         {
             title: '商品名稱',
@@ -39,42 +63,6 @@ const CartPage = () => {
         },
     ]
 
-    const dataSource: DataSource[] = [
-        {
-            key: '1',
-            name: {
-                image: '/assets/popcard1.jpg',
-                title: '哥吉拉與金剛 : 新帝國',
-                subtitle: '一人獨享',
-            },
-            number: 1,
-            price: 230,
-        },
-        {
-            key: '2',
-            name: {
-                image: '/assets/popcard2.jpg',
-                title: '魔鬼剋星：冰天凍地',
-                subtitle: '兩人同行',
-            },
-            number: 1,
-            price: 360,
-        },
-        {
-            key: '3',
-            name: {
-                image: '/assets/popcard3.jpg',
-                title: '特別總集篇 名偵探柯南 vs 名偵探柯南',
-                subtitle: '三人同行',
-            },
-            number: 2,
-            price: 200,
-        },
-    ]
-    const router = useRouter()
-    const handleCheckout = () => {
-        router.push('/checkout')
-    }
     return (
         <div className="mx-auto max-w-7xl px-6 lg:px-6">
             <div className="mx-auto max-w-2xl lg:mx-0">
@@ -96,17 +84,19 @@ const CartPage = () => {
                         <ul
                             role="list"
                             className="mb-4 mt-10 grid grid-cols-1 gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
-                            <li className="flex gap-x-3">金額:350 NT</li>
-                            <li className="flex gap-x-3">折扣：-35 NT</li>
-                            <li className="flex gap-x-3">總金額:315 NT</li>
+                            <li className="flex gap-x-3">
+                                原價:{originalTotal} NT
+                            </li>
+                            <li className="flex gap-x-3">
+                                方案折扣：-{discount} NT
+                            </li>
+                            <li className="flex gap-x-3">總金額:{total} NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
-                        <Button
-                            onClick={handleCheckout}
-                            type="button"
-                            title=""
-                            className="w-full">
-                            去買單
+                        <Button type="button" title="">
+                            <Link href={handleCheckoutPath} className="w-full">
+                                去買單
+                            </Link>
                         </Button>
                     </div>
                 </div>

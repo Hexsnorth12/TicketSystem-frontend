@@ -6,8 +6,6 @@ import Button from './Button'
 import Checkbox from './Checkbox/checkbox'
 import Marquee from './Swiper/Marquee'
 import Card from './Card/Card'
-import GroupCard from './Card/GroupCard'
-import ShareCard from './Card/ShareCard'
 import MemberMenu from './MemberMenu/MemberMenu'
 import InputRegister from './InputRegister/InputRegister'
 import SelectInput from './Select/select'
@@ -26,6 +24,7 @@ import TextArea from './TextArea/TextArea'
 import SelectBox from './Select/selectBox'
 import EmptyData from './EmptyData/EmptyData'
 import DatePicker from './DatePicker'
+import ErrorModal from './ErrorModal'
 
 export {
     Modal,
@@ -36,8 +35,6 @@ export {
     Checkbox,
     Marquee,
     Card,
-    GroupCard,
-    ShareCard,
     SelectInput,
     Input,
     MemberMenu,
@@ -55,5 +52,6 @@ export {
     SelectBox,
     MultipleSelect,
     EmptyData,
-    DatePicker
+    DatePicker,
+    ErrorModal,
 }

@@ -18,3 +18,13 @@ export type TimePickerInput = {
     timeString: string
     onChange: (date: Date) => void
 }
+
+export type DatePickerComponent = {
+    onError: (error: string) => void
+    setTimeRange: (dateRange: {
+        startDate: Date
+        endDate: Date
+        startTime: Date
+        endTime: Date
+    }) => void
+}

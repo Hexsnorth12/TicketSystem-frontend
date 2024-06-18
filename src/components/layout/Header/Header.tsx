@@ -1,40 +1,39 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
-import { CartModal } from '@/components/Cart'
+import { CartModal } from '@/components/Cart/CartModal'
 import Cartbtn from '../../Buttons/CartBtn'
 import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
-
-//TODO: 寫好購物車status後需刪除此資料
-const dummyCartItems = [
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-    {
-        img: '/assets/groupcard1.png',
-        name: '商品名稱商品名稱商品名稱商品名稱商品名稱',
-        amount: 300,
-        type: '劇情片',
-    },
-]
+import { useCartStore } from '@/stores/useCartStore'
+import { useLazyGetInfoQuery } from '@/services/modules/user'
+import fetchServer from '@/lib/fetchServer'
+//FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
 interface HeaderProps {
     logoSrc: string
     isAuth: boolean
+    searchParams?: { [key: string]: string }
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
+const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
+    const pageIndex = searchParams?.page ? parseInt(searchParams.page) : 1
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
 
     const [showCartModal, setShowCartModal] = useState(false)
+
+    const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            getInfo({ token: session?.accessToken ?? '' })
+        }
+        getUserInfo()
+    }, [getInfo])
 
     const onLogout = async () => {
         signOut({
@@ -42,10 +41,41 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
             callbackUrl: `${window.location.origin}/login`,
         })
     }
+    const mergeCart = useCartStore((state) => state.mergeCarts)
+    useEffect(() => {
+        const fetchCartData = async () => {
+            if (isAuth) {
+                const response = await fetchServer({
+                    method: 'GET',
+                    url: `api/v1/cart?limit=8&page=${pageIndex}`,
+                })
+                const userCart = response.data
+                if (userCart && userCart.items) {
+                    mergeCart(userCart.items)
+                }
+            }
+        }
+
+        fetchCartData()
+    }, [isAuth, pageIndex])
 
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
+    const totalItems = useCartStore((state) => state.totalItems)
+    const totalPrice = useCartStore((state) => state.totalPrice)
+    const cart = useCartStore((state) => state.cart)
+    console.log(cart, totalItems, totalPrice, 'ddddd')
+
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount) {
+            return acc + price * selectedPlan.discount * product.quantity
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
 
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
@@ -83,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     />
                 </Link>
                 <Link href="/cart" className="flex md:hidden">
-                    <Cartbtn amount={0} />
+                    <Cartbtn amount={totalItems ?? 0} />
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
@@ -92,7 +122,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             電影總表
                         </a>
                     </Link>
-                    <Link href="/gatherings" legacyBehavior>
+                    <Link href="/join" legacyBehavior>
                         <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             一起揪團
                         </a>
@@ -102,11 +132,13 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                         onMouseEnter={() => showCartModalHandler(true)}
                         onMouseLeave={() => showCartModalHandler()}>
                         <Link href="/cart">
-                            <Cartbtn amount={0} />
+                            <Cartbtn amount={totalItems} />
                         </Link>
                         <CartModal
                             visible={showCartModal}
-                            items={dummyCartItems}
+                            items={cart}
+                            totalItems={totalItems}
+                            total={total}
                             leaveModalHandler={() => showCartModalHandler()}
                         />
                     </div>
@@ -119,7 +151,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </div>
                         </Link>
                     ) : (
-                        <MemberMenu />
+                        <MemberMenu userInfo={userInfo} />
                     )}
                 </nav>
             </div>
@@ -138,7 +170,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                         'mx-auto mb-4 h-[48px] w-[48px] rounded-full bg-gradient-to-b from-primary to-gray-6 p-[3px]'
                                     }>
                                     <Image
-                                        src={avatar}
+                                        src={userInfo?.imgUrl ?? avatar}
                                         alt="avatar"
                                         className={
                                             'h-full w-full rounded-full object-cover'
@@ -154,7 +186,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                 </Link>
                             </li>
                             <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                                <Link href="/user/tickets" scroll={false}>
+                                <Link
+                                    href="/user/tickets?status=unverified"
+                                    scroll={false}>
                                     我的電影票
                                 </Link>
                             </li>

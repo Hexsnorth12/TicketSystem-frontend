@@ -1,4 +1,5 @@
-import React from 'react'
+'use client' // This is a client component 👈🏽
+import React, { useEffect, useState } from 'react'
 import {
     mdiFire,
     mdiHeartCircle,
@@ -6,14 +7,20 @@ import {
     mdiTicketConfirmation,
 } from '@mdi/js'
 import { NavBanner } from '@components/layout'
-import Card from '@components/common/Card/Card'
-import GroupCard from '@components/common/Card/GroupCard'
-import ShareCard from '@components/common/Card/ShareCard'
-import { Popcards, Groupcards, Sharecards } from '../definitions/movieData'
-
-import { generateImageSizeMap } from '../utils/imageUtils'
+import PopProductList from '@components/common/Card/PopProductList'
+import RecProductList from '@components/common/Card/RecProductList'
+import GroupProductList from '@components/common/Card/GroupProductList'
+import TicketProductList from '@components/common/Card/TicketProductList'
+import {
+    fetchPopProducts,
+    fetchRecProducts,
+    fetchGroupProducts,
+    fetchTicketProducts,
+    Product,
+    Group,
+    Ticket,
+} from '../definitions/movieData'
 import Marquee from '@/components/common/Swiper/Marquee'
-import ProductPage from './product/page'
 
 interface HeaderTitleProps {
     title: string
@@ -37,51 +44,70 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     )
 }
 
-const HomePage = async () => {
-    const popCardImageSources = Popcards.map((PopCards) => PopCards.image)
-    const popCardImageSizeMap = generateImageSizeMap(
-        popCardImageSources,
-        240,
-        320,
-    )
-    const groupCardImageSources = Groupcards.map(
-        (GroupCards) => GroupCards.image,
-    )
-    const groupCardImageSizeMap = generateImageSizeMap(
-        groupCardImageSources,
-        288,
-        173,
-    )
-    const shareCardImageSources = Sharecards.map(
-        (ShareCards) => ShareCards.image,
-    )
-    const shareCardImageSizeMap = generateImageSizeMap(
-        shareCardImageSources,
-        160,
-        160,
-    )
+const HomePage: React.FC = () => {
+    const [popproducts, setPopProducts] = useState<Product[]>([])
+    const [recproducts, setRecProducts] = useState<Product[]>([])
+    const [groupproducts, setGroupProducts] = useState<Group[]>([])
+    const [ticketproducts, setTicketProducts] = useState<Ticket[]>([])
+
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [
+                    popProducts,
+                    recProducts,
+                    groupProducts,
+                    ticketProducts,
+                ] = await Promise.all([
+                    fetchPopProducts(),
+                    fetchRecProducts(),
+                    fetchGroupProducts(),
+                    fetchTicketProducts(),
+                ])
+                setPopProducts(popProducts)
+                setRecProducts(recProducts)
+                setGroupProducts(groupProducts)
+                setTicketProducts(ticketProducts)
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unknown error occurred.')
+                }
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    if (loading) {
+        return <div>加載中...</div>
+    }
+
+    if (error) {
+        return <div>{error}</div>
+    }
 
     return (
         <>
             <Marquee />
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <Card movies={Popcards} imageSizeMap={popCardImageSizeMap} />
+            <PopProductList products={popproducts} />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <ProductPage />
+            <RecProductList products={recproducts} />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}
             />
-            <GroupCard
-                movies={Groupcards}
-                imageSizeMap={groupCardImageSizeMap}
-            />
+            <GroupProductList groups={groupproducts} />
             <NavBanner type="join" />
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
-            <ShareCard
-                movies={Sharecards}
-                imageSizeMap={shareCardImageSizeMap}
-            />
+            <TicketProductList tickets={ticketproducts} />
             <NavBanner type="ticket" />
         </>
     )

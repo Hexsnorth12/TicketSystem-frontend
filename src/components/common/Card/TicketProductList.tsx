@@ -1,43 +1,55 @@
-'use client'
-
+// /components/ProductList.tsx
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { truncateName } from '../../../utils/numberUtils'
+import { truncateName } from '@/utils/numberUtils'
 import Chatbtn from '../../Buttons/ChatBtn'
 
-interface Movie {
-    name: string
-    number: string
-    price: number
-    image: string
-    date: string
+type Ticket = {
+    _id: string
+    productId: string
+    userId: string
+    orderId: string
+    expiredAt: string
+    writeOffAt: string
+    writeOffStaffId: string
+    giverId: string
+    hasTicket: boolean
+    product: {
+        _id: string
+        title: string
+        theater: string
+        price: number
+        startAt: string
+        recommendWeight: number
+        isPublic: boolean
+        photoPath: string
+    }
+    shareCode: string
+    count: number
 }
 
-interface CardProps {
-    movies: Movie[]
-    imageSizeMap: { [key: string]: { width: number; height: number } }
+type TicketProductListProps = {
+    tickets: Ticket[]
 }
 
-const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
+const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
     return (
         <>
             {/* Desktop-Navbar */}
             <div className="hidden md:grid md:grid-cols-4 md:gap-4 md:px-32">
-                {movies.map((movie, index) => (
+                {tickets.map((ticket) => (
                     <div
-                        key={index}
+                        key={ticket._id}
                         className="h-2-3-bottom m-4 flex flex-col items-center justify-end rounded-lg  bg-gray-3 shadow-md">
                         <div className="relative flex w-full flex-col items-center">
                             <Link href="">
-                                <div className="relative">
+                                <div className="relative h-[160px] w-[160px]">
                                     <Image
-                                        src={movie.image}
-                                        alt={movie.name}
-                                        width={imageSizeMap[movie.image]?.width}
-                                        height={
-                                            imageSizeMap[movie.image]?.height
-                                        }
+                                        src={ticket.product.photoPath}
+                                        alt={ticket.product.title}
+                                        layout="fill"
+                                        objectFit="cover"
                                         className="rounded-full border-4 border-gray-4 border-opacity-0 border-opacity-100 transition-opacity duration-300"
                                     />
                                     {/* Border-primary with blur effect */}
@@ -46,14 +58,14 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                             </Link>
                             <div className="mt-2 text-center">
                                 <div className="text-headline5 font-medium text-white">
-                                    {truncateName(movie.name)}
+                                    {truncateName(ticket.product.title)}
                                 </div>
                                 <div className="text-small2">
                                     <div className="flex items-center justify-center text-gray-5">
                                         剩餘
                                         <nav className="px-2 text-number4 text-primary">
                                             {' '}
-                                            1{' '}
+                                            {ticket.count}{' '}
                                         </nav>
                                         張
                                     </div>
@@ -61,7 +73,7 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                         NT$
                                         <nav className="px-2 text-number4 text-primary">
                                             {' '}
-                                            {movie.price}{' '}
+                                            {ticket.product.price}{' '}
                                         </nav>
                                     </div>
                                 </div>
@@ -69,7 +81,7 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                     時效性
                                     <nav className="px-2 text-number5 text-white">
                                         {' '}
-                                        {movie.date}{' '}
+                                        {ticket.expiredAt}{' '}
                                     </nav>
                                 </div>
                             </div>
@@ -80,17 +92,17 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
             </div>
             {/* Mobile-Navbar */}
             <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
-                {movies.map((movie, index) => (
+                {tickets.map((ticket) => (
                     <div
-                        key={index}
+                        key={ticket._id}
                         className="m-4 flex flex-col items-center rounded-lg shadow-md">
                         <Link href="">
-                            <div className="relative">
+                            <div className="relative h-[160px] w-[160px]">
                                 <Image
-                                    src={movie.image}
-                                    alt={movie.name}
-                                    width={imageSizeMap[movie.image]?.width}
-                                    height={imageSizeMap[movie.image]?.height}
+                                    src={ticket.product.photoPath}
+                                    alt={ticket.product.title}
+                                    layout="fill"
+                                    objectFit="cover"
                                     className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
                                 />
                                 {/* Border-primary with blur effect */}
@@ -99,14 +111,14 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                         </Link>
                         <div className="mt-2 text-center">
                             <div className="text-headline5 font-medium text-white">
-                                {truncateName(movie.name)}
+                                {truncateName(ticket.product.title)}
                             </div>
                             <div className="text-small2">
                                 <div className="flex items-center justify-center text-gray-5">
                                     剩餘
                                     <nav className="px-2 text-number4 text-primary">
                                         {' '}
-                                        1{' '}
+                                        {ticket.count}{' '}
                                     </nav>
                                     張
                                 </div>
@@ -114,7 +126,7 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                     NT$
                                     <nav className="px-2 text-number4 text-primary">
                                         {' '}
-                                        {movie.price}{' '}
+                                        {ticket.product.price}{' '}
                                     </nav>
                                 </div>
                             </div>
@@ -122,7 +134,7 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
                                 時效性
                                 <nav className="px-2 text-number5 text-white">
                                     {' '}
-                                    {movie.date}{' '}
+                                    {ticket.expiredAt}{' '}
                                 </nav>
                             </div>
                         </div>
@@ -134,4 +146,5 @@ const ShareCard: React.FC<CardProps> = ({ movies, imageSizeMap }) => {
         </>
     )
 }
-export default ShareCard
+
+export default TicketProductList

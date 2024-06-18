@@ -27,7 +27,7 @@ const TimePickerInput: React.FC<Props> = ({
             views={['hours', 'minutes']}
             defaultValue={defaultValue}
             format={timeString}
-            onChange={(value) => {
+            onAccept={(value) => {
                 if (value) onChange(value)
             }}
         />
