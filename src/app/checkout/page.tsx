@@ -1,9 +1,10 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
+
 const CheckoutPage = () => {
     const columns: Column[] = [
         {
@@ -22,6 +23,49 @@ const CheckoutPage = () => {
             key: 'price',
         },
     ]
+    const [orderData] = useState({
+        items: [
+            {
+                productId: '66658079d23d0fe8146bcc2a',
+                plan: {
+                    name: '三人同行',
+                    discount: 0.5,
+                    headCount: 10,
+                },
+                amount: 1,
+            },
+        ],
+        price: 5500,
+        paymentMethod: 'linePay',
+        deliveryInfo: {
+            name: 'Roger',
+            phone: '0912345678',
+            address: 'aaaa',
+            email: 'roger@gmail.com',
+        },
+    })
+    const handleOrderSubmit = async () => {
+        try {
+            const response = await fetch('v1/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+
+            if (response.ok) {
+                alert('successful') // Redirect to success page if order is successful
+            } else {
+                alert('fails')
+                // Redirect to error page if order fails
+            }
+        } catch (error) {
+            console.error('Error submitting order:', error)
+
+            alert('fails') // Redirect to error page on any error
+        }
+    }
 
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
@@ -89,7 +133,7 @@ const CheckoutPage = () => {
                             </ul>
                         </div>
                         <div className="mt-3 w-full  rounded-lg  p-4  text-white ">
-                            <Delivery />
+                            <Delivery handleOrderSubmit={handleOrderSubmit} />
                         </div>
                     </div>
                 </div>
