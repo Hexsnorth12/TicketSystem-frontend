@@ -41,7 +41,7 @@ type PopProductListProps = {
 }
 
 const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
-    const router = useRouter() // 获取路由对象
+    const router = useRouter()
     const handleMovieDetail = (id: string) => {
         router.push(`/movies/${id}`)
     }
@@ -129,34 +129,36 @@ const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>
-                        </Link>
-                        <div className="text-center">
-                            <div className="flex">
-                                <div className="mt-2 text-start text-white">
-                                    <div className="text-btn2 font-medium">
-                                        {truncateName(product.title)}
+                            <div className="text-center">
+                                <div className="flex">
+                                    <div className="mt-2 text-start text-white">
+                                        <div className="text-btn2 font-medium">
+                                            {truncateName(product.title)}
+                                        </div>
+                                        <div className="text-small2 font-regular text-gray-5">
+                                            {product.genre}
+                                        </div>
                                     </div>
-                                    <div className="text-small2 font-regular text-gray-5">
-                                        {product.genre}
+                                    <div
+                                        className={
+                                            index < 3
+                                                ? 'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number2 font-bold text-transparent'
+                                                : 'text-number2 font-bold text-gray-3'
+                                        }>
+                                        {index + 1}
                                     </div>
                                 </div>
-                                <div
-                                    className={
-                                        index < 3
-                                            ? 'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number2 font-bold text-transparent'
-                                            : 'text-number2 font-bold text-gray-3'
+                                <Button
+                                    type="button"
+                                    title="立即購票"
+                                    className="py-1"
+                                    onClick={() =>
+                                        handleMovieDetail(product._id)
                                     }>
-                                    {index}
-                                </div>
+                                    立即購票
+                                </Button>
                             </div>
-                            <Button
-                                type="button"
-                                title="立即購票"
-                                className="py-1"
-                                onClick={() => handleMovieDetail(product._id)}>
-                                立即購票
-                            </Button>
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </div>
