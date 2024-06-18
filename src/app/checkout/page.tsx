@@ -52,7 +52,25 @@ const CheckoutPage = () => {
                 url: 'api/v1/order',
                 body: JSON.stringify(orderData),
             })
-            alert('Order successful! ')
+
+            if (response.status == 6000) {
+                const responseData = await response
+                const { status, message, data } = responseData
+                console.log(responseData, 'responseresponse')
+                if (status === '6000') {
+                    // Order was successful
+                    alert('Order successful! Redirecting to payment page...')
+                    window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
+                } else {
+                    // Order failed with specific error
+                    alert(`Order failed: ${message}`)
+                    // Redirect to error page or handle as needed
+                }
+            } else {
+                // Handle HTTP error responses
+                alert('Failed to submit order')
+                // Redirect to error page or handle as needed
+            }
         } catch (error) {
             console.error('Error submitting order:', error)
             alert('Failed to submit order')
