@@ -4,7 +4,8 @@ import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
-
+import fetchClient from '@/lib/fetchClient'
+import { url } from 'inspector'
 const CheckoutPage = () => {
     const columns: Column[] = [
         {
@@ -46,24 +47,16 @@ const CheckoutPage = () => {
     })
     const handleOrderSubmit = async () => {
         try {
-            const response = await fetch('v1/order', {
+            const response = await fetchClient({
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                url: 'api/v1/order',
                 body: JSON.stringify(orderData),
             })
-
-            if (response.ok) {
-                alert('successful') // Redirect to success page if order is successful
-            } else {
-                alert('fails')
-                // Redirect to error page if order fails
-            }
+            alert('Order successful! ')
         } catch (error) {
             console.error('Error submitting order:', error)
-
-            alert('fails') // Redirect to error page on any error
+            alert('Failed to submit order')
+            // Redirect to error page or handle as needed
         }
     }
 
