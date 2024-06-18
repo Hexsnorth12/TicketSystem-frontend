@@ -1,13 +1,16 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation'
 import CartTable from '@components/common/Table/cartTable'
-import { Button } from '@/components/common/index'
 import { useCartStore } from '@/stores/useCartStore'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { DataSource, Column } from '@/types/cart'
+import { Button } from '@/components/common'
 const CartPage = () => {
     const cart = useCartStore((state) => state.cart)
-    console.log(cart, 'cartcart')
-
+    const { data: session } = useSession()
+    const isAuth = !!session
+    const handleCheckoutPath = isAuth ? '/checkout' : '/login'
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
@@ -41,22 +44,7 @@ const CartPage = () => {
 
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
     })
-    interface Column {
-        title: string
-        dataIndex: keyof DataSource
-        key: string
-    }
 
-    interface DataSource {
-        key: string
-        name: {
-            image: string
-            title: string
-            subtitle: string
-        }
-        number: number
-        price: number
-    }
     const columns: Column[] = [
         {
             title: '商品名稱',
@@ -75,10 +63,6 @@ const CartPage = () => {
         },
     ]
 
-    const router = useRouter()
-    const handleCheckout = () => {
-        router.push('/checkout')
-    }
     return (
         <div className="mx-auto max-w-7xl px-6 lg:px-6">
             <div className="mx-auto max-w-2xl lg:mx-0">
@@ -109,12 +93,10 @@ const CartPage = () => {
                             <li className="flex gap-x-3">總金額:{total} NT</li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
-                        <Button
-                            onClick={handleCheckout}
-                            type="button"
-                            title=""
-                            className="w-full">
-                            去買單
+                        <Button type="button" title="">
+                            <Link href={handleCheckoutPath} className="w-full">
+                                去買單
+                            </Link>
                         </Button>
                     </div>
                 </div>

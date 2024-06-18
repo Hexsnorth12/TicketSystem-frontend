@@ -1,7 +1,9 @@
 import { create } from 'zustand'
 import { CartItem } from '@/types/product'
+import { UserCartItem } from '@/types/cart'
 import { ProductPlan } from '@/types/product'
 import { persist } from 'zustand/middleware'
+
 interface State {
     cart: CartItem[]
     totalItems: number
@@ -20,6 +22,7 @@ interface Actions {
         selectedPlan: string,
         newQuantity: number,
     ) => void
+    mergeCarts: (product: UserCartItem[]) => void
 }
 
 //初始化預設狀態
@@ -28,6 +31,7 @@ const INITIAL_STATE: State = {
     totalItems: 0,
     totalPrice: 0,
 }
+
 //使用 Zustand 創建商店，結合狀態介面和操作
 export const useCartStore = create<State & Actions>()(
     persist(
@@ -186,6 +190,50 @@ export const useCartStore = create<State & Actions>()(
                         }, 0),
                     }))
                 }
+            },
+
+            mergeCarts: (serverCart: UserCartItem[]) => {
+                const { cart } = get()
+                const mergedCart = [...cart]
+
+                serverCart.forEach((serverItem: UserCartItem) => {
+                    const formattedItem = {
+                        ...serverItem.product,
+                        selectedPlan: serverItem.plan,
+                        quantity: serverItem.amount,
+                    }
+                    console.log(formattedItem, 'formattedItemformattedItem')
+
+                    const index = mergedCart.findIndex(
+                        (item) =>
+                            item._id === formattedItem._id &&
+                            item.selectedPlan.name ===
+                                formattedItem.selectedPlan.name,
+                    )
+
+                    if (index !== -1) {
+                        mergedCart[index] = {
+                            ...mergedCart[index],
+                            quantity:
+                                mergedCart[index].quantity +
+                                formattedItem.quantity,
+                        }
+                    } else {
+                        mergedCart.push(formattedItem)
+                    }
+                })
+                set(() => ({
+                    cart: mergedCart,
+                    totalItems: mergedCart.reduce(
+                        (acc, item) => acc + item.quantity,
+                        0,
+                    ),
+                    totalPrice: mergedCart.reduce((acc, item) => {
+                        const itemPrice =
+                            (item.price as number) * item.selectedPlan.discount
+                        return acc + itemPrice * item.quantity
+                    }, 0),
+                }))
             },
         }),
         {
