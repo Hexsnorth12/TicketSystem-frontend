@@ -69,7 +69,7 @@ const Page: React.FC<pageProps> = ({ order }) => {
                 </div>
             </div>
             <div className="mt-6 flex flex-col space-y-3 md:m-0 md:flex-row md:space-y-0">
-                <Button
+                {/* <Button
                     type={'button'}
                     title={'上架分票'}
                     onClick={() => {
@@ -95,7 +95,7 @@ const Page: React.FC<pageProps> = ({ order }) => {
                     <span className="font-medium tracking-wider">
                         取得分票碼
                     </span>
-                </Button>
+                </Button> */}
             </div>
         </div>
     )
