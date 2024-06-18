@@ -5,7 +5,7 @@ import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
 import fetchClient from '@/lib/fetchClient'
-import { url } from 'inspector'
+
 const CheckoutPage = () => {
     const columns: Column[] = [
         {
