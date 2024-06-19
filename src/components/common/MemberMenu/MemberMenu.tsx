@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import avatar from '@images/avatar.jpg'
+import avatar from '@icon/avatar.svg'
 
 interface MemberMenuProps {
     userInfo?: {
@@ -51,40 +51,56 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
             </div>
             {isExpand ? (
                 <ul className="absolute right-0 top-auto rounded-lg bg-gray-1 px-4 text-center md:h-auto md:w-[160px]">
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/info" scroll={false}>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/info"
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             會員資料
                         </Link>
                     </li>
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
                         <Link
                             href="/user/tickets?status=unverified"
-                            scroll={false}>
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             我的電影票
                         </Link>
                     </li>
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/favorites" scroll={false}>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/favorites"
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             我的收藏
                         </Link>
                     </li>
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/comments" scroll={false}>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/comments"
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             我的評論
                         </Link>
                     </li>
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/sharedTicket" scroll={false}>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/sharedTicket"
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             線上分票
                         </Link>
                     </li>
-                    <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/mygroups" scroll={false}>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/mygroups"
+                            scroll={false}
+                            className="block py-3 hover:text-primary">
                             我的揪團
                         </Link>
                     </li>
                     <li
-                        className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
+                        className="cursor-pointer py-3 text-white hover:text-primary"
                         onClick={onLogout}>
                         <p>登出</p>
                     </li>
