@@ -4,6 +4,8 @@ import { MyFavorite } from '@/components/member'
 import fetchServer from '@/lib/fetchServer'
 import { ProductFavorite } from '@/types'
 
+const PAGE_SIZE = 6
+
 interface pageProps {
     searchParams?: { [key: string]: string }
 }
@@ -16,7 +18,7 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
         data: { favorites: ProductFavorite[]; totalCount: number; page: number }
     } = await fetchServer({
         method: 'GET',
-        url: `api/v1/user/favorite?limit=${8}&page=${pageIndex}`,
+        url: `api/v1/user/favorite?limit=${PAGE_SIZE}&page=${pageIndex}`,
     })
 
     const renderFavorites = favorites.map((product) => (
@@ -34,13 +36,13 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
         )
     }
     return (
-        <section className="j flex h-full flex-col border">
-            <ul className="flex grow flex-wrap items-start justify-center gap-4 md:justify-start">
+        <section className="flex h-full flex-col">
+            <ul className="grid grid-cols-1 grid-rows-2 gap-4 md:grid-cols-3">
                 {renderFavorites}
             </ul>
             <div className="mx-auto">
                 <PaginationWrapper
-                    size={8}
+                    size={PAGE_SIZE}
                     total={totalCount}
                     withEllipsis={true}
                 />
