@@ -114,3 +114,14 @@ export type TicketDetail = {
     purchaseAt: string
     purchaseAmount: number
 }
+
+export type ShareOrder = {
+    orderId: string
+    productId: string
+    productName: string
+    photoPath: string
+    theater: string
+    startAt: string
+    expiredAt: string
+    amount: 7
+}

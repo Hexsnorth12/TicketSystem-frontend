@@ -16,4 +16,18 @@ export interface CommentData {
     userId: string
 }
 
+export interface TransferPayload {
+    orderId: string
+    productId: string
+}
+
+export interface TransferCodeData {
+    shareCode: string
+}
+export interface SellPayload {
+    orderId: string
+    productId: string
+    amount: number
+}
+
 export interface IMeta {}
