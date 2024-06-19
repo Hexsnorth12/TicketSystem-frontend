@@ -1,6 +1,6 @@
 import fetchClient from './fetchClient'
 
-import type { EventDetailRes, GetEventListRes } from '@/types'
+import type { EventDetailRes, GetEventListRes, JoinEventRes } from '@/types'
 
 export const DEFAULTTIMERANGE = {
     startDate: new Date(),
@@ -82,6 +82,51 @@ export const getEventDetail = async (
             }
         } else {
             throw new Error('取得活動資料失敗')
+        }
+        // eslint-disable-next-line
+    } catch (error: any) {
+        return {
+            status: 'failed',
+            error: error.message,
+        }
+    }
+}
+
+export const joinEvent = async (eventInfo: {
+    title: string
+    placeholderImg: string
+    theater: string
+    movieTitle: string
+    time: Date
+    amount: number
+    haveTicket: boolean
+    content: string
+    participant: {
+        name: string
+        nickname: string
+        phone: string
+        lineId: string
+    }
+}): Promise<JoinEventRes> => {
+    try {
+        const url = `api/v1/group`
+
+        const result = await fetchClient({
+            method: 'POST',
+            url,
+            body: JSON.stringify(eventInfo),
+        })
+        const { status, data } = result
+
+        if (status === '6000') {
+            if (data.groups) {
+                return {
+                    status: 'success',
+                    message: '建立活動成功！',
+                }
+            }
+        } else {
+            throw new Error('建立活動失敗')
         }
         // eslint-disable-next-line
     } catch (error: any) {

@@ -48,5 +48,11 @@ export type EventDetailSuccess = {
     data: Event
 }
 
+export type JoinEventSuccess = {
+    status: Status
+    message: string
+}
+
 export type GetEventListRes = JoinPageSuccess | JoinPageError | undefined
 export type EventDetailRes = EventDetailSuccess | JoinPageError | undefined
+export type JoinEventRes = JoinEventSuccess | JoinPageError | undefined
