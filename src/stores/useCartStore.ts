@@ -3,7 +3,8 @@ import { CartItem } from '@/types/product'
 import { UserCartItem } from '@/types/cart'
 import { ProductPlan } from '@/types/product'
 import { persist } from 'zustand/middleware'
-
+import fetchClient from '@/lib/fetchClient'
+import { getSession } from 'next-auth/react'
 interface State {
     cart: CartItem[]
     totalItems: number
@@ -31,7 +32,8 @@ const INITIAL_STATE: State = {
     totalItems: 0,
     totalPrice: 0,
 }
-
+const session = getSession()
+const isAuth = !!session
 //使用 Zustand 創建商店，結合狀態介面和操作
 export const useCartStore = create<State & Actions>()(
     persist(
@@ -86,6 +88,24 @@ export const useCartStore = create<State & Actions>()(
                         }, 0),
                     }))
                 }
+                const newItem = {
+                    products: [
+                        {
+                            productId: product._id,
+                            plan: selectedPlan,
+                            type: 'inc',
+                            amount: conter,
+                        },
+                    ],
+                }
+                {
+                    isAuth &&
+                        fetchClient({
+                            method: 'PATCH',
+                            url: `api/v1/cart`,
+                            body: JSON.stringify(newItem),
+                        })
+                }
             },
 
             removeFromCart: (product: CartItem, selectedPlan: ProductPlan) => {
@@ -121,6 +141,24 @@ export const useCartStore = create<State & Actions>()(
                         }, 0),
                     }))
                 }
+                const newItem = {
+                    products: [
+                        {
+                            productId: product._id,
+                            plan: selectedPlan,
+                            type: 'inc',
+                            amount: -1,
+                        },
+                    ],
+                }
+                {
+                    isAuth &&
+                        fetchClient({
+                            method: 'PATCH',
+                            url: `api/v1/cart`,
+                            body: JSON.stringify(newItem),
+                        })
+                }
             },
 
             removeAllFromCart: (
@@ -155,6 +193,24 @@ export const useCartStore = create<State & Actions>()(
                         }, 0),
                     }))
                 }
+                const newItem = {
+                    products: [
+                        {
+                            productId: product._id,
+                            plan: selectedPlan,
+                            type: 'set',
+                            amount: 0,
+                        },
+                    ],
+                }
+                {
+                    isAuth &&
+                        fetchClient({
+                            method: 'PATCH',
+                            url: `api/v1/cart`,
+                            body: JSON.stringify(newItem),
+                        })
+                }
             },
 
             updateCartItemQuantity: (
@@ -171,11 +227,16 @@ export const useCartStore = create<State & Actions>()(
 
                 if (cartItemIndex !== -1) {
                     const updatedCart = [...cart]
+                    const currentItem = updatedCart[cartItemIndex]
+                    const oldQuantity = currentItem.quantity
                     updatedCart[cartItemIndex] = {
-                        ...updatedCart[cartItemIndex],
+                        ...currentItem,
                         quantity: newQuantity,
                     }
-
+                    // Remove item if quantity is zero
+                    if (newQuantity === 0) {
+                        updatedCart.splice(cartItemIndex, 1)
+                    }
                     set((state) => ({
                         cart: updatedCart,
                         totalItems: updatedCart.reduce(
@@ -189,6 +250,26 @@ export const useCartStore = create<State & Actions>()(
                             return acc + itemPrice * item.quantity
                         }, 0),
                     }))
+                }
+                const newItem = {
+                    products: [
+                        {
+                            productId: productId,
+                            plan: selectedPlan,
+                            type: 'set',
+                            amount: 0,
+                        },
+                    ],
+                }
+                {
+                   ( isAuth && oldQuantity !== newQuantity){
+                       fetchClient({
+                            method: 'PATCH',
+                            url: `api/v1/cart`,
+                            body: JSON.stringify(newItem),
+                        })
+                   }
+                     
                 }
             },
 
@@ -221,7 +302,10 @@ export const useCartStore = create<State & Actions>()(
                     } else {
                         mergedCart.push(formattedItem)
                     }
+                    console.log(formattedItem, 'formattedItem')
+                    console.log(mergedCart, 'mergedCart')
                 })
+
                 set(() => ({
                     cart: mergedCart,
                     totalItems: mergedCart.reduce(

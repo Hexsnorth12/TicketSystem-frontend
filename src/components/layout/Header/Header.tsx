@@ -9,7 +9,7 @@ import avatar from '@images/avatar.jpg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
-import fetchServer from '@/lib/fetchServer'
+
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
 interface HeaderProps {
@@ -18,8 +18,7 @@ interface HeaderProps {
     searchParams?: { [key: string]: string }
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
-    const pageIndex = searchParams?.page ? parseInt(searchParams.page) : 1
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
@@ -27,6 +26,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
     const [showCartModal, setShowCartModal] = useState(false)
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
+    const totalItems = useCartStore((state) => state.totalItems)
+    const totalPrice = useCartStore((state) => state.totalPrice)
+    const cart = useCartStore((state) => state.cart)
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -43,30 +45,10 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
             callbackUrl: `${window.location.origin}/login`,
         })
     }
-    const mergeCart = useCartStore((state) => state.mergeCarts)
-    useEffect(() => {
-        const fetchCartData = async () => {
-            if (isAuth) {
-                const response = await fetchServer({
-                    method: 'GET',
-                    url: `api/v1/cart?limit=8&page=${pageIndex}`,
-                })
-                const userCart = response.data
-                if (userCart && userCart.items) {
-                    mergeCart(userCart.items)
-                }
-            }
-        }
-
-        fetchCartData()
-    }, [isAuth, pageIndex])
-
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
-    const totalItems = useCartStore((state) => state.totalItems)
-    const totalPrice = useCartStore((state) => state.totalPrice)
-    const cart = useCartStore((state) => state.cart)
+
     console.log(cart, totalItems, totalPrice, 'ddddd')
 
     const total = cart.reduce((acc, product) => {
