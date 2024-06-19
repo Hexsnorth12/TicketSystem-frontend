@@ -24,6 +24,7 @@ export type Product = {
     startAt: string;
     tags: { tagId: string }[];
     photoPath: string;
+    isFavorite: boolean
 };
 
 export type Group = {
