@@ -84,7 +84,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
                             onChange={handlePasswordChange}
                         />
                     </div>
-                    <div className="sm:col-span-2">
+                    {/* <div className="sm:col-span-2">
                         <div className="flex items-center">
                             <a
                                 href="/forgetPassWord"
@@ -92,7 +92,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
                                 忘記密碼嗎？
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="sm:col-span-2">
                         <div className="flex items-center py-2.5 ">
                             <label
