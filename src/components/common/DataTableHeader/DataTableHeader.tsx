@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
+import { Box } from '@mui/material'
 import { bellota } from '@/components/fonts'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -63,15 +64,30 @@ const rows = [
 
 const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
     return (
-        <TableContainer component={Paper}>
+        <Box sx={{ padding: 8 }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead sx={{ backgroundColor: '#4E4E4E', borderWidth: 0 }}>
-                    <TableRow sx={{ borderWidth: 0 }}>
-                        <TableCell sx={{ borderWidth: 0, color: 'white' }}>
+                <TableHead
+                    sx={{
+                        backgroundColor: 'transparent',
+                        borderWidth: 0,
+                        borderRadius: 8,
+                    }}>
+                    <TableRow sx={{ borderWidth: 0, borderRadius: 8 }}>
+                        <TableCell
+                            sx={{
+                                // borderWidth: 0,
+                                color: 'white',
+                                borderTopLeftRadius: 8,
+                                backgroundColor: '#4E4E4E',
+                                marginBottom: 12,
+                            }}>
                             日期
                         </TableCell>
                         <TableCell
-                            sx={{ borderWidth: 0, color: 'white' }}
+                            sx={{
+                                borderWidth: 0,
+                                color: 'white',
+                            }}
                             align="right">
                             星等
                         </TableCell>
@@ -81,12 +97,19 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                             帳號
                         </TableCell>
                         <TableCell
-                            sx={{ borderWidth: 0, color: 'white' }}
+                            sx={{
+                                borderWidth: 0,
+                                color: 'white',
+                            }}
                             align="right">
                             備註
                         </TableCell>
                         <TableCell
-                            sx={{ borderWidth: 0, color: 'white' }}
+                            sx={{
+                                borderWidth: 0,
+                                color: 'white',
+                                borderTopRightRadius: 8,
+                            }}
                             align="right">
                             狀態
                         </TableCell>
@@ -126,7 +149,12 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                     ))}
                 </TableBody>
             </Table>
-        </TableContainer>
+        </Box>
+        // <TableContainer
+        //     component={Paper}
+        //     sx={{ backgroundColor: 'transparent' }}>
+
+        // </TableContainer>
     )
 }
 
