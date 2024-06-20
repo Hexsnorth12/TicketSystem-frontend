@@ -31,7 +31,6 @@ const StyledHeaderRow = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&': {
-        backgroundColor: '#151515',
         color: 'white',
     },
     '& .MuiTableCell-root': {
@@ -64,92 +63,105 @@ const rows = [
 
 const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
     return (
-        <Box sx={{ padding: 8 }}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead
-                    sx={{
-                        backgroundColor: 'transparent',
-                        borderWidth: 0,
-                        borderRadius: 8,
-                    }}>
-                    <TableRow sx={{ borderWidth: 0, borderRadius: 8 }}>
-                        <TableCell
+        <div className="bg-transparent p-8">
+            <Box sx={{ padding: 8 }}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead
+                        sx={{
+                            backgroundColor: 'transparent',
+                            borderWidth: 0,
+                            BorderRadius: 12,
+                        }}>
+                        <TableRow
                             sx={{
-                                // borderWidth: 0,
-                                color: 'white',
-                                borderTopLeftRadius: 8,
+                                borderWidth: 0,
+                                borderRadius: 8,
                                 backgroundColor: '#4E4E4E',
-                                marginBottom: 12,
-                            }}>
-                            日期
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                borderWidth: 0,
-                                color: 'white',
-                            }}
-                            align="right">
-                            星等
-                        </TableCell>
-                        <TableCell
-                            sx={{ borderWidth: 0, color: 'white' }}
-                            align="right">
-                            帳號
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                borderWidth: 0,
-                                color: 'white',
-                            }}
-                            align="right">
-                            備註
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                borderWidth: 0,
-                                color: 'white',
-                                borderTopRightRadius: 8,
-                            }}
-                            align="right">
-                            狀態
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <StyledTableRow
-                            key={row.date}
-                            className={bellota.className}
-                            sx={{
-                                '& td, & th': {
-                                    borderBottom: 1,
-                                    borderColor: '#333',
-                                },
-                                '&:last-child td, &:last-child th': {
-                                    border: 0,
-                                },
                             }}>
                             <TableCell
-                                component="th"
-                                scope="row"
-                                sx={{ fontFamily: 'Bellota' }}>
-                                {row.date}
+                                sx={{
+                                    // borderWidth: 0,
+                                    color: 'white',
+                                    borderTopLeftRadius: 8,
+                                    borderBottonLeftRadius: 8,
+
+                                    // backgroundColor: '#4E4E4E',
+                                    marginBottom: 12,
+                                }}>
+                                日期
                             </TableCell>
-                            <TableCell align="right">{row.rating}</TableCell>
                             <TableCell
-                                align="right"
-                                sx={{ fontFamily: 'Bellota' }}>
-                                {row.acc}
+                                sx={{
+                                    borderWidth: 0,
+                                    color: 'white',
+                                }}
+                                align="right">
+                                星等
                             </TableCell>
-                            <StyledTableCell align="right">
-                                {row.carbs}
-                            </StyledTableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </Box>
+                            <TableCell
+                                sx={{ borderWidth: 0, color: 'white' }}
+                                align="right">
+                                帳號
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    borderWidth: 0,
+                                    color: 'white',
+                                }}
+                                align="right">
+                                備註
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    borderWidth: 0,
+                                    color: 'white',
+                                    borderTopRightRadius: 8,
+                                }}
+                                align="right">
+                                狀態
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <StyledTableRow
+                                key={row.date}
+                                className={bellota.className}
+                                sx={{
+                                    '& td, & th': {
+                                        borderBottom: 1,
+                                    },
+                                    '&:last-child td, &:last-child th': {
+                                        border: 0,
+                                    },
+                                }}>
+                                <TableCell
+                                    component="th"
+                                    scope="row"
+                                    sx={{ fontFamily: 'Bellota' }}>
+                                    {row.date}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {row.rating}
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    sx={{ fontFamily: 'Bellota' }}>
+                                    {row.acc}
+                                </TableCell>
+                                <StyledTableCell align="right">
+                                    {row.carbs}
+                                </StyledTableCell>
+                                <TableCell align="right">
+                                    {row.protein}
+                                </TableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Box>
+        </div>
+
         // <TableContainer
         //     component={Paper}
         //     sx={{ backgroundColor: 'transparent' }}>
