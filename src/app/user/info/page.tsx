@@ -2,7 +2,6 @@ import React from 'react'
 import { UserInfoForm } from '@/components/forms'
 import type { UserInfo } from '@/types'
 import fetchServer from '@/lib/fetchServer'
-import { getUserSession } from '@/lib/auth.actions'
 
 const Page = async () => {
     const { data }: { data: UserInfo } = await fetchServer({

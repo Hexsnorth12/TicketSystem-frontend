@@ -4,7 +4,6 @@ import React from 'react'
 import * as Select from '@radix-ui/react-select'
 import clsx from 'clsx'
 import {
-    CheckIcon,
     ChevronDownIcon,
     ChevronUpIcon,
 } from '@radix-ui/react-icons'
@@ -34,23 +33,24 @@ const SelectInput: React.FC<SelectProps> = ({
             value={selectedValue}
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
-                className="text-violet11 hover:bg-mauve3 data-[placeholder]:text-violet9 inline-flex w-full items-center justify-between gap-[5px] rounded border border-gray-3 bg-gray-1 px-4 py-3 text-body leading-none text-white shadow-[0_2px_10px] shadow-black/10 outline-none focus:shadow-[0_0_0_2px] focus:shadow-primary w-f"
+                className={clsx(
+                    'hover:bg-mauve3 border-1 ring-black-300/10 inline-flex h-full w-full items-center justify-between rounded-md border-gray-3 bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-small2 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:text-body md:placeholder:text-body',
+                    className, // Apply custom className
+                )}
                 aria-label="city"
                 disabled={options.length === 0}
-                asChild={false}
-                data-state={'open'}>
+                asChild={false}>
                 <Select.Value placeholder={placeholder} />
-                <Select.Icon className="text-violet11">
+                <Select.Icon>
                     <ChevronDownIcon />
                 </Select.Icon>
             </Select.Trigger>
             <Select.Portal>
                 <Select.Content
                     className="z-50 mt-1 overflow-hidden rounded-md bg-gray-1 text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
-                    position="popper"
-                    style={{ width: 'var(--radix-select-trigger-width)' }}
-                    sideOffset={5}>
-                    <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+                    side="bottom"
+                    position="popper">
+                    <Select.ScrollUpButton className="h-[25px] cursor-default items-center justify-center bg-gray-3 text-white placeholder:flex">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
                     <Select.Viewport className="rounded-lg border border-gray-3">
@@ -69,7 +69,7 @@ const SelectInput: React.FC<SelectProps> = ({
                             ))}
                         </Select.Group>
                     </Select.Viewport>
-                    <Select.ScrollDownButton className="text-violet11 flex  h-[25px] cursor-default items-center justify-center bg-white">
+                    <Select.ScrollDownButton className="flex h-[25px]  cursor-default items-center justify-center bg-gray-3 text-white">
                         <ChevronDownIcon />
                     </Select.ScrollDownButton>
                 </Select.Content>
