@@ -1,3 +1,5 @@
+'use server'
+
 import { BASE_URL } from '@/definitions'
 import { formatISO, parse } from 'date-fns'
 import { ZodError, z } from 'zod'
