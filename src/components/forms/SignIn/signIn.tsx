@@ -30,7 +30,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const fetchCartData = async () => {
         const response = await fetchClient({
             method: 'GET',
-            url: `api/v1/cart?limit=20&page=1`,
+            url: `api/v1/cart?limit=${100}&page=${1}`,
         })
         console.log(response.data, 'response')
 

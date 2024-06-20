@@ -22,13 +22,10 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
-
+    const LogOut = useCartStore((state) => state.LogOut)
     const [showCartModal, setShowCartModal] = useState(false)
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
-    const totalItems = useCartStore((state) => state.totalItems)
-    const totalPrice = useCartStore((state) => state.totalPrice)
-    const cart = useCartStore((state) => state.cart)
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -38,8 +35,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     }, [getInfo])
 
     const onLogout = async () => {
-        setIsOpen(false)
-
+        LogOut()
         signOut({
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
@@ -49,8 +45,8 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
         setShowCartModal(show)
     }
 
-    console.log(cart, totalItems, totalPrice, 'ddddd')
-
+    const totalItems = useCartStore((state) => state.totalItems)
+    const cart = useCartStore((state) => state.cart)
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
