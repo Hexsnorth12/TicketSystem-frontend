@@ -35,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     }, [getInfo])
 
     const onLogout = async () => {
+        setIsOpen(false)
         LogOut()
         signOut({
             redirect: true,
