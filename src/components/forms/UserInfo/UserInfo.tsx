@@ -115,12 +115,12 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
             </div>
             <div className="flex justify-center">
                 <Button
+                    name="confirm"
+                    value="確認"
+                    type={'submit'}
+                    title="confirm"
                     className="mt-10"
-                    type={'button'}
-                    title={'confirm'}
-                    onClick={() => {}}>
-                    <span>確認</span>
-                </Button>
+                />
             </div>
         </form>
     )
