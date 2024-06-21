@@ -25,6 +25,7 @@ import SelectBox from './Select/selectBox'
 import EmptyData from './EmptyData/EmptyData'
 import DatePicker from './DatePicker'
 import ErrorModal from './ErrorModal'
+import DataTableHeader from './DataTableHeader/DataTableHeader'
 
 export {
     Modal,
@@ -54,4 +55,5 @@ export {
     EmptyData,
     DatePicker,
     ErrorModal,
+    DataTableHeader,
 }

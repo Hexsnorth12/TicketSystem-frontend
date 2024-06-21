@@ -8,31 +8,25 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Box } from '@mui/material'
-import { bellota } from '@/components/fonts'
+import { bellota, noto_Sans_TC } from '@/components/fonts'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     textWrap: 'wrap',
-    width: '15%',
+    textAlign: 'start',
 }))
 
-const StyledHeaderRCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: '#4E4E4E',
-        color: theme.palette.common.white,
-        BorderRadius: 12,
-    },
-}))
+// const StyledCell = styled(TableCell)(({ theme }) => ({
+//     [`&.${tableCellClasses.head}`]: {
+//         backgroundColor: '#4E4E4E',
+//     },
+// }))
 
-const StyledHeaderRow = styled(TableCell)(({ theme }) => ({
-    '&': {
-        borderRad: 8,
-    },
+const StyledCell = styled(TableCell)(({ theme }) => ({
+    flex: 1,
 }))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&': {
-        color: 'white',
-    },
+    color: 'white',
     '& .MuiTableCell-root': {
         fontSize: 14,
         color: 'white',
@@ -59,13 +53,26 @@ const rows = [
         '我們非常喜歡這次旅行，它提供了豐富的信息，甚至可以讓您進入一些大廳和音樂會場地。從透過Klook客路預訂，到現場兌換門票，再到遊覽，整個體驗都是無縫的。這是專業進行的，當然非常值得花時間。',
         4.0,
     ),
+    createData(
+        '2023.08.09 11:32',
+        5,
+        'asdfasd',
+        '我們非常喜歡這次旅行，它提供了豐富的信息，甚至可以讓您進入一些大廳和音樂會場地。從透過Klook客路預訂，到現場兌換門票，再到遊覽，整個體驗都是無縫的。這是專業進行的，當然非常值得花時間。',
+        4.0,
+    ),
 ]
 
 const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
     return (
-        <div className="bg-transparent p-8">
-            <Box sx={{ padding: 8 }}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <>
+            <div className="overflow-x-scroll bg-transparent p-8 scrollbar-hidden">
+                <Table
+                    sx={{
+                        width: '100%',
+                        minWidth: 320,
+                        tableLayout: 'fixed',
+                    }}
+                    aria-label="simple table">
                     <TableHead
                         sx={{
                             backgroundColor: 'transparent',
@@ -76,17 +83,15 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                             sx={{
                                 borderWidth: 0,
                                 borderRadius: 8,
-                                backgroundColor: '#4E4E4E',
+                                backgroundColor: 'transparent',
                             }}>
                             <TableCell
                                 sx={{
-                                    // borderWidth: 0,
+                                    borderWidth: 0,
                                     color: 'white',
                                     borderTopLeftRadius: 8,
-                                    borderBottonLeftRadius: 8,
-
-                                    // backgroundColor: '#4E4E4E',
-                                    marginBottom: 12,
+                                    borderBottomLeftRadius: 8,
+                                    backgroundColor: '#1E1E1E',
                                 }}>
                                 日期
                             </TableCell>
@@ -94,12 +99,17 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                                 sx={{
                                     borderWidth: 0,
                                     color: 'white',
+                                    backgroundColor: '#1E1E1E',
                                 }}
                                 align="right">
                                 星等
                             </TableCell>
                             <TableCell
-                                sx={{ borderWidth: 0, color: 'white' }}
+                                sx={{
+                                    borderWidth: 0,
+                                    color: 'white',
+                                    backgroundColor: '#1E1E1E',
+                                }}
                                 align="right">
                                 帳號
                             </TableCell>
@@ -107,6 +117,7 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                                 sx={{
                                     borderWidth: 0,
                                     color: 'white',
+                                    backgroundColor: '#1E1E1E',
                                 }}
                                 align="right">
                                 備註
@@ -116,6 +127,8 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                                     borderWidth: 0,
                                     color: 'white',
                                     borderTopRightRadius: 8,
+                                    borderBottomRightRadius: 8,
+                                    backgroundColor: '#1E1E1E',
                                 }}
                                 align="right">
                                 狀態
@@ -130,6 +143,7 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                                 sx={{
                                     '& td, & th': {
                                         borderBottom: 1,
+                                        borderBottomColor: '#333333',
                                     },
                                     '&:last-child td, &:last-child th': {
                                         border: 0,
@@ -138,29 +152,46 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                                 <TableCell
                                     component="th"
                                     scope="row"
-                                    sx={{ fontFamily: 'Bellota' }}>
+                                    sx={{
+                                        fontFamily: 'Bellota',
+                                    }}>
                                     {row.date}
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell
+                                    align="right"
+                                    sx={{
+                                        fontFamily: 'Bellota',
+                                    }}>
                                     {row.rating}
                                 </TableCell>
                                 <TableCell
                                     align="right"
-                                    sx={{ fontFamily: 'Bellota' }}>
+                                    sx={{
+                                        fontFamily: 'Bellota',
+                                    }}>
                                     {row.acc}
                                 </TableCell>
-                                <StyledTableCell align="right">
+                                <TableCell
+                                    align="right"
+                                    sx={{
+                                        fontFamily: 'noto_Sans_TC',
+                                        textAlign: 'start',
+                                    }}>
                                     {row.carbs}
-                                </StyledTableCell>
-                                <TableCell align="right">
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    sx={{
+                                        fontFamily: 'Bellota',
+                                    }}>
                                     {row.protein}
                                 </TableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>
-            </Box>
-        </div>
+            </div>
+        </>
 
         // <TableContainer
         //     component={Paper}
