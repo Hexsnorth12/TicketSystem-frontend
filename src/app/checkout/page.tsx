@@ -1,10 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
-import fetchClient from '@/lib/fetchClient'
 
 const CheckoutPage = () => {
     const columns: Column[] = [
@@ -24,59 +23,6 @@ const CheckoutPage = () => {
             key: 'price',
         },
     ]
-    const [orderData] = useState({
-        items: [
-            {
-                productId: '66658079d23d0fe8146bcc2a',
-                plan: {
-                    name: '三人同行',
-                    discount: 0.5,
-                    headCount: 10,
-                },
-                amount: 1,
-            },
-        ],
-        price: 5500,
-        paymentMethod: 'linePay',
-        deliveryInfo: {
-            name: 'Roger',
-            phone: '0912345678',
-            address: 'aaaa',
-            email: 'roger@gmail.com',
-        },
-    })
-    const handleOrderSubmit = async () => {
-        try {
-            const response = await fetchClient({
-                method: 'POST',
-                url: 'api/v1/order',
-                body: JSON.stringify(orderData),
-            })
-
-            if (response.status == 6000) {
-                const responseData = await response
-                const { status, message, data } = responseData
-                console.log(responseData, 'responseresponse')
-                if (status === '6000') {
-                    // Order was successful
-                    alert('Order successful! Redirecting to payment page...')
-                    window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
-                } else {
-                    // Order failed with specific error
-                    alert(`Order failed: ${message}`)
-                    // Redirect to error page or handle as needed
-                }
-            } else {
-                // Handle HTTP error responses
-                alert('Failed to submit order')
-                // Redirect to error page or handle as needed
-            }
-        } catch (error) {
-            console.error('Error submitting order:', error)
-            alert('Failed to submit order')
-            // Redirect to error page or handle as needed
-        }
-    }
 
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
@@ -144,7 +90,7 @@ const CheckoutPage = () => {
                             </ul>
                         </div>
                         <div className="mt-3 w-full  rounded-lg  p-4  text-white ">
-                            <Delivery handleOrderSubmit={handleOrderSubmit} />
+                            <Delivery />
                         </div>
                     </div>
                 </div>

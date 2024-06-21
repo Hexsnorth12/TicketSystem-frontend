@@ -3,12 +3,11 @@ import React, { useState } from 'react'
 import { InputComponent } from '@components/common'
 import { SelectInput } from '@components/common'
 import { Button } from '@/components/common'
-interface DeliveryProps {
-    handleOrderSubmit: () => void // 定义 handleOrderSubmit 的类型
-}
-const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
+import fetchClient from '@/lib/fetchClient'
+
+const Delivery = () => {
     const [username, setUsername] = useState('')
-    const [deliveryArea, setDeliveryArea] = useState('')
+    const [deliveryEmail, setDeliveryEmail] = useState('')
     const [payMethod, setPayMethod] = useState('線上付款')
     const [phone, setPhone] = useState('')
     const [delivery, setDelivery] = useState('線上取票')
@@ -17,8 +16,8 @@ const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-    const handleDeliveryAreaChange = (value: string) => {
-        setDeliveryArea(value)
+    const handleDeliveryEmailChange = (value: string) => {
+        setDeliveryEmail(value)
     }
     const handlePayMethodChange = (value: string) => {
         console.log(payMethod)
@@ -35,6 +34,61 @@ const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
     }
 
     const option = ['線上付款', '貨到付款']
+    //
+
+    const handleOrderSubmit = async () => {
+        const [orderData] = useState({
+            items: [
+                {
+                    productId: '66658079d23d0fe8146bcc2a',
+                    plan: {
+                        name: '三人同行',
+                        discount: 0.5,
+                        headCount: 10,
+                    },
+                    amount: 1,
+                },
+            ],
+            price: 5500,
+            paymentMethod: 'linePay',
+            deliveryInfo: {
+                name: username,
+                phone: phone,
+                address: address,
+                email: deliveryEmail,
+            },
+        })
+        try {
+            const response = await fetchClient({
+                method: 'POST',
+                url: 'api/v1/order',
+                body: JSON.stringify(orderData),
+            })
+
+            if (response.status == 6000) {
+                const responseData = await response
+                const { status, message, data } = responseData
+                console.log(responseData, 'responseresponse')
+                if (status === '6000') {
+                    // Order was successful
+                    alert('Order successful! Redirecting to payment page...')
+                    window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
+                } else {
+                    // Order failed with specific error
+                    alert(`Order failed: ${message}`)
+                    // Redirect to error page or handle as needed
+                }
+            } else {
+                // Handle HTTP error responses
+                alert('Failed to submit order')
+                // Redirect to error page or handle as needed
+            }
+        } catch (error) {
+            console.error('Error submitting order:', error)
+            alert('Failed to submit order')
+            // Redirect to error page or handle as needed
+        }
+    }
     return (
         <>
             <div className="text-center">
@@ -47,17 +101,6 @@ const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
                 <div className="mt-10 grid grid-cols-1 justify-between gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div className="sm:col-span-3">
                         <InputComponent
-                            name={'deliveryArea'}
-                            label={'配送地區'}
-                            type={'text'}
-                            value={deliveryArea}
-                            onChange={handleDeliveryAreaChange}
-                            placeholder="台灣及離島"
-                        />
-                    </div>
-
-                    <div className="sm:col-span-3">
-                        <InputComponent
                             name={'username'}
                             label={'購買人姓名'}
                             type={'text'}
@@ -65,7 +108,15 @@ const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
                             onChange={handleUsernameChange}
                         />
                     </div>
-
+                    <div className="sm:col-span-3">
+                        <InputComponent
+                            name={'deliveryArea'}
+                            label={'購買人信箱'}
+                            type={'text'}
+                            value={deliveryEmail}
+                            onChange={handleDeliveryEmailChange}
+                        />
+                    </div>
                     <div className="sm:col-span-3">
                         <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
                             付款方式
