@@ -34,7 +34,9 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
 
     const [selectPlan, setSelectPlan] = useState(product.plans[0])
     const [selectPrice, setSelectPrice] = useState(
-        product.price !== undefined ? product.price * selectPlan.discount : 0,
+        product.price !== undefined
+            ? product.price * selectPlan.discount * selectPlan.headCount
+            : 0,
     )
     const [conter, setConter] = useState(1)
 
@@ -48,7 +50,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         setSelectPlan(selectedPlan)
         setSelectPrice(
             product.price !== undefined
-                ? product.price * selectPlan.discount
+                ? product.price * selectPlan.discount * selectPlan.headCount
                 : 0,
         )
         setConter(1)

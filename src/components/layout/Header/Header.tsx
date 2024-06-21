@@ -52,7 +52,13 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
         if (selectedPlan && selectedPlan.discount) {
-            return acc + price * selectedPlan.discount * product.quantity
+            return (
+                acc +
+                price *
+                    selectedPlan.discount *
+                    selectedPlan.headCount *
+                    product.quantity
+            )
         }
         // 如果没有折扣信息，按原价计算
         return acc + price * product.quantity

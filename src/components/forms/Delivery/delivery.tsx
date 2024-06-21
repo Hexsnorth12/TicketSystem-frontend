@@ -35,29 +35,28 @@ const Delivery = () => {
 
     const option = ['線上付款', '貨到付款']
     //
-
-    const handleOrderSubmit = async () => {
-        const [orderData] = useState({
-            items: [
-                {
-                    productId: '66658079d23d0fe8146bcc2a',
-                    plan: {
-                        name: '三人同行',
-                        discount: 0.5,
-                        headCount: 10,
-                    },
-                    amount: 1,
+    const orderData = {
+        items: [
+            {
+                productId: '66658079d23d0fe8146bcc2a',
+                plan: {
+                    name: '三人同行',
+                    discount: 0.5,
+                    headCount: 10,
                 },
-            ],
-            price: 5500,
-            paymentMethod: 'linePay',
-            deliveryInfo: {
-                name: username,
-                phone: phone,
-                address: address,
-                email: deliveryEmail,
+                amount: 1,
             },
-        })
+        ],
+        price: 5500,
+        paymentMethod: 'linePay',
+        deliveryInfo: {
+            name: username,
+            phone: phone,
+            address: address,
+            email: deliveryEmail,
+        },
+    }
+    const handleOrderSubmit = async () => {
         try {
             const response = await fetchClient({
                 method: 'POST',

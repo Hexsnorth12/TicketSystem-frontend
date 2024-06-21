@@ -69,7 +69,8 @@ export const useCartStore = create<State & Actions>()(
                         totalPrice: updatedCart.reduce((acc, item) => {
                             const itemPrice =
                                 (item.price as number) *
-                                item.selectedPlan.discount
+                                item.selectedPlan.discount *
+                                item.selectedPlan.headCount
                             return acc + itemPrice * item.quantity
                         }, 0),
                     }))
@@ -85,6 +86,7 @@ export const useCartStore = create<State & Actions>()(
                         totalPrice: updatedCart.reduce((acc, item) => {
                             const itemPrice =
                                 (item.price as number) *
+                                item.selectedPlan.headCount *
                                 item.selectedPlan.discount
                             return acc + itemPrice * item.quantity
                         }, 0),
@@ -137,6 +139,7 @@ export const useCartStore = create<State & Actions>()(
                         totalPrice: updatedCart.reduce((acc, item) => {
                             const itemPrice =
                                 (item.price as number) *
+                                item.selectedPlan.headCount *
                                 item.selectedPlan.discount
                             return acc + itemPrice * item.quantity
                         }, 0),
@@ -188,6 +191,7 @@ export const useCartStore = create<State & Actions>()(
                         totalPrice: updatedCart.reduce((acc, item) => {
                             const itemPrice =
                                 (item.price as number) *
+                                item.selectedPlan.headCount *
                                 item.selectedPlan.discount
                             return acc + itemPrice * item.quantity
                         }, 0),
@@ -240,6 +244,7 @@ export const useCartStore = create<State & Actions>()(
                         totalPrice: state.cart.reduce((acc, item) => {
                             const itemPrice =
                                 (item.price as number) *
+                                item.selectedPlan.headCount *
                                 item.selectedPlan.discount
                             return acc + itemPrice * item.quantity
                         }, 0),
@@ -314,7 +319,9 @@ export const useCartStore = create<State & Actions>()(
                     ),
                     totalPrice: mergedCart.reduce((acc, item) => {
                         const itemPrice =
-                            (item.price as number) * item.selectedPlan.discount
+                            (item.price as number) *
+                            item.selectedPlan.headCount *
+                            item.selectedPlan.discount
                         return acc + itemPrice * item.quantity
                     }, 0),
                 }))
