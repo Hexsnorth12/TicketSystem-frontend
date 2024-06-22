@@ -2,7 +2,7 @@ import React from 'react'
 import { ButtonGroup, TicketGroup } from '@/components/layout'
 import clsx from 'clsx'
 import { Ticket } from '@/types'
-import fetchClient from '@/lib/fetchClient'
+import fetchServer from '@/lib/fetchServer'
 
 interface pageProps {
     searchParams?: { [key: string]: string }
@@ -15,7 +15,7 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
     const {
         data: { tickets },
     }: { data: { tickets: Ticket[]; page: number; totalCount: number } } =
-        await fetchClient({
+        await fetchServer({
             method: 'GET',
             url: `api/v1/ticket?page=1&limit=${PAGE_LIMIT}&status=${status}`,
         })

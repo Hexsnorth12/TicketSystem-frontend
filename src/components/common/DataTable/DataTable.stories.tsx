@@ -1,10 +1,11 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import DataTableHeader from './DataTableHeader'
+import DataTable from './DataTable'
+import { OrderHeadCell, dummyOrder } from '@/definitions/dataTable'
 
 const meta = {
-    title: 'common/DataTableHeader',
-    component: DataTableHeader,
+    title: 'common/DataTable',
+    component: DataTable,
 
     parameters: {
         nextjs: {
@@ -12,11 +13,14 @@ const meta = {
         },
     },
     decorators: (story) => <div className="container bg-gray-1">{story()}</div>,
-} satisfies Meta<typeof DataTableHeader>
+} satisfies Meta<typeof DataTable>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        headCells: OrderHeadCell,
+        rows: dummyOrder,
+    },
 }

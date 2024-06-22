@@ -18,7 +18,6 @@ const Page: React.FC<PageProps> = async ({ searchParams }) => {
             method: 'GET',
             url: `api/v1/comment?limit=${8}&page=${pageIndex}&status=active`,
         })
-    console.log('comments', comments, totalCount)
     if (comments.length === 0) {
         return <EmptyData message="尚無評論" hasButton={false} />
     }

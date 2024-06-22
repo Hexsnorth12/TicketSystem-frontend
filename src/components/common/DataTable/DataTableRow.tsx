@@ -15,12 +15,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     textAlign: 'start',
 }))
 
-// const StyledCell = styled(TableCell)(({ theme }) => ({
-//     [`&.${tableCellClasses.head}`]: {
-//         backgroundColor: '#4E4E4E',
-//     },
-// }))
-
 const StyledCell = styled(TableCell)(({ theme }) => ({
     flex: 1,
 }))
@@ -65,11 +59,17 @@ const rows = [
 const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
     return (
         <>
-            <div className="overflow-x-scroll bg-transparent p-8 scrollbar-hidden">
+            {/* <div className="overflow-x-scroll bg-transparent p-8 scrollbar-hidden">
+
+            </div> */}
+            <TableContainer
+                component={Paper}
+                sx={{ backgroundColor: 'transparent', maxHeight: 440 }}>
                 <Table
+                    stickyHeader
                     sx={{
-                        width: '100%',
-                        minWidth: 320,
+                        // width: '100%',
+                        // minWidth: 320,
                         tableLayout: 'fixed',
                     }}
                     aria-label="simple table">
@@ -139,7 +139,7 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                         {rows.map((row) => (
                             <StyledTableRow
                                 key={row.date}
-                                className={bellota.className}
+                                // className={bellota.className}
                                 sx={{
                                     '& td, & th': {
                                         borderBottom: 1,
@@ -190,14 +190,8 @@ const DataTableHeader: React.FC<DataTableHeaderProps> = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </div>
+            </TableContainer>
         </>
-
-        // <TableContainer
-        //     component={Paper}
-        //     sx={{ backgroundColor: 'transparent' }}>
-
-        // </TableContainer>
     )
 }
 

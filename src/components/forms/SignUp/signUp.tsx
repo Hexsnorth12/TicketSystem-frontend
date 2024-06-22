@@ -95,13 +95,13 @@ export default function SignUp() {
                             onChange={handleCheckPasswordChange}
                         />
                     </div>
-                    <div className="sm:col-span-2">
+                    {/* <div className="sm:col-span-2">
                         <Checkbox
                             label={'我已詳閱所有條款及同意個人資料'}
                             checked={agree}
                             onChange={handleAgreeChange}
                         />
-                    </div>
+                    </div> */}
                     <div className="sm:col-span-2">
                         <div className="flex items-center">
                             <label

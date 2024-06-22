@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import DataSell from './DataSell'
+import DataSell from './DataShell'
 
 const meta = {
     title: 'common/DataSell',
@@ -21,5 +21,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-    args: {},
+    args: {
+        title: '使用者評價',
+    },
 }
