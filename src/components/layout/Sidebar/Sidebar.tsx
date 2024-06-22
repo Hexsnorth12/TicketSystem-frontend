@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
         const token = session?.accessToken || ''
 
         const imageURL = await uploadImage(formData, 'user', token)
-        let imgUrl = imageURL?.isSuccess ? imageURL?.url : ''
+        const imgUrl = imageURL?.isSuccess ? imageURL?.url : ''
 
         await updateInfo({
             payload: {

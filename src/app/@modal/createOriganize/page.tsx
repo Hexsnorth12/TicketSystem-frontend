@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Image from 'next/image'
 import { useForm, Controller, FieldValues } from 'react-hook-form'
 import { useSession } from 'next-auth/react'

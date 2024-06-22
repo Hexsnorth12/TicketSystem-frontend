@@ -30,7 +30,7 @@ interface pageProps {
 
 const PAGE = 1
 
-const Page: React.FC<pageProps> = async ({ searchParams }) => {
+const Page: React.FC<pageProps> = ({ searchParams }) => {
     const router = useRouter()
     const status = searchParams?.status ?? 'own'
 

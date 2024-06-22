@@ -216,9 +216,9 @@ const JoinPage = () => {
 
     function updateTags(type: string, updatedInfo: string[]) {
         readyToFilter()
+        const updatedValue = updatedInfo.length ? updatedInfo[0] : ''
         switch (type) {
             case 'country':
-                const updatedValue = updatedInfo.length ? updatedInfo[0] : ''
                 setCountryTag(updatedValue)
                 break
             case 'theater':
