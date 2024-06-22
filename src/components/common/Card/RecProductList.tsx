@@ -11,11 +11,17 @@ import {
     truncateContentMobile,
 } from '../../../utils/numberUtils'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+// Favorite Section
+import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
+import { useSession } from 'next-auth/react'
+import Favoritebtn from '../../Buttons/FavoriteBtn'
 
 type Tag = {
     tagId: string
 }
-
 type Product = {
     _id: string
     title: string
@@ -36,16 +42,52 @@ type Product = {
     startAt: string
     tags: Tag[]
     photoPath: string
+    isFavorite: boolean
 }
-
 type RecProductListProps = {
     products: Product[]
 }
 
 const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
-    const router = useRouter() // 获取路由对象
+    const router = useRouter()
+    const { data: session } = useSession()
+    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
+    const [removeFavorite, { isLoading: isLoadingRemove }] =
+        useRemoveFavoriteMutation()
+
     const handleMovieDetail = (id: string) => {
         router.push(`/movies/${id}`)
+    }
+
+    const handleUpdateFavorite = async (
+        productId: string,
+        currentFavoriteStatus: boolean,
+    ) => {
+        if (!currentFavoriteStatus) {
+            try {
+                await addFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+                products.forEach((product) => {
+                    if (product._id === productId) product.isFavorite = true
+                })
+            } catch (error) {
+                console.error('Failed to add favorite', error)
+            }
+        } else {
+            try {
+                await removeFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+                products.forEach((product) => {
+                    if (product._id === productId) product.isFavorite = false
+                })
+            } catch (error) {
+                console.error('Failed to remove favorite', error)
+            }
+        }
     }
     return (
         <>
@@ -68,6 +110,18 @@ const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
                                 />
                                 <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
                                     <TypeTag tagName={product.genre} />
+                                </div>
+                                <div className="absolute bottom-2 right-2 inline-block rounded-full bg-gray-1 text-primary">
+                                    <Favoritebtn
+                                        active={product.isFavorite}
+                                        onClick={() =>
+                                            handleUpdateFavorite(
+                                                product._id,
+                                                product.isFavorite,
+                                            )
+                                        }
+                                        disabled={isLoading || isLoadingRemove}
+                                    />
                                 </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -112,6 +166,18 @@ const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
                                 />
                                 <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
                                     <TypeTag tagName={product.genre} />
+                                </div>
+                                <div className="absolute bottom-2 right-2 inline-block rounded-full bg-gray-1 text-primary">
+                                    <Favoritebtn
+                                        active={product.isFavorite}
+                                        onClick={() =>
+                                            handleUpdateFavorite(
+                                                product._id,
+                                                product.isFavorite,
+                                            )
+                                        }
+                                        disabled={isLoading || isLoadingRemove}
+                                    />
                                 </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>

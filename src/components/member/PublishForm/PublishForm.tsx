@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Counter, Button } from '@/components/common'
 import fackImg from '@images/groupcard1.png'
 import { useRouter } from 'next/navigation'
+// import { usePostSellTicketMutation } from '@/services/modules/product'
 
 interface PublishFormProps {}
 
