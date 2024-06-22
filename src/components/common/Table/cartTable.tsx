@@ -90,6 +90,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
 
         return `${currentNumber * data.price} NT`
     }
+
     const renderName = (name: {
         image: string
         title: string
