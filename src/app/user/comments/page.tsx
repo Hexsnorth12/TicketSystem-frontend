@@ -4,6 +4,8 @@ import { EmptyData, PaginationWrapper } from '@/components/common'
 import fetchServer from '@/lib/fetchServer'
 import { SelfComment } from '@/types'
 
+const PAGE_SIZE = 6
+
 interface PageProps {
     searchParams?: { [key: string]: string }
 }
@@ -16,9 +18,8 @@ const Page: React.FC<PageProps> = async ({ searchParams }) => {
     }: { data: { comments: SelfComment[]; totalCount: number; page: number } } =
         await fetchServer({
             method: 'GET',
-            url: `api/v1/comment?limit=${8}&page=${pageIndex}&status=active`,
+            url: `api/v1/comment?limit=${PAGE_SIZE}&page=${pageIndex}&status=active`,
         })
-    console.log('comments', comments, totalCount)
     if (comments.length === 0) {
         return <EmptyData message="尚無評論" hasButton={false} />
     }
@@ -40,7 +41,7 @@ const Page: React.FC<PageProps> = async ({ searchParams }) => {
             </div>
             <div className="flex justify-center">
                 <PaginationWrapper
-                    size={8}
+                    size={PAGE_SIZE}
                     total={totalCount}
                     withEllipsis={true}
                 />
