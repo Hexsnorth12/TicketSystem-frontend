@@ -11,6 +11,7 @@ import type { DatePickerComponent as Props } from '@/types'
 
 const {
     DEFAULTDATE,
+    DEFAULTENDDATE,
     DEFAULTSTARTTIME,
     DEFAULTENDTIME,
     STARTDATETITLE,
@@ -24,7 +25,7 @@ const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
     const [startFilter, setStartFilter] = useState(false)
 
     const [startDate, setStartDate] = useState(DEFAULTDATE)
-    const [endDate, setEndDate] = useState(DEFAULTDATE)
+    const [endDate, setEndDate] = useState(DEFAULTENDDATE)
     const [startTime, setStartTime] = useState(DEFAULTSTARTTIME)
     const [endTime, setEndTime] = useState(DEFAULTENDTIME)
 

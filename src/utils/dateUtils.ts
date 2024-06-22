@@ -53,21 +53,29 @@ export function exportTimeRangeString({
     startTime: Date
     endTime: Date
 }) {
-    // TODO: 時間範圍邏輯不合理，需增設api request param
-    console.log('start, end: ', startTime, endTime)
     const startAt = new Date(
         startDate.getFullYear(),
         startDate.getMonth(),
         startDate.getDate(),
-        startTime.getHours(),
-        startTime.getMinutes(),
     ).toLocaleString()
     const endAt = new Date(
         endDate.getFullYear(),
         endDate.getMonth(),
         endDate.getDate(),
+    ).toLocaleString()
+    const timeBegin = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        startTime.getHours(),
+        startTime.getMinutes(),
+    ).toLocaleString()
+    const timeEnd = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
         endTime.getHours(),
         endTime.getMinutes(),
     ).toLocaleString()
-    return { startAt, endAt }
+    return { startAt, endAt, timeBegin, timeEnd }
 }

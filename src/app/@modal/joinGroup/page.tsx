@@ -116,14 +116,16 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
             <div className="min-w-[279px] px-5 md:px-12 md:py-9">
                 <div className="mb-6 flex flex-col gap-4 md:flex-row">
-                    <Image
-                        loader={() => eventDetail.placeholderImg as string}
-                        src={eventDetail.placeholderImg as string}
-                        alt="group"
-                        width={288}
-                        height={173}
-                        className="rounded-lg"
-                    />
+                    <div className="max-h-[173px]">
+                        <Image
+                            loader={() => eventDetail.placeholderImg as string}
+                            src={eventDetail.placeholderImg as string}
+                            alt="group"
+                            width={288}
+                            height={173}
+                            className="rounded-lg"
+                        />
+                    </div>
                     <div className="max-h-[184px] overflow-y-scroll pr-6 scrollbar">
                         <h5 className="mb-1 text-small1 text-white md:mb-2 md:text-header5">
                             {eventDetail.title}

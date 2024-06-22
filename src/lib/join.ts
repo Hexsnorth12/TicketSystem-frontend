@@ -2,21 +2,34 @@ import fetchClient from './fetchClient'
 
 import type { EventDetailRes, GetEventListRes, JoinEventRes } from '@/types'
 
+const today = new Date()
+const later = new Date(today.getTime() + 86400000)
 export const DEFAULTTIMERANGE = {
-    startDate: new Date(),
-    endDate: new Date(),
-    startTime: new Date(),
-    endTime: new Date(),
+    startDate: today,
+    endDate: later,
+    startTime: new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        0,
+        0,
+    ),
+    endTime: new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        23,
+        59,
+    ),
 }
 
 export const getJoinEventList = async ({
     limit,
     page,
-    // eslint-disable-next-line
     startAt = '',
-    // eslint-disable-next-line
     endAt = '',
-    // eslint-disable-next-line
+    timeBegin = '',
+    timeEnd = '',
     movieTitle = '',
     title = '',
 }: {
@@ -24,6 +37,8 @@ export const getJoinEventList = async ({
     page: number
     startAt?: string
     endAt?: string
+    timeBegin?: string
+    timeEnd?: string
     movieTitle?: string
     title?: string
 }): Promise<GetEventListRes> => {
@@ -32,10 +47,11 @@ export const getJoinEventList = async ({
         const queryString = new URLSearchParams({
             limit: limit.toString(),
             page: page.toString(),
-            // TODO: 待api更新
-            // startAt,
-            // endAt,
-            // movieTitle,
+            startDate: startAt,
+            endDate: endAt,
+            startTime: timeBegin,
+            endTime: timeEnd,
+            movieTitle,
             title,
             status: 'ongoing',
         })
@@ -92,12 +108,43 @@ export const getEventDetail = async (
     }
 }
 
-export const joinEvent = async (eventInfo: {
+export const getMyJoinEventList = async (
+    type: string,
+    page: number,
+): Promise<GetEventListRes> => {
+    try {
+        const result = await fetchClient({
+            method: 'GET',
+            url: `api/v1/user/groups?groupType=${type}&page=${page}`,
+        })
+        const { status, data } = result
+
+        if (status === '6000') {
+            if (data.groups) {
+                return {
+                    status: 'success',
+                    events: data.groups,
+                    totalCount: data.totalCount,
+                }
+            }
+        } else {
+            throw new Error('取得活動資料失敗')
+        }
+        // eslint-disable-next-line
+    } catch (error: any) {
+        return {
+            status: 'failed',
+            error: error.message,
+        }
+    }
+}
+
+export const createJoinEvent = async (eventInfo: {
     title: string
     placeholderImg: string
     theater: string
     movieTitle: string
-    time: Date
+    time: Date | string
     amount: number
     haveTicket: boolean
     content: string
@@ -132,7 +179,65 @@ export const joinEvent = async (eventInfo: {
     } catch (error: any) {
         return {
             status: 'failed',
-            error: error.message,
+            error: error.message || '系統錯誤，請再試一次',
+        }
+    }
+}
+
+export const updateEvent = async (
+    groupId: string,
+    updateInfo: { title: string; content: string },
+): Promise<JoinEventRes> => {
+    try {
+        const url = `api/v1/group/${groupId}`
+
+        const result = await fetchClient({
+            method: 'PATCH',
+            url,
+            body: JSON.stringify(updateInfo),
+        })
+        const { status } = result
+
+        if (status === '6000') {
+            return {
+                status: 'success',
+                message: '修改成功',
+            }
+        } else {
+            throw new Error('修改失敗')
+        }
+        // eslint-disable-next-line
+    } catch (error: any) {
+        return {
+            status: 'failed',
+            error: error.message || '系統錯誤，請再試一次',
+        }
+    }
+}
+
+export const leaveEvent = async (groupId: string): Promise<JoinEventRes> => {
+    try {
+        const url = `api/v1/group/leave/${groupId}`
+
+        const result = await fetchClient({
+            method: 'PATCH',
+            url,
+        })
+        const { status } = result
+
+        if (status === '6000') {
+            return {
+                status: 'success',
+                message: '退出活動成功',
+            }
+        } else {
+            throw new Error('退出活動失敗')
+        }
+        // eslint-disable-next-line
+    } catch (error: any) {
+        return {
+            status: 'failed',
+            error: error.message || '系統錯誤，請再試一次',
         }
     }
 }

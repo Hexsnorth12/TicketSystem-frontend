@@ -79,7 +79,7 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         </Link>
                     </li>
                     <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
-                        <Link href="/user/mygroups" scroll={false}>
+                        <Link href="/user/join" scroll={false}>
                             我的揪團
                         </Link>
                     </li>

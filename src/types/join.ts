@@ -23,14 +23,21 @@ export type Event = {
     content?: string
     movieTitle: string
     onClick: () => void
+    participant?: {
+        name: string
+        nickname: string
+        phone: string
+        lineId: string
+    }[]
+    // eslint-disable-next-line
+    [key: string]: any
 }
 
 type Status = 'success' | 'failed'
 
 export type Tag = { label: string; value: string }
 
-// eslint-disable-next-line
-export type EventList = [Event & { [key: string]: any }] | []
+export type EventList = Event[] | []
 
 export type JoinPageSuccess = {
     status: Status

@@ -8,7 +8,13 @@ import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
-import { checkInvalidTimeRange, cn, exportTimeRangeString } from '@/utils'
+import {
+    checkInvalidTimeRange,
+    cn,
+    exportTimeRangeString,
+    formatDate,
+    formatTimeString,
+} from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
@@ -102,21 +108,30 @@ const JoinPage = () => {
             return
         }
 
-        const { startAt, endAt } = exportTimeRangeString(timeRange)
-        const updatedPage = !scrollBottom ? 1 : page
+        const { startAt, endAt, timeBegin, timeEnd } =
+            exportTimeRangeString(timeRange)
 
-        // TODO: 待api更新後 更新此邏輯，目前篩選無法運作
+        const updatedStartDate = formatDate(new Date(startAt), '/')
+        const updatedEndDate = formatDate(new Date(endAt), '/')
+        const updatedStartTime = formatTimeString(new Date(timeBegin))
+        const updatedEndTime = formatTimeString(new Date(timeEnd))
+
+        const updatedPage = !scrollBottom ? 1 : page
+        // TODO: api須更新，少電影院參數
         // eslint-disable-next-line
-        const movieTitles = () => {}
-        // eslint-disable-next-line
-        const countries = () => {}
+        const theaters = theaterTags.join(',')
+        const movieTitles = movieTags.join(',')
+        const eventTitle = title
 
         const params = {
             limit: LIMITAMOUNT,
             page: updatedPage,
-            startAt,
-            endAt,
-            title,
+            startAt: updatedStartDate,
+            endAt: updatedEndDate,
+            timeBegin: updatedStartTime,
+            timeEnd: updatedEndTime,
+            title: eventTitle,
+            movieTitle: movieTitles,
         }
 
         const result = await getJoinEventList(params)

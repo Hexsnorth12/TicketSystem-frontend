@@ -12,10 +12,14 @@ import {
     TextArea,
     InputRegister,
     ErrorModal,
+    SuccessModal,
 } from '@/components/common'
 import add_primary from '@icon/add_primary.svg'
 import { JOIN_OPTIONS } from '@/definitions/joinForm'
 import upLoadImage from '@/lib/uploadImage'
+import { createJoinEvent } from '@/lib/join'
+
+import { JoinEventRes, JoinEventSuccess, JoinPageError } from '@/types'
 
 interface pageProps {}
 
@@ -32,11 +36,18 @@ const Page: React.FC<pageProps> = () => {
     } = useForm<FieldValues>()
     const [eventImgUrl, setEventImgUrl] = useState<string>('')
 
+    const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
 
-    const closeErrorModal = () => setError('')
+    function closeErrorModal() {
+        setError('')
+    }
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    function closeSuccessModal() {
+        setSuccess('')
+    }
+
+    async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0]
         if (!file) return
 
@@ -51,15 +62,71 @@ const Page: React.FC<pageProps> = () => {
         }
     }
 
-    const onSubmit = (data: FieldValues) => {
-        console.log(data)
-        console.log(eventImgUrl)
+    async function onSubmit(data: FieldValues) {
+        try {
+            const {
+                title,
+                description,
+                hostName,
+                hostNickName,
+                isBought,
+                lineId,
+                location,
+                movie,
+                person,
+                phone,
+                time,
+            } = data
+            const haveTicket = isBought === '是'
+            // TODO: 需要優化
+            const selectedHour = time.split(':')[0]
+            const today = new Date()
+            const date = new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate(),
+                selectedHour,
+            )
+
+            const result = (await createJoinEvent({
+                title,
+                time: date,
+                haveTicket,
+                placeholderImg: eventImgUrl,
+                theater: location,
+                movieTitle: movie,
+                amount: person,
+                content: description,
+                participant: {
+                    name: hostName,
+                    nickname: hostNickName,
+                    phone,
+                    lineId,
+                },
+            })) as JoinEventRes
+
+            if (result?.status === 'success') {
+                const success = result as JoinEventSuccess
+                setSuccess(success?.message)
+                setTimeout(() => {
+                    closeSuccessModal()
+                }, 1500)
+            } else {
+                const error = result as JoinPageError
+                setError(error?.error)
+            }
+            // eslint-disable-next-line
+        } catch (error: any) {
+            setError(error?.message)
+        }
     }
 
     return (
         <ModalContent tittle="">
             {/* 錯誤彈窗 */}
             {error && <ErrorModal onClose={closeErrorModal} errorMsg={error} />}
+            {/* 成功彈窗 */}
+            {success && <SuccessModal successMsg={success} />}
 
             <div className="flex min-w-[279px] flex-col px-3 md:flex-row md:items-center md:justify-between md:gap-10 md:py-[34px]">
                 <div className="mx-auto mb-3 flex h-[120px] w-[120px] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-3 bg-gray-1 md:h-[480px] md:w-[480px]">
@@ -101,11 +168,6 @@ const Page: React.FC<pageProps> = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     action=""
                     className="w-full space-y-3 overflow-y-scroll md:max-h-[480px]  md:pr-10 md:scrollbar">
-                    {/* TODO: 標題樣式需再討論 */}
-                    {/* 先暫時隱藏 */}
-                    {/* <h4 className="mb-10 hidden border-b border-gray-3 py-4 text-header4 text-gray-4 md:block">
-                        新增活動標題
-                    </h4> */}
                     <InputRegister
                         label="標題"
                         type="text"
@@ -191,6 +253,46 @@ const Page: React.FC<pageProps> = () => {
                             )}
                         />
                     </SelectBox>
+                    <InputRegister
+                        label="主揪人姓名"
+                        type="text"
+                        placeholder={''}
+                        registerKey="hostName"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
+                    />
+                    <InputRegister
+                        label="主揪人綽號"
+                        type="text"
+                        placeholder={''}
+                        registerKey="hostNickName"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
+                    />
+                    <InputRegister
+                        label="手機號碼"
+                        type="text"
+                        placeholder={''}
+                        registerKey="phone"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
+                    />
+                    <InputRegister
+                        label="Line ID"
+                        type="text"
+                        placeholder={''}
+                        registerKey="lineId"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
+                    />
                     <TextArea
                         label="描述"
                         placeholder="新增活動內容"
