@@ -54,3 +54,22 @@ export type Column = {
     dataIndex: keyof DataSource
     key: string
 }
+export interface OrderData {
+    items: {
+        productId: string
+        plan: {
+            name: string
+            discount: number
+            headCount: number
+        }
+        amount: number
+    }[]
+    price: number
+    paymentMethod: string
+    deliveryInfo: {
+        name: string
+        phone: string
+        address: string
+        email: string
+    }
+}

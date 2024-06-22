@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import avatar from '@icon/avatar.svg'
-
+import { useCartStore } from '@/stores/useCartStore'
 interface MemberMenuProps {
     userInfo?: {
         name?: string
@@ -21,11 +21,13 @@ interface MemberMenuProps {
 const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
     const [isExpand, setIsExpand] = useState(false)
     // const [logout] = useLazyLogoutQuery()
-
+    const LogOut = useCartStore((state) => state.LogOut)
     const onToggleMenu = () => {
         setIsExpand((prev) => !prev)
     }
     const onLogout = async () => {
+        setIsExpand(false)
+        LogOut()
         // await logout({})
         // await dispatch(userActions.login({ account: '', email: '', token: '' }))
         // refreshAuth()
@@ -33,6 +35,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
         })
+    }
+    const handleClick = () => {
+        setIsExpand(false)
     }
     return (
         <div className="relative">
@@ -55,7 +60,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/info"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}
+                            >
                             會員資料
                         </Link>
                     </li>
@@ -63,7 +70,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/tickets?status=unverified"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}
+                            >
                             我的電影票
                         </Link>
                     </li>
@@ -71,7 +80,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/favorites"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}
+                            >
                             我的收藏
                         </Link>
                     </li>
@@ -79,7 +90,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/comments"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}
+                            >
                             我的評論
                         </Link>
                     </li>
@@ -87,7 +100,9 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/sharedTicket"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}
+                            >
                             線上分票
                         </Link>
                     </li>

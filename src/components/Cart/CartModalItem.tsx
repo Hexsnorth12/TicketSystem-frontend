@@ -50,7 +50,7 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
                 <p className="text-white">{productName}</p>
                 <p className="text-gray-5">{productInfo.quantity}</p>
                 <p className="text-primary">
-                    NT${' '}
+                    NT$
                     {(productInfo.price as number) *
                         productInfo.selectedPlan.discount}
                 </p>

@@ -9,7 +9,7 @@ import avatar from '@icon/avatar.svg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
-import fetchServer from '@/lib/fetchServer'
+
 //FIXME: 在使用前定义 mapCartItemToProductInfo 函数
 
 interface HeaderProps {
@@ -18,12 +18,11 @@ interface HeaderProps {
     searchParams?: { [key: string]: string }
 }
 
-const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
-    const pageIndex = searchParams?.page ? parseInt(searchParams.page) : 1
+const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
     const isAuth = !!session
-
+    const LogOut = useCartStore((state) => state.LogOut)
     const [showCartModal, setShowCartModal] = useState(false)
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
@@ -36,37 +35,19 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
     }, [getInfo])
 
     const onLogout = async () => {
+        setIsOpen(false)
+        LogOut()
         signOut({
             redirect: true,
             callbackUrl: `${window.location.origin}/login`,
         })
     }
-    const mergeCart = useCartStore((state) => state.mergeCarts)
-    useEffect(() => {
-        const fetchCartData = async () => {
-            if (isAuth) {
-                const response = await fetchServer({
-                    method: 'GET',
-                    url: `api/v1/cart?limit=8&page=${pageIndex}`,
-                })
-                const userCart = response.data
-                if (userCart && userCart.items) {
-                    mergeCart(userCart.items)
-                }
-            }
-        }
-
-        fetchCartData()
-    }, [isAuth, pageIndex])
-
     function showCartModalHandler(show = false) {
         setShowCartModal(show)
     }
-    const totalItems = useCartStore((state) => state.totalItems)
-    const totalPrice = useCartStore((state) => state.totalPrice)
-    const cart = useCartStore((state) => state.cart)
-    console.log(cart, totalItems, totalPrice, 'ddddd')
 
+    const totalItems = useCartStore((state) => state.totalItems)
+    const cart = useCartStore((state) => state.cart)
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
@@ -77,6 +58,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
         return acc + price * product.quantity
     }, 0)
 
+    const handleClick = () => {
+        setIsOpen(false)
+    }
     return (
         <header className="fixed z-[99] w-full bg-gray-3 py-4">
             <div className="container relative flex items-center justify-between px-4">
@@ -180,29 +164,39 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
                                     />
                                 </div>
                             )}
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/info" scroll={false}>
                                     會員資料
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link
                                     href="/user/tickets?status=unverified"
                                     scroll={false}>
                                     我的電影票
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/favorites" scroll={false}>
                                     我的收藏
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/comments" scroll={false}>
                                     我的評論
                                 </Link>
                             </li>
-                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
                                 <Link href="/user/sharedTicket" scroll={false}>
                                     線上分票
                                 </Link>
@@ -211,24 +205,28 @@ const Header: React.FC<HeaderProps> = ({ logoSrc, searchParams }) => {
                                 <Link
                                     href="/user/mygroups"
                                     scroll={false}
-                                    className="cursor-pointer">
+                                    className="cursor-pointer"
+                                    onClick={handleClick}>
                                     我的揪團
                                 </Link>
                             </li>
                         </ul>
                     )}
                     <Link
+                        onClick={handleClick}
                         href="/movies"
                         className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         電影總表
                     </Link>
                     <Link
+                        onClick={handleClick}
                         href="/gatherings"
                         className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         一起揪團
                     </Link>
                     {!isAuth && (
                         <Link
+                            onClick={handleClick}
                             href="/login"
                             className="block cursor-pointer rounded-full border border-primary px-4 py-2 text-white hover:bg-primary hover:text-white "
                             scroll={false}>

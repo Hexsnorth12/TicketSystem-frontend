@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import { InputComponent } from '@components/common'
 import { SelectInput } from '@components/common'
 import { Button } from '@/components/common'
-export default function ForgetPassWord() {
+interface DeliveryProps {
+    handleOrderSubmit: () => void // 定义 handleOrderSubmit 的类型
+}
+const Delivery: React.FC<DeliveryProps> = ({ handleOrderSubmit }) => {
     const [username, setUsername] = useState('')
     const [deliveryArea, setDeliveryArea] = useState('')
     const [payMethod, setPayMethod] = useState('線上付款')
@@ -120,6 +123,7 @@ export default function ForgetPassWord() {
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <Button
                         name="checkout"
+                        onClick={handleOrderSubmit}
                         value="確認送出訂單"
                         type={'submit'}
                         title="checkout"
@@ -130,3 +134,4 @@ export default function ForgetPassWord() {
         </>
     )
 }
+export default Delivery

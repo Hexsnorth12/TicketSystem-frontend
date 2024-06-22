@@ -87,3 +87,5 @@ export const FavoriteBtn: React.FC<FavoriteButton> = ({
         </div>
     )
 }
+
+export default FavoriteBtn
