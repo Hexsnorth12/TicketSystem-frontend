@@ -27,12 +27,10 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
 
     useEffect(() => {
         if (!isLoading && isSuccess) {
-            router.push(
-                `/success?state=true&callback=/user/tickets?status=unverified`,
-                {
-                    scroll: false,
-                },
-            )
+            router.push(`/user/tickets?status=unverified`, {
+                scroll: false,
+            })
+            router.refresh()
         }
     }, [isSuccess, isLoading])
     return (
