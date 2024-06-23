@@ -25,6 +25,7 @@ import SelectBox from './Select/selectBox'
 import EmptyData from './EmptyData/EmptyData'
 import DatePicker from './DatePicker'
 import ErrorModal from './ErrorModal'
+import SuccessModal from './SuccessModal'
 
 export {
     Modal,
@@ -54,4 +55,5 @@ export {
     EmptyData,
     DatePicker,
     ErrorModal,
+    SuccessModal,
 }

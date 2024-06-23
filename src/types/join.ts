@@ -23,18 +23,26 @@ export type Event = {
     content?: string
     movieTitle: string
     onClick: () => void
+    participant?: {
+        name: string
+        nickname: string
+        phone: string
+        lineId: string
+    }[]
+    // eslint-disable-next-line
+    [key: string]: any
 }
 
 type Status = 'success' | 'failed'
 
 export type Tag = { label: string; value: string }
 
-// eslint-disable-next-line
-export type EventList = [Event & { [key: string]: any }] | []
+export type EventList = Event[] | []
 
 export type JoinPageSuccess = {
     status: Status
-    data: EventList
+    events: EventList
+    totalCount: number
 }
 
 export type JoinPageError = {
@@ -47,5 +55,11 @@ export type EventDetailSuccess = {
     data: Event
 }
 
+export type JoinEventSuccess = {
+    status: Status
+    message: string
+}
+
 export type GetEventListRes = JoinPageSuccess | JoinPageError | undefined
 export type EventDetailRes = EventDetailSuccess | JoinPageError | undefined
+export type JoinEventRes = JoinEventSuccess | JoinPageError | undefined

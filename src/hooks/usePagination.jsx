@@ -6,7 +6,6 @@ export const usePagination = ({
     onChange,
 }) => {
     const totalPage = Math.ceil(total / pageSize)
-
     const items = [...Array(totalPage).keys()]
         .map((key) => key + 1)
         .map((item) => ({

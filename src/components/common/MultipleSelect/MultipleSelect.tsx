@@ -3,6 +3,7 @@ import React from 'react'
 import { Checkbox } from '@/components/common'
 
 interface Props {
+    single?: boolean
     title: string
     options: {
         label: string
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MultipleSelect: React.FC<Props> = ({
+    single = false,
     title,
     options,
     selectedValues,
@@ -20,10 +22,12 @@ const MultipleSelect: React.FC<Props> = ({
 }) => {
     const handleChange = (value: string) => {
         if (selectedValues.includes(value)) {
-            const newValues = selectedValues.filter((v) => v !== value)
+            const newValues = single
+                ? []
+                : selectedValues.filter((v) => v !== value)
             onSelectChange(newValues)
         } else {
-            const newValues = [...selectedValues, value]
+            const newValues = single ? [value] : [...selectedValues, value]
             onSelectChange(newValues)
         }
     }
