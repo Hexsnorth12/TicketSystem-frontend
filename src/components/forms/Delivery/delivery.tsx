@@ -15,6 +15,7 @@ const Delivery = () => {
     const [address, setAddress] = useState('')
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
+    const LogOut = useCartStore((state) => state.LogOut)
     cart.forEach((item) => {
         const dataSourceItem: DataSource = {
             key: item._id,
@@ -102,6 +103,7 @@ const Delivery = () => {
                 if (status === '6000') {
                     // Order was successful
                     alert('訂單成功')
+                    LogOut()
                     window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
                 } else {
                     // Order failed with specific error
