@@ -22,7 +22,7 @@ const getTickets = (
 ) =>
     build.query<TicketsData, { params: string; token: string }>({
         query: ({ params, token }) => ({
-            url: `api/v1/ticket?${params}`,
+            url: `api/v1/ticket?${params}&status=unverified`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

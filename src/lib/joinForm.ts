@@ -1,6 +1,6 @@
 import { ZodError, z } from 'zod'
 import { State } from '@/types'
-import fetchClient from '@/lib/fetchClient'
+import fetchServer from '@/lib/fetchServer'
 
 const joinFormSchema = z.object({
     name: z
@@ -27,7 +27,7 @@ export const getJoinForm = async (
 ): Promise<State> => {
     try {
         const payload = joinFormSchema.parse(Object.fromEntries(formData))
-        await fetchClient({
+        await fetchServer({
             method: 'PATCH',
             url: `api/v1/group/join/${payload.group}`,
             body: JSON.stringify({

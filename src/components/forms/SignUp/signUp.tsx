@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useSignUpMutation } from '@/services/modules/auth'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { InputComponent, Checkbox } from '../../common'
+import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 
 export default function SignUp() {
@@ -14,7 +14,6 @@ export default function SignUp() {
     const [email, setEmail] = useState('')
     const [passWord, setPassWord] = useState('')
     const [checkPassWord, setCheckPassWord] = useState('')
-    const [agree, setAgree] = useState(false)
 
     const handleUsernameChange = (value: string) => {
         setUsername(value)
@@ -30,10 +29,6 @@ export default function SignUp() {
 
     const handleCheckPasswordChange = (value: string) => {
         setCheckPassWord(value)
-    }
-
-    const handleAgreeChange = () => {
-        setAgree((prevState) => !prevState)
     }
 
     const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {

@@ -1,11 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import folder_managed from '@icon/folder_managed_primary.svg'
 import transaction_order from '@icon/transaction_order_primary.svg'
-import manage_accounts from '@icon/manage_accounts_primary.svg'
 import ticket_managed from '@icon/ticket_managed_primary.svg'
 import code_analysis from '@icon/code_analysis_solid_primary.svg'
+// import folder_managed from '@icon/folder_managed_primary.svg'
+// import manage_accounts from '@icon/manage_accounts_primary.svg'
 
 interface AdminSidebarProps {}
 

@@ -5,7 +5,7 @@ import {
     FetchBaseQueryError,
     FetchBaseQueryMeta,
 } from '@reduxjs/toolkit/query'
-import { OrderData, OrderPayload, IMeta } from './admin'
+import { OrderData, IMeta } from './admin'
 
 const getOrders = (
     build: EndpointBuilder<
@@ -20,7 +20,7 @@ const getOrders = (
         'api'
     >,
 ) =>
-    build.query<OrderData, { params: string; token: string }>({
+    build.query<OrderData[], { params: string; token: string }>({
         query: ({ params, token }) => ({
             url: `api/v1/order?${params}`,
             method: 'GET',

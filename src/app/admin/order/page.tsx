@@ -9,9 +9,7 @@ import { DATA_OPTIONS } from '@/definitions/dataTable'
 import { DatePicker } from '@mui/x-date-pickers'
 import { styled } from '@mui/material'
 import { startOfToday, parseISO, format } from 'date-fns'
-import {
-    useLazyGetOrdersQuery,
-} from '@/services/modules/admin'
+import { useLazyGetOrdersQuery } from '@/services/modules/admin'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
     .MuiInputBase-input {
@@ -35,13 +33,18 @@ const PAGE_LIMIT = 10
 
 interface Props {}
 
+interface ProcessRow {
+    id: string
+    [key: string]: string | number
+}
+
 const Page: React.FC<Props> = () => {
     const { data: session } = useSession()
 
     const [startDate, setStartDate] = useState<Date | null>(startOfToday())
     const [endDate, setEndDate] = useState<Date | null>(startOfToday())
     const [status, setStatus] = useState<string>('')
-    const [processRows, setProcessRows] = useState<any[]>([])
+    const [processRows, setProcessRows] = useState<ProcessRow[]>([])
 
     const [getOrders] = useLazyGetOrdersQuery()
 
@@ -56,7 +59,7 @@ const Page: React.FC<Props> = () => {
                 token: session?.accessToken as string,
             }).unwrap()
             const processRows =
-                data?.orders.map((order: any) => {
+                data.map((order) => {
                     return {
                         id: order._id,
                         thirdPartyPaymentId: order.thirdPartyPaymentId,
@@ -67,10 +70,7 @@ const Page: React.FC<Props> = () => {
                             parseISO(order.createdAt),
                             'yyyy-MM-dd',
                         ),
-                        updatedAt: format(
-                            parseISO(order.updatedAt),
-                            'yyyy-MM-dd',
-                        ),
+                        updatedAt: format(parseISO(order.paidAt), 'yyyy-MM-dd'),
                     }
                 }) ?? []
             setProcessRows(processRows)
@@ -87,17 +87,17 @@ const Page: React.FC<Props> = () => {
             params.append('status', status)
         }
         if (startDate) {
-            params.append('start', startDate.toString())
+            params.append('createdAtFrom', format(startDate, 'yyyy-MM-dd'))
         }
         if (endDate) {
-            params.append('end', endDate.toString())
+            params.append('createdAtTo', format(endDate, 'yyyy-MM-dd'))
         }
         const data = await getOrders({
             params: params.toString(),
             token: session?.accessToken as string,
         }).unwrap()
         const processRows =
-            data?.orders.map((order: any) => {
+            data.map((order) => {
                 return {
                     id: order._id,
                     thirdPartyPaymentId: order.thirdPartyPaymentId,
@@ -105,7 +105,7 @@ const Page: React.FC<Props> = () => {
                     paymentMethod: order.paymentMethod,
                     price: order.price,
                     createdAt: format(parseISO(order.createdAt), 'yyyy-MM-dd'),
-                    updatedAt: format(parseISO(order.updatedAt), 'yyyy-MM-dd'),
+                    updatedAt: format(parseISO(order.paidAt), 'yyyy-MM-dd'),
                 }
             }) ?? []
         setProcessRows(processRows)
@@ -125,16 +125,16 @@ const Page: React.FC<Props> = () => {
                     </div>
                     <div className="mx-3">
                         <CustomizeDatePickerInput
-                            label="訂單成立時間 - 迄"
-                            value={endDate}
-                            onChange={(date) => setEndDate(date)}
+                            label="訂單成立時間 - 起"
+                            value={startDate}
+                            onChange={(date) => setStartDate(date)}
                         />
                     </div>
                     <div className="mx-3">
                         <CustomizeDatePickerInput
-                            label="訂單成立時間 - 起"
-                            value={startDate}
-                            onChange={(date) => setStartDate(date)}
+                            label="訂單成立時間 - 迄"
+                            value={endDate}
+                            onChange={(date) => setEndDate(date)}
                         />
                     </div>
                 </div>

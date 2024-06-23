@@ -1,5 +1,4 @@
 import { HeadCell } from '@/types/table'
-import exp from 'constants'
 
 export const OrderHeadCell: HeadCell[] = [
     {
@@ -48,13 +47,13 @@ export const OrderHeadCell: HeadCell[] = [
 
 export const CheckHeadCell: HeadCell[] = [
     {
-        id: 'id',
+        id: 'orderId',
         numeric: false,
         disablePadding: true,
         label: '訂單編號',
     },
     {
-        id: 'ticketId',
+        id: 'id',
         numeric: false,
         disablePadding: true,
         label: '票券編號',
