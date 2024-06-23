@@ -24,7 +24,6 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
     const productDetail1: CartItem = {
         ...productInfo,
     }
-    console.log(productDetail1, 'productDetail1')
 
     return (
         <div
@@ -48,10 +47,11 @@ const CartModalItem: React.FC<Props> = ({ productInfo, className }) => {
             </div>
             <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                 <p className="text-white">{productName}</p>
-                <p className="text-gray-5">{productInfo.quantity}</p>
+                <p className="text-gray-5">{productInfo.quantity} 組</p>
                 <p className="text-primary">
                     NT$
                     {(productInfo.price as number) *
+                        productInfo.selectedPlan.headCount *
                         productInfo.selectedPlan.discount}
                 </p>
                 <p className="text-small2 text-gray-5">

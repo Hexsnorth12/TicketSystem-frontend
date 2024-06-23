@@ -1,10 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
-import fetchClient from '@/lib/fetchClient'
 
 const CheckoutPage = () => {
     const columns: Column[] = [
@@ -24,65 +23,10 @@ const CheckoutPage = () => {
             key: 'price',
         },
     ]
-    const [orderData] = useState({
-        items: [
-            {
-                productId: '66658079d23d0fe8146bcc2a',
-                plan: {
-                    name: '三人同行',
-                    discount: 0.5,
-                    headCount: 10,
-                },
-                amount: 1,
-            },
-        ],
-        price: 5500,
-        paymentMethod: 'linePay',
-        deliveryInfo: {
-            name: 'Roger',
-            phone: '0912345678',
-            address: 'aaaa',
-            email: 'roger@gmail.com',
-        },
-    })
-    const handleOrderSubmit = async () => {
-        try {
-            const response = await fetchClient({
-                method: 'POST',
-                url: 'api/v1/order',
-                body: JSON.stringify(orderData),
-            })
-
-            if (response.status == 6000) {
-                const responseData = await response
-                const { status, message, data } = responseData
-                console.log(responseData, 'responseresponse')
-                if (status === '6000') {
-                    // Order was successful
-                    alert('Order successful! Redirecting to payment page...')
-                    window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
-                } else {
-                    // Order failed with specific error
-                    alert(`Order failed: ${message}`)
-                    // Redirect to error page or handle as needed
-                }
-            } else {
-                // Handle HTTP error responses
-                alert('Failed to submit order')
-                // Redirect to error page or handle as needed
-            }
-        } catch (error) {
-            console.error('Error submitting order:', error)
-            alert('Failed to submit order')
-            // Redirect to error page or handle as needed
-        }
-    }
 
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
     cart.forEach((item) => {
-        console.log(item, 'itemitem')
-
         const dataSourceItem: DataSource = {
             key: item._id,
             name: {
@@ -91,7 +35,10 @@ const CheckoutPage = () => {
                 subtitle: item.selectedPlan.name,
             },
             number: item.quantity,
-            price: (item.price as number) * item.selectedPlan.discount,
+            price:
+                (item.price as number) *
+                item.selectedPlan.discount *
+                item.selectedPlan.headCount,
         }
 
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
@@ -99,16 +46,24 @@ const CheckoutPage = () => {
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
-        if (selectedPlan && selectedPlan.discount) {
-            return acc + price * selectedPlan.discount * product.quantity
+        if (selectedPlan && selectedPlan.discount && selectedPlan.headCount) {
+            return (
+                acc +
+                price *
+                    selectedPlan.discount *
+                    selectedPlan.headCount *
+                    product.quantity
+            )
         }
         // 如果没有折扣信息，按原价计算
         return acc + price * product.quantity
     }, 0)
     const originalTotal = cart.reduce((acc, product) => {
         const price = product.price ?? 0
-        return acc + price * product.quantity
+        const headCount = product.selectedPlan.headCount
+        return acc + price * headCount * product.quantity
     }, 0)
+    console.log(columns, 'columns')
 
     const discount = originalTotal - total
     return (
@@ -144,7 +99,7 @@ const CheckoutPage = () => {
                             </ul>
                         </div>
                         <div className="mt-3 w-full  rounded-lg  p-4  text-white ">
-                            <Delivery handleOrderSubmit={handleOrderSubmit} />
+                            <Delivery />
                         </div>
                     </div>
                 </div>
