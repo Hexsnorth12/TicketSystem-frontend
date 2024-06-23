@@ -1,10 +1,40 @@
 'use client'
-import React from 'react'
+
+import React, { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { InputComponent, Button } from '@/components/common'
+import { useClaimTicketMutation } from '@/services/modules/user'
 
 interface TicketCodeFormProps {}
 
 const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
+    const [ticketCode, setTicketCode] = useState('')
+    const [claimTicket, { isSuccess, isLoading }] = useClaimTicketMutation()
+    const { data: session } = useSession()
+    const router = useRouter()
+
+    const handleClaimTicket = async () => {
+        try {
+            await claimTicket({
+                payload: { shareCode: ticketCode },
+                token: session?.accessToken ?? '',
+            }).unwrap()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        if (!isLoading && isSuccess) {
+            router.push(
+                `/success?state=true&callback=/user/tickets?status=unverified`,
+                {
+                    scroll: false,
+                },
+            )
+        }
+    }, [isSuccess, isLoading])
     return (
         <section>
             <h3 className="mb-6 text-center text-header5 text-white md:text-header4">
@@ -14,8 +44,8 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
                 <InputComponent
                     label="輸入驗證碼"
                     type="text"
-                    value={''}
-                    onChange={() => {}}
+                    value={ticketCode}
+                    onChange={(value) => setTicketCode(value)}
                     placeholder="請輸入驗證碼"
                 />
                 <div className="flex justify-center">
@@ -23,7 +53,7 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
                         className="mt-10"
                         type={'button'}
                         title={'confirm'}
-                        onClick={() => {}}>
+                        onClick={handleClaimTicket}>
                         <span>確認</span>
                     </Button>
                 </div>

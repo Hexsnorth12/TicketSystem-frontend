@@ -28,29 +28,34 @@ const Page: React.FC<pageProps> = () => {
     return (
         <>
             <ModalContent tittle="取得分票碼" hasCancel>
-                {isLoading ? (
-                    <p className="text-body text-white">載入中...</p>
-                ) : (
-                    <div className="mx-auto flex max-w-[500px] justify-center p-4">
-                        <div className="rounded-l-lg border border-r-0 border-gray-3 bg-gray-1 px-3 py-2">
-                            <p className="text-small1 text-white">
-                                {data?.shareCode}
-                            </p>
+                <div className="px-10">
+                    {isLoading ? (
+                        <p className="text-body text-white">載入中...</p>
+                    ) : (
+                        <div className="mx-auto flex max-w-[500px] justify-center p-4">
+                            <div className="rounded-l-lg border border-r-0 border-gray-3 bg-gray-1 px-3 py-2">
+                                <p className="text-small1 text-white">
+                                    {data?.shareCode}
+                                </p>
+                            </div>
+                            <div
+                                className="items-center rounded-r-lg border border-gray-3 bg-gray-1 px-3 py-2 text-primary hover:bg-primary hover:text-gray-1"
+                                onClick={() =>
+                                    copyToClipboard(data!.shareCode)
+                                }>
+                                <span
+                                    className={clsx(
+                                        'text-small2 md:text-small1',
+                                        {
+                                            'text-gray-5': isClipboard,
+                                        },
+                                    )}>
+                                    複製
+                                </span>
+                            </div>
                         </div>
-                        <div
-                            className="items-center rounded-r-lg border border-gray-3 bg-gray-1 px-3 py-2 text-primary hover:bg-primary hover:text-gray-1"
-                            onClick={() =>
-                                copyToClipboard(data!.shareCode)
-                            }>
-                            <span
-                                className={clsx('text-small2 md:text-small1', {
-                                    'text-primary': isClipboard,
-                                })}>
-                                複製
-                            </span>
-                        </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </ModalContent>
         </>
     )
