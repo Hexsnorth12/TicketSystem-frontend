@@ -163,7 +163,7 @@ export const createJoinEvent = async (eventInfo: {
             url,
             body: JSON.stringify(eventInfo),
         })
-        const { status, data } = result
+        const { status } = result
 
         if (status === '6000') {
             return {
