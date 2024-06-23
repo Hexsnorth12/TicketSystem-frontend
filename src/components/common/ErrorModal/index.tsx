@@ -11,11 +11,11 @@ type Props = {
 const ErrorModal: React.FC<Props> = ({ onClose, errorMsg }) => {
     return (
         <Modal onClose={() => {}}>
-            <div className="flex flex-col gap-5 px-6">
+            <div className="flex w-[300px] flex-col gap-5 px-6">
                 <p className="text-center text-2xl font-bold text-white">
                     錯誤
                 </p>
-                <p className="text-white">{errorMsg}</p>
+                <p className="text-center text-white">{errorMsg}</p>
                 <Button
                     type="button"
                     title="error-modal-button"

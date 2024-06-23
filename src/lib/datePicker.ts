@@ -1,4 +1,5 @@
 const today = new Date()
+const later = new Date(today.getTime() + 86400000)
 
 export const DEFAULTSTARTTIME = new Date(
     today.getFullYear(),
@@ -7,6 +8,7 @@ export const DEFAULTSTARTTIME = new Date(
 )
 export const datePickerStaticData = {
     DEFAULTDATE: today,
+    DEFAULTENDDATE: later,
     DEFAULTSTARTTIME: new Date(
         today.getFullYear(),
         today.getMonth(),

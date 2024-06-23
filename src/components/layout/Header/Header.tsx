@@ -203,7 +203,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </li>
                             <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                                 <Link
-                                    href="/user/mygroups"
+                                    href="/user/join"
                                     scroll={false}
                                     className="cursor-pointer"
                                     onClick={handleClick}>

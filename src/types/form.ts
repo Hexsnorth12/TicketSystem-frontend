@@ -11,4 +11,10 @@ export type State =
               message: string
           }>
       }
+    | {
+          // 成功回傳api但申請失敗
+          status: '6516'
+          message: string
+          data: object
+      }
     | null

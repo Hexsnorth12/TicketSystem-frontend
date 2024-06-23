@@ -49,7 +49,7 @@ const InputRegister = <T extends FieldValues>({
             </label>
             <div className="mt-2 md:mt-2.5">
                 <input
-                    {...(register(registerKey), { defaultValue })}
+                    {...register(registerKey)}
                     type={type}
                     className={clsx(
                         'ring-black-300/10 block min-h-[49px] w-full rounded-md  bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm outline outline-1 outline-gray-3 ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body',
@@ -59,6 +59,7 @@ const InputRegister = <T extends FieldValues>({
                         },
                     )}
                     placeholder={placeholder}
+                    defaultValue={defaultValue}
                     name={registerKey}
                 />
                 <ErrorMessage

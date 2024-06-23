@@ -5,6 +5,7 @@ import { UseFormRegister, FieldValues, Path } from 'react-hook-form'
 interface TextAreaProps<T extends FieldValues>
     extends TextareaHTMLAttributes<HTMLInputElement> {
     label: string
+    defaultValue?: string
     registerKey: Path<T>
     placeholder?: string
     required?: boolean
@@ -17,9 +18,10 @@ const TextArea: React.FC<TextAreaProps<FieldValues>> = ({
     placeholder = '',
     required = false,
     register,
+    defaultValue = '',
 }) => {
     return (
-        <div className="flex w-full flex-col gap-2 md:flex-row md:gap-4">
+        <div className="flex w-full flex-col gap-2 md:gap-4">
             <label
                 htmlFor={registerKey}
                 className="align-start text-small2 text-gray-5 md:text-small1">
@@ -33,6 +35,7 @@ const TextArea: React.FC<TextAreaProps<FieldValues>> = ({
                     id={registerKey}
                     className="h-full w-full resize-none bg-transparent pr-3 text-small2 text-white outline-none placeholder:text-gray-4 md:pr-4 md:text-body"
                     placeholder={placeholder}
+                    defaultValue={defaultValue}
                 />
             </div>
         </div>
