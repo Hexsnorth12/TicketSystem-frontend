@@ -38,7 +38,7 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
     return (
         <section>
             <h3 className="mb-6 text-center text-header5 text-white md:text-header4">
-                取得票卷
+                取得票券
             </h3>
             <form action="">
                 <InputComponent
