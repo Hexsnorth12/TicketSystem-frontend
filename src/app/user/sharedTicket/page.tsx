@@ -18,7 +18,7 @@ const Page: React.FC<pageProps> = async () => {
     ))
     const tabs = [
         {
-            label: '電影介紹',
+            label: '可分票',
             Component: (
                 <div
                     className={clsx(
@@ -34,7 +34,7 @@ const Page: React.FC<pageProps> = async () => {
             ),
         },
         {
-            label: '評價',
+            label: '取得分票碼',
             Component: <TicketCodeForm />,
         },
     ]

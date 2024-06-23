@@ -2,10 +2,10 @@
 
 import React from 'react'
 import Image from 'next/image'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { format, parseISO, formatDistanceToNow } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
-import { Tag } from '@/components/common'
+import { Tag, Button } from '@/components/common'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { ShareOrder } from '@/types/product'
 
@@ -14,7 +14,8 @@ interface pageProps {
 }
 
 const Page: React.FC<pageProps> = ({ order }) => {
-    //const router = useRouter()
+    const router = useRouter()
+    console.log('order', order)
     return (
         <div className="flex-wrap rounded-lg bg-gray-3 p-4 md:flex md:items-end md:justify-between md:gap-4 md:px-10 md:py-8">
             <div>
@@ -82,13 +83,13 @@ const Page: React.FC<pageProps> = ({ order }) => {
                     }}
                     className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
                     <span className="font-medium tracking-wider">上架分票</span>
-                </Button>
+                </Button> */}
                 <Button
                     type={'button'}
                     title={'取得分票碼'}
                     onClick={() =>
                         router.push(
-                            `/createCode/?orderId=${order.orderId}productId=${order.productId}`,
+                            `/createCode/?orderId=${order.orderId}&productId=${order.productId}`,
                             {
                                 scroll: false,
                             },
@@ -98,7 +99,7 @@ const Page: React.FC<pageProps> = ({ order }) => {
                     <span className="font-medium tracking-wider">
                         取得分票碼
                     </span>
-                </Button> */}
+                </Button>
             </div>
         </div>
     )

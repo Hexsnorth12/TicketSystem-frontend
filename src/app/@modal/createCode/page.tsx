@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import clsx from 'clsx'
 import { ModalContent } from '@/components/common'
 import { useGetTransferCodeQuery } from '@/services/modules/product'
 import { useSession } from 'next-auth/react'
@@ -17,6 +18,12 @@ const Page: React.FC<pageProps> = () => {
         payload: { orderId, productId },
         token: session?.accessToken ?? '',
     })
+    const [isClipboard, setIsClipboard] = useState(false)
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text)
+        setIsClipboard(true)
+    }
 
     return (
         <>
@@ -30,8 +37,15 @@ const Page: React.FC<pageProps> = () => {
                                 {data?.shareCode}
                             </p>
                         </div>
-                        <div className="items-center rounded-r-lg border border-gray-3 bg-gray-1 px-3 py-2 text-primary hover:bg-primary hover:text-gray-1">
-                            <span className="text-small2 md:text-small1">
+                        <div
+                            className="items-center rounded-r-lg border border-gray-3 bg-gray-1 px-3 py-2 text-primary hover:bg-primary hover:text-gray-1"
+                            onClick={() =>
+                                copyToClipboard(data!.shareCode)
+                            }>
+                            <span
+                                className={clsx('text-small2 md:text-small1', {
+                                    'text-primary': isClipboard,
+                                })}>
                                 複製
                             </span>
                         </div>
