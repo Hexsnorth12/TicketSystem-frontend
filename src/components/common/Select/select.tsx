@@ -3,10 +3,7 @@
 import React from 'react'
 import * as Select from '@radix-ui/react-select'
 import clsx from 'clsx'
-import {
-    ChevronDownIcon,
-    ChevronUpIcon,
-} from '@radix-ui/react-icons'
+import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
 interface SelectProps {
     placeholder?: string
     label: string
