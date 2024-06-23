@@ -6,10 +6,11 @@ import { Button } from '@/components/common'
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
 import { DataSource } from '@/types/cart'
+import { createNewebPayOrder } from '@/utils/paymentUtils'
 const Delivery = () => {
     const [username, setUsername] = useState('')
     const [deliveryEmail, setDeliveryEmail] = useState('')
-    const [payMethod, setPayMethod] = useState('線上付款')
+    const [payMethod, setPayMethod] = useState<string>('')
     const [phone, setPhone] = useState('')
     const [delivery, setDelivery] = useState('線上取票')
     const [address, setAddress] = useState('')
@@ -40,9 +41,10 @@ const Delivery = () => {
     const handleDeliveryEmailChange = (value: string) => {
         setDeliveryEmail(value)
     }
-    const handlePayMethodChange = (value: string) => {
-        console.log(payMethod)
-        setPayMethod(value)
+    const handlePayMethodChange = (selectedOption: string) => {
+        const value = paymentMethodMap[selectedOption]
+        console.log(value) // Log the selected payment method value
+        setPayMethod(value) // Update state with selected payment method value
     }
     const handlePhoneChange = (value: string) => {
         setPhone(value)
@@ -54,9 +56,12 @@ const Delivery = () => {
         setAddress(value)
     }
 
-    const option = ['LINPAY', '貨到付款']
+    const option = ['LINPAY', '藍新金流']
     //
-
+    const paymentMethodMap: { [key: string]: string } = {
+        LINPAY: 'linePay',
+        藍新金流: 'newebPay',
+    }
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
@@ -79,7 +84,7 @@ const Delivery = () => {
             amount: item.number,
         })),
         price: total, // 使用第一个 dataSourceItem 的 price
-        paymentMethod: 'linePay',
+        paymentMethod: payMethod,
         deliveryInfo: {
             name: username,
             phone: phone,
@@ -101,10 +106,31 @@ const Delivery = () => {
                 const { status, message, data } = responseData
                 console.log(responseData, 'responseresponse')
                 if (status === '6000') {
-                    // Order was successful
-                    alert('訂單成功')
-                    LogOut()
-                    window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
+                    if (orderData.paymentMethod === 'linePay' && data.linePay) {
+                        // Order was successful with Line Pay
+                        alert('訂單成功')
+                        LogOut()
+                        window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
+                    } else if (
+                        orderData.paymentMethod === 'newebPay' &&
+                        data.newebPay
+                    ) {
+                        // alert(JSON.stringify(data.newebPay))
+                        LogOut()
+
+                        // Generate and submit the NewebPay form
+                        const newebPayFormHtml = createNewebPayOrder(
+                            data.newebPay.paymentGateway,
+                            data.newebPay.merchantId,
+                            data.newebPay.tradeInfo,
+                            data.newebPay.tradeSha,
+                            data.newebPay.version, // Assuming version is provided
+                        )
+                        document.write(newebPayFormHtml)
+                    } else {
+                        // Invalid payment method or missing data
+                        alert('訂單失敗')
+                    }
                 } else {
                     // Order failed with specific error
                     alert(`'訂單失敗: ${message}`)
