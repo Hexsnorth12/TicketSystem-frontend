@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
 import { CartModal } from '@/components/Cart/CartModal'
 import Cartbtn from '../../Buttons/CartBtn'
-import avatar from '@images/avatar.jpg'
+import avatar from '@icon/avatar.svg'
 import { signOut, useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/useCartStore'
 import { useLazyGetInfoQuery } from '@/services/modules/user'
@@ -201,10 +201,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                     線上分票
                                 </Link>
                             </li>
-                            <li
-                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
-                                onClick={handleClick}>
-                                <Link href="/user/join" scroll={false}>
+                            <li className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                                <Link
+                                    href="/user/join"
+                                    scroll={false}
+                                    className="cursor-pointer"
+                                    onClick={handleClick}>
                                     我的揪團
                                 </Link>
                             </li>
@@ -213,20 +215,20 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     <Link
                         onClick={handleClick}
                         href="/movies"
-                        className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
+                        className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         電影總表
                     </Link>
                     <Link
                         onClick={handleClick}
                         href="/gatherings"
-                        className="block px-4 py-2 text-white  hover:border-b-2 hover:border-b-primary hover:text-primary">
+                        className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         一起揪團
                     </Link>
                     {!isAuth && (
                         <Link
                             onClick={handleClick}
                             href="/login"
-                            className="block px-4 py-2 text-white"
+                            className="block cursor-pointer rounded-full border border-primary px-4 py-2 text-white hover:bg-primary hover:text-white "
                             scroll={false}>
                             會員登入
                         </Link>
@@ -234,7 +236,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     {isAuth && (
                         <Link
                             href="/login"
-                            className="cursor-pointer border-b-2 border-gray-4 py-3 text-white"
+                            className="cursor-pointer rounded-full border border-primary py-3 text-white hover:bg-primary hover:text-white"
                             onClick={onLogout}>
                             會員登出
                         </Link>
