@@ -2,10 +2,12 @@
 import React from 'react'
 import { ModalContent } from '@/components/common'
 import { QRCodeSVG } from 'qrcode.react'
+import { useParams } from 'next/navigation'
 
 interface Props {}
 
 const Page: React.FC<Props> = () => {
+    const params = useParams()
     return (
         <ModalContent tittle="比悲傷更悲傷的故事" hasCancel>
             <div className="container w-[300px] p-4 pt-0 md:w-[500px]">
@@ -37,9 +39,7 @@ const Page: React.FC<Props> = () => {
                     </p>
                     <div className="flex justify-center">
                         <QRCodeSVG
-                            value={
-                                'https://picturesofpeoplescanningqrcodes.tumblr.com/'
-                            }
+                            value={`${process.env.NEXTAUTH_URL}/admin/writeoff/${params.ticketId}`}
                             size={200}
                             bgColor={'#ffffff'}
                             fgColor={'#000000'}

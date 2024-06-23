@@ -123,7 +123,7 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                 <div className="mt-6 flex md:m-0">
                     <Button
                         type={'button'}
-                        title={'退票'}
+                        title={'換票'}
                         onClick={() => {
                             router.push(`/voucher/${ticket._id}`)
                         }}

@@ -13,12 +13,13 @@ const Page: React.FC<pageProps> = async () => {
         method: 'GET',
         url: `api/v1/user/share-tickets`,
     })
-    const renderShareTickets = data.map((order) => (
+    const renderShareTickets = data?.map((order) => (
         <ShareTicket key={order.orderId} order={order} />
     ))
+
     const tabs = [
         {
-            label: '電影介紹',
+            label: '可分票',
             Component: (
                 <div
                     className={clsx(
@@ -34,7 +35,7 @@ const Page: React.FC<pageProps> = async () => {
             ),
         },
         {
-            label: '評價',
+            label: '取得分票碼',
             Component: <TicketCodeForm />,
         },
     ]

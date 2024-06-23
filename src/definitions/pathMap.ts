@@ -43,7 +43,7 @@ export const pathMap: Map = {
 
 export const memberPath = [
     ['info', '會員資料'],
-    ['tickets', '我的電影票'],
+    ['/user/tickets?status=unverified', '我的電影票'],
     ['favorites', '我的收藏'],
     ['comments', '我的評論'],
     ['join', '我的揪團'],
