@@ -15,7 +15,7 @@ interface pageProps {
 
 const Page: React.FC<pageProps> = ({ order }) => {
     const router = useRouter()
-    console.log('order', order)
+
     return (
         <div className="flex-wrap rounded-lg bg-gray-3 p-4 md:flex md:items-end md:justify-between md:gap-4 md:px-10 md:py-8">
             <div>

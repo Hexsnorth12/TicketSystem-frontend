@@ -13,9 +13,10 @@ const Page: React.FC<pageProps> = async () => {
         method: 'GET',
         url: `api/v1/user/share-tickets`,
     })
-    const renderShareTickets = data.map((order) => (
+    const renderShareTickets = data?.map((order) => (
         <ShareTicket key={order.orderId} order={order} />
     ))
+
     const tabs = [
         {
             label: '可分票',
