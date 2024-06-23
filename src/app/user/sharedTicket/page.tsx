@@ -35,7 +35,7 @@ const Page: React.FC<pageProps> = async () => {
             ),
         },
         {
-            label: '取得分票碼',
+            label: '取得票券',
             Component: <TicketCodeForm />,
         },
     ]
