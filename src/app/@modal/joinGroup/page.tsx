@@ -83,7 +83,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
             })
         }
         if (status === 'success') {
-            router.push('success?state=true&callback=user/sharedTicket')
+            router.push('success?state=true&callback=user/join?status=joined')
         }
         if (status === '6516') {
             setEventError(state?.message)
@@ -116,7 +116,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
             <div className="min-w-[279px] px-5 md:px-12 md:py-9">
                 <div className="mb-6 flex flex-col gap-4 md:flex-row">
-                    <div className="max-h-[173px]">
+                    <div className="max-h-[173px] overflow-hidden">
                         <Image
                             loader={() => eventDetail.placeholderImg as string}
                             src={eventDetail.placeholderImg as string}
