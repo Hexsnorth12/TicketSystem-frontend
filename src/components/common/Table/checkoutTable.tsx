@@ -54,7 +54,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                         alt={name.title}
                         width={100}
                         height={100}
-                        className="rounded-lg"
+                        className="h-[100px] w-[100px] rounded-lg object-cover"
                     />
                 </div>
                 <div className="col-span-1 flex justify-start truncate text-body md:text-xl">

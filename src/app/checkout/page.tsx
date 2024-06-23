@@ -56,7 +56,7 @@ const CheckoutPage = () => {
             if (response.status == 6000) {
                 const responseData = await response
                 const { status, message, data } = responseData
-                console.log(responseData, 'responseresponse')
+
                 if (status === '6000') {
                     // Order was successful
                     alert('Order successful! Redirecting to payment page...')
