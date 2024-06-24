@@ -1,8 +1,39 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['u.fmyeah.com','thumb.ac-illust.com','images.unsplash.com','storage.googleapis.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'u.fmyeah.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'thumb.ac-illust.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'storage.googleapis.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'firebasestorage.googleapis.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
     },
-  };
+}
 
-export default nextConfig;
+export default nextConfig
