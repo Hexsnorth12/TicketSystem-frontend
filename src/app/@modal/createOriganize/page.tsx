@@ -112,10 +112,12 @@ const Page: React.FC<pageProps> = () => {
                 setSuccess(success?.message)
                 setTimeout(() => {
                     closeSuccessModal()
-                    router.push('/join', {
-                        scroll: true,
-                    })
+                    router.back()
                 }, 1500)
+                setTimeout(() => {
+                    router.push('/join', { scroll: true })
+                    window.location.reload()
+                }, 1800)
             } else {
                 const error = result as JoinPageError
                 setError(error?.error)

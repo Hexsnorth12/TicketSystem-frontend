@@ -48,7 +48,6 @@ const JoinPage = () => {
     const [title, setTitle] = useState<string>('')
 
     useEffect(() => {
-        // TODO: 做loading spinner
         setIsLoading(true)
         getAllEvents()
     }, [])
@@ -304,6 +303,13 @@ const JoinPage = () => {
                     'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
                     addMoreSpace && 'pb-[300px]',
                 )}>
+                {isLoading && (
+                    <div className="flex h-full w-full flex-col items-center justify-center">
+                        <div className="flex items-center justify-center">
+                            <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
+                        </div>
+                    </div>
+                )}
                 {!isLoading &&
                     eventList.length > 0 &&
                     eventList.map((item, index) => {
