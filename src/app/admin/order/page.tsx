@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { styled } from '@mui/material'
 import { startOfToday, parseISO, format } from 'date-fns'
 import { useLazyGetOrdersQuery } from '@/services/modules/admin'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
     .MuiInputBase-input {
@@ -46,7 +47,7 @@ const Page: React.FC<Props> = () => {
     const [status, setStatus] = useState<string>('')
     const [processRows, setProcessRows] = useState<ProcessRow[]>([])
 
-    const [getOrders] = useLazyGetOrdersQuery()
+    const [getOrders, { isLoading }] = useLazyGetOrdersQuery()
 
     useEffect(() => {
         const getDate = async () => {
@@ -58,6 +59,7 @@ const Page: React.FC<Props> = () => {
                 params: params.toString(),
                 token: session?.accessToken as string,
             }).unwrap()
+
             const processRows =
                 data?.orders.map((order) => {
                     return {
@@ -112,7 +114,13 @@ const Page: React.FC<Props> = () => {
     }
 
     return (
-        <section>
+        <section className="relative">
+            {isLoading && (
+                <div className="absolute top-0">
+                    <LoadingSkeleton />
+                </div>
+            )}
+
             <DataShell title={'訂單列表'}>
                 <div className="mb-6 flex flex-col items-center justify-center gap-6 md:flex-row md:justify-start md:gap-0">
                     <div className="w-full md:w-auto md:min-w-[20%]">

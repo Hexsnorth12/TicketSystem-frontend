@@ -9,6 +9,7 @@ import {
     useLazyGetTicketsQuery,
     useVerifyTicketMutation,
 } from '@/services/modules/admin'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
 const PAGE_LIMIT = 10
 
@@ -26,7 +27,8 @@ const Page: React.FC<Props> = () => {
     const searchParams = useSearchParams()
     const ids = searchParams.get('ids') ?? ''
 
-    const [getTickets, { data: ticketList }] = useLazyGetTicketsQuery()
+    const [getTickets, { data: ticketList, isLoading: isGetTicketing }] =
+        useLazyGetTicketsQuery()
     const [verifyTicket, { isSuccess, isLoading }] = useVerifyTicketMutation()
 
     useEffect(() => {
@@ -80,7 +82,12 @@ const Page: React.FC<Props> = () => {
     }
 
     return (
-        <section>
+        <section className='relative'>
+            {(isLoading || isGetTicketing) && (
+                <div className="absolute top-0">
+                    <LoadingSkeleton />
+                </div>
+            )}
             <DataShell title={'票卷核銷'}>
                 <div className="mb-6 flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0">
                     <input

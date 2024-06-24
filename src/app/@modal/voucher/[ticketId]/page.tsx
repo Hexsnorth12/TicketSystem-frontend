@@ -10,14 +10,14 @@ interface Props {}
 const Page: React.FC<Props> = () => {
     const params = useParams()
     return (
-        <ModalContent tittle="比悲傷更悲傷的故事" hasCancel>
+        <ModalContent tittle="" hasCancel>
             <div className="container w-[300px] p-4 pt-0 md:w-[500px]">
                 <div className="mb-6 text-center">
                     <p className="mb-2.5 text-small2 text-gray-5 md:mb-2 md:text-small1">
                         票種
                     </p>
                     <p className="text-small2 text-white md:text-small1">
-                        IMAX 全票
+                        一般票
                     </p>
                 </div>
                 <div className="mb-6 text-center">

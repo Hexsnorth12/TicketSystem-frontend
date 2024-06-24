@@ -2,8 +2,8 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import transaction_order from '@icon/transaction_order_primary.svg'
-import ticket_managed from '@icon/ticket_managed_primary.svg'
 import code_analysis from '@icon/code_analysis_solid_primary.svg'
+// import ticket_managed from '@icon/ticket_managed_primary.svg'
 // import folder_managed from '@icon/folder_managed_primary.svg'
 // import manage_accounts from '@icon/manage_accounts_primary.svg'
 
@@ -58,7 +58,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = () => {
                     </p>
                 </Link>
             </li> */}
-            <li className=" bg-gray-1">
+            {/* <li className=" bg-gray-1">
                 <Link
                     href={''}
                     className="flex items-center border-b border-gray-3 p-4">
@@ -73,7 +73,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = () => {
                         票卷管理
                     </p>
                 </Link>
-            </li>
+            </li> */}
             <li className="rounded-b-lg bg-gray-1">
                 <Link
                     href={'/admin/writeoff'}
