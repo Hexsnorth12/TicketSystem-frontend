@@ -3,11 +3,7 @@
 import React from 'react'
 import * as Select from '@radix-ui/react-select'
 import clsx from 'clsx'
-import {
-    CheckIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-} from '@radix-ui/react-icons'
+import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
 interface SelectProps {
     placeholder?: string
     label: string
@@ -42,18 +38,21 @@ const SelectInput: React.FC<SelectProps> = ({
                 disabled={options.length === 0}
                 asChild={false}>
                 <Select.Value placeholder={placeholder} />
-                <Select.Icon className="text-violet11">
+                <Select.Icon>
                     <ChevronDownIcon />
                 </Select.Icon>
             </Select.Trigger>
             <Select.Portal>
-                <Select.Content className="z-50 w-full overflow-hidden rounded-md bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
-                    <Select.ScrollUpButton className="text-violet11 flex h-[25px] cursor-default items-center justify-center bg-white">
+                <Select.Content
+                    className="z-50 mt-1 overflow-hidden rounded-md bg-gray-1 text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
+                    side="bottom"
+                    position="popper">
+                    <Select.ScrollUpButton className="h-[25px] cursor-default items-center justify-center bg-gray-3 text-white placeholder:flex">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
                     <Select.Viewport className="rounded-lg border border-gray-3">
                         <Select.Group>
-                            <Select.Label className="flex justify-start text-body">
+                            <Select.Label className="flex items-center justify-start px-4 py-3 text-body">
                                 {label}
                             </Select.Label>
                             {options.map((option, index) => (
@@ -67,7 +66,7 @@ const SelectInput: React.FC<SelectProps> = ({
                             ))}
                         </Select.Group>
                     </Select.Viewport>
-                    <Select.ScrollDownButton className="text-violet11 flex  h-[25px] cursor-default items-center justify-center bg-white">
+                    <Select.ScrollDownButton className="flex h-[25px]  cursor-default items-center justify-center bg-gray-3 text-white">
                         <ChevronDownIcon />
                     </Select.ScrollDownButton>
                 </Select.Content>
@@ -89,17 +88,11 @@ const SelectItem: React.FC<SelectItemProps> = ({
     ...props
 }) => {
     return (
-        <Select.Item
-            value={value}
-            className={
-                'text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none'
-            }
-            onClick={onClick}
-            {...props}>
+        <Select.Item value={value} onClick={onClick} {...props}>
             <Select.ItemText>{children}</Select.ItemText>
-            <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
+            {/* <Select.ItemIndicator className="absolute left-0 inline-flex w-[25px] items-center justify-center">
                 <CheckIcon />
-            </Select.ItemIndicator>
+            </Select.ItemIndicator> */}
         </Select.Item>
     )
 }

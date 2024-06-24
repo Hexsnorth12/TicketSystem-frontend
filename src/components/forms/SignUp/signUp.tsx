@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useSignUpMutation } from '@/services/modules/auth'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { InputComponent, Checkbox } from '../../common'
+import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 
 export default function SignUp() {
@@ -14,7 +14,7 @@ export default function SignUp() {
     const [email, setEmail] = useState('')
     const [passWord, setPassWord] = useState('')
     const [checkPassWord, setCheckPassWord] = useState('')
-    const [agree, setAgree] = useState(false)
+    const [errorMsg, setErrorMessage] = useState('')
 
     const handleUsernameChange = (value: string) => {
         setUsername(value)
@@ -32,10 +32,6 @@ export default function SignUp() {
         setCheckPassWord(value)
     }
 
-    const handleAgreeChange = () => {
-        setAgree((prevState) => !prevState)
-    }
-
     const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         try {
@@ -44,10 +40,13 @@ export default function SignUp() {
                 email,
                 pwd: passWord,
                 confirmPwd: checkPassWord,
-            })
+            }).unwrap()
             router.push('/login', { scroll: false })
-        } catch (error) {
-            console.log('ERROR', error)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            const errorMessage = JSON.parse(error?.data).message
+            setErrorMessage(errorMessage)
         }
     }
     return (
@@ -95,13 +94,13 @@ export default function SignUp() {
                             onChange={handleCheckPasswordChange}
                         />
                     </div>
-                    <div className="sm:col-span-2">
+                    {/* <div className="sm:col-span-2">
                         <Checkbox
                             label={'我已詳閱所有條款及同意個人資料'}
                             checked={agree}
                             onChange={handleAgreeChange}
                         />
-                    </div>
+                    </div> */}
                     <div className="sm:col-span-2">
                         <div className="flex items-center">
                             <label
@@ -118,6 +117,11 @@ export default function SignUp() {
                         </div>
                     </div>
                 </div>
+                {errorMsg ? (
+                    <p className="text-small1 font-bold text-red-500">
+                        {errorMsg}
+                    </p>
+                ) : null}
                 <div className="mt-10">
                     <Button
                         type={'button'}

@@ -123,17 +123,19 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                 <div className="mt-6 flex md:m-0">
                     <Button
                         type={'button'}
-                        title={'退票'}
-                        onClick={() => {}}
+                        title={'換票'}
+                        onClick={() => {
+                            router.push(`/voucher/${ticket._id}`)
+                        }}
                         className={clsx(
                             'mr-3 w-full bg-gray-1 py-2 text-primary hover:text-white md:w-auto md:py-3 md:text-btn1',
                             {
                                 hidden: status !== 'unverified',
                             },
                         )}>
-                        <span className="font-medium tracking-wider">退票</span>
+                        <span className="font-medium tracking-wider">換票</span>
                     </Button>
-                    <Button
+                    {/* <Button
                         type={'button'}
                         title={'詳細'}
                         onClick={() => {
@@ -141,7 +143,7 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                         }}
                         className="w-full py-2 md:w-auto md:py-3">
                         <span className="font-medium tracking-wider">詳細</span>
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
         </div>

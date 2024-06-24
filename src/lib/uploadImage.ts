@@ -6,7 +6,7 @@ const upLoadImage = async (
     token: string,
 ) => {
     try {
-        const { data } = await fetch(
+        const { data, status, message } = await fetch(
             `${BASE_URL}api/v1/uploadFile/photo/${category}`,
             {
                 method: 'POST',
@@ -15,11 +15,19 @@ const upLoadImage = async (
                     Authorization: 'Bearer ' + token,
                 },
             },
-        ).then((res) => {
-            if (res.ok) return res.json()
-        })
+        ).then((res) => res.json())
 
-        return data.url
+        if (status === '6513') {
+            return {
+                isSuccess: false,
+                message,
+            }
+        }
+
+        return {
+            isSuccess: true,
+            url: data.url,
+        }
     } catch (error) {
         console.log('error', error)
     }

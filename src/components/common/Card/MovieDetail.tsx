@@ -20,7 +20,7 @@ import {
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
 } from '@/services/modules/user'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 interface CardProps {
     product: ProductDetail
 }
@@ -32,15 +32,20 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         useRemoveFavoriteMutation()
     const { data: session } = useSession()
 
-    const [selectPlan, setSelectPlan] = useState(product.plans[0])
-    const [selectPrice, setSelectPrice] = useState(
-        product.price !== undefined ? product.price * selectPlan.discount : 0,
-    )
-    const [conter, setConter] = useState(1)
+    const initialPlan = product.plans[0] || {}
+    const [selectPlan, setSelectPlan] = useState<ProductPlan>(initialPlan)
 
+    // 初始价格计算
+    const initialPrice = product.price
+        ? product.price * initialPlan.discount * initialPlan.headCount
+        : 0
+    const [selectPrice, setSelectPrice] = useState(initialPrice)
+    const [conter, setConter] = useState(1)
+    const showAlert = useAlert()
     const handleConterClick = (value: number) => {
         setConter(value)
     }
+    // 处理方案选择
     const handleSelectPlanClick = (
         product: ProductDetail,
         selectedPlan: ProductPlan,
@@ -48,7 +53,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         setSelectPlan(selectedPlan)
         setSelectPrice(
             product.price !== undefined
-                ? product.price * selectPlan.discount
+                ? product.price * selectedPlan.discount * selectedPlan.headCount
                 : 0,
         )
         setConter(1)
@@ -64,6 +69,10 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     }
     const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {
+        if (!session) {
+            showAlert('登入後收藏', 'warning')
+            return
+        }
         if (!isFavorite) {
             try {
                 setIsFavorite(true)

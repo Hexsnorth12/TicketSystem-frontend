@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import clsx from 'clsx'
-import avatar from '@images/avatar.jpg'
+import avatar from '@icon/avatar.svg'
 import ScrollTabs from '@/components/common/ScrollTabs/ScrollTabs'
 import uploadImage from '@/lib/uploadImage'
 import {
@@ -45,9 +45,11 @@ const Sidebar: React.FC<SidebarProps> = () => {
         const token = session?.accessToken || ''
 
         const imageURL = await uploadImage(formData, 'user', token)
+        const imgUrl = imageURL?.isSuccess ? imageURL?.url : ''
+
         await updateInfo({
             payload: {
-                imgUrl: imageURL,
+                imgUrl,
             },
             token,
         }).unwrap()

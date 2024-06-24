@@ -7,13 +7,21 @@ import type { TimePickerInput as Props } from '@/types'
 
 const CustomizeTimePickerInput = styled(TimePicker)`
     .MuiInputBase-input {
+        order: 1;
         color: #fff;
         font-weight: normal;
         align-self: center;
         padding: 16px 0px 16px 16px;
     }
+    .MuiInputAdornment-root {
+        order: 0;
+    }
     .MuiSvgIcon-root {
         color: #4e4e4e;
+    }
+    & .MuiOutlinedInput-notchedOutline,
+    &:hover .MuiOutlinedInput-notchedOutline {
+        border-color: transparent;
     }
 `
 

@@ -1,4 +1,3 @@
-// /components/ProductList.tsx
 import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -9,6 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
+import { CiHeart } from 'react-icons/ci'
+import { FaHeart } from 'react-icons/fa'
 
 type Tag = {
     tagId: string
@@ -34,45 +35,73 @@ type Product = {
     startAt: string
     tags: Tag[]
     photoPath: string
+    isFavorite: boolean
 }
 
 type PopProductListProps = {
     products: Product[]
+    favorites: Record<string, boolean>
+    onUpdateFavorite: (productId: string) => void
 }
 
-const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
+const PopProductList: React.FC<PopProductListProps> = ({
+    products,
+    favorites,
+    onUpdateFavorite,
+}) => {
     const router = useRouter()
+
     const handleMovieDetail = (id: string) => {
         router.push(`/movies/${id}`)
     }
+
     return (
         <>
-            {/* Desktop-Navbar */}
+            {/* Desktop View */}
             <div className="hidden md:block">
                 <Swiper
                     slidesPerView={5}
                     spaceBetween={30}
                     centeredSlides={true}
                     loop={true}
+                    initialSlide={2}
                     pagination={{
                         type: 'fraction',
                     }}
                     navigation={true}
                     modules={[Navigation]}>
                     {products.map((product, index) => (
-                        <div
-                            key={product._id}
-                            className="m-4 overflow-hidden rounded-lg p-4">
-                            <Link href="">
-                                <SwiperSlide key={product._id}>
+                        <SwiperSlide key={product._id}>
+                            <div className="overflow-hidden rounded-lg">
+                                <Link href={`/movies/${product._id}`}>
                                     <div className="relative h-[320px] w-[240px]">
                                         <Image
                                             src={product.photoPath}
                                             alt={product.title}
                                             layout="fill"
                                             objectFit="cover"
-                                            className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                            className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 hover:border-opacity-100"
                                         />
+                                        <div className="absolute bottom-2 right-2 z-20 inline-block rounded-full  text-primary">
+                                            <Button
+                                                type="button"
+                                                title="按钮"
+                                                onClick={(e) => {
+                                                    e.stopPropagation() // Prevents the click from bubbling up to the card
+                                                    e.preventDefault() // Prevents the default Link behavior
+                                                    onUpdateFavorite(
+                                                        product._id,
+                                                    )
+                                                }}
+                                                className="flex w-full items-center justify-center py-2 text-center">
+                                                {' '}
+                                                {favorites[product._id] ? (
+                                                    <FaHeart />
+                                                ) : (
+                                                    <CiHeart />
+                                                )}
+                                            </Button>
+                                        </div>
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                     </div>
@@ -107,17 +136,17 @@ const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
                                             立即購票
                                         </Button>
                                     </div>
-                                </SwiperSlide>
-                            </Link>
-                        </div>
+                                </Link>
+                            </div>
+                        </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
-            {/* Mobile-Navbar */}
+            {/* Mobile View */}
             <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
                 {products.map((product, index) => (
                     <div key={product._id} className="mx-3 inline-block w-32">
-                        <Link href="">
+                        <Link href={`/movies/${product._id}`}>
                             <div className="relative h-[160px] w-[120px]">
                                 <Image
                                     src={product.photoPath}
@@ -126,6 +155,23 @@ const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
                                     objectFit="cover"
                                     className="rounded-lg"
                                 />
+                                <div className="absolute bottom-2 right-2 z-20 inline-block rounded-full text-primary">
+                                    <Button
+                                        type="button"
+                                        title="按钮"
+                                        onClick={(e) => {
+                                            e.stopPropagation() // Prevents the click from bubbling up to the card
+                                            e.preventDefault() // Prevents the default Link behavior
+                                            onUpdateFavorite(product._id)
+                                        }}
+                                        className="flex w-full items-center justify-center py-2 text-center">
+                                        {favorites[product._id] ? (
+                                            <FaHeart />
+                                        ) : (
+                                            <CiHeart />
+                                        )}
+                                    </Button>
+                                </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                             </div>

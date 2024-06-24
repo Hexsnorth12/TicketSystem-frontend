@@ -8,7 +8,10 @@ import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
 import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 
+import fetchClient from '@/lib/fetchClient'
+import { useCartStore } from '@/stores/useCartStore'
 interface SignInProps {
     callbackUrl: string
 }
@@ -25,6 +28,19 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
+    const mergeCart = useCartStore((state) => state.mergeCarts)
+    const fetchCartData = async () => {
+        const response = await fetchClient({
+            method: 'GET',
+            url: `api/v1/cart?limit=${100}&page=${1}`,
+        })
+
+        const userCart = response.data
+        if (userCart && userCart.items) {
+            mergeCart(userCart.items)
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -34,13 +50,19 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             ...credentials,
             redirect: false,
         })
-
         if (response?.error) {
             setErrorMessage(response.error)
         } else {
             setErrorMessage('')
-            const callbackUrl = searchParams.get('callbackUrl') || '/'
+            const session = await getSession()
+            let callbackUrl
+            if (session?.user.accountType === 'admin') {
+                callbackUrl = '/admin/order'
+            } else {
+                callbackUrl = searchParams.get('callbackUrl') || '/'
+            }
             refreshAuth(callbackUrl)
+            fetchCartData()
         }
     }
 
@@ -84,7 +106,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
                             onChange={handlePasswordChange}
                         />
                     </div>
-                    <div className="sm:col-span-2">
+                    {/* <div className="sm:col-span-2">
                         <div className="flex items-center">
                             <a
                                 href="/forgetPassWord"
@@ -92,7 +114,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
                                 忘記密碼嗎？
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="sm:col-span-2">
                         <div className="flex items-center py-2.5 ">
                             <label

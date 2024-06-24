@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import Image from 'next/image'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useForm, FieldPath, FieldValues } from 'react-hook-form'
@@ -14,6 +14,7 @@ import {
     InputRegister,
     Tag,
     ErrorModal,
+    Modal,
 } from '@/components/common'
 import { bellota } from '@/components/fonts'
 import account_gray from '@icon/account_gray.svg'
@@ -61,6 +62,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
         setError,
     } = useForm<FieldValues>()
     const [state, formAction] = useFormState<State, FormData>(getJoinForm, null)
+    const [pending, startTransaction] = useTransition()
 
     useEffect(() => {
         try {
@@ -74,15 +76,18 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
     useEffect(() => {
         if (!state) return
 
-        if (state.status === 'error') {
+        const { status } = state
+        if (status === 'error') {
             state.errors?.forEach((error) => {
                 setError(error.path as FieldPath<FormValues>, {
                     message: error.message,
                 })
             })
         }
-        if (state.status === 'success') {
-            router.push('success?state=true&callback=user/sharedTicket')
+        if (status === 'success') {
+            router.push('success?state=true&callback=user/join?status=joined')
+        } else {
+            setEventError(state?.message)
         }
     }, [state, setError])
 
@@ -110,16 +115,28 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                 <ErrorModal onClose={closeModal} errorMsg={eventError} />
             )}
 
+            {pending && (
+                <Modal onClose={() => {}}>
+                    <div className="flex w-[150px] flex-col gap-5 px-6">
+                        <div className="flex items-center justify-center">
+                            <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+
             <div className="min-w-[279px] px-5 md:px-12 md:py-9">
                 <div className="mb-6 flex flex-col gap-4 md:flex-row">
-                    <Image
-                        loader={() => eventDetail.placeholderImg as string}
-                        src={eventDetail.placeholderImg as string}
-                        alt="group"
-                        width={288}
-                        height={173}
-                        className="rounded-lg"
-                    />
+                    <div className="max-h-[173px] overflow-hidden">
+                        <Image
+                            loader={() => eventDetail.placeholderImg as string}
+                            src={eventDetail.placeholderImg as string}
+                            alt="group"
+                            width={288}
+                            height={173}
+                            className="rounded-lg"
+                        />
+                    </div>
                     <div className="max-h-[184px] overflow-y-scroll pr-6 scrollbar">
                         <h5 className="mb-1 text-small1 text-white md:mb-2 md:text-header5">
                             {eventDetail.title}
@@ -177,7 +194,11 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                     </div>
                 </div>
                 <form
-                    action={(formData) => formAction(formData)}
+                    action={(formData) => {
+                        startTransaction(() => {
+                            formAction(formData)
+                        })
+                    }}
                     className="md:border-t md:border-gray-3 md:pt-6">
                     <h4 className="md:header-4 mb-2 text-btn1 text-white md:mb-6">
                         我要參加
@@ -226,7 +247,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                             required={true}
                         />
                     </div>
-                    <div className="absolute opacity-0">
+                    <div className="absolute hidden">
                         <InputRegister
                             label="group"
                             type="text"

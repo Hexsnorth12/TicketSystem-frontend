@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import clsx from 'clsx'
-import { Button, Counter } from '@/components/common'
+import { Button } from '@/components/common'
 import TextField from '@/components/ticket/TextField/TextField'
 import { bellota } from '@/components/fonts'
 import { TicketDetail } from '@/types'
@@ -12,15 +12,15 @@ interface TicketBoardProps {
 }
 
 const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
-    const [ticketAmount, setTicketAmount] = useState(0)
+    // const [ticketAmount, setTicketAmount] = useState(0)
 
-    const handleUpdateCounter = (amount: number) => {
-        setTicketAmount(amount)
-    }
+    // const handleUpdateCounter = (amount: number) => {
+    //     setTicketAmount(amount)
+    // }
 
-    const handleGetCode = () => {
-        console.log(ticketAmount)
-    }
+    // const handleGetCode = () => {
+    //     console.log(ticketAmount)
+    // }
     return (
         <div className="rounded-lg border border-gray-3 px-4 py-6 md:px-[60px] md:py-10">
             {/* <div className="mb-4 flex space-x-3 md:justify-end">
@@ -66,7 +66,7 @@ const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
                     </span>
                 </p>
             </TextField>
-            {ticketDetail.status === 'unverified' ? (
+            {/* {ticketDetail.status === 'unverified' ? (
                 <TextField
                     label={'現場換/驗票'}
                     containerStyle="md:border-b md:border-gray-4">
@@ -88,7 +88,7 @@ const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
                         </Button>
                     </div>
                 </TextField>
-            ) : null}
+            ) : null} */}
             <div className="">
                 <p className="mb-3 text-small2 leading-150 text-gray-5 md:text-small1">
                     線上分票

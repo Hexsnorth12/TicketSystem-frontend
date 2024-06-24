@@ -11,6 +11,11 @@ import PopProductList from '@components/common/Card/PopProductList'
 import RecProductList from '@components/common/Card/RecProductList'
 import GroupProductList from '@components/common/Card/GroupProductList'
 import TicketProductList from '@components/common/Card/TicketProductList'
+import { useSession } from 'next-auth/react'
+import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
 import {
     fetchPopProducts,
     fetchRecProducts,
@@ -21,7 +26,8 @@ import {
     Ticket,
 } from '../definitions/movieData'
 import Marquee from '@/components/common/Swiper/Marquee'
-
+import Loading from '@/components/LoadingSkeleton/Loading'
+import { useAlert } from '@/components/useAlert/useAlert'
 interface HeaderTitleProps {
     title: string
     iconPath: string
@@ -49,10 +55,10 @@ const HomePage: React.FC = () => {
     const [recproducts, setRecProducts] = useState<Product[]>([])
     const [groupproducts, setGroupProducts] = useState<Group[]>([])
     const [ticketproducts, setTicketProducts] = useState<Ticket[]>([])
-
+    const [favorites, setFavorites] = useState<Record<string, boolean>>({})
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
-
+    const showAlert = useAlert()
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -71,6 +77,12 @@ const HomePage: React.FC = () => {
                 setRecProducts(recProducts)
                 setGroupProducts(groupProducts)
                 setTicketProducts(ticketProducts)
+                // 初始化收藏状态
+                const initialFavorites: Record<string, boolean> = {}
+                ;[...popProducts, ...recProducts].forEach((product) => {
+                    initialFavorites[product._id] = product.isFavorite
+                })
+                setFavorites(initialFavorites)
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message)
@@ -84,9 +96,48 @@ const HomePage: React.FC = () => {
 
         fetchData()
     }, [])
+    const { data: session } = useSession()
+    const [addFavorite] = useAddFavoriteMutation()
+    const [removeFavorite] = useRemoveFavoriteMutation()
+    const handleUpdateFavorite = async (productId: string) => {
+        if (!session) {
+            showAlert('登入後收藏', 'warning')
+            // setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
+            return
+        }
+        const currentStatus = favorites[productId]
+        setFavorites((prevFavorites) => ({
+            ...prevFavorites,
+            [productId]: !currentStatus,
+        }))
+
+        try {
+            if (currentStatus) {
+                await removeFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            } else {
+                await addFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            }
+        } catch (error) {
+            // Handle error (optional)
+            setFavorites((prevFavorites) => ({
+                ...prevFavorites,
+                [productId]: currentStatus,
+            }))
+        }
+    }
 
     if (loading) {
-        return <div>加載中...</div>
+        return (
+            <div>
+                <Loading />
+            </div>
+        )
     }
 
     if (error) {
@@ -96,10 +147,19 @@ const HomePage: React.FC = () => {
     return (
         <>
             <Marquee />
+
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <PopProductList products={popproducts} />
+            <PopProductList
+                products={popproducts}
+                favorites={favorites}
+                onUpdateFavorite={handleUpdateFavorite}
+            />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecProductList products={recproducts} />
+            <RecProductList
+                products={recproducts}
+                favorites={favorites}
+                onUpdateFavorite={handleUpdateFavorite}
+            />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}

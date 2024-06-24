@@ -24,6 +24,7 @@ export type Product = {
     startAt: string;
     tags: { tagId: string }[];
     photoPath: string;
+    isFavorite: boolean
 };
 
 export type Group = {
@@ -312,4 +313,5 @@ export const dummyTicketDetail: TicketDetail = {
     purchaseAt: '2024-06-15T12:50:23.686Z',
     purchaseAmount: 11,
 }
+
 

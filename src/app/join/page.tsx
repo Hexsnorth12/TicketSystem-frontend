@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -8,21 +8,32 @@ import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
-import { checkInvalidTimeRange, cn, exportTimeRangeString } from '@/utils'
+import {
+    checkInvalidTimeRange,
+    cn,
+    exportTimeRangeString,
+    formatDate,
+    formatTimeString,
+} from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
+import { useScrollToBottom } from '@/hooks'
 
+import { MOVIES, THEATERS, COUNTRIES } from '@/definitions'
 import {
     EventList,
     GetEventListRes,
     JoinPageError,
     JoinPageSuccess,
-    Tag,
 } from '@/types'
 
 const LIMITAMOUNT = 10
 
 const JoinPage = () => {
     const router = useRouter()
+    const eventListContainer = useRef<HTMLDivElement>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [stopFetching, setStopFetching] = useState(false)
+    const [error, setError] = useState('')
 
     const [eventList, setEventList] = useState<EventList>([])
     const [addMoreSpace, setAddMoreSpace] = useState(false)
@@ -30,27 +41,25 @@ const JoinPage = () => {
 
     const [page, setPage] = useState(1)
     const [checkFilter, setCheckFilter] = useState(false)
-    // TODO: 待新增相關邏輯
-    // eslint-disable-next-line
-    const [scrollToBottom, setScrollToBottom] = useState(true)
 
-    const [countries, setCountries] = useState<Tag[]>([])
-    const [theaters, setTheaters] = useState<Tag[]>([])
-    const [movies, setMovies] = useState<Tag[]>([])
-
-    const [countryTags, setCountryTags] = useState<string[]>([])
+    const [countryTag, setCountryTag] = useState<string>('')
     const [theaterTags, setTheaterTags] = useState<string[]>([])
     const [movieTags, setMovieTags] = useState<string[]>([])
     const [title, setTitle] = useState<string>('')
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
-
     useEffect(() => {
-        // TODO: 做loading spinner
         setIsLoading(true)
-        fetchInitData()
+        getAllEvents()
     }, [])
+
+    // 拿下一頁資料
+    useEffect(() => {
+        const notFirstPage = page !== 1
+        if (notFirstPage && !stopFetching) {
+            if (checkFilter) getFilterEvents(true)
+            else getAllEvents()
+        }
+    }, [page, stopFetching])
 
     // 篩選條件更新後重新發送拿活動資料
     useEffect(() => {
@@ -58,7 +67,7 @@ const JoinPage = () => {
             if (checkFilter) {
                 const resend = setTimeout(() => {
                     setIsLoading(true)
-                    filterEvent()
+                    getFilterEvents()
                 }, 1200)
 
                 // 防止過多請求發送
@@ -70,19 +79,25 @@ const JoinPage = () => {
         } catch (error: any) {
             setError(error.message)
         }
-    }, [timeRange, countryTags, theaterTags, movieTags])
+    }, [timeRange, theaterTags, movieTags])
 
-    async function fetchInitData() {
+    // 拉到活動頁底部觸發callback
+    useScrollToBottom(eventListContainer, handleEventScrollToBottom)
+
+    // 拿所有活動，無篩選
+    async function getAllEvents() {
         const queryString = {
             page,
             limit: LIMITAMOUNT,
         }
         const result = await getJoinEventList(queryString)
-        postGetEventData(result, true)
-        setIsLoading(false)
+        const isInitRender = page === 1
+
+        postGetEventData(result, isInitRender)
     }
 
-    async function filterEvent(withTitle = false) {
+    // 拿篩選後活動
+    async function getFilterEvents(scrollBottom = false) {
         const { startDate, endDate, startTime, endTime } = timeRange
         const dateRangeError = startDate > endDate
         const timeRangeError = checkInvalidTimeRange(startTime, endTime)
@@ -92,49 +107,61 @@ const JoinPage = () => {
             return
         }
 
-        const { startAt, endAt } = exportTimeRangeString(timeRange)
-        // TODO: 待api更新後 更新此邏輯 目前篩選無效
+        const { startAt, endAt, timeBegin, timeEnd } =
+            exportTimeRangeString(timeRange)
+
+        const updatedStartDate = formatDate(new Date(startAt), '/')
+        const updatedEndDate = formatDate(new Date(endAt), '/')
+        const updatedStartTime = formatTimeString(new Date(timeBegin))
+        const updatedEndTime = formatTimeString(new Date(timeEnd))
+
+        const updatedPage = !scrollBottom ? 1 : page
+        // TODO: api須更新，少電影院參數
         // eslint-disable-next-line
-        const movieTitles = () => {}
-        // eslint-disable-next-line
-        const countries = () => {}
+        const theaters = theaterTags.join(',')
+        const movieTitles = movieTags.join(',')
+        const eventTitle = title
 
         const params = {
             limit: LIMITAMOUNT,
-            page,
-            startAt,
-            endAt,
-            title: withTitle ? title : '',
+            page: updatedPage,
+            startAt: updatedStartDate,
+            endAt: updatedEndDate,
+            timeBegin: updatedStartTime,
+            timeEnd: updatedEndTime,
+            title: eventTitle,
+            movieTitle: movieTitles,
         }
 
         const result = await getJoinEventList(params)
-        postGetEventData(result)
-
-        setIsLoading(false)
-        setPage(1)
-        setScrollToBottom(false)
-    }
-
-    function searchTitle() {
-        filterEvent(true)
+        postGetEventData(result, !scrollBottom)
     }
 
     function postGetEventData(result: GetEventListRes, initRender = false) {
         if (result!.status === 'success') {
             const success = result as JoinPageSuccess
-            const shouldAddMoreSpace = success.data.length > 6
+            const resEventList = success.events as EventList
+            const totalCount = success.totalCount
+            const noMoreData =
+                resEventList.length === 0 || totalCount <= LIMITAMOUNT
 
-            const eventList = success.data as EventList
-            if (initRender) {
-                setFilterOptions(eventList)
+            let updatedEventList = resEventList
+            if (!initRender) {
+                updatedEventList = [...eventList, ...resEventList] as EventList
             }
 
-            setEventList(eventList)
+            const shouldAddMoreSpace = updatedEventList.length > 6
+
+            if (initRender) setPage(1)
+            setStopFetching(noMoreData)
+            setEventList(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
         } else {
             const error = (result as JoinPageError).error
             setError(error)
         }
+
+        setIsLoading(false)
     }
 
     function closeErrorModal() {
@@ -149,33 +176,31 @@ const JoinPage = () => {
         setTitle(input)
     }
 
+    function searchTitle() {
+        getFilterEvents(false)
+    }
+
+    const searchInputOnSubmitHandler: FormEventHandler<HTMLFormElement> = (
+        event,
+    ) => {
+        event.preventDefault()
+        searchTitle()
+    }
+
+    function handleEventScrollToBottom() {
+        if (!stopFetching) {
+            setPage((prevState) => {
+                return ++prevState
+            })
+        }
+    }
+
     function openEventModal(id: string) {
         router.push(`joinGroup?groupId=${id}`)
     }
 
     function openAddEventModal() {
         router.push('createOriganize')
-    }
-
-    function setFilterOptions(eventList: EventList) {
-        const removeDuplicate: (type: string) => string[] = (type) => [
-            ...new Set(eventList.map((e) => e[type])),
-        ]
-
-        const movies = removeDuplicate('movieTitle')
-        const theaters = removeDuplicate('theater')
-        const countries = removeDuplicate('country')
-
-        const setOptionsList: (list: string[]) => Tag[] = (list) =>
-            list.map((option) => ({ label: option, value: option }))
-
-        const movieOptions = setOptionsList(movies)
-        const theaterOptions = setOptionsList(theaters)
-        const countryOptions = setOptionsList(countries)
-
-        setMovies(movieOptions)
-        setTheaters(theaterOptions)
-        setCountries(countryOptions)
     }
 
     function updateTimeRange(dateRange: {
@@ -190,9 +215,10 @@ const JoinPage = () => {
 
     function updateTags(type: string, updatedInfo: string[]) {
         readyToFilter()
+        const updatedValue = updatedInfo.length ? updatedInfo[0] : ''
         switch (type) {
             case 'country':
-                setCountryTags(updatedInfo)
+                setCountryTag(updatedValue)
                 break
             case 'theater':
                 setTheaterTags(updatedInfo)
@@ -228,34 +254,37 @@ const JoinPage = () => {
                         title="縣市"
                         filter={
                             <MultipleSelect
+                                single
                                 title="縣市"
-                                options={countries}
-                                selectedValues={countryTags}
+                                options={COUNTRIES}
+                                selectedValues={[countryTag]}
                                 onSelectChange={(updatedInfo) =>
                                     updateTags('country', updatedInfo)
                                 }
                             />
                         }
                     />
-                    <FilterOption
-                        title="地點"
-                        filter={
-                            <MultipleSelect
-                                title="地點"
-                                options={theaters}
-                                selectedValues={theaterTags}
-                                onSelectChange={(updatedInfo) =>
-                                    updateTags('theater', updatedInfo)
-                                }
-                            />
-                        }
-                    />
+                    {!!countryTag && (
+                        <FilterOption
+                            title="地點"
+                            filter={
+                                <MultipleSelect
+                                    title="地點"
+                                    options={THEATERS[Number(countryTag)]}
+                                    selectedValues={theaterTags}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('theater', updatedInfo)
+                                    }
+                                />
+                            }
+                        />
+                    )}
                     <FilterOption
                         title="電影"
                         filter={
                             <MultipleSelect
                                 title="電影"
-                                options={movies}
+                                options={MOVIES}
                                 selectedValues={movieTags}
                                 onSelectChange={(updatedInfo) =>
                                     updateTags('movie', updatedInfo)
@@ -269,10 +298,18 @@ const JoinPage = () => {
 
             {/* 活動列 */}
             <div
+                ref={eventListContainer}
                 className={cn(
                     'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
                     addMoreSpace && 'pb-[300px]',
                 )}>
+                {isLoading && (
+                    <div className="flex h-full w-full flex-col items-center justify-center">
+                        <div className="flex items-center justify-center">
+                            <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
+                        </div>
+                    </div>
+                )}
                 {!isLoading &&
                     eventList.length > 0 &&
                     eventList.map((item, index) => {
@@ -297,25 +334,27 @@ const JoinPage = () => {
             {/* 地圖 */}
             <div className="relative flex-1 bg-white">
                 {/* 搜尋欄 */}
-                <div className="absolute left-6 top-6 inline-block">
-                    <div className="relative shadow-sm">
-                        <Input
-                            type="text"
-                            rounded="none"
-                            value={title}
-                            onChange={changeSearchContent}
-                            placeholder="輸入活動名稱"
-                            className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                            <SearchBtn
-                                type="search"
-                                active={true}
-                                onClick={searchTitle}
+                <form onSubmit={searchInputOnSubmitHandler}>
+                    <div className="absolute left-6 top-6 inline-block">
+                        <div className="relative shadow-sm">
+                            <Input
+                                type="text"
+                                rounded="none"
+                                value={title}
+                                onChange={changeSearchContent}
+                                placeholder="輸入活動名稱"
+                                className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
                             />
+                            <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                <SearchBtn
+                                    type="search"
+                                    active={true}
+                                    onClick={searchTitle}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 {/* 地圖 */}
                 <Image
                     src="/icons/join/dummy_map_should_be_deleted.png"
