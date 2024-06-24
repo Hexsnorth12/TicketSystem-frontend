@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import clsx from 'clsx'
-import { Button, Counter } from '@/components/common'
+import { Button } from '@/components/common'
 import TextField from '@/components/ticket/TextField/TextField'
 import { bellota } from '@/components/fonts'
 import { TicketDetail } from '@/types'
@@ -12,15 +12,15 @@ interface TicketBoardProps {
 }
 
 const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
-    const [ticketAmount, setTicketAmount] = useState(0)
+    // const [ticketAmount, setTicketAmount] = useState(0)
 
-    const handleUpdateCounter = (amount: number) => {
-        setTicketAmount(amount)
-    }
+    // const handleUpdateCounter = (amount: number) => {
+    //     setTicketAmount(amount)
+    // }
 
-    const handleGetCode = () => {
-        console.log(ticketAmount)
-    }
+    // const handleGetCode = () => {
+    //     console.log(ticketAmount)
+    // }
     return (
         <div className="rounded-lg border border-gray-3 px-4 py-6 md:px-[60px] md:py-10">
             {/* <div className="mb-4 flex space-x-3 md:justify-end">

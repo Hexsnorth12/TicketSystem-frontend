@@ -8,7 +8,6 @@ import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
 import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { getSession } from 'next-auth/react'
 
 import fetchClient from '@/lib/fetchClient'
