@@ -6,3 +6,4 @@ export const JOIN_OPTIONS = {
     personOptions: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     isBought: ['否', '是'],
 }
+

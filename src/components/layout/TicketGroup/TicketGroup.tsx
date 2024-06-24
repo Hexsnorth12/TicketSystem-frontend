@@ -62,7 +62,7 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                                 <div
                                     key={ticket._id}
                                     ref={lastPostRef}
-                                    className="border border-white">
+                                    >
                                     <MyTicket ticket={ticket} status={status} />
                                 </div>
                                 {loading ? (

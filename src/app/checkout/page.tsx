@@ -23,7 +23,6 @@ const CheckoutPage = () => {
             key: 'price',
         },
     ]
-
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
     cart.forEach((item) => {

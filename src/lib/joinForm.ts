@@ -2,7 +2,7 @@
 
 import { ZodError, z } from 'zod'
 import { State } from '@/types'
-import fetchServer from './fetchServer'
+import fetchServer from '@/lib/fetchServer'
 
 const joinFormSchema = z.object({
     name: z

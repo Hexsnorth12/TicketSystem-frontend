@@ -23,6 +23,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
 
     const handleClose = () => {
         router.back()
+        router.refresh()
     }
     return (
         <Modal>
