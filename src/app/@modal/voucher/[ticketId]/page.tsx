@@ -3,6 +3,7 @@ import React from 'react'
 import { ModalContent } from '@/components/common'
 import { QRCodeSVG } from 'qrcode.react'
 import { useParams } from 'next/navigation'
+import { format } from 'date-fns'
 
 interface Props {}
 
@@ -24,22 +25,22 @@ const Page: React.FC<Props> = () => {
                         日期
                     </p>
                     <p className="text-small2 text-white md:text-small1">
-                        2024.03.23
+                        {format(new Date(), 'yyyy-MM-dd')}
                     </p>
                 </div>
-                <div className="mb-6 text-center">
+                {/* <div className="mb-6 text-center">
                     <p className="t mb-2.5 text-small2 text-gray-5 md:mb-2 md:text-small1">
                         數量
                     </p>
                     <p className="text-small2 text-white md:text-small1">2</p>
-                </div>
+                </div> */}
                 <div className="mb-6 text-center">
                     <p className="t mb-2.5 text-small2 text-gray-5 md:mb-2 md:text-small1">
                         取票驗證碼
                     </p>
                     <div className="flex justify-center">
                         <QRCodeSVG
-                            value={`${process.env.NEXTAUTH_URL}/admin/writeoff/${params.ticketId}`}
+                            value={`${process.env.NEXT_PUBLIC_BASE_URL}/admin/writeoff/?ids=${params.ticketId}`}
                             size={200}
                             bgColor={'#ffffff'}
                             fgColor={'#000000'}

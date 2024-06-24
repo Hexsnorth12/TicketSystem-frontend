@@ -17,8 +17,8 @@ const CustomizeDatePickerInput = styled(DatePicker)`
         font-weight: normal;
         align-self: center;
         padding: 16px 0px 16px 16px;
+        outline: none;
         bordercolor: #fff;
-        borderwidth: 1px;
     }
 
     .MuiSvgIcon-root {
@@ -29,7 +29,7 @@ const CustomizeDatePickerInput = styled(DatePicker)`
     }
 `
 
-const PAGE_LIMIT = 10
+const PAGE_LIMIT = 50
 
 interface Props {}
 
@@ -59,7 +59,7 @@ const Page: React.FC<Props> = () => {
                 token: session?.accessToken as string,
             }).unwrap()
             const processRows =
-                data.map((order) => {
+                data?.orders.map((order) => {
                     return {
                         id: order._id,
                         thirdPartyPaymentId: order.thirdPartyPaymentId,
@@ -97,7 +97,7 @@ const Page: React.FC<Props> = () => {
             token: session?.accessToken as string,
         }).unwrap()
         const processRows =
-            data.map((order) => {
+            data?.orders.map((order) => {
                 return {
                     id: order._id,
                     thirdPartyPaymentId: order.thirdPartyPaymentId,
@@ -114,23 +114,23 @@ const Page: React.FC<Props> = () => {
     return (
         <section>
             <DataShell title={'訂單列表'}>
-                <div className="mb-6 flex items-center">
-                    <div className="min-w-[20%]">
+                <div className="mb-6 flex flex-col items-center justify-center gap-6 md:flex-row md:justify-start md:gap-0">
+                    <div className="w-full md:w-auto md:min-w-[20%]">
                         <SelectInput
-                            placeholder="線上付款"
+                            placeholder="訂單狀態"
                             options={DATA_OPTIONS.OrderStatus}
-                            label={'付款方式'}
+                            label={'訂單狀態'}
                             onSelectChange={(status) => setStatus(status)}
                         />
                     </div>
-                    <div className="mx-3">
+                    <div className="mx-3 w-full md:w-auto">
                         <CustomizeDatePickerInput
                             label="訂單成立時間 - 起"
                             value={startDate}
                             onChange={(date) => setStartDate(date)}
                         />
                     </div>
-                    <div className="mx-3">
+                    <div className="mx-3 w-full md:w-auto">
                         <CustomizeDatePickerInput
                             label="訂單成立時間 - 迄"
                             value={endDate}
@@ -140,7 +140,6 @@ const Page: React.FC<Props> = () => {
                 </div>
                 <div className="mb-6">
                     <Button
-                        className="ml-6"
                         type={'button'}
                         title={'Reset'}
                         onClick={handleSearch}>

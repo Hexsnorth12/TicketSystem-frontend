@@ -8,7 +8,7 @@ import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
 import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
@@ -20,7 +20,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const [passWord, setPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')
     const searchParams = useSearchParams()
-    const { data: session } = useSession()
 
     const handleUsernameChange = (value: string) => {
         setUsername(value)
@@ -35,7 +34,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             method: 'GET',
             url: `api/v1/cart?limit=${100}&page=${1}`,
         })
-        console.log(response.data, 'response')
 
         const userCart = response.data
         if (userCart && userCart.items) {
@@ -52,11 +50,11 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             ...credentials,
             redirect: false,
         })
-
         if (response?.error) {
             setErrorMessage(response.error)
         } else {
             setErrorMessage('')
+            const session = await getSession()
             let callbackUrl
             if (session?.user.accountType === 'admin') {
                 callbackUrl = '/admin/order'
