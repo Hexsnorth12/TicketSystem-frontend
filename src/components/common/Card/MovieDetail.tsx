@@ -20,7 +20,7 @@ import {
     useAddFavoriteMutation,
     useRemoveFavoriteMutation,
 } from '@/services/modules/user'
-
+import Alert from '@mui/material/Alert'
 interface CardProps {
     product: ProductDetail
 }
@@ -41,7 +41,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         : 0
     const [selectPrice, setSelectPrice] = useState(initialPrice)
     const [conter, setConter] = useState(1)
-
+    const [showAlert, setShowAlert] = useState<boolean>(false)
     const handleConterClick = (value: number) => {
         setConter(value)
     }
@@ -69,6 +69,11 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     }
     const addToCart = useCartStore((state) => state.addToCart)
     const handleUpdateFavorite = async () => {
+        if (!session) {
+            setShowAlert(true)
+            setTimeout(() => setShowAlert(false), 3000)
+            return
+        }
         if (!isFavorite) {
             try {
                 setIsFavorite(true)
@@ -108,6 +113,11 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
 
     return (
         <div className=" h-full w-full">
+            {showAlert && (
+                <div className="fixed bottom-10 right-20 z-50">
+                    <Alert severity="warning">請先登入後收藏</Alert>
+                </div>
+            )}
             <div className="relative h-[312px]  md:h-[600px]">
                 <div className="relative h-full w-full">
                     <div

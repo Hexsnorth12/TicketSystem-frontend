@@ -11,6 +11,7 @@ import PopProductList from '@components/common/Card/PopProductList'
 import RecProductList from '@components/common/Card/RecProductList'
 import GroupProductList from '@components/common/Card/GroupProductList'
 import TicketProductList from '@components/common/Card/TicketProductList'
+import { useSession } from 'next-auth/react'
 import {
     fetchPopProducts,
     fetchRecProducts,
@@ -21,7 +22,8 @@ import {
     Ticket,
 } from '../definitions/movieData'
 import Marquee from '@/components/common/Swiper/Marquee'
-
+import Loading from '@/components/LoadingSkeleton/Loading'
+import Alert from '@mui/material/Alert'
 interface HeaderTitleProps {
     title: string
     iconPath: string
@@ -49,9 +51,10 @@ const HomePage: React.FC = () => {
     const [recproducts, setRecProducts] = useState<Product[]>([])
     const [groupproducts, setGroupProducts] = useState<Group[]>([])
     const [ticketproducts, setTicketProducts] = useState<Ticket[]>([])
-
+    const [favorites, setFavorites] = useState<Record<string, boolean>>({})
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
+    const [showAlert, setShowAlert] = useState<boolean>(false) // 控制是否显示 Alert 的状态
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,6 +74,13 @@ const HomePage: React.FC = () => {
                 setRecProducts(recProducts)
                 setGroupProducts(groupProducts)
                 setTicketProducts(ticketProducts)
+                // 初始化收藏状态
+                const initialFavorites: Record<string, boolean> = {}
+                ;[...popProducts, ...recProducts].forEach((product) => {
+                    initialFavorites[product._id] = product.isFavorite
+                })
+                setFavorites(initialFavorites)
+                setFavorites(initialFavorites)
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message)
@@ -84,9 +94,25 @@ const HomePage: React.FC = () => {
 
         fetchData()
     }, [])
+    const { data: session } = useSession()
+    const handleUpdateFavorite = (productId: string) => {
+        if (!session) {
+            setShowAlert(true) // 显示 Alert
+            setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
+            return
+        }
+        setFavorites((prevFavorites) => ({
+            ...prevFavorites,
+            [productId]: !prevFavorites[productId],
+        }))
+    }
 
     if (loading) {
-        return <div>加載中...</div>
+        return (
+            <div>
+                <Loading />
+            </div>
+        )
     }
 
     if (error) {
@@ -96,10 +122,19 @@ const HomePage: React.FC = () => {
     return (
         <>
             <Marquee />
+
             <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <PopProductList products={popproducts} />
+            <PopProductList
+                products={popproducts}
+                favorites={favorites}
+                onUpdateFavorite={handleUpdateFavorite}
+            />
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecProductList products={recproducts} />
+            <RecProductList
+                products={recproducts}
+                favorites={favorites}
+                onUpdateFavorite={handleUpdateFavorite}
+            />
             <HeaderTitle
                 title="一起揪團"
                 iconPath={mdiAccountMultipleOutline}
@@ -109,6 +144,11 @@ const HomePage: React.FC = () => {
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
             <TicketProductList tickets={ticketproducts} />
             <NavBanner type="ticket" />
+            {showAlert && (
+                <div className="fixed bottom-10 right-20 z-50">
+                    <Alert severity="warning">請先登入後收藏</Alert>
+                </div>
+            )}
         </>
     )
 }
