@@ -80,7 +80,6 @@ const HomePage: React.FC = () => {
                     initialFavorites[product._id] = product.isFavorite
                 })
                 setFavorites(initialFavorites)
-                setFavorites(initialFavorites)
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message)
