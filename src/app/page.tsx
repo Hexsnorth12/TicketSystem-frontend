@@ -13,6 +13,10 @@ import GroupProductList from '@components/common/Card/GroupProductList'
 import TicketProductList from '@components/common/Card/TicketProductList'
 import { useSession } from 'next-auth/react'
 import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
+import {
     fetchPopProducts,
     fetchRecProducts,
     fetchGroupProducts,
@@ -94,16 +98,40 @@ const HomePage: React.FC = () => {
         fetchData()
     }, [])
     const { data: session } = useSession()
-    const handleUpdateFavorite = (productId: string) => {
+    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
+    const [removeFavorite, { isLoading: isLoadingRemove }] =
+        useRemoveFavoriteMutation()
+    const handleUpdateFavorite = async (productId: string) => {
         if (!session) {
             setShowAlert(true) // 显示 Alert
             setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
             return
         }
+        const currentStatus = favorites[productId]
         setFavorites((prevFavorites) => ({
             ...prevFavorites,
-            [productId]: !prevFavorites[productId],
+            [productId]: !currentStatus,
         }))
+
+        try {
+            if (currentStatus) {
+                await removeFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            } else {
+                await addFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            }
+        } catch (error) {
+            // Handle error (optional)
+            setFavorites((prevFavorites) => ({
+                ...prevFavorites,
+                [productId]: currentStatus,
+            }))
+        }
     }
 
     if (loading) {
