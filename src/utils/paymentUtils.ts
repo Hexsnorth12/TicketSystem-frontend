@@ -1,11 +1,9 @@
-// utils/paymentUtils.ts
-
 export function createNewebPayOrder(
-    paymentGatewayUrl: string,
-    merchantId: string,
-    tradeInfo: string,
-    tradeSha: string,
-    version: string,
+    paymentGateway: string,
+    MerchantId: string,
+    TradeInfo: string,
+    TradeSha: string,
+    Version: string,
 ): string {
     return `
         <!doctype html>
@@ -14,11 +12,11 @@ export function createNewebPayOrder(
             <meta charset="utf-8">
         </head>
         <body>
-            <form id="newebpayForm" name="newebpayForm" method="post" action="${paymentGatewayUrl}">
-                <input type="hidden" name="MerchantID" value="${merchantId}">
-                <input type="hidden" name="TradeInfo" value="${tradeInfo}">
-                <input type="hidden" name="TradeSha" value="${tradeSha}">
-                <input type="hidden" name="Version" value="${version}">
+            <form id="newebpayForm" name="newebpayForm" method="post" action="${paymentGateway}" target="_blank">
+                <input type="hidden" name="MerchantId" value="${MerchantId}">
+                <input type="hidden" name="TradeInfo" value="${TradeInfo}">
+                <input type="hidden" name="TradeSha" value="${TradeSha}">
+                <input type="hidden" name="Version" value="${Version}">
                 <noscript>
                     <p>JavaScript is required for this form to function properly.</p>
                 </noscript>

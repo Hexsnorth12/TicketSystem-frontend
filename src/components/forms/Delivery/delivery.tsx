@@ -115,16 +115,22 @@ const Delivery = () => {
                         orderData.paymentMethod === 'newebPay' &&
                         data.newebPay
                     ) {
-                        // alert(JSON.stringify(data.newebPay))
-                        LogOut()
+                        alert(JSON.stringify(data.newebPay))
+                        console.log(
+                            JSON.stringify(data.newebPay),
+                            data.newebPay,
+                            'dd',
+                        )
+
+                        // LogOut()
 
                         // Generate and submit the NewebPay form
                         const newebPayFormHtml = createNewebPayOrder(
-                            data.newebPay.paymentGateway,
-                            data.newebPay.merchantId,
-                            data.newebPay.tradeInfo,
-                            data.newebPay.tradeSha,
-                            data.newebPay.version, // Assuming version is provided
+                            data.newebPay.paymentGateway, // URL 通常不变
+                            data.newebPay.MerchantId, // 首字母大写
+                            data.newebPay.TradeInfo, // 首字母大写
+                            data.newebPay.TradeSha, // 首字母大写
+                            data.newebPay.Version, // 首字母大写
                         )
                         document.write(newebPayFormHtml)
                     } else {
