@@ -27,7 +27,6 @@ import {
 } from '../definitions/movieData'
 import Marquee from '@/components/common/Swiper/Marquee'
 import Loading from '@/components/LoadingSkeleton/Loading'
-
 import { useAlert } from '@/components/useAlert/useAlert'
 interface HeaderTitleProps {
     title: string

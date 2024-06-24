@@ -1,7 +1,7 @@
 'use client'
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import Snackbar from '@mui/material/Snackbar'
-import { Alert as MuiAlert, AlertProps as MuiAlertProps } from '@mui/material'
+import { Alert as MuiAlert, AlertProps } from '@mui/material'
 
 type AlertContextType = (message: string, severity?: AlertSeverity) => void
 
