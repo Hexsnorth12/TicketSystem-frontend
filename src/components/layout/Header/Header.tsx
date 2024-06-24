@@ -107,11 +107,11 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
-                    <Link href="/movies" legacyBehavior>
+                    {/* <Link href="/movies" legacyBehavior>
                         <a className="movies-link text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             電影總表
                         </a>
-                    </Link>
+                    </Link> */}
                     <Link href="/join" legacyBehavior>
                         <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             一起揪團
