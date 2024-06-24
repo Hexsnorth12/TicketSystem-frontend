@@ -31,12 +31,7 @@ const PostComment: React.FC<PostCommentProps> = ({ productId }) => {
             if (!isLoading) {
                 reset()
                 resetSelectedIndex()
-                router.push(
-                    `/success?state=true&callback=movies/${productId}?page=1`,
-                    {
-                        scroll: false,
-                    },
-                )
+                router.refresh()
             }
         } catch (err) {
             console.log(err)

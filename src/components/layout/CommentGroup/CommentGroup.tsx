@@ -26,7 +26,7 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
     }
     return (
         <>
-            <div className="flex flex-col flex-wrap gap-3 md:grid md:grid-cols-3 md:flex-row md:gap-6">
+            <div className="flex flex-col flex-wrap gap-3 md:grid md:grid-cols-4 md:flex-row md:gap-6">
                 {comments.map((comment) => (
                     <div className="" key={comment._id}>
                         <CommentCard
@@ -38,11 +38,13 @@ const Page: React.FC<Props> = async ({ productId, searchParams }) => {
                     </div>
                 ))}
             </div>
-            <PaginationWrapper
-                size={10}
-                total={totalCount}
-                withEllipsis={true}
-            />
+            <div className="flex justify-center">
+                <PaginationWrapper
+                    size={10}
+                    total={totalCount}
+                    withEllipsis={true}
+                />
+            </div>
         </>
     )
 }

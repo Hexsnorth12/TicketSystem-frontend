@@ -7,6 +7,7 @@ import { format, parseISO } from 'date-fns'
 import { InputRegister, Button } from '@/components/common'
 import { State, getUserForm } from '@/lib'
 import type { UserInfo } from '@/types'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
 interface UserInfoProps {
     userInfo: UserInfo
@@ -51,9 +52,14 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
     }, [state, setError])
     return (
         <form
+            className="relative"
             action={(formData) => startTransaction(() => formAction(formData))}>
             <div className="space-y-2 md:space-y-2.5">
-                {pending && <span>Loading</span>}
+                {pending && (
+                    <div className="absolute top-0">
+                        <LoadingSkeleton />
+                    </div>
+                )}
                 <div className="flex flex-col items-center justify-start space-y-2 md:flex-row md:space-x-12 md:space-y-0">
                     <InputRegister
                         label="姓名"

@@ -105,7 +105,8 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                         <Link
                             href="/user/join"
                             scroll={false}
-                            className="block py-3 hover:text-primary">
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}>
                             我的揪團
                         </Link>
                     </li>
