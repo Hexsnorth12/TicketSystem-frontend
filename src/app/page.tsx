@@ -98,9 +98,8 @@ const HomePage: React.FC = () => {
         fetchData()
     }, [])
     const { data: session } = useSession()
-    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
-    const [removeFavorite, { isLoading: isLoadingRemove }] =
-        useRemoveFavoriteMutation()
+    const [addFavorite] = useAddFavoriteMutation()
+    const [removeFavorite] = useRemoveFavoriteMutation()
     const handleUpdateFavorite = async (productId: string) => {
         if (!session) {
             setShowAlert(true) // 显示 Alert
