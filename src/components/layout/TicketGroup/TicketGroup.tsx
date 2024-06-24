@@ -59,10 +59,7 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
                     if (dataList.length === index + 1) {
                         return (
                             <div key={ticket._id}>
-                                <div
-                                    key={ticket._id}
-                                    ref={lastPostRef}
-                                    >
+                                <div key={ticket._id} ref={lastPostRef}>
                                     <MyTicket ticket={ticket} status={status} />
                                 </div>
                                 {loading ? (

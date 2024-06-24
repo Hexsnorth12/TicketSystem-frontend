@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { TypeTag } from '@/components/Buttons'
 import Tag from '@components/common/Tag/tag'
+import { Button } from '@/components/common'
 import {
     truncateName,
     truncateContent,
@@ -12,12 +13,9 @@ import {
 } from '../../../utils/numberUtils'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 // Favorite Section
-import {
-    useAddFavoriteMutation,
-    useRemoveFavoriteMutation,
-} from '@/services/modules/user'
-import { useSession } from 'next-auth/react'
-import Favoritebtn from '../../Buttons/FavoriteBtn'
+
+import { CiHeart } from 'react-icons/ci'
+import { FaHeart } from 'react-icons/fa'
 
 type Tag = {
     tagId: string
@@ -46,49 +44,21 @@ type Product = {
 }
 type RecProductListProps = {
     products: Product[]
+    favorites: Record<string, boolean>
+    onUpdateFavorite: (productId: string) => void
 }
 
-const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
+const RecProductList: React.FC<RecProductListProps> = ({
+    products,
+    favorites,
+    onUpdateFavorite,
+}) => {
     const router = useRouter()
-    const { data: session } = useSession()
-    const [addFavorite, { isLoading }] = useAddFavoriteMutation()
-    const [removeFavorite, { isLoading: isLoadingRemove }] =
-        useRemoveFavoriteMutation()
 
     const handleMovieDetail = (id: string) => {
         router.push(`/movies/${id}`)
     }
 
-    const handleUpdateFavorite = async (
-        productId: string,
-        currentFavoriteStatus: boolean,
-    ) => {
-        if (!currentFavoriteStatus) {
-            try {
-                await addFavorite({
-                    productId,
-                    token: session?.accessToken ?? '',
-                }).unwrap()
-                products.forEach((product) => {
-                    if (product._id === productId) product.isFavorite = true
-                })
-            } catch (error) {
-                console.error('Failed to add favorite', error)
-            }
-        } else {
-            try {
-                await removeFavorite({
-                    productId,
-                    token: session?.accessToken ?? '',
-                }).unwrap()
-                products.forEach((product) => {
-                    if (product._id === productId) product.isFavorite = false
-                })
-            } catch (error) {
-                console.error('Failed to remove favorite', error)
-            }
-        }
-    }
     return (
         <>
             {/* Desktop-Navbar */}
@@ -111,17 +81,22 @@ const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
                                 <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
                                     <TypeTag tagName={product.genre} />
                                 </div>
-                                <div className="absolute bottom-2 right-2 inline-block rounded-full bg-gray-1 text-primary">
-                                    <Favoritebtn
-                                        active={product.isFavorite}
-                                        onClick={() =>
-                                            handleUpdateFavorite(
-                                                product._id,
-                                                product.isFavorite,
-                                            )
-                                        }
-                                        disabled={isLoading || isLoadingRemove}
-                                    />
+                                <div className="absolute bottom-2 right-2 z-20 inline-block rounded-full  text-primary">
+                                    <Button
+                                        type="button"
+                                        title="按钮"
+                                        onClick={(e) => {
+                                            e.stopPropagation() // Prevents the click from bubbling up to the card
+                                            e.preventDefault() // Prevents the default Link behavior
+                                            onUpdateFavorite(product._id)
+                                        }}
+                                        className="flex w-full items-center justify-center py-2 text-center">
+                                        {favorites[product._id] ? (
+                                            <FaHeart />
+                                        ) : (
+                                            <CiHeart />
+                                        )}
+                                    </Button>
                                 </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -167,17 +142,22 @@ const RecProductList: React.FC<RecProductListProps> = ({ products }) => {
                                 <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
                                     <TypeTag tagName={product.genre} />
                                 </div>
-                                <div className="absolute bottom-2 right-2 inline-block rounded-full bg-gray-1 text-primary">
-                                    <Favoritebtn
-                                        active={product.isFavorite}
-                                        onClick={() =>
-                                            handleUpdateFavorite(
-                                                product._id,
-                                                product.isFavorite,
-                                            )
-                                        }
-                                        disabled={isLoading || isLoadingRemove}
-                                    />
+                                <div className="absolute bottom-2 right-2 z-20 inline-block rounded-full  text-primary">
+                                    <Button
+                                        type="button"
+                                        title="按钮"
+                                        onClick={(e) => {
+                                            e.stopPropagation() // Prevents the click from bubbling up to the card
+                                            e.preventDefault() // Prevents the default Link behavior
+                                            onUpdateFavorite(product._id)
+                                        }}
+                                        className="flex w-full items-center justify-center py-2 text-center">
+                                        {favorites[product._id] ? (
+                                            <FaHeart />
+                                        ) : (
+                                            <CiHeart />
+                                        )}
+                                    </Button>
                                 </div>
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>

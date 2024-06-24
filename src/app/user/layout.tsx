@@ -3,7 +3,6 @@ import { Sidebar } from '@/components/layout'
 import { Breadcrumbs } from '@/components/common'
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-
     return (
         <>
             <div className="container h-[88px] pt-5">
