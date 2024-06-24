@@ -10,7 +10,7 @@ import { getUserSession } from '@/lib/auth.actions'
 import { Suspense } from 'react'
 import Loading from './loading'
 import '@/styles/globals.css'
-
+import { AlertProvider } from '@/components/useAlert/useAlert'
 const noto_Sans_TC = Noto_Sans_TC({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -43,8 +43,10 @@ export default async function RootLayout({
                             />
                             <main className="mb-8 grow bg-gray-2 pt-[88px] md:mb-[60px]">
                                 <Suspense fallback={<Loading />}>
-                                    {children}
-                                    {modal}
+                                    <AlertProvider>
+                                        {children}
+                                        {modal}
+                                    </AlertProvider>
                                 </Suspense>
                             </main>
                             <Footer />
