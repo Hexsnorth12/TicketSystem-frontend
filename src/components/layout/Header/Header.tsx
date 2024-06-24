@@ -226,7 +226,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                     </Link>
                     <Link
                         onClick={handleClick}
-                        href="/gatherings"
+                        href="/join"
                         className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         一起揪團
                     </Link>
