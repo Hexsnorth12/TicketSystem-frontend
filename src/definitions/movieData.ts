@@ -314,3 +314,4 @@ export const dummyTicketDetail: TicketDetail = {
     purchaseAmount: 11,
 }
 
+
