@@ -12,7 +12,7 @@ export interface UserProductPlan {
     discount: number
     headCount: number
     name: string
-    _id: string
+    _id?: string
 }
 export interface UserProduct {
     amount: number
@@ -41,6 +41,7 @@ export type CartModalItem = {
 }
 export type DataSource = {
     key: string
+    selectedPlan?: UserProductPlan
     name: {
         image: string
         title: string
@@ -53,4 +54,23 @@ export type Column = {
     title: string
     dataIndex: keyof DataSource
     key: string
+}
+export interface OrderData {
+    items: {
+        productId: string
+        plan: {
+            name: string
+            discount: number
+            headCount: number
+        }
+        amount: number
+    }[]
+    price: number
+    paymentMethod: string
+    deliveryInfo: {
+        name: string
+        phone: string
+        address: string
+        email: string
+    }
 }

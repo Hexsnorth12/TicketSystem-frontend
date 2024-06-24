@@ -27,6 +27,7 @@ import DatePicker from './DatePicker'
 import ErrorModal from './ErrorModal'
 import DataTable from './DataTable/DataTable'
 import DataShell from './DataShell/DataShell'
+import SuccessModal from './SuccessModal'
 
 export {
     Modal,
@@ -58,4 +59,5 @@ export {
     ErrorModal,
     DataTable,
     DataShell,
+    SuccessModal,
 }

@@ -12,27 +12,13 @@ import Image from 'next/image'
 import Button from '@components/common/Button'
 import { MdDelete } from 'react-icons/md'
 import { useCartStore } from '@/stores/useCartStore'
-interface Column {
-    title: string
-    dataIndex: keyof DataSource
-    key: string
-}
-
-interface DataSource {
-    key: string
-    name: {
-        image: string
-        title: string
-        subtitle: string
-    }
-    number: number
-    price: number
-}
+import { DataSource, Column, UserProductPlan } from '@/types/cart'
 
 interface InputProps {
     columns: Column[]
     dataSource: DataSource[]
 }
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -52,7 +38,6 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
     const updateCartItemQuantity = useCartStore(
         (state) => state.updateCartItemQuantity,
     )
-    console.log(numberStates.number, 'numberStates')
 
     const handleNumberChange = (uniqueKey: string, newValue: number) => {
         setNumberStates((prevState) => ({
@@ -67,6 +52,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
             updateCartItemQuantity(id, name, newValue)
         }
     }
+
     const handleRemove = (data: DataSource) => {
         const itemToRemove = cart.find(
             (item) =>
@@ -77,6 +63,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
             removeAllFromCart(itemToRemove, itemToRemove.selectedPlan)
         }
     }
+
     const renderPrice = (data: DataSource) => {
         const uniqueKey = `${data.key}-${data.name.subtitle}`
         const currentNumber = numberStates[uniqueKey] ?? data.number
@@ -90,6 +77,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
 
         return `${currentNumber * data.price} NT`
     }
+
     const renderName = (name: {
         image: string
         title: string
@@ -103,10 +91,10 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                         alt={name.title}
                         width={100}
                         height={100}
-                        className="rounded-lg"
+                        className="h-[100px] w-[100px] rounded-lg object-cover"
                     />
                 </div>
-                <div className="col-span-1 flex justify-start truncate text-body md:text-xl">
+                <div className="col-span-1 flex justify-start truncate text-small1 md:text-xl">
                     <div>{name.title}</div>
                 </div>
                 <div className="col-span-1 flex justify-start">
@@ -115,12 +103,45 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
             </div>
         </div>
     )
+
+    const renderCellData = (
+        cellData:
+            | string
+            | number
+            | { image: string; title: string; subtitle: string }
+            | UserProductPlan
+            | undefined,
+    ) => {
+        if (typeof cellData === 'object' && cellData !== null) {
+            if (
+                'image' in cellData &&
+                'title' in cellData &&
+                'subtitle' in cellData
+            ) {
+                return renderName(cellData)
+            } else if (
+                'name' in cellData &&
+                'discount' in cellData &&
+                'headCount' in cellData
+            ) {
+                return (
+                    <div>
+                        <div>{cellData.name}</div>
+                        <div>
+                            {cellData.discount}% off for {cellData.headCount}{' '}
+                            people
+                        </div>
+                    </div>
+                )
+            }
+            return JSON.stringify(cellData)
+        }
+        return cellData
+    }
+
     return (
         <TableContainer>
-            <Table
-                className="min-w-[
-                     md:w-full"
-                aria-label="customized table">
+            <Table className="min-w-full" aria-label="customized table">
                 <TableHead>
                     <TableRow>
                         {columns.map((column) => (
@@ -128,7 +149,6 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                 {column.title}
                             </StyledTableCell>
                         ))}
-                        {/* 添加删除按钮列 */}
                         <StyledTableCell>動作</StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -158,18 +178,12 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                             />
                                         ) : column.dataIndex === 'price' ? (
                                             renderPrice(data)
-                                        ) : typeof cellData === 'object' &&
-                                          'image' in cellData &&
-                                          'title' in cellData &&
-                                          'subtitle' in cellData ? (
-                                            renderName(cellData)
                                         ) : (
-                                            cellData
+                                            renderCellData(cellData)
                                         )}
                                     </StyledTableCell>
                                 )
                             })}
-                            {/* 添加删除按钮 */}
                             <StyledTableCell>
                                 <Button
                                     onClick={() => handleRemove(data)}

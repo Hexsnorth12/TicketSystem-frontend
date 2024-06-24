@@ -11,6 +11,7 @@ import type { DatePickerComponent as Props } from '@/types'
 
 const {
     DEFAULTDATE,
+    DEFAULTENDDATE,
     DEFAULTSTARTTIME,
     DEFAULTENDTIME,
     STARTDATETITLE,
@@ -24,7 +25,7 @@ const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
     const [startFilter, setStartFilter] = useState(false)
 
     const [startDate, setStartDate] = useState(DEFAULTDATE)
-    const [endDate, setEndDate] = useState(DEFAULTDATE)
+    const [endDate, setEndDate] = useState(DEFAULTENDDATE)
     const [startTime, setStartTime] = useState(DEFAULTSTARTTIME)
     const [endTime, setEndTime] = useState(DEFAULTENDTIME)
 
@@ -97,7 +98,6 @@ const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
 
     useEffect(() => {
         if (startFilter) {
-            console.log(startDate, endDate, startTime, endTime)
             setTimeRange({
                 startDate,
                 endDate,
@@ -109,7 +109,7 @@ const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
 
     return (
         <div>
-            <div className="gap flex w-[316px] flex-col gap-3">
+            <div className="gap flex w-[316px] flex-col gap-3 overflow-hidden rounded-lg border border-gray-3">
                 <div className="flex">
                     {/* 開始日期 */}
                     <DatePickerInput

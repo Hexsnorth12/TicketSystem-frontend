@@ -3,23 +3,48 @@ import React, { useState } from 'react'
 import { InputComponent } from '@components/common'
 import { SelectInput } from '@components/common'
 import { Button } from '@/components/common'
-export default function ForgetPassWord() {
+import fetchClient from '@/lib/fetchClient'
+import { useCartStore } from '@/stores/useCartStore'
+import { DataSource } from '@/types/cart'
+import { createNewebPayOrder } from '@/utils/paymentUtils'
+const Delivery = () => {
     const [username, setUsername] = useState('')
-    const [deliveryArea, setDeliveryArea] = useState('')
-    const [payMethod, setPayMethod] = useState('線上付款')
+    const [deliveryEmail, setDeliveryEmail] = useState('')
+    const [payMethod, setPayMethod] = useState<string>('')
     const [phone, setPhone] = useState('')
     const [delivery, setDelivery] = useState('線上取票')
     const [address, setAddress] = useState('')
+    const dataSource: DataSource[] = []
+    const cart = useCartStore((state) => state.cart)
+    const LogOut = useCartStore((state) => state.LogOut)
+    cart.forEach((item) => {
+        const dataSourceItem: DataSource = {
+            key: item._id,
+            name: {
+                image: item.photoPath,
+                title: item.title,
+                subtitle: item.selectedPlan.name,
+            },
+            selectedPlan: item.selectedPlan,
+            number: item.quantity,
+            price:
+                (item.price as number) *
+                item.selectedPlan.discount *
+                item.selectedPlan.headCount,
+        }
 
+        dataSource.push(dataSourceItem) // 添加到 dataSource 数组中
+    })
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-    const handleDeliveryAreaChange = (value: string) => {
-        setDeliveryArea(value)
+    const handleDeliveryEmailChange = (value: string) => {
+        setDeliveryEmail(value)
     }
-    const handlePayMethodChange = (value: string) => {
-        console.log(payMethod)
-        setPayMethod(value)
+    const handlePayMethodChange = (selectedOption: string) => {
+        const value = paymentMethodMap[selectedOption]
+        console.log(value) // Log the selected payment method value
+        setPayMethod(value) // Update state with selected payment method value
     }
     const handlePhoneChange = (value: string) => {
         setPhone(value)
@@ -31,7 +56,97 @@ export default function ForgetPassWord() {
         setAddress(value)
     }
 
-    const option = ['線上付款', '貨到付款']
+    const option = ['LINPAY', '藍新金流']
+    //
+    const paymentMethodMap: { [key: string]: string } = {
+        LINPAY: 'linePay',
+        藍新金流: 'newebPay',
+    }
+    const total = cart.reduce((acc, product) => {
+        const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
+        const price = product.price ?? 0
+        if (selectedPlan && selectedPlan.discount && selectedPlan.headCount) {
+            return (
+                acc +
+                price *
+                    selectedPlan.discount *
+                    selectedPlan.headCount *
+                    product.quantity
+            )
+        }
+        // 如果没有折扣信息，按原价计算
+        return acc + price * product.quantity
+    }, 0)
+    const orderData = {
+        items: dataSource.map((item) => ({
+            productId: item.key,
+            plan: item.selectedPlan,
+            amount: item.number,
+        })),
+        price: total, // 使用第一个 dataSourceItem 的 price
+        paymentMethod: payMethod,
+        deliveryInfo: {
+            name: username,
+            phone: phone,
+            address: address,
+            email: deliveryEmail,
+        },
+    }
+
+    const handleOrderSubmit = async () => {
+        try {
+            const response = await fetchClient({
+                method: 'POST',
+                url: 'api/v1/order',
+                body: JSON.stringify(orderData),
+            })
+
+            if (response.status == 6000) {
+                const responseData = await response
+                const { status, message, data } = responseData
+                console.log(responseData, 'responseresponse')
+                if (status === '6000') {
+                    if (orderData.paymentMethod === 'linePay' && data.linePay) {
+                        // Order was successful with Line Pay
+                        alert('訂單成功')
+                        LogOut()
+                        window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
+                    } else if (
+                        orderData.paymentMethod === 'newebPay' &&
+                        data.newebPay
+                    ) {
+                        // alert(JSON.stringify(data.newebPay))
+                        LogOut()
+
+                        // Generate and submit the NewebPay form
+                        const newebPayFormHtml = createNewebPayOrder(
+                            data.newebPay.paymentGateway,
+                            data.newebPay.merchantId,
+                            data.newebPay.tradeInfo,
+                            data.newebPay.tradeSha,
+                            data.newebPay.version, // Assuming version is provided
+                        )
+                        document.write(newebPayFormHtml)
+                    } else {
+                        // Invalid payment method or missing data
+                        alert('訂單失敗')
+                    }
+                } else {
+                    // Order failed with specific error
+                    alert(`'訂單失敗: ${message}`)
+                    // Redirect to error page or handle as needed
+                }
+            } else {
+                // Handle HTTP error responses
+                alert('訂單失敗')
+                // Redirect to error page or handle as needed
+            }
+        } catch (error) {
+            console.error('Error submitting order:', error)
+            alert('訂單失敗')
+            // Redirect to error page or handle as needed
+        }
+    }
     return (
         <>
             <div className="text-center">
@@ -44,17 +159,6 @@ export default function ForgetPassWord() {
                 <div className="mt-10 grid grid-cols-1 justify-between gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div className="sm:col-span-3">
                         <InputComponent
-                            name={'deliveryArea'}
-                            label={'配送地區'}
-                            type={'text'}
-                            value={deliveryArea}
-                            onChange={handleDeliveryAreaChange}
-                            placeholder="台灣及離島"
-                        />
-                    </div>
-
-                    <div className="sm:col-span-3">
-                        <InputComponent
                             name={'username'}
                             label={'購買人姓名'}
                             type={'text'}
@@ -62,7 +166,15 @@ export default function ForgetPassWord() {
                             onChange={handleUsernameChange}
                         />
                     </div>
-
+                    <div className="sm:col-span-3">
+                        <InputComponent
+                            name={'deliveryArea'}
+                            label={'購買人信箱'}
+                            type={'text'}
+                            value={deliveryEmail}
+                            onChange={handleDeliveryEmailChange}
+                        />
+                    </div>
                     <div className="sm:col-span-3">
                         <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
                             付款方式
@@ -120,6 +232,7 @@ export default function ForgetPassWord() {
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <Button
                         name="checkout"
+                        onClick={handleOrderSubmit}
                         value="確認送出訂單"
                         type={'submit'}
                         title="checkout"
@@ -130,3 +243,4 @@ export default function ForgetPassWord() {
         </>
     )
 }
+export default Delivery

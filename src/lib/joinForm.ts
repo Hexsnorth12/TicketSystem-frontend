@@ -1,3 +1,5 @@
+'use server'
+
 import { ZodError, z } from 'zod'
 import { State } from '@/types'
 import fetchServer from '@/lib/fetchServer'

@@ -1,19 +1,25 @@
 import React from 'react'
 import { ShareTicket } from '@/components/member'
-import { favorites } from '@/definitions/movieData'
 import { TicketCodeForm } from '@/components/forms'
 import BasicTabs from '@/components/common/Tab/movieDetail'
 import clsx from 'clsx'
+import fetchServer from '@/lib/fetchServer'
+import { ShareOrder } from '@/types/product'
 
 interface pageProps {}
 
-const Page: React.FC<pageProps> = () => {
-    const renderShareTickets = favorites.map((movie) => (
-        <ShareTicket key={movie.id} />
+const Page: React.FC<pageProps> = async () => {
+    const { data }: { data: ShareOrder[] } = await fetchServer({
+        method: 'GET',
+        url: `api/v1/user/share-tickets`,
+    })
+    const renderShareTickets = data?.map((order) => (
+        <ShareTicket key={order.orderId} order={order} />
     ))
+
     const tabs = [
         {
-            label: '電影介紹',
+            label: '可分票',
             Component: (
                 <div
                     className={clsx(
@@ -29,7 +35,7 @@ const Page: React.FC<pageProps> = () => {
             ),
         },
         {
-            label: '評價',
+            label: '取得票券',
             Component: <TicketCodeForm />,
         },
     ]

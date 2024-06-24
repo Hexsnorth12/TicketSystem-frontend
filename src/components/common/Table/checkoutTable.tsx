@@ -9,23 +9,7 @@ import TableRow from '@mui/material/TableRow'
 import { styled } from '@mui/material/styles'
 import Image from 'next/image'
 import Chip from '@/components/common/Chip/chip'
-interface Column {
-    title: string
-    dataIndex: keyof DataSource
-    key: string
-}
-
-interface DataSource {
-    key: string
-    name: {
-        image: string
-        title: string
-        subtitle: string
-    }
-    number: number
-    price: number
-}
-
+import { DataSource, Column, UserProductPlan } from '@/types/cart'
 interface InputProps {
     columns: Column[]
     dataSource: DataSource[]
@@ -54,7 +38,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                         alt={name.title}
                         width={100}
                         height={100}
-                        className="rounded-lg"
+                        className="h-[100px] w-[100px] rounded-lg object-cover"
                     />
                 </div>
                 <div className="col-span-1 flex justify-start truncate text-body md:text-xl">
@@ -66,12 +50,45 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
             </div>
         </div>
     )
+
+    const renderCellData = (
+        cellData:
+            | string
+            | number
+            | { image: string; title: string; subtitle: string }
+            | UserProductPlan
+            | undefined,
+    ) => {
+        if (typeof cellData === 'object' && cellData !== null) {
+            if (
+                'image' in cellData &&
+                'title' in cellData &&
+                'subtitle' in cellData
+            ) {
+                return renderName(cellData)
+            } else if (
+                'name' in cellData &&
+                'discount' in cellData &&
+                'headCount' in cellData
+            ) {
+                return (
+                    <div>
+                        <div>{cellData.name}</div>
+                        <div>
+                            {cellData.discount}% off for {cellData.headCount}{' '}
+                            people
+                        </div>
+                    </div>
+                )
+            }
+            return JSON.stringify(cellData)
+        }
+        return cellData
+    }
+
     return (
         <TableContainer>
-            <Table
-                className="min-w-[
-                     md:w-full"
-                aria-label="customized table">
+            <Table className="min-w-full" aria-label="customized table">
                 <TableHead>
                     <TableRow>
                         {columns.map((column) => (
@@ -79,6 +96,7 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                 {column.title}
                             </StyledTableCell>
                         ))}
+                        <StyledTableCell>動作</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -93,13 +111,8 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                             <Chip value={`${data.number}`} />
                                         ) : column.dataIndex === 'price' ? (
                                             `${data.number * data.price} NT`
-                                        ) : typeof cellData === 'object' &&
-                                          'image' in cellData &&
-                                          'title' in cellData &&
-                                          'subtitle' in cellData ? (
-                                            renderName(cellData)
                                         ) : (
-                                            cellData
+                                            renderCellData(cellData)
                                         )}
                                     </StyledTableCell>
                                 )

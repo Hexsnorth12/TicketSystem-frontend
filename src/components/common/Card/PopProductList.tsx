@@ -54,6 +54,7 @@ const PopProductList: React.FC<PopProductListProps> = ({ products }) => {
                     spaceBetween={30}
                     centeredSlides={true}
                     loop={true}
+                    initialSlide={2}
                     pagination={{
                         type: 'fraction',
                     }}

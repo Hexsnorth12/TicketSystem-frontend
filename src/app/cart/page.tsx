@@ -14,15 +14,22 @@ const CartPage = () => {
     const total = cart.reduce((acc, product) => {
         const selectedPlan = product.selectedPlan // 确保这里的 selectedPlan 是正确的
         const price = product.price ?? 0
-        if (selectedPlan && selectedPlan.discount) {
-            return acc + price * selectedPlan.discount * product.quantity
+        if (selectedPlan && selectedPlan.discount && selectedPlan.headCount) {
+            return (
+                acc +
+                price *
+                    selectedPlan.discount *
+                    selectedPlan.headCount *
+                    product.quantity
+            )
         }
         // 如果没有折扣信息，按原价计算
         return acc + price * product.quantity
     }, 0)
     const originalTotal = cart.reduce((acc, product) => {
         const price = product.price ?? 0
-        return acc + price * product.quantity
+        const headCount = product.selectedPlan.headCount
+        return acc + price * headCount * product.quantity
     }, 0)
 
     const discount = originalTotal - total
@@ -39,7 +46,10 @@ const CartPage = () => {
                 subtitle: item.selectedPlan.name,
             },
             number: item.quantity,
-            price: (item.price as number) * item.selectedPlan.discount,
+            price:
+                (item.price as number) *
+                item.selectedPlan.discount *
+                item.selectedPlan.headCount,
         }
 
         dataSource.push(dataSourceItem) // 添加到 dataSource 数组中

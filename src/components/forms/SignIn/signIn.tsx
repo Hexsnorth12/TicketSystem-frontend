@@ -10,6 +10,8 @@ import { refreshAuth } from '@/lib'
 import { useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
+import fetchClient from '@/lib/fetchClient'
+import { useCartStore } from '@/stores/useCartStore'
 interface SignInProps {
     callbackUrl: string
 }
@@ -27,6 +29,20 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
+    const mergeCart = useCartStore((state) => state.mergeCarts)
+    const fetchCartData = async () => {
+        const response = await fetchClient({
+            method: 'GET',
+            url: `api/v1/cart?limit=${100}&page=${1}`,
+        })
+        console.log(response.data, 'response')
+
+        const userCart = response.data
+        if (userCart && userCart.items) {
+            mergeCart(userCart.items)
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -48,6 +64,7 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
                 callbackUrl = searchParams.get('callbackUrl') || '/'
             }
             refreshAuth(callbackUrl)
+            fetchCartData()
         }
     }
 
