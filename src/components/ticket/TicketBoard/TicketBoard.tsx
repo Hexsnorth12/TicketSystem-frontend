@@ -66,7 +66,7 @@ const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
                     </span>
                 </p>
             </TextField>
-            {ticketDetail.status === 'unverified' ? (
+            {/* {ticketDetail.status === 'unverified' ? (
                 <TextField
                     label={'現場換/驗票'}
                     containerStyle="md:border-b md:border-gray-4">
@@ -88,7 +88,7 @@ const TicketBoard: React.FC<TicketBoardProps> = ({ ticketDetail }) => {
                         </Button>
                     </div>
                 </TextField>
-            ) : null}
+            ) : null} */}
             <div className="">
                 <p className="mb-3 text-small2 leading-150 text-gray-5 md:text-small1">
                     線上分票

@@ -201,17 +201,19 @@ const DataTable: React.FC<DataTableProps> = ({
                     </TableBody>
                 </Table>
             </TableContainer>
-            <div className="mt-4 flex justify-end">
-                <Button
-                    type={'button'}
-                    title={'Reset'}
-                    onClick={() => {
-                        setSelected([])
-                        onSubmit && onSubmit(selected)
-                    }}>
-                    核銷
-                </Button>
-            </div>
+            {hasCheckbox ? (
+                <div className="mt-4 flex justify-end">
+                    <Button
+                        type={'button'}
+                        title={'Reset'}
+                        onClick={() => {
+                            setSelected([])
+                            onSubmit && onSubmit(selected)
+                        }}>
+                        核銷
+                    </Button>
+                </div>
+            ) : null}
         </>
     )
 }

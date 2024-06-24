@@ -1,6 +1,8 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import clsx from 'clsx'
 import arrow from '@icon/arrow_right_primary.svg'
 
@@ -11,17 +13,20 @@ interface TabItemProps {
 }
 
 const TabItem: React.FC<TabItemProps> = ({ pageTitle, path, hasBorder }) => {
+    const router = useRouter()
+
     return (
         <li
             className={clsx(
-                'inline-block text-white  hover:text-primary md:flex md:justify-between md:py-4',
+                'inline-block cursor-pointer  text-white hover:text-primary md:flex md:justify-between md:py-4',
                 {
                     'md:border-b md:border-gray-3': hasBorder,
                 },
-            )}>
-            <Link href={path} className="text-nowrap text-small2 md:text-btn2">
-                {pageTitle}
-            </Link>
+            )}
+            onClick={() => {
+                router.push(path)
+            }}>
+            <p className="text-nowrap text-small2 md:text-btn2">{pageTitle}</p>
             <Image
                 src={arrow}
                 width={24}

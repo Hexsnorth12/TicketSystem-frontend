@@ -20,7 +20,15 @@ const getOrders = (
         'api'
     >,
 ) =>
-    build.query<OrderData[], { params: string; token: string }>({
+    build.query<
+        {
+            orders: OrderData[]
+            limit: number
+            page: number
+            totalCount: number
+        },
+        { params: string; token: string }
+    >({
         query: ({ params, token }) => ({
             url: `api/v1/order?${params}`,
             method: 'GET',
