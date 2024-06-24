@@ -218,12 +218,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </li>
                         </ul>
                     )}
-                    <Link
+                    {/* <Link
                         onClick={handleClick}
                         href="/movies"
                         className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         電影總表
-                    </Link>
+                    </Link> */}
                     <Link
                         onClick={handleClick}
                         href="/join"
