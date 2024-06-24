@@ -1,5 +1,6 @@
 'use client'
 import React, { useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useForm, Controller, FieldValues } from 'react-hook-form'
 import { useSession } from 'next-auth/react'
@@ -24,6 +25,7 @@ import { JoinEventRes, JoinEventSuccess, JoinPageError } from '@/types'
 interface pageProps {}
 
 const Page: React.FC<pageProps> = () => {
+    const router = useRouter()
     const { data: session } = useSession()
     const token = session?.accessToken || ''
     const fileRef = useRef<HTMLInputElement>(null)
@@ -110,6 +112,9 @@ const Page: React.FC<pageProps> = () => {
                 setSuccess(success?.message)
                 setTimeout(() => {
                     closeSuccessModal()
+                    router.push('/join', {
+                        scroll: true,
+                    })
                 }, 1500)
             } else {
                 const error = result as JoinPageError

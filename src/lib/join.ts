@@ -163,14 +163,12 @@ export const createJoinEvent = async (eventInfo: {
             url,
             body: JSON.stringify(eventInfo),
         })
-        const { status, data } = result
+        const { status } = result
 
         if (status === '6000') {
-            if (data.groups) {
-                return {
-                    status: 'success',
-                    message: '建立活動成功！',
-                }
+            return {
+                status: 'success',
+                message: '建立活動成功！',
             }
         } else {
             throw new Error('建立活動失敗')
