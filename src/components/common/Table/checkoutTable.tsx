@@ -96,7 +96,6 @@ const TableComponent: React.FC<InputProps> = ({ columns, dataSource }) => {
                                 {column.title}
                             </StyledTableCell>
                         ))}
-                        <StyledTableCell>動作</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

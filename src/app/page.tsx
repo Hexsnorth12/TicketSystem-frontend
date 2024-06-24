@@ -27,7 +27,7 @@ import {
 } from '../definitions/movieData'
 import Marquee from '@/components/common/Swiper/Marquee'
 import Loading from '@/components/LoadingSkeleton/Loading'
-import Alert from '@mui/material/Alert'
+import { useAlert } from '@/components/useAlert/useAlert'
 interface HeaderTitleProps {
     title: string
     iconPath: string
@@ -58,8 +58,7 @@ const HomePage: React.FC = () => {
     const [favorites, setFavorites] = useState<Record<string, boolean>>({})
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
-    const [showAlert, setShowAlert] = useState<boolean>(false) // 控制是否显示 Alert 的状态
-
+    const showAlert = useAlert()
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -102,8 +101,8 @@ const HomePage: React.FC = () => {
     const [removeFavorite] = useRemoveFavoriteMutation()
     const handleUpdateFavorite = async (productId: string) => {
         if (!session) {
-            setShowAlert(true) // 显示 Alert
-            setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
+            showAlert('登入後收藏', 'warning')
+            // setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
             return
         }
         const currentStatus = favorites[productId]
@@ -170,11 +169,6 @@ const HomePage: React.FC = () => {
             <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
             <TicketProductList tickets={ticketproducts} />
             <NavBanner type="ticket" />
-            {showAlert && (
-                <div className="fixed bottom-10 right-20 z-50">
-                    <Alert severity="warning">請先登入後收藏</Alert>
-                </div>
-            )}
         </>
     )
 }
