@@ -38,6 +38,12 @@ const Delivery = () => {
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
+    const isValidEmail = (email: string) => {
+        // 正則表達式來驗證電子郵件格式
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
     const handleDeliveryEmailChange = (value: string) => {
         setDeliveryEmail(value)
     }
@@ -56,10 +62,11 @@ const Delivery = () => {
         setAddress(value)
     }
 
-    const option = ['LINPAY', '藍新金流']
+    const option = ['LINEPAY', '藍新金流']
     //
+
     const paymentMethodMap: { [key: string]: string } = {
-        LINPAY: 'linePay',
+        LINEPAY: 'linePay',
         藍新金流: 'newebPay',
     }
     const total = cart.reduce((acc, product) => {
@@ -94,6 +101,14 @@ const Delivery = () => {
     }
 
     const handleOrderSubmit = async () => {
+        if (
+            !orderData.deliveryInfo.name ||
+            !orderData.deliveryInfo.email ||
+            !isValidEmail(orderData.deliveryInfo.email)
+        ) {
+            alert('請填寫姓名和有效的電子郵件地址')
+            return
+        }
         try {
             const response = await fetchClient({
                 method: 'POST',
@@ -115,16 +130,14 @@ const Delivery = () => {
                         orderData.paymentMethod === 'newebPay' &&
                         data.newebPay
                     ) {
-                        // alert(JSON.stringify(data.newebPay))
                         LogOut()
-
                         // Generate and submit the NewebPay form
                         const newebPayFormHtml = createNewebPayOrder(
-                            data.newebPay.paymentGateway,
-                            data.newebPay.merchantId,
-                            data.newebPay.tradeInfo,
-                            data.newebPay.tradeSha,
-                            data.newebPay.version, // Assuming version is provided
+                            data.newebPay.paymentGateway, // URL 通常不变
+                            data.newebPay.MerchantID, // 首字母大写
+                            data.newebPay.TradeInfo, // 首字母大写
+                            data.newebPay.TradeSha, // 首字母大写
+                            data.newebPay.Version, // 首字母大写
                         )
                         document.write(newebPayFormHtml)
                     } else {
