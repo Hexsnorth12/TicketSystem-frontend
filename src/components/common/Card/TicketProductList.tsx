@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { truncateName } from '@/utils/numberUtils'
+import { formatdate } from '@/utils/dateUtils'
 import Chatbtn from '../../Buttons/ChatBtn'
 
 type Ticket = {
@@ -80,8 +81,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 <div className="flex items-center justify-center text-gray-5">
                                     時效性
                                     <nav className="px-2 text-number5 text-white">
-                                        {' '}
-                                        {ticket.expiredAt}{' '}
+                                        {formatdate(ticket.expiredAt)}
                                     </nav>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 時效性
                                 <nav className="px-2 text-number5 text-white">
                                     {' '}
-                                    {ticket.expiredAt}{' '}
+                                    {formatdate(ticket.expiredAt)}
                                 </nav>
                             </div>
                         </div>
