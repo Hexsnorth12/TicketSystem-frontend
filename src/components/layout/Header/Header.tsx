@@ -107,11 +107,11 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
-                    {/* <Link href="/movies" legacyBehavior>
+                    <Link href="/generalMovies" legacyBehavior>
                         <a className="movies-link text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             電影總表
                         </a>
-                    </Link> */}
+                    </Link>
                     <Link href="/join" legacyBehavior>
                         <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             一起揪團
@@ -218,12 +218,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </li>
                         </ul>
                     )}
-                    {/* <Link
+                    <Link
                         onClick={handleClick}
-                        href="/movies"
+                        href="/generalMovies"
                         className="block cursor-pointer px-4 py-2  text-white hover:border-b-2 hover:border-b-primary hover:text-primary ">
                         電影總表
-                    </Link> */}
+                    </Link>
                     <Link
                         onClick={handleClick}
                         href="/join"

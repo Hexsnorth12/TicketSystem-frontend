@@ -84,7 +84,9 @@ const Marquee: React.FC = () => {
                                         type="filter"
                                         onClick={handleFilterClick}
                                     />
-                                    <SearchBtn type="recommend" />
+                                    <Link href="/generalMovies">
+                                        <SearchBtn type="recommend" />
+                                    </Link>
                                     <Link href="/search">
                                         <SearchBtn
                                             type="search"
