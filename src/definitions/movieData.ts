@@ -72,6 +72,39 @@ export type Ticket = {
     count: number
 }
 
+export const fetchGeneralProducts = async (): Promise<Product[]> => {
+    try {
+        const { session } = await getUserSession();
+        const token = session?.user?.token;
+        const params = new URLSearchParams({
+            limit: '50',
+            page: '1',
+            isPublic: 'true',
+            sortField: 'sellStartAt',
+            sortOrder: 'desc',
+        });
+
+        const { data } = await fetchClient({
+            method: 'GET',
+            url: `api/v1/product?${params.toString()}`,
+            token,
+            tags: ['product'],
+        });
+
+        if (data && data.products) {
+            return data.products.map((product: Product) => ({
+                ...product,
+                photoPath: product.photoPath.startsWith('')
+                    ? product.photoPath
+                    : `${product.photoPath}`,
+            }));
+        } else {
+            throw new Error('未找到商品');
+        }
+    } catch (err) {
+        throw new Error('獲取商品失敗');
+    }
+};
 
 export const fetchPopProducts = async (): Promise<Product[]> => {
     try {
@@ -294,8 +327,6 @@ export const dummyTicketList: Ticket[] = [
         count: 2,
     },
 ]
-
-
 
 export const dummyTicketDetail: TicketDetail = {
     _id: '23h4iuh2iu5hih1ui4hi',
