@@ -8,7 +8,7 @@ import { SelectInput } from '@/components/common'
 import { DATA_OPTIONS } from '@/definitions/dataTable'
 import { DatePicker } from '@mui/x-date-pickers'
 import { styled } from '@mui/material'
-import { startOfToday, parseISO, format } from 'date-fns'
+import { parseISO, format, startOfMonth, endOfMonth } from 'date-fns'
 import { useLazyGetOrdersQuery } from '@/services/modules/admin'
 import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
@@ -42,8 +42,10 @@ interface ProcessRow {
 const Page: React.FC<Props> = () => {
     const { data: session } = useSession()
 
-    const [startDate, setStartDate] = useState<Date | null>(startOfToday())
-    const [endDate, setEndDate] = useState<Date | null>(startOfToday())
+    const [startDate, setStartDate] = useState<Date | null>(
+        startOfMonth(new Date()),
+    )
+    const [endDate, setEndDate] = useState<Date | null>(endOfMonth(new Date()))
     const [status, setStatus] = useState<string>('')
     const [processRows, setProcessRows] = useState<ProcessRow[]>([])
 
@@ -54,6 +56,8 @@ const Page: React.FC<Props> = () => {
             const params = new URLSearchParams({
                 page: '1',
                 limit: `${PAGE_LIMIT}`,
+                createdAtFrom: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
+                createdAtTo: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
             })
             const data = await getOrders({
                 params: params.toString(),
@@ -72,7 +76,14 @@ const Page: React.FC<Props> = () => {
                             parseISO(order.createdAt),
                             'yyyy-MM-dd',
                         ),
-                        updatedAt: format(parseISO(order.paidAt), 'yyyy-MM-dd'),
+                        ...(order.paidAt && order.paidAt?.length > 0
+                            ? {
+                                  updatedAt: format(
+                                      parseISO(order.paidAt),
+                                      'yyyy-MM-dd',
+                                  ),
+                              }
+                            : { updatedAt: '尚未付款' }),
                     }
                 }) ?? []
             setProcessRows(processRows)
@@ -107,7 +118,14 @@ const Page: React.FC<Props> = () => {
                     paymentMethod: order.paymentMethod,
                     price: order.price,
                     createdAt: format(parseISO(order.createdAt), 'yyyy-MM-dd'),
-                    updatedAt: format(parseISO(order.paidAt), 'yyyy-MM-dd'),
+                    ...(order.paidAt && order.paidAt?.length > 0
+                        ? {
+                              updatedAt: format(
+                                  parseISO(order.paidAt),
+                                  'yyyy-MM-dd',
+                              ),
+                          }
+                        : { updatedAt: '尚未付款' }),
                 }
             }) ?? []
         setProcessRows(processRows)
