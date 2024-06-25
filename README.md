@@ -17,7 +17,7 @@
 - Node.js 版本必需為 v21
 1. 取得專案
    ```
-   git clone  https://github.com/muchuanhung/ticket-system-frontend.git
+   git clone  [https://github.com/Hexsnorth12/TicketSystem-frontend.git]
    ```
 2. 移動到專案中
    ```
