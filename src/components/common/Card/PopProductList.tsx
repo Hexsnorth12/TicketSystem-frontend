@@ -58,10 +58,10 @@ const PopProductList: React.FC<PopProductListProps> = ({
     return (
         <>
             {/* Desktop View */}
-            <div className="hidden md:block">
+            <div className="hidden md:mx-32 md:block ">
                 <Swiper
                     slidesPerView={5}
-                    spaceBetween={30}
+                    spaceBetween={10}
                     centeredSlides={true}
                     loop={true}
                     initialSlide={2}
@@ -72,9 +72,9 @@ const PopProductList: React.FC<PopProductListProps> = ({
                     modules={[Navigation]}>
                     {products.map((product, index) => (
                         <SwiperSlide key={product._id}>
-                            <div className="overflow-hidden rounded-lg">
+                            <div className="m-4 overflow-hidden rounded-lg p-4">
                                 <Link href={`/movies/${product._id}`}>
-                                    <div className="relative h-[320px] w-[240px]">
+                                    <div className="relative h-[210px] w-[160px]">
                                         <Image
                                             src={product.photoPath}
                                             alt={product.title}
@@ -105,7 +105,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                     </div>
-                                    <div className="text-center">
+                                    <div className="w-[160px] text-center">
                                         <div className="flex justify-between">
                                             <div className="mt-2 text-start text-white">
                                                 <div className="text-btn1 font-medium">
