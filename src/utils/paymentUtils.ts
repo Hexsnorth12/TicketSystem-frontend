@@ -1,6 +1,6 @@
 export function createNewebPayOrder(
     paymentGateway: string,
-    MerchantId: string,
+    MerchantID: string,
     TradeInfo: string,
     TradeSha: string,
     Version: string,
@@ -12,8 +12,8 @@ export function createNewebPayOrder(
             <meta charset="utf-8">
         </head>
         <body>
-            <form id="newebpayForm" name="newebpayForm" method="post" action="${paymentGateway}" target="_blank">
-                <input type="hidden" name="MerchantId" value="${MerchantId}">
+            <form id="newebpayForm" name="newebpayForm" method="post" action="${paymentGateway}" >
+                <input type="hidden" name="MerchantID" value="${MerchantID}">
                 <input type="hidden" name="TradeInfo" value="${TradeInfo}">
                 <input type="hidden" name="TradeSha" value="${TradeSha}">
                 <input type="hidden" name="Version" value="${Version}">
