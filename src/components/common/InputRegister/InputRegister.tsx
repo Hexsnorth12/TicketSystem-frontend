@@ -39,7 +39,7 @@ const InputRegister = <T extends FieldValues>({
             <label
                 htmlFor={label}
                 className={clsx(
-                    'block text-small2 leading-150 text-white md:text-small1',
+                    'block text-small2 leading-150 text-gray-5 md:text-small1',
                     {
                         'text-gray-900': theme === 'light',
                     },

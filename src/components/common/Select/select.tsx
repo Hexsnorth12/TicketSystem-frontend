@@ -14,7 +14,6 @@ interface SelectProps {
 
 const SelectInput: React.FC<SelectProps> = ({
     placeholder,
-    label,
     onSelectChange,
     options,
     className, // Add className prop
@@ -52,15 +51,18 @@ const SelectInput: React.FC<SelectProps> = ({
                     </Select.ScrollUpButton>
                     <Select.Viewport className="rounded-lg border border-gray-3">
                         <Select.Group>
-                            {/* <Select.Label className="flex items-center justify-start px-4 py-3 text-body">
-                                {label}
-                            </Select.Label> */}
                             {options.map((option, index) => (
                                 <SelectItem
                                     key={index}
                                     value={option}
                                     onClick={() => handleChange(option)}
-                                    className="flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:text-primary">
+                                    className={clsx(
+                                        'flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:bg-gray-3 hover:text-primary',
+                                        {
+                                            'bg-gray-2':
+                                                option === selectedValue,
+                                        },
+                                    )}>
                                     {option}
                                 </SelectItem>
                             ))}
