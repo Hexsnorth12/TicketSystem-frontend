@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper'
 import { Checkbox } from '@mui/material'
 import { HeadCell } from '@/types/table'
 import { Button } from '@/components/common'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 const StyledTableRow = styled(TableRow)(() => ({
     color: 'white',
     '& .MuiTableCell-root': {
@@ -35,7 +35,7 @@ const DataTable: React.FC<DataTableProps> = ({
     onSubmit,
 }) => {
     const [selected, setSelected] = useState<string[]>([])
-
+    const showAlert = useAlert()
     // const handleSelectAllClick = (
     //     event: React.ChangeEvent<HTMLInputElement>,
     // ) => {
@@ -65,6 +65,7 @@ const DataTable: React.FC<DataTableProps> = ({
             )
         }
         setSelected(newSelected)
+        showAlert('核銷成功', 'success')
     }
 
     const isSelected = (id: string) => selected.indexOf(id) !== -1
