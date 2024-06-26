@@ -113,20 +113,20 @@ const MemberMenu: React.FC<MemberMenuProps> = ({
                     </li>
                     <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
                         <Link
-                            href="/user/sharedTicket"
-                            scroll={false}
-                            className="block py-3 hover:text-primary"
-                            onClick={handleClick}>
-                            線上分票
-                        </Link>
-                    </li>
-                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
-                        <Link
                             href="/user/join"
                             scroll={false}
                             className="block py-3 hover:text-primary"
                             onClick={handleClick}>
                             我的揪團
+                        </Link>
+                    </li>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/sharedTicket"
+                            scroll={false}
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}>
+                            線上分票
                         </Link>
                     </li>
                     <li

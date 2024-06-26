@@ -28,11 +28,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
 
     useEffect(() => {
+        if (!isAuth) return
         const getUserInfo = async () => {
-            getInfo({ token: session?.accessToken ?? '' })
+            getInfo({ token: session?.accessToken ?? '' }).unwrap()
         }
         getUserInfo()
-    }, [getInfo])
+    }, [isAuth, session])
 
     const onLogout = async () => {
         setIsOpen(false)
@@ -220,18 +221,18 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             <li
                                 className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
                                 onClick={handleClick}>
-                                <Link href="/user/sharedTicket" scroll={false}>
-                                    線上分票
-                                </Link>
-                            </li>
-                            <li
-                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
-                                onClick={handleClick}>
                                 <Link
                                     href="/user/join"
                                     scroll={false}
                                     className="cursor-pointer">
                                     我的揪團
+                                </Link>
+                            </li>
+                            <li
+                                className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                onClick={handleClick}>
+                                <Link href="/user/sharedTicket" scroll={false}>
+                                    線上分票
                                 </Link>
                             </li>
                         </ul>
