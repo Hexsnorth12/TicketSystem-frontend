@@ -33,7 +33,7 @@ export type Group = {
     movieTitle: string
     amount: number
     placeholderImg: string
-    location: string
+    theater: string
     hasTicket: boolean
     time: string
     endAt: string
