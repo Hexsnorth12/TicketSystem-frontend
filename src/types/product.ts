@@ -33,7 +33,7 @@ export interface ProductDetail extends Product {
     cancelPolicies: string[]
     certificates: string[]
     plans: ProductPlan[]
-    tags: string[]
+    tags: { name: string }[]
     brief: string
     isFavorite: boolean
 }
