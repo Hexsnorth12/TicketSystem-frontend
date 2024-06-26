@@ -8,6 +8,7 @@ import {
     truncateContent,
     truncateContentMobile,
 } from '@/utils/numberUtils'
+import { formatdate } from '@/utils/dateUtils'
 import Tag from '@components/common/Tag/tag'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -89,7 +90,9 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                                                 {truncateContent(group.content)}
                                             </div>
                                             <div className="flex justify-between text-primary">
-                                                <div>{group.time}</div>
+                                                <div>
+                                                    {formatdate(group.time)}
+                                                </div>
                                                 <p className="px-2">
                                                     {group.vacancy}
                                                 </p>
