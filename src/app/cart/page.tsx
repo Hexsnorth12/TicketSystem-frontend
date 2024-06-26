@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { DataSource, Column } from '@/types/cart'
 import { Button } from '@/components/common'
+import { bellota } from '@/components/fonts'
+
 const CartPage = () => {
     const cart = useCartStore((state) => state.cart)
     const { data: session } = useSession()
@@ -95,12 +97,24 @@ const CartPage = () => {
                             role="list"
                             className="mb-4 mt-10 grid grid-cols-1 gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
                             <li className="flex gap-x-3">
-                                原價:{originalTotal} NT
+                                <span>原價：</span>
+                                <span className={bellota.className}>
+                                    {`${originalTotal}　NT`}
+                                </span>
                             </li>
                             <li className="flex gap-x-3">
-                                方案折扣：-{discount} NT
+                                <span>方案折扣：</span>
+                                <span className={bellota.className}>
+                                    {`- ${discount}　NT`}
+                                </span>
                             </li>
-                            <li className="flex gap-x-3">總金額:{total} NT</li>
+                            <li className="flex gap-x-3">
+                                {' '}
+                                <span>總金額：</span>
+                                <span className={bellota.className}>
+                                    {`${total}　NT`}
+                                </span>
+                            </li>
                             <div className="h-px flex-auto bg-gray-100" />
                         </ul>
                         <Button type="button" title="">

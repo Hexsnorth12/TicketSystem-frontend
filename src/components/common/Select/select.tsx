@@ -4,6 +4,7 @@ import React from 'react'
 import * as Select from '@radix-ui/react-select'
 import clsx from 'clsx'
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
+
 interface SelectProps {
     placeholder?: string
     label: string
@@ -57,7 +58,7 @@ const SelectInput: React.FC<SelectProps> = ({
                                     value={option}
                                     onClick={() => handleChange(option)}
                                     className={clsx(
-                                        'flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:bg-gray-3 hover:text-primary',
+                                        'flex select-none items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:bg-gray-3 hover:text-primary',
                                         {
                                             'bg-gray-2':
                                                 option === selectedValue,
