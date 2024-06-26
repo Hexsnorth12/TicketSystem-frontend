@@ -7,6 +7,7 @@ import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
 import { DataSource } from '@/types/cart'
 import { createNewebPayOrder } from '@/utils/paymentUtils'
+import { useAlert } from '@/components/useAlert/useAlert'
 const Delivery = () => {
     const [username, setUsername] = useState('')
     const [deliveryEmail, setDeliveryEmail] = useState('')
@@ -14,6 +15,7 @@ const Delivery = () => {
     const [phone, setPhone] = useState('')
     const [delivery, setDelivery] = useState('線上取票')
     const [address, setAddress] = useState('')
+    const showAlert = useAlert()
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
     const LogOut = useCartStore((state) => state.LogOut)
@@ -42,6 +44,12 @@ const Delivery = () => {
         // 正則表達式來驗證電子郵件格式
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         return emailRegex.test(email)
+    }
+    const isValidPhoneNumber = (phoneNumber: string) => {
+        // 正则表达式来验证手机号格式，这里简单示范，具体可根据需要调整
+        const phoneRegex = /^\d{10}$/ // 假设手机号为10位数字
+
+        return phoneRegex.test(phoneNumber)
     }
 
     const handleDeliveryEmailChange = (value: string) => {
@@ -103,10 +111,21 @@ const Delivery = () => {
     const handleOrderSubmit = async () => {
         if (
             !orderData.deliveryInfo.name ||
+            !orderData.deliveryInfo.phone ||
             !orderData.deliveryInfo.email ||
-            !isValidEmail(orderData.deliveryInfo.email)
+            !orderData.deliveryInfo.address
         ) {
-            alert('請填寫姓名和有效的電子郵件地址')
+            showAlert('請填寫姓名、電話、電子郵件和地址', 'warning')
+            return
+        }
+
+        if (!isValidPhoneNumber(orderData.deliveryInfo.phone)) {
+            showAlert('請填寫有效的電話號碼', 'warning')
+            return
+        }
+
+        if (!isValidEmail(orderData.deliveryInfo.email)) {
+            showAlert('請填寫有效的電子郵件地址', 'warning')
             return
         }
         try {
@@ -123,13 +142,14 @@ const Delivery = () => {
                 if (status === '6000') {
                     if (orderData.paymentMethod === 'linePay' && data.linePay) {
                         // Order was successful with Line Pay
-                        alert('訂單成功')
+                        showAlert('訂單成功', 'success')
                         LogOut()
                         window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
                     } else if (
                         orderData.paymentMethod === 'newebPay' &&
                         data.newebPay
                     ) {
+                        showAlert('訂單成功', 'success')
                         LogOut()
                         // Generate and submit the NewebPay form
                         const newebPayFormHtml = createNewebPayOrder(
@@ -142,21 +162,22 @@ const Delivery = () => {
                         document.write(newebPayFormHtml)
                     } else {
                         // Invalid payment method or missing data
-                        alert('訂單失敗')
+                        showAlert('訂單失敗', 'error')
                     }
                 } else {
                     // Order failed with specific error
-                    alert(`'訂單失敗: ${message}`)
+
+                    showAlert(`'訂單失敗: ${message}`, 'error')
                     // Redirect to error page or handle as needed
                 }
             } else {
                 // Handle HTTP error responses
-                alert('訂單失敗')
+                showAlert('訂單失敗', 'error')
                 // Redirect to error page or handle as needed
             }
         } catch (error) {
             console.error('Error submitting order:', error)
-            alert('訂單失敗')
+            showAlert('訂單失敗', 'error')
             // Redirect to error page or handle as needed
         }
     }

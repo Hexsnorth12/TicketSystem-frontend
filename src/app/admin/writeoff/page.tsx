@@ -10,7 +10,7 @@ import {
     useVerifyTicketMutation,
 } from '@/services/modules/admin'
 import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 const PAGE_LIMIT = 10
 
 interface Props {}
@@ -26,7 +26,7 @@ const Page: React.FC<Props> = () => {
     const [searchValue, setSearchValue] = useState<string>('')
     const searchParams = useSearchParams()
     const ids = searchParams.get('ids') ?? ''
-
+    const showAlert = useAlert()
     const [getTickets, { data: ticketList, isLoading: isGetTicketing }] =
         useLazyGetTicketsQuery()
     const [verifyTicket, { isSuccess, isLoading }] = useVerifyTicketMutation()
@@ -75,10 +75,20 @@ const Page: React.FC<Props> = () => {
                 userId: ticket.userId,
                 ticketId: ticket._id,
             }))
-        await verifyTicket({
-            payload: { tickets },
-            token: session?.accessToken as string,
-        })
+        if (tickets.length === 0) {
+            // 检查 tickets 数组是否为空
+            showAlert('請選擇票券', 'warning')
+            return
+        }
+        try {
+            await verifyTicket({
+                payload: { tickets },
+                token: session?.accessToken as string,
+            })
+            showAlert('核銷成功', 'success')
+        } catch (error) {
+            showAlert('核銷失敗', 'error')
+        }
     }
 
     return (
@@ -88,7 +98,7 @@ const Page: React.FC<Props> = () => {
                     <LoadingSkeleton />
                 </div>
             )}
-            <DataShell title={'票卷核銷'}>
+            <DataShell title={'票券核銷'}>
                 <div className="mb-6 flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0">
                     <input
                         type="text"
