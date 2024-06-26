@@ -218,209 +218,219 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
             {/* Events */}
             <div
-                className={cn(
-                    'flex max-h-[1000px] flex-col gap-5 overflow-y-scroll',
-                    eventList.length > 4 ? 'pb-[600px]' : '',
+                className={clsx(
+                    'mt-4 md:mt-10',
+                    'md:relative md:after:absolute md:after:bottom-0 md:after:z-10 md:after:h-[80px] md:after:w-full md:after:shadow-[inset_0_-35px_30px_-15px_rgba(0,0,0,0.5)] md:after:shadow-gray-1',
                 )}>
-                {eventList.length === 0 && (
-                    <div className="md:flex md:h-[600px] md:items-center">
-                        <EmptyData message="尚無活動" hasButton={false} />
-                    </div>
-                )}
+                <div
+                    className={cn(
+                        'flex max-h-[1000px] flex-col gap-5 overflow-y-scroll scrollbar-hidden md:pr-10 md:scrollbar md:scrollbar-block',
+                        eventList.length > 4 ? 'pb-[600px]' : '',
+                    )}>
+                    {eventList.length === 0 && (
+                        <div className="md:flex md:h-[600px] md:items-center">
+                            <EmptyData message="尚無活動" hasButton={false} />
+                        </div>
+                    )}
 
-                {eventList.map((item, index) => {
-                    return (
-                        <div key={index}>
-                            {/* 修改活動彈窗 */}
-                            {showUpdateModal && (
-                                <UpdateEventModal
-                                    existedData={{
-                                        title: item?.title,
-                                        content: item?.content as string,
-                                    }}
-                                    updateEvent={updateEventHandler}
-                                    onClose={closeUpdateEventModal}
-                                />
-                            )}
-
-                            <div className="relative overflow-hidden transition-all duration-500 ease-in-out">
-                                {/* 揪團狀態 */}
-                                {item?.status && (
-                                    <div className="absolute right-4 top-4 text-3xl text-white">
-                                        <p>
-                                            {item?.status === 'ongoing'
-                                                ? '揪團中'
-                                                : '已結束'}
-                                        </p>
-                                    </div>
+                    {eventList.map((item, index) => {
+                        return (
+                            <div key={index}>
+                                {/* 修改活動彈窗 */}
+                                {showUpdateModal && (
+                                    <UpdateEventModal
+                                        existedData={{
+                                            title: item?.title,
+                                            content: item?.content as string,
+                                        }}
+                                        updateEvent={updateEventHandler}
+                                        onClose={closeUpdateEventModal}
+                                    />
                                 )}
 
-                                <div className="rounded-lg bg-gray-3 p-4 md:px-10 md:py-8">
-                                    <div className="md:mb-6 md:flex md:justify-between md:gap-10">
-                                        <div className="hidden max-h-[160px] overflow-hidden rounded-lg md:block">
-                                            <Image
-                                                src={item?.placeholderImg}
-                                                width={267}
-                                                height={160}
-                                                alt="event image"
-                                                className="rounded-lg bg-gray-5 object-cover"
-                                            />
+                                <div className="relative overflow-hidden transition-all duration-500 ease-in-out">
+                                    {/* 揪團狀態 */}
+                                    {item?.status && (
+                                        <div className="absolute right-4 top-4 text-3xl text-white">
+                                            <p>
+                                                {item?.status === 'ongoing'
+                                                    ? '揪團中'
+                                                    : '已結束'}
+                                            </p>
                                         </div>
-                                        <div className="mb-6 grow md:m-0">
-                                            <div className="mb-6 flex items-center md:mb-8">
+                                    )}
+
+                                    <div className="rounded-lg bg-gray-3 p-4 md:px-10 md:py-8">
+                                        <div className="md:mb-6 md:flex md:justify-between md:gap-10">
+                                            <div className="hidden max-h-[160px] overflow-hidden rounded-lg md:block">
+                                                <Image
+                                                    src={item?.placeholderImg}
+                                                    width={267}
+                                                    height={160}
+                                                    alt="event image"
+                                                    className="rounded-lg bg-gray-5 object-cover"
+                                                />
+                                            </div>
+                                            <div className="mb-6 grow md:m-0">
+                                                <div className="mb-6 flex items-center md:mb-8">
+                                                    <div>
+                                                        <h5 className="mb-2 text-btn2 font-medium text-white md:text-header5 md:leading-120">
+                                                            {item?.title}
+                                                        </h5>
+                                                        <div className="flex gap-1">
+                                                            <p className="text-small2 text-white">
+                                                                {`<${item?.movieTitle}>`}
+                                                            </p>
+                                                            <p className="text-small2 text-white">
+                                                                {item?.theater}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div>
-                                                    <h5 className="mb-2 text-btn2 font-medium text-white md:text-header5 md:leading-120">
-                                                        {item?.title}
-                                                    </h5>
-                                                    <div className="flex gap-1">
-                                                        <p className="text-small2 text-white">
-                                                            {`<${item?.movieTitle}>`}
-                                                        </p>
-                                                        <p className="text-small2 text-white">
-                                                            {item?.theater}
-                                                        </p>
+                                                    <div className="flex border-b border-gray-4 pb-2 md:pb-3">
+                                                        <div className="grow space-x-2">
+                                                            <span className="text-small2 text-gray-5">
+                                                                時間
+                                                            </span>
+                                                            <span className="text-number5 font-bold leading-120 text-white">
+                                                                {formatJoinEventDate(
+                                                                    new Date(
+                                                                        item?.time,
+                                                                    ),
+                                                                )}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className="flex border-b border-gray-4 pb-2 md:pb-3">
-                                                    <div className="grow space-x-2">
-                                                        <span className="text-small2 text-gray-5">
-                                                            時間
-                                                        </span>
-                                                        <span className="text-number5 font-bold leading-120 text-white">
-                                                            {formatJoinEventDate(
-                                                                new Date(
-                                                                    item?.time,
-                                                                ),
-                                                            )}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="flex pt-2 md:pt-3">
-                                                    <div className="grow space-x-2">
-                                                        <span className="text-small2 text-gray-5">
-                                                            人數
-                                                        </span>
-                                                        <span className="text-number5 font-bold leading-120 text-white">
-                                                            {item?.amount -
-                                                                (item!
-                                                                    .vacancy as number)}{' '}
-                                                            / {item?.amount}
-                                                        </span>
+                                                    <div className="flex pt-2 md:pt-3">
+                                                        <div className="grow space-x-2">
+                                                            <span className="text-small2 text-gray-5">
+                                                                人數
+                                                            </span>
+                                                            <span className="text-number5 font-bold leading-120 text-white">
+                                                                {item?.amount -
+                                                                    (item!
+                                                                        .vacancy as number)}{' '}
+                                                                / {item?.amount}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        {/* buttons */}
-                                        <div className="mt-6 flex w-full justify-end gap-4 md:m-0">
-                                            {status === 'joined' && (
+                                        <div>
+                                            {/* buttons */}
+                                            <div className="mt-6 flex w-full justify-end gap-4 md:m-0">
+                                                {status === 'joined' && (
+                                                    <Button
+                                                        type={'button'}
+                                                        title={'詳細'}
+                                                        onClick={() => {
+                                                            openDoubleConfirmModal(
+                                                                item?._id as string,
+                                                            )
+                                                        }}
+                                                        className="w-full border-gray-4 bg-gray-4 py-2 text-sm tracking-wider text-gray-5 hover:text-black md:w-auto md:py-3">
+                                                        <span className="text-sm">
+                                                            退出揪團
+                                                        </span>
+                                                    </Button>
+                                                )}
                                                 <Button
                                                     type={'button'}
                                                     title={'詳細'}
                                                     onClick={() => {
-                                                        openDoubleConfirmModal(
+                                                        openUpdateEventModal(
                                                             item?._id as string,
                                                         )
                                                     }}
-                                                    className="w-full border-gray-4 bg-gray-4 py-2 text-sm tracking-wider text-gray-5 hover:text-black md:w-auto md:py-3">
-                                                    <span className="text-sm">
-                                                        退出揪團
+                                                    className="w-full py-2 md:w-auto md:py-3">
+                                                    <span className="text-sm tracking-wider">
+                                                        編輯
                                                     </span>
                                                 </Button>
-                                            )}
-                                            <Button
-                                                type={'button'}
-                                                title={'詳細'}
-                                                onClick={() => {
-                                                    openUpdateEventModal(
-                                                        item?._id as string,
-                                                    )
-                                                }}
-                                                className="w-full py-2 md:w-auto md:py-3">
-                                                <span className="text-sm tracking-wider">
-                                                    編輯
-                                                </span>
-                                            </Button>
-                                            <Button
-                                                type={'button'}
-                                                title={'詳細'}
-                                                onClick={toggleParticipantList}
-                                                className="w-full py-2 md:w-auto md:py-3">
-                                                <span className="text-sm tracking-wider">
-                                                    查看參加者
-                                                </span>
-                                            </Button>
-                                            <Button
-                                                type={'button'}
-                                                title={'詳細'}
-                                                onClick={() => {
-                                                    // TODO: 聊天室
-                                                }}
-                                                className="w-full bg-primary py-2 text-black hover:bg-primary hover:text-black md:w-auto md:py-3">
-                                                <span className="text-sm tracking-wider">
-                                                    揪團聊天
-                                                </span>
-                                            </Button>
-                                        </div>
+                                                <Button
+                                                    type={'button'}
+                                                    title={'詳細'}
+                                                    onClick={
+                                                        toggleParticipantList
+                                                    }
+                                                    className="w-full py-2 md:w-auto md:py-3">
+                                                    <span className="text-sm tracking-wider">
+                                                        查看參加者
+                                                    </span>
+                                                </Button>
+                                                <Button
+                                                    type={'button'}
+                                                    title={'詳細'}
+                                                    onClick={() => {
+                                                        // TODO: 聊天室
+                                                    }}
+                                                    className="w-full bg-primary py-2 text-black hover:bg-primary hover:text-black md:w-auto md:py-3">
+                                                    <span className="text-sm tracking-wider">
+                                                        揪團聊天
+                                                    </span>
+                                                </Button>
+                                            </div>
 
-                                        {/* 參加者名單 */}
-                                        {showParticipants &&
-                                            item.participant && (
-                                                <div className="mt-8">
-                                                    <div className="flex w-full justify-between rounded-md bg-gray-5 py-1">
-                                                        <div className="flex-1 border-r border-r-white text-center text-white">
-                                                            姓名
-                                                        </div>
-                                                        <div className="flex-1 border-r border-r-white text-center text-white">
-                                                            暱稱
-                                                        </div>
-                                                        <div className="flex-1 border-r border-r-white text-center text-white">
-                                                            電話
-                                                        </div>
-                                                        <div className="flex-1 text-center text-white">
-                                                            Line ID
-                                                        </div>
-                                                    </div>
-
-                                                    {item.participant.map(
-                                                        (item, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className="flex w-full flex-wrap justify-between border-b border-b-gray-5 py-1 text-center text-white">
-                                                                <div className="w-1/4 break-words p-1">
-                                                                    {item?.name}
-                                                                </div>
-                                                                <div className="w-1/4 break-words p-1">
-                                                                    {
-                                                                        item?.nickname
-                                                                    }
-                                                                </div>
-                                                                <div className="w-1/4 break-words p-1">
-                                                                    {
-                                                                        item?.phone
-                                                                    }
-                                                                </div>
-                                                                <div className="w-1/4 break-words p-1">
-                                                                    {
-                                                                        item?.lineId
-                                                                    }
-                                                                </div>
+                                            {/* 參加者名單 */}
+                                            {showParticipants &&
+                                                item.participant && (
+                                                    <div className="mt-8">
+                                                        <div className="flex w-full justify-between rounded-md bg-gray-5 py-1">
+                                                            <div className="flex-1 border-r border-r-white text-center text-white">
+                                                                姓名
                                                             </div>
-                                                        ),
-                                                    )}
-                                                </div>
-                                            )}
+                                                            <div className="flex-1 border-r border-r-white text-center text-white">
+                                                                暱稱
+                                                            </div>
+                                                            <div className="flex-1 border-r border-r-white text-center text-white">
+                                                                電話
+                                                            </div>
+                                                            <div className="flex-1 text-center text-white">
+                                                                Line ID
+                                                            </div>
+                                                        </div>
+
+                                                        {item.participant.map(
+                                                            (item, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className="flex w-full flex-wrap justify-between border-b border-b-gray-5 py-1 text-center text-white">
+                                                                    <div className="w-1/4 break-words p-1">
+                                                                        {
+                                                                            item?.name
+                                                                        }
+                                                                    </div>
+                                                                    <div className="w-1/4 break-words p-1">
+                                                                        {
+                                                                            item?.nickname
+                                                                        }
+                                                                    </div>
+                                                                    <div className="w-1/4 break-words p-1">
+                                                                        {
+                                                                            item?.phone
+                                                                        }
+                                                                    </div>
+                                                                    <div className="w-1/4 break-words p-1">
+                                                                        {
+                                                                            item?.lineId
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )
