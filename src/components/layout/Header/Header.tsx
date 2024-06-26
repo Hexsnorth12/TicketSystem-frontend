@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const [showCartModal, setShowCartModal] = useState(false)
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
-
+    console.log('userInfo', session?.user.accountType)
     useEffect(() => {
         const getUserInfo = async () => {
             getInfo({ token: session?.accessToken ?? '' })
@@ -107,15 +107,15 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                 </Link>
                 {/* Desktop-Navbar */}
                 <nav className="hidden items-center space-x-4 md:flex">
-                    <Link href="/generalMovies" legacyBehavior>
-                        <a className="movies-link text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                    <Link href="/generalMovies" onClick={handleClick}>
+                        <p className="movies-link text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             電影總表
-                        </a>
+                        </p>
                     </Link>
-                    <Link href="/join" legacyBehavior>
-                        <a className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
+                    <Link href="/join" onClick={handleClick}>
+                        <p className="text-white hover:border-b-2 hover:border-b-primary hover:text-primary">
                             一起揪團
-                        </a>
+                        </p>
                     </Link>
                     <div
                         className="relative"
@@ -141,7 +141,12 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                             </div>
                         </Link>
                     ) : (
-                        <MemberMenu userInfo={userInfo} />
+                        <MemberMenu
+                            userInfo={userInfo}
+                            setIsExpand={setIsOpen}
+                            isExpand={isOpen}
+                            isAdmin={session.user.accountType === 'admin'}
+                        />
                     )}
                 </nav>
             </div>
@@ -170,6 +175,18 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
                                     />
                                 </div>
                             )}
+                            {session.user.accountType === 'admin' ? (
+                                <li
+                                    className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
+                                    onClick={handleClick}>
+                                    <Link
+                                        href="/admin/order"
+                                        scroll={false}
+                                        className="cursor-pointer">
+                                        後台管理
+                                    </Link>
+                                </li>
+                            ) : null}
                             <li
                                 className="border-b-2 border-gray-4 py-3 text-white hover:border-b-2 hover:border-b-primary hover:text-primary"
                                 onClick={handleClick}>
