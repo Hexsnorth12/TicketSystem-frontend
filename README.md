@@ -1,7 +1,8 @@
 #  Ticket-System（票務系統）－前端
-
+## 專案名稱
+Movie GO
 ## 專案介紹
-
+Movie GO 是一個全方位電影票務平台，一站式瀏覽並購買所有戲院線上進行的活動與套票、查看其他使用者對該活動／套票的評論。怕一個人看電影很孤單，可以直接在平台上建立活動，揪團一起看電影。如果臨時有事，能直接在平台上將已購買的票券轉售。
 ## 專案團隊
 
 | 開發人員 | 負責開發範圍 |
@@ -27,9 +28,11 @@
    ```
    npm install
    ```
-4. 根據 `.evn.example` 內容來調整設定
+4. 建立 `.env.local` 內容並新增以下內容
    ```
-   NEXT_PUBLIC_API_URL= # API 位置
+   NEXTAUTH_URL="http://localhost:3000/"
+   NEXTAUTH_SECRET="RUG8MjKLqooQUdNyfYWTCAnpgBENOEZgiAgpMle7LhU=" // 此為隨機產生亂碼，非專案上線 SECRET
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
    ```
 5. 運行專案
    ```
@@ -50,19 +53,14 @@
 | `src/stores` | 於此資料夾中設定全域共用的狀態管理 |
 | `src/styles` | 全域的樣式檔 |
 | `src/types` | TypeScript 的型別統一於此設定 |
-| `src/utils` | 全域共用的函示會放在此資料夾中 |
-
-在每個 `src/apps` 的元件中，通常會包含以下幾個檔案：
-- `components/*`：此頁面所需的元件
-- `hooks/*`：定義此頁面所需的 React custom hooks
-- `index.tsx`：此頁面的進入點
-- `stores.ts`：此頁面所需的狀態管理
+| `src/utils` | 全域共用的函式會放在此資料夾中 |
+| `src/lib` | server side 使用的函式會放在此資料夾中 |
 
 ## 專案使用技術
 - Node.js: v21
 - Next.js: v14.1
 - TypeScript: v5
-- Vite: v5.2.8
 - React hook form: v7
 - TailwindCSS: v3.4.3
 - ESlint: v8
+- storybook: v8.0.9
