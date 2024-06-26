@@ -89,19 +89,19 @@ const CheckoutPage = () => {
                                 <li className="flex gap-x-3">
                                     <span>原價：</span>
                                     <span className={bellota.className}>
-                                        {`${originalTotal}　NT`}
+                                        {`${originalTotal}  NT`}
                                     </span>
                                 </li>
                                 <li className="flex gap-x-3">
                                     <span>方案折扣：</span>
                                     <span className={bellota.className}>
-                                        {`- ${discount}　NT`}
+                                        {`- ${discount}  NT`}
                                     </span>
                                 </li>
                                 <li className="flex gap-x-3">
                                     <span>總金額：</span>
                                     <span className={bellota.className}>
-                                        {`${total}　NT`}
+                                        {`${total}  NT`}
                                     </span>
                                 </li>
                             </ul>
