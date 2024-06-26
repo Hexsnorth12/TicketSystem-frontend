@@ -1,4 +1,5 @@
 // /components/ProductList.tsx
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -13,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
+import { useRouter } from 'next/navigation'
 
 type Group = {
     _id: string
@@ -20,7 +22,7 @@ type Group = {
     movieTitle: string
     amount: number
     placeholderImg: string
-    location: string
+    theater: string
     hasTicket: boolean
     time: string
     endAt: string
@@ -36,6 +38,11 @@ type GroupProductListProps = {
 }
 
 const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
+    const router = useRouter()
+    function openEventModal(id: string) {
+        router.push(`joinGroup?groupId=${id}`)
+    }
+
     return (
         <>
             {/* Desktop-Navbar */}
@@ -56,8 +63,14 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                             className="m-4 overflow-hidden rounded-lg p-4">
                             <Link href="">
                                 <SwiperSlide key={group._id}>
-                                    <div className="relative h-[173px] w-[288px]">
+                                    <div
+                                        className="relative h-[173px] w-[288px] cursor-pointer"
+                                        onClick={openEventModal.bind(
+                                            null,
+                                            group._id as string,
+                                        )}>
                                         <Image
+                                            loader={() => group.placeholderImg}
                                             src={group.placeholderImg}
                                             alt={group.title}
                                             layout="fill"
@@ -87,9 +100,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                                                 <div className=" px-2">
                                                     <Tag
                                                         icon={FaMapMarkerAlt}
-                                                        tagValue={
-                                                            group.location
-                                                        }
+                                                        tagValue={group.theater}
                                                         iconColor="gray-4"
                                                     />
                                                 </div>
@@ -105,9 +116,15 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
             {/* Mobile-Navbar */}
             <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
                 {groups.map((group) => (
-                    <div key={group._id} className="mx-1 inline-block">
+                    <div
+                        key={group._id}
+                        className="mx-1 inline-block"
+                        onClick={openEventModal.bind(
+                            null,
+                            group._id as string,
+                        )}>
                         <Link href="">
-                            <div className="relative h-[129px] w-[216px]">
+                            <div className="relative h-[129px] w-[216px] cursor-pointer">
                                 <Image
                                     src={group.placeholderImg}
                                     alt={group.title}
@@ -137,7 +154,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                                     <div className=" px-2">
                                         <Tag
                                             icon={FaMapMarkerAlt}
-                                            tagValue={group.location}
+                                            tagValue={group.theater}
                                             iconColor="gray-4"
                                         />
                                     </div>
