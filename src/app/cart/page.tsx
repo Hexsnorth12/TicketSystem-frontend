@@ -75,7 +75,7 @@ const CartPage = () => {
 
     return (
         <div className="mx-auto max-w-7xl px-6 lg:px-6">
-            <div className="mx-auto max-w-2xl lg:mx-0">
+            <div className="mx-auto mt-6 max-w-2xl lg:mx-0">
                 <h2 className="text-4xl font-bold tracking-wider text-white sm:text-6xl">
                     購物車
                 </h2>
