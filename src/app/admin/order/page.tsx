@@ -7,23 +7,28 @@ import { OrderHeadCell } from '@/definitions/dataTable'
 import { SelectInput } from '@/components/common'
 import { DATA_OPTIONS } from '@/definitions/dataTable'
 import { DatePicker } from '@mui/x-date-pickers'
-import { styled } from '@mui/material'
+import { styled, TextField } from '@mui/material'
 import { parseISO, format, startOfMonth, endOfMonth } from 'date-fns'
 import { useLazyGetOrdersQuery } from '@/services/modules/admin'
 import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
+    .MuiInputBase-root {
+        box-shadow: var(--tw-ring-inset) 0 0 0
+            calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+        --tw-ring-color: rgb(51 51 51);
+    }
+
     .MuiInputBase-input {
         color: #fff;
         font-weight: normal;
         align-self: center;
-        padding: 16px 0px 16px 16px;
+        padding: 14px 0px 14px 0px;
         outline: none;
-        bordercolor: #fff;
     }
 
     .MuiSvgIcon-root {
-        color: #fff;
+        color: #4e4e4e;
     }
     .MuiInputLabel-root {
         color: #fff;
@@ -154,6 +159,11 @@ const Page: React.FC<Props> = () => {
                             label="訂單成立時間 - 起"
                             value={startDate}
                             onChange={(date) => setStartDate(date)}
+                            slotProps={{
+                                inputAdornment: {
+                                    position: 'start',
+                                },
+                            }}
                         />
                     </div>
                     <div className="mx-3 w-full md:w-auto">
@@ -161,6 +171,11 @@ const Page: React.FC<Props> = () => {
                             label="訂單成立時間 - 迄"
                             value={endDate}
                             onChange={(date) => setEndDate(date)}
+                            slotProps={{
+                                inputAdornment: {
+                                    position: 'start',
+                                },
+                            }}
                         />
                     </div>
                 </div>

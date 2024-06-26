@@ -185,7 +185,10 @@ const Page: React.FC<pageProps> = () => {
                         errors={errors}
                         required={true}
                     />
-                    <SelectBox title="位置">
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-small2 text-gray-5">
+                            位置
+                        </label>
                         <Controller
                             name="location"
                             control={control}
@@ -199,7 +202,7 @@ const Page: React.FC<pageProps> = () => {
                                 />
                             )}
                         />
-                    </SelectBox>
+                    </div>
                     <SelectBox title="電影名稱">
                         <Controller
                             name="movie"

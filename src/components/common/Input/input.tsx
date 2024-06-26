@@ -35,7 +35,7 @@ const InputComponent: React.FC<InputProps> = ({
             <label
                 htmlFor={name}
                 className={clsx(
-                    'mb-2 block text-small2 leading-150 text-white md:text-small1',
+                    'mb-2 block text-small2 leading-150 text-gray-5 md:text-small1',
                     {
                         'text-gray-900': theme === 'light',
                     },
@@ -51,7 +51,7 @@ const InputComponent: React.FC<InputProps> = ({
                     onChange={(e) => onChange(e.target.value)}
                     type={type}
                     className={clsx(
-                        'border-1 ring-black-300/10 block h-full w-full border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body',
+                        'block h-full w-full bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 ring-inset ring-gray-3 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-primary md:px-4 md:py-2.5 md:text-body',
                         {
                             'text-gray-900': theme === 'light',
                             'bg-opacity-0': theme === 'light',

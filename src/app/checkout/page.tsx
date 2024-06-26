@@ -4,6 +4,7 @@ import CheckoutTable from '@components/common/Table/checkoutTable'
 import { Delivery } from '@/components/forms'
 import { DataSource, Column } from '@/types/cart'
 import { useCartStore } from '@/stores/useCartStore'
+import { bellota } from '@/components/fonts'
 
 const CheckoutPage = () => {
     const columns: Column[] = [
@@ -69,7 +70,7 @@ const CheckoutPage = () => {
         <div className="relative isolate overflow-hidden py-16 sm:py-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-6">
                 <div className="mx-auto max-w-2xl lg:mx-0">
-                    <h2 className="text-4xl font-bold tracking-wider text-white sm:text-6xl">
+                    <h2 className="text-header4 font-bold tracking-wider text-white sm:text-6xl">
                         配送資料
                     </h2>
                 </div>
@@ -86,15 +87,24 @@ const CheckoutPage = () => {
                                 role="list"
                                 className="mb-4 mt-10 grid grid-cols-1 justify-items-end gap-4  text-small1 leading-6  text-white sm:grid-cols-1 sm:gap-6 md:text-body">
                                 <li className="flex gap-x-3">
-                                    原價:{originalTotal} NT
+                                    <span>原價： </span>
+                                    <span className={bellota.className}>
+                                        {originalTotal} NT
+                                    </span>
                                 </li>
                                 <li className="flex gap-x-3">
-                                    方案折扣：-{discount} NT
+                                    <span>方案折扣： </span>
+                                    <span className={bellota.className}>
+                                        - {discount} NT
+                                    </span>
+
                                 </li>
                                 <li className="flex gap-x-3">
-                                    總金額:{total}NT
+                                    <span>總金額： </span>
+                                    <span className={bellota.className}>
+                                        {total} NT
+                                    </span>
                                 </li>
-                                <div className="h-px flex-auto bg-gray-100" />
                             </ul>
                         </div>
                         <div className="mt-3 w-full  rounded-lg  p-4  text-white ">

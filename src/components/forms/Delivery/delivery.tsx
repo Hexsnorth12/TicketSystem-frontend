@@ -7,6 +7,7 @@ import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
 import { DataSource } from '@/types/cart'
 import { createNewebPayOrder } from '@/utils/paymentUtils'
+
 const Delivery = () => {
     const [username, setUsername] = useState('')
     const [deliveryEmail, setDeliveryEmail] = useState('')
@@ -189,7 +190,7 @@ const Delivery = () => {
                         />
                     </div>
                     <div className="sm:col-span-3">
-                        <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
+                        <label className="mb-2 block text-small2 leading-150 text-gray-5 md:text-small1">
                             付款方式
                         </label>
                         <div className="mt-auto md:mt-2.5">
@@ -201,7 +202,6 @@ const Delivery = () => {
                             />
                         </div>
                     </div>
-
                     <div className="sm:col-span-3">
                         <InputComponent
                             name={'phone'}
@@ -230,18 +230,32 @@ const Delivery = () => {
                             onChange={handleAddressChange}
                         />
                     </div>
-                    <div className="col-span-full">
+                    {/* <div className="col-span-full">
                         <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
                             備註說明
                         </label>
                         <div className="mt-auto md:mt-2.5">
                             <textarea
-                                className="border-1 ring-black-300/10 block h-full w-full w-full resize-y rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
+                                className="border-1 ring-black-300/10 block h-full w-full resize-y rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
                                 name="postContent"
                             />
                         </div>
+                    </div> */}
+                    <div className="col-span-full">
+                        <div className="flex w-full flex-col gap-2 md:gap-4">
+                            <label className="align-start text-small2 text-gray-5 md:text-small1">
+                                備註說明
+                            </label>
+                            <div className="min-h-[120px] w-full rounded-lg border border-gray-3 bg-gray-1 py-2 pl-3 md:min-h-[200px] md:py-3 md:pl-4">
+                                <textarea
+                                    className="h-full w-full resize-none bg-transparent pr-3 text-small2 text-white outline-none placeholder:text-gray-4 md:pr-4 md:text-body"
+                                    placeholder={''}
+                                    defaultValue={''}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>{' '}
+                </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <Button
                         name="checkout"
