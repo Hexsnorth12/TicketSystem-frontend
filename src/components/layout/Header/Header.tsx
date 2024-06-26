@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     const [showCartModal, setShowCartModal] = useState(false)
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
-    console.log('userInfo', session?.user.accountType)
+
     useEffect(() => {
         const getUserInfo = async () => {
             getInfo({ token: session?.accessToken ?? '' })
