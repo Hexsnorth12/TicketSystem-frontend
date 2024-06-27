@@ -92,9 +92,9 @@ const Page: React.FC<Props> = () => {
     }
 
     return (
-        <section className="relative">
+        <section>
             {(isLoading || isGetTicketing) && (
-                <div className="absolute top-0">
+                <div className="absolute left-[50%] top-0 z-30 -translate-x-1/2">
                     <LoadingSkeleton />
                 </div>
             )}

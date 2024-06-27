@@ -37,9 +37,9 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
                 'relative rounded-lg bg-gray-1 hover:border hover:border-primary',
                 {
                     'before:absolute before:top-0  before:z-20 before:flex before:h-full before:w-full before:items-center before:justify-center before:text-header5 before:text-white before:content-["已停售"]':
-                        isFuture(parseISO(product.sellEndAt)),
+                        !isFuture(parseISO(product.sellEndAt)),
                     'after:absolute after:top-0 after:z-10 after:h-full after:w-full after:rounded-lg after:bg-black after:opacity-60 after:content-[""]':
-                        isFuture(parseISO(product.sellEndAt)),
+                        !isFuture(parseISO(product.sellEndAt)),
                     hidden: !isFavorite,
                 },
             )}>
@@ -56,7 +56,7 @@ const MyFavorite: React.FC<MyFavoriteProps> = ({ product }) => {
                     />
                     <p
                         onClick={handleUpdateFavorite}
-                        className="absolute right-1 top-1 z-30 text-small2 text-gray-4 hover:text-primary">
+                        className="absolute right-1 top-1 z-30 rounded-lg bg-gray-5 p-1 text-small2 text-white shadow hover:text-primary">
                         移除
                     </p>
                 </div>
