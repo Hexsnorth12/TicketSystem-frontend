@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import clsx from 'clsx'
 import { truncateName } from '../../../utils/numberUtils'
 import { Button } from '@/components/common'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -10,6 +11,7 @@ import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
+import { bellota } from '@/components/fonts'
 
 type Tag = {
     tagId: string
@@ -105,10 +107,10 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                     </div>
-                                    <div className="w-[160px] text-center">
+                                    <div className="text-center">
                                         <div className="flex justify-between">
                                             <div className="mt-2 text-start text-white">
-                                                <div className="text-btn1 font-medium">
+                                                <div className="text-nowrap text-btn2">
                                                     {truncateName(
                                                         product.title,
                                                     )}
@@ -118,18 +120,22 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                                 </div>
                                             </div>
                                             <div
-                                                className={
-                                                    index < 3
-                                                        ? 'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number1 font-bold text-transparent'
-                                                        : 'text-number1 font-bold text-gray-3'
-                                                }>
+                                                className={clsx(
+                                                    bellota.className,
+                                                    {
+                                                        'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number1 font-bold text-transparent':
+                                                            index < 3,
+                                                        'text-number1 font-bold text-gray-3':
+                                                            index >= 3,
+                                                    },
+                                                )}>
                                                 {index + 1}
                                             </div>
                                         </div>
                                         <Button
                                             type="button"
                                             title="立即購票"
-                                            className="py-1"
+                                            className="w-full border-0 bg-gray-1 py-2 text-primary"
                                             onClick={() =>
                                                 handleMovieDetail(product._id)
                                             }>
