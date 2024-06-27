@@ -10,7 +10,6 @@ import {
     truncateName,
     truncateContentMobile,
     truncateBrief,
-    truncateTitle,
 } from '../../../utils/numberUtils'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 // Favorite Section

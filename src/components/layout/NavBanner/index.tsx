@@ -1,12 +1,8 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import clsx from 'clsx'
-
 import { Navigate } from '@/components/Buttons'
 import { TITLE, CONTENT, HREF, BUTTON } from './constants'
-
-import { cn } from '@/utils'
 
 type Props = {
     type: 'join' | 'ticket'
