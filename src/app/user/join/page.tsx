@@ -332,8 +332,8 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                                 item?._id as string,
                                                             )
                                                         }}
-                                                        className="w-full border-gray-4 bg-gray-4 py-2 text-sm tracking-wider text-gray-5 hover:text-black md:w-auto md:py-3">
-                                                        <span className="text-sm">
+                                                        className="w-full border-gray-4 bg-gray-4 py-2 tracking-wider text-gray-5 hover:text-black md:w-auto md:py-3">
+                                                        <span className="text-btn2 md:text-btn1">
                                                             退出揪團
                                                         </span>
                                                     </Button>
@@ -347,7 +347,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                         )
                                                     }}
                                                     className="w-full py-2 md:w-auto md:py-3">
-                                                    <span className="text-sm tracking-wider">
+                                                    <span className="text-btn2 md:text-btn1">
                                                         編輯
                                                     </span>
                                                 </Button>
@@ -358,7 +358,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                         toggleParticipantList
                                                     }
                                                     className="w-full py-2 md:w-auto md:py-3">
-                                                    <span className="text-sm tracking-wider">
+                                                    <span className="text-btn2 md:text-btn1">
                                                         查看參加者
                                                     </span>
                                                 </Button>
@@ -369,7 +369,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                         // TODO: 聊天室
                                                     }}
                                                     className="w-full bg-primary py-2 text-black hover:bg-primary hover:text-black md:w-auto md:py-3">
-                                                    <span className="text-sm tracking-wider">
+                                                    <span className="text-btn2 md:text-btn1">
                                                         揪團聊天
                                                     </span>
                                                 </Button>

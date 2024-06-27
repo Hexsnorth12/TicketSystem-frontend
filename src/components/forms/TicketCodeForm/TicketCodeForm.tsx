@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { InputComponent, Button } from '@/components/common'
 import { useClaimTicketMutation } from '@/services/modules/user'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
 
 interface TicketCodeFormProps {}
 
@@ -35,6 +36,11 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
     }, [isSuccess, isLoading])
     return (
         <section>
+            {isLoading && (
+                <div className="absolute left-[50%] top-0 z-30 -translate-x-1/2">
+                    <LoadingSkeleton />
+                </div>
+            )}
             <h3 className="mb-6 text-center text-header5 text-white md:text-header4">
                 取得票券
             </h3>
