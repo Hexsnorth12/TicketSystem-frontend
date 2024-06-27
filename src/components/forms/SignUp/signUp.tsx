@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 export default function SignUp() {
     const [signUp] = useSignUpMutation()
     const router = useRouter()
@@ -15,7 +15,7 @@ export default function SignUp() {
     const [passWord, setPassWord] = useState('')
     const [checkPassWord, setCheckPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')
-
+    const showAlert = useAlert()
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
@@ -41,12 +41,14 @@ export default function SignUp() {
                 pwd: passWord,
                 confirmPwd: checkPassWord,
             }).unwrap()
+            showAlert('註冊成功', 'success')
             router.push('/login', { scroll: false })
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error)
             const errorMessage = JSON.parse(error?.data).message
             setErrorMessage(errorMessage)
+            showAlert('註冊失敗', 'error')
         }
     }
     return (

@@ -8,7 +8,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             <div className="container h-[88px] pt-5">
                 <Breadcrumbs />
             </div>
-            <div className="container flex flex-col items-start rounded-lg md:flex-row md:items-stretch md:gap-[60px]">
+            <div className="container flex flex-col items-start rounded-lg md:flex-row md:gap-[60px]">
                 <div className="w-full bg-gray-1 px-2.5 md:w-4/12">
                     <Sidebar />
                 </div>

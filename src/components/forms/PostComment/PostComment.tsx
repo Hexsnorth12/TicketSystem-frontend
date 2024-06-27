@@ -6,12 +6,13 @@ import { useRouter } from 'next/navigation'
 import { TextArea, Button } from '@/components/common'
 import RatingSelector, { RatingSelectorRef } from './RatingSelector'
 import { usePostCommentMutation } from '@/services/modules/product'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 interface PostCommentProps {
     productId: string
 }
 
 const PostComment: React.FC<PostCommentProps> = ({ productId }) => {
+    const showAlert = useAlert()
     const [rating, setRating] = useState(-1)
     const [postComment, { isLoading }] = usePostCommentMutation()
     const { register, handleSubmit, reset } = useForm<FieldValues>()
@@ -26,15 +27,22 @@ const PostComment: React.FC<PostCommentProps> = ({ productId }) => {
             content: data.comment,
             status: 'active',
         }
+        if (payload.rating < 0 || !payload.content) {
+            showAlert('評分內容請填寫完整！', 'error')
+            return
+        }
         try {
             await postComment({ payload, token: accessToken })
+
             if (!isLoading) {
                 reset()
                 resetSelectedIndex()
                 router.refresh()
+                showAlert('新增成功', 'success')
             }
         } catch (err) {
             console.log(err)
+            showAlert('新增失敗', 'error')
         }
     }
     const handleClickRating = (index: number) => {

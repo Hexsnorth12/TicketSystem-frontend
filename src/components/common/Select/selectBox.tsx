@@ -8,7 +8,9 @@ interface SelectBoxProps {
 const SelectBox: React.FC<SelectBoxProps> = ({ title, children }) => {
     return (
         <div>
-            <label className="mb-2 text-small2 text-gray-5">{title}</label>
+            <label className="mb-2 block text-small2 text-gray-5 md:text-small1">
+                {title}
+            </label>
             {children}
         </div>
     )

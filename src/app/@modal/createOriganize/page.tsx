@@ -187,7 +187,7 @@ const Page: React.FC<pageProps> = () => {
                     />
                     <SelectBox title="位置">
                         <Controller
-                            name="location"
+                            name="movie"
                             control={control}
                             render={({ field }) => (
                                 <SelectInput

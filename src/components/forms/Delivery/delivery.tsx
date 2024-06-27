@@ -7,6 +7,8 @@ import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
 import { DataSource } from '@/types/cart'
 import { createNewebPayOrder } from '@/utils/paymentUtils'
+import { useAlert } from '@/components/useAlert/useAlert'
+
 const Delivery = () => {
     const [username, setUsername] = useState('')
     const [deliveryEmail, setDeliveryEmail] = useState('')
@@ -14,6 +16,7 @@ const Delivery = () => {
     const [phone, setPhone] = useState('')
     const [delivery, setDelivery] = useState('線上取票')
     const [address, setAddress] = useState('')
+    const showAlert = useAlert()
     const dataSource: DataSource[] = []
     const cart = useCartStore((state) => state.cart)
     const LogOut = useCartStore((state) => state.LogOut)
@@ -42,6 +45,12 @@ const Delivery = () => {
         // 正則表達式來驗證電子郵件格式
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         return emailRegex.test(email)
+    }
+    const isValidPhoneNumber = (phoneNumber: string) => {
+        // 正则表达式来验证手机号格式，这里简单示范，具体可根据需要调整
+        const phoneRegex = /^\d{10}$/ // 假设手机号为10位数字
+
+        return phoneRegex.test(phoneNumber)
     }
 
     const handleDeliveryEmailChange = (value: string) => {
@@ -103,10 +112,21 @@ const Delivery = () => {
     const handleOrderSubmit = async () => {
         if (
             !orderData.deliveryInfo.name ||
+            !orderData.deliveryInfo.phone ||
             !orderData.deliveryInfo.email ||
-            !isValidEmail(orderData.deliveryInfo.email)
+            !orderData.deliveryInfo.address
         ) {
-            alert('請填寫姓名和有效的電子郵件地址')
+            showAlert('請填寫姓名、電話、電子郵件和地址', 'warning')
+            return
+        }
+
+        if (!isValidPhoneNumber(orderData.deliveryInfo.phone)) {
+            showAlert('請填寫有效的電話號碼', 'warning')
+            return
+        }
+
+        if (!isValidEmail(orderData.deliveryInfo.email)) {
+            showAlert('請填寫有效的電子郵件地址', 'warning')
             return
         }
         try {
@@ -123,13 +143,14 @@ const Delivery = () => {
                 if (status === '6000') {
                     if (orderData.paymentMethod === 'linePay' && data.linePay) {
                         // Order was successful with Line Pay
-                        alert('訂單成功')
+                        showAlert('訂單成功', 'success')
                         LogOut()
                         window.location.href = data.linePay.paymentUrl // Redirect to Line Pay payment URL
                     } else if (
                         orderData.paymentMethod === 'newebPay' &&
                         data.newebPay
                     ) {
+                        showAlert('訂單成功', 'success')
                         LogOut()
                         // Generate and submit the NewebPay form
                         const newebPayFormHtml = createNewebPayOrder(
@@ -142,21 +163,22 @@ const Delivery = () => {
                         document.write(newebPayFormHtml)
                     } else {
                         // Invalid payment method or missing data
-                        alert('訂單失敗')
+                        showAlert('訂單失敗', 'error')
                     }
                 } else {
                     // Order failed with specific error
-                    alert(`'訂單失敗: ${message}`)
+
+                    showAlert(`'訂單失敗: ${message}`, 'error')
                     // Redirect to error page or handle as needed
                 }
             } else {
                 // Handle HTTP error responses
-                alert('訂單失敗')
+                showAlert('訂單失敗', 'error')
                 // Redirect to error page or handle as needed
             }
         } catch (error) {
             console.error('Error submitting order:', error)
-            alert('訂單失敗')
+            showAlert('訂單失敗', 'error')
             // Redirect to error page or handle as needed
         }
     }
@@ -189,7 +211,7 @@ const Delivery = () => {
                         />
                     </div>
                     <div className="sm:col-span-3">
-                        <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
+                        <label className="mb-2 block text-small2 leading-150 text-gray-5 md:text-small1">
                             付款方式
                         </label>
                         <div className="mt-auto md:mt-2.5">
@@ -201,7 +223,6 @@ const Delivery = () => {
                             />
                         </div>
                     </div>
-
                     <div className="sm:col-span-3">
                         <InputComponent
                             name={'phone'}
@@ -230,18 +251,32 @@ const Delivery = () => {
                             onChange={handleAddressChange}
                         />
                     </div>
-                    <div className="col-span-full">
+                    {/* <div className="col-span-full">
                         <label className="mb-2 block text-small2 leading-150 text-white md:text-small1">
                             備註說明
                         </label>
                         <div className="mt-auto md:mt-2.5">
                             <textarea
-                                className="border-1 ring-black-300/10 block h-full w-full w-full resize-y rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
+                                className="border-1 ring-black-300/10 block h-full w-full resize-y rounded-md border-gray-3 bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body"
                                 name="postContent"
                             />
                         </div>
+                    </div> */}
+                    <div className="col-span-full">
+                        <div className="flex w-full flex-col gap-2 md:gap-4">
+                            <label className="align-start text-small2 text-gray-5 md:text-small1">
+                                備註說明
+                            </label>
+                            <div className="min-h-[120px] w-full rounded-lg border border-gray-3 bg-gray-1 py-2 pl-3 md:min-h-[200px] md:py-3 md:pl-4">
+                                <textarea
+                                    className="h-full w-full resize-none bg-transparent pr-3 text-small2 text-white outline-none placeholder:text-gray-4 md:pr-4 md:text-body"
+                                    placeholder={''}
+                                    defaultValue={''}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>{' '}
+                </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <Button
                         name="checkout"

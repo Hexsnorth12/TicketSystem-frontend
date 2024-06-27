@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
@@ -16,15 +16,23 @@ interface MemberMenuProps {
         address?: string
         imgUrl?: string
     }
+    setIsExpand: (isOpen: boolean) => void
+    isExpand: boolean
+    isAdmin: boolean
 }
 
-const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
-    const [isExpand, setIsExpand] = useState(false)
+const MemberMenu: React.FC<MemberMenuProps> = ({
+    userInfo,
+    setIsExpand,
+    isExpand,
+    isAdmin,
+}) => {
     // const [logout] = useLazyLogoutQuery()
     const LogOut = useCartStore((state) => state.LogOut)
     const onToggleMenu = () => {
-        setIsExpand((prev) => !prev)
+        setIsExpand(!isExpand)
     }
+
     const onLogout = async () => {
         setIsExpand(false)
         LogOut()
@@ -56,6 +64,17 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
             </div>
             {isExpand ? (
                 <ul className="absolute right-0 top-auto rounded-lg bg-gray-1 px-4 text-center md:h-auto md:w-[160px]">
+                    {isAdmin ? (
+                        <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                            <Link
+                                href="/admin/order"
+                                scroll={false}
+                                className="block py-3 hover:text-primary"
+                                onClick={handleClick}>
+                                後台管理
+                            </Link>
+                        </li>
+                    ) : null}
                     <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
                         <Link
                             href="/user/info"
@@ -94,20 +113,20 @@ const MemberMenu: React.FC<MemberMenuProps> = ({ userInfo }) => {
                     </li>
                     <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
                         <Link
-                            href="/user/sharedTicket"
-                            scroll={false}
-                            className="block py-3 hover:text-primary"
-                            onClick={handleClick}>
-                            線上分票
-                        </Link>
-                    </li>
-                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
-                        <Link
                             href="/user/join"
                             scroll={false}
                             className="block py-3 hover:text-primary"
                             onClick={handleClick}>
                             我的揪團
+                        </Link>
+                    </li>
+                    <li className="border-b-2 border-gray-3 text-white hover:border-b-2 hover:border-b-primary">
+                        <Link
+                            href="/user/sharedTicket"
+                            scroll={false}
+                            className="block py-3 hover:text-primary"
+                            onClick={handleClick}>
+                            線上分票
                         </Link>
                     </li>
                     <li

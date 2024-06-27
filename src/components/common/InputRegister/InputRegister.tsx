@@ -39,7 +39,7 @@ const InputRegister = <T extends FieldValues>({
             <label
                 htmlFor={label}
                 className={clsx(
-                    'block text-small2 leading-150 text-white md:text-small1',
+                    'block text-small2 leading-150 text-gray-5 md:text-small1',
                     {
                         'text-gray-900': theme === 'light',
                     },
@@ -52,7 +52,7 @@ const InputRegister = <T extends FieldValues>({
                     {...register(registerKey)}
                     type={type}
                     className={clsx(
-                        'ring-black-300/10 block min-h-[49px] w-full rounded-md  bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm outline outline-1 outline-gray-3 ring-1 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:px-4 md:py-2.5 md:text-body',
+                        'block min-h-[49px] w-full rounded-md bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white ring-1 ring-inset ring-gray-3 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-primary md:px-4 md:py-2.5 md:text-body',
                         {
                             'text-gray-900': theme === 'light',
                             'bg-opacity-0': theme === 'light',

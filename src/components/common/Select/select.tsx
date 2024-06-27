@@ -4,6 +4,7 @@ import React from 'react'
 import * as Select from '@radix-ui/react-select'
 import clsx from 'clsx'
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
+
 interface SelectProps {
     placeholder?: string
     label: string
@@ -14,7 +15,6 @@ interface SelectProps {
 
 const SelectInput: React.FC<SelectProps> = ({
     placeholder,
-    label,
     onSelectChange,
     options,
     className, // Add className prop
@@ -31,7 +31,7 @@ const SelectInput: React.FC<SelectProps> = ({
             onValueChange={(newValue) => handleChange(newValue ?? '')}>
             <Select.Trigger
                 className={clsx(
-                    'hover:bg-mauve3 border-1 ring-black-300/10 inline-flex h-full w-full items-center justify-between rounded-md border-gray-3 bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 placeholder:text-small2 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary md:text-body md:placeholder:text-body',
+                    'inline-flex h-full w-full items-center justify-between rounded-md bg-gray-1 px-4 py-3 text-small2 leading-150 text-white shadow-sm ring-1 ring-inset ring-gray-3 placeholder:text-small2 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-primary md:text-body md:placeholder:text-body',
                     className, // Apply custom className
                 )}
                 aria-label="city"
@@ -44,23 +44,26 @@ const SelectInput: React.FC<SelectProps> = ({
             </Select.Trigger>
             <Select.Portal>
                 <Select.Content
-                    className="z-50 mt-1 overflow-hidden rounded-md bg-gray-1 text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
+                    className="z-50 mt-14 overflow-hidden rounded-md bg-gray-1 text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
                     side="bottom"
-                    position="popper">
+                    sideOffset={30}>
                     <Select.ScrollUpButton className="h-[25px] cursor-default items-center justify-center bg-gray-3 text-white placeholder:flex">
                         <ChevronUpIcon />
                     </Select.ScrollUpButton>
                     <Select.Viewport className="rounded-lg border border-gray-3">
                         <Select.Group>
-                            <Select.Label className="flex items-center justify-start px-4 py-3 text-body">
-                                {label}
-                            </Select.Label>
                             {options.map((option, index) => (
                                 <SelectItem
                                     key={index}
                                     value={option}
                                     onClick={() => handleChange(option)}
-                                    className="flex items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:text-primary">
+                                    className={clsx(
+                                        'flex select-none items-center justify-start border border-x-0 border-gray-3 px-4 py-3 text-body hover:bg-gray-3 hover:text-primary',
+                                        {
+                                            'bg-gray-2':
+                                                option === selectedValue,
+                                        },
+                                    )}>
                                     {option}
                                 </SelectItem>
                             ))}

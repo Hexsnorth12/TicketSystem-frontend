@@ -8,7 +8,7 @@ import { InputRegister, Button } from '@/components/common'
 import { State, getUserForm } from '@/lib'
 import type { UserInfo } from '@/types'
 import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
-
+import { useAlert } from '@/components/useAlert/useAlert'
 interface UserInfoProps {
     userInfo: UserInfo
 }
@@ -28,6 +28,7 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
         setError,
         reset,
     } = useForm<FormValues>()
+    const showAlert = useAlert()
     const [state, formAction] = useFormState<State, FormData>(getUserForm, null)
     const [pending, startTransaction] = useTransition()
     const birthday = useMemo(() => {
@@ -41,12 +42,14 @@ const UserInfoForm: React.FC<UserInfoProps> = ({ userInfo }) => {
 
         if (state.status === 'error') {
             state.errors?.forEach((error) => {
+                showAlert('修改失敗', 'error')
                 setError(error.path as FieldPath<FormValues>, {
                     message: error.message,
                 })
             })
         }
         if (state.status === 'success') {
+            showAlert('修改成功', 'success')
             reset()
         }
     }, [state, setError])

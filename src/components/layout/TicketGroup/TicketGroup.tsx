@@ -47,7 +47,7 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
     if (dataList.length === 0) {
         return (
             <div className="md:h-[600px]">
-                <EmptyData message="尚無評論" hasButton={false} />
+                <EmptyData message="尚無票券" hasButton={false} />
             </div>
         )
     }
