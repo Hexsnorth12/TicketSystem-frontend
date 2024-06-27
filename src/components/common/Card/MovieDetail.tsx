@@ -109,11 +109,6 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
             </Button>
         ))
     }, [product.plans.length, selectPlan])
-    console.log(product.photoPath, 'product.photoPathproduct.photoPath')
-    // let style = {
-    //     backgroundImage:
-    //         'url(https://firebasestorage.googleapis.com/v0/b/moviego-5071c.appspot.com/o/photo%2Fproduct%2Fkenny-eliason-n2VvngfbXtU-unsplash%20(1).jpg?alt=media&token=0a5733ef-432b-43c3-86e2-e266a86ce021)',
-    // }
 
     return (
         <div className=" h-full w-full">
