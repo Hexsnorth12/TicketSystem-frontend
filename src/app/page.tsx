@@ -148,12 +148,15 @@ const HomePage: React.FC = () => {
         <>
             <Marquee />
 
-            <HeaderTitle title="熱門電影" iconPath={mdiFire} />
-            <PopProductList
-                products={popproducts}
-                favorites={favorites}
-                onUpdateFavorite={handleUpdateFavorite}
-            />
+            <div className="container">
+                <HeaderTitle title="熱門電影" iconPath={mdiFire} />
+                <PopProductList
+                    products={popproducts}
+                    favorites={favorites}
+                    onUpdateFavorite={handleUpdateFavorite}
+                />
+            </div>
+
             <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
             <RecProductList
                 products={recproducts}

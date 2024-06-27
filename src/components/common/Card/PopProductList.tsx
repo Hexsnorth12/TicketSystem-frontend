@@ -72,9 +72,9 @@ const PopProductList: React.FC<PopProductListProps> = ({
                     modules={[Navigation]}>
                     {products.map((product, index) => (
                         <SwiperSlide key={product._id}>
-                            <div className="m-4 overflow-hidden rounded-lg p-4">
+                            <div className="rounded-lg">
                                 <Link href={`/movies/${product._id}`}>
-                                    <div className="relative h-[210px] w-[160px]">
+                                    <div className="relative h-[210px]">
                                         <Image
                                             src={product.photoPath}
                                             alt={product.title}
