@@ -8,8 +8,9 @@ import Tag from '@components/common/Tag/tag'
 import { Button } from '@/components/common'
 import {
     truncateName,
-    truncateContent,
     truncateContentMobile,
+    truncateBrief,
+    truncateTitle,
 } from '../../../utils/numberUtils'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 // Favorite Section
@@ -62,21 +63,22 @@ const RecProductList: React.FC<RecProductListProps> = ({
     return (
         <>
             {/* Desktop-Navbar */}
-            <div className="hidden md:grid md:grid-cols-5 md:gap-4 md:px-32">
+            <div className="hidden md:grid md:grid-cols-5 md:grid-rows-2 md:gap-4">
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="m-4 overflow-hidden rounded-lg p-4"
+                        className="md:mb-10"
                         onClick={() => handleMovieDetail(product._id)}
                         style={{ cursor: 'pointer' }}>
                         <Link href="">
-                            <div className="relative h-[210px] w-[160px]">
+                            <div className="relative min-h-[210px]">
                                 <Image
                                     src={product.photoPath}
                                     alt={product.title}
-                                    layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300"
+                                    width={162}
+                                    height={216}
+                                    className="h-[320px] w-full rounded-lg border-2 border-white border-opacity-0 object-cover transition-opacity duration-300"
                                 />
                                 <div className="absolute left-2 top-2 inline-block rounded-full bg-gray-1 text-primary">
                                     <TypeTag tagName={product.genre} />
@@ -103,23 +105,20 @@ const RecProductList: React.FC<RecProductListProps> = ({
                             </div>
                         </Link>
                         <div className="text-start">
-                            <div className="mt-2 text-btn1 font-medium text-white">
-                                {truncateName(product.title)}
-                            </div>
+                            <h5 className="w-full overflow-hidden text-ellipsis text-nowrap text-btn1 font-medium text-white">
+                                {product.title}
+                            </h5>
                             <div className="text-small2 font-regular">
-                                <div className="text-gray-5">
-                                    {' '}
-                                    {truncateContent(product.brief)}
-                                </div>
-                                <div className="flex text-white">
+                                <p className="mb-4 text-gray-5">
+                                    {truncateBrief(product.brief)}
+                                </p>
+                                <div className="flex items-center text-white md:space-x-3">
                                     <TypeTag tagName={product.type} />
-                                    <div className="pt-2">
-                                        <Tag
-                                            icon={FaMapMarkerAlt}
-                                            tagValue={product.theater}
-                                            iconColor="gray-4"
-                                        />
-                                    </div>
+                                    <Tag
+                                        icon={FaMapMarkerAlt}
+                                        tagValue={product.theater}
+                                        iconColor="gray-4"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -127,7 +126,7 @@ const RecProductList: React.FC<RecProductListProps> = ({
                 ))}
             </div>
             {/* Mobile-Navbar */}
-            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+            <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
                 {products.map((product) => (
                     <div key={product._id} className="mx-1 inline-block w-32">
                         <Link href="">

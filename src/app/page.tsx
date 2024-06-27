@@ -35,7 +35,7 @@ interface HeaderTitleProps {
 
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     return (
-        <div className="container flex items-center py-2 md:px-32 md:py-4 ">
+        <div className="flex items-center py-2 md:py-4 ">
             <svg width="40" height="40" viewBox="0 0 24 24">
                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#00FFFF' }} />
@@ -148,7 +148,7 @@ const HomePage: React.FC = () => {
         <>
             <Marquee />
 
-            <div className="container">
+            <div className="container mb-6 md:mb-[60px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
                 <PopProductList
                     products={popproducts}
@@ -156,22 +156,36 @@ const HomePage: React.FC = () => {
                     onUpdateFavorite={handleUpdateFavorite}
                 />
             </div>
-
-            <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
-            <RecProductList
-                products={recproducts}
-                favorites={favorites}
-                onUpdateFavorite={handleUpdateFavorite}
-            />
-            <HeaderTitle
-                title="一起揪團"
-                iconPath={mdiAccountMultipleOutline}
-            />
-            <GroupProductList groups={groupproducts} />
-            <NavBanner type="join" />
-            <HeaderTitle title="分票專區" iconPath={mdiTicketConfirmation} />
-            <TicketProductList tickets={ticketproducts} />
-            <NavBanner type="ticket" />
+            <div className="container md:mb-5">
+                <HeaderTitle title="你可能會喜歡" iconPath={mdiHeartCircle} />
+                <RecProductList
+                    products={recproducts}
+                    favorites={favorites}
+                    onUpdateFavorite={handleUpdateFavorite}
+                />
+            </div>
+            <div className="bg-gray-1">
+                <div className="container">
+                    <div className="pb-[54px] pt-6 md:pb-[88px] md:pt-[60px]">
+                        <HeaderTitle
+                            title="一起揪團"
+                            iconPath={mdiAccountMultipleOutline}
+                        />
+                        <GroupProductList groups={groupproducts} />
+                    </div>
+                    <NavBanner type="join" />
+                </div>
+            </div>
+            <div className="container">
+                <div className="pb-5 pt-6 md:py-[60px]">
+                    <HeaderTitle
+                        title="分票專區"
+                        iconPath={mdiTicketConfirmation}
+                    />
+                    <TicketProductList tickets={ticketproducts} />
+                </div>
+                <NavBanner type="ticket" />
+            </div>
         </>
     )
 }

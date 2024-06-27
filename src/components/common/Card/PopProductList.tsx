@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import clsx from 'clsx'
-import { truncateName } from '../../../utils/numberUtils'
+import { truncateName, truncateTitle } from '../../../utils/numberUtils'
 import { Button } from '@/components/common'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
@@ -58,9 +58,9 @@ const PopProductList: React.FC<PopProductListProps> = ({
     }
 
     return (
-        <>
+        <section className=" border-b border-gray-3 pb-[54px] md:pb-[60px]">
             {/* Desktop View */}
-            <div className="hidden md:mx-32 md:block ">
+            <div className="hidden md:block">
                 <Swiper
                     slidesPerView={5}
                     spaceBetween={10}
@@ -96,7 +96,6 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                                     )
                                                 }}
                                                 className="flex w-full items-center justify-center py-2 text-center">
-                                                {' '}
                                                 {favorites[product._id] ? (
                                                     <FaHeart />
                                                 ) : (
@@ -111,7 +110,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                         <div className="flex justify-between">
                                             <div className="mt-2 text-start text-white">
                                                 <div className="text-nowrap text-btn2">
-                                                    {truncateName(
+                                                    {truncateTitle(
                                                         product.title,
                                                     )}
                                                 </div>
@@ -149,7 +148,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                 </Swiper>
             </div>
             {/* Mobile View */}
-            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+            <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
                 {products.map((product, index) => (
                     <div key={product._id} className="mx-3 inline-block w-32">
                         <Link href={`/movies/${product._id}`}>
@@ -214,7 +213,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                     </div>
                 ))}
             </div>
-        </>
+        </section>
     )
 }
 
