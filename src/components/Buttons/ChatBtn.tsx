@@ -9,7 +9,9 @@ const ChatBtn: React.FC<ChatButton> = ({ disabled }) => {
     const defaultStyle = buttonStyle()
 
     function buttonStyle() {
-        return !disabled ? 'border-gray-1 bg-gray-1 text-primary my-3' : ''
+        return !disabled
+            ? 'border-gray-1 bg-gray-1 text-primary hover:text-gray-1'
+            : ''
     }
 
     function onClickHandler() {

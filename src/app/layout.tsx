@@ -36,7 +36,6 @@ export default async function RootLayout({
                     <body
                         className={`${noto_Sans_TC.className} flex h-screen flex-col bg-gray-2`}>
                         <ClientSessionProvider session={session}>
-                            {' '}
                             <Header
                                 logoSrc="/assets/movie-go-logo.png"
                                 isAuth={isAuth}

@@ -25,3 +25,17 @@ export const truncateJoinEvent = (content: string): string => {
     }
     return content
 }
+
+export const truncateBrief = (content: string): string => {
+    if (content && content.length > 31) {
+        return content.slice(0, 31) + '...'
+    }
+    return content
+}
+
+export const truncateTitle = (content: string): string => {
+    if (content && content.length > 8) {
+        return content.slice(0, 13) + '...'
+    }
+    return content
+}
