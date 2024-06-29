@@ -2,7 +2,8 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { truncateName } from '../../../utils/numberUtils'
+import clsx from 'clsx'
+import { truncateName, truncateTitle } from '../../../utils/numberUtils'
 import { Button } from '@/components/common'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
@@ -10,6 +11,7 @@ import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
+import { bellota } from '@/components/fonts'
 
 type Tag = {
     tagId: string
@@ -56,9 +58,9 @@ const PopProductList: React.FC<PopProductListProps> = ({
     }
 
     return (
-        <>
+        <section className=" border-b border-gray-3 pb-[54px] md:pb-[60px]">
             {/* Desktop View */}
-            <div className="hidden md:mx-32 md:block ">
+            <div className="hidden md:block">
                 <Swiper
                     slidesPerView={5}
                     spaceBetween={10}
@@ -72,9 +74,9 @@ const PopProductList: React.FC<PopProductListProps> = ({
                     modules={[Navigation]}>
                     {products.map((product, index) => (
                         <SwiperSlide key={product._id}>
-                            <div className="m-4 overflow-hidden rounded-lg p-4">
+                            <div className="rounded-lg">
                                 <Link href={`/movies/${product._id}`}>
-                                    <div className="relative h-[210px] w-[160px]">
+                                    <div className="relative h-[210px]">
                                         <Image
                                             src={product.photoPath}
                                             alt={product.title}
@@ -94,7 +96,6 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                                     )
                                                 }}
                                                 className="flex w-full items-center justify-center py-2 text-center">
-                                                {' '}
                                                 {favorites[product._id] ? (
                                                     <FaHeart />
                                                 ) : (
@@ -105,11 +106,11 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                     </div>
-                                    <div className="w-[160px] text-center">
+                                    <div className="text-center">
                                         <div className="flex justify-between">
                                             <div className="mt-2 text-start text-white">
-                                                <div className="text-btn1 font-medium">
-                                                    {truncateName(
+                                                <div className="text-nowrap text-btn2">
+                                                    {truncateTitle(
                                                         product.title,
                                                     )}
                                                 </div>
@@ -118,18 +119,22 @@ const PopProductList: React.FC<PopProductListProps> = ({
                                                 </div>
                                             </div>
                                             <div
-                                                className={
-                                                    index < 3
-                                                        ? 'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number1 font-bold text-transparent'
-                                                        : 'text-number1 font-bold text-gray-3'
-                                                }>
+                                                className={clsx(
+                                                    bellota.className,
+                                                    {
+                                                        'bg-gradient-to-b from-primary to-gray-6 bg-clip-text text-number1 font-bold text-transparent':
+                                                            index < 3,
+                                                        'text-number1 font-bold text-gray-3':
+                                                            index >= 3,
+                                                    },
+                                                )}>
                                                 {index + 1}
                                             </div>
                                         </div>
                                         <Button
                                             type="button"
                                             title="立即購票"
-                                            className="py-1"
+                                            className="w-full border-0 bg-gray-1 py-2 text-primary"
                                             onClick={() =>
                                                 handleMovieDetail(product._id)
                                             }>
@@ -143,7 +148,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                 </Swiper>
             </div>
             {/* Mobile View */}
-            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+            <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
                 {products.map((product, index) => (
                     <div key={product._id} className="mx-3 inline-block w-32">
                         <Link href={`/movies/${product._id}`}>
@@ -208,7 +213,7 @@ const PopProductList: React.FC<PopProductListProps> = ({
                     </div>
                 ))}
             </div>
-        </>
+        </section>
     )
 }
 

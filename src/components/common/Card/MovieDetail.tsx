@@ -115,10 +115,18 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
             <div className="relative h-[312px]  md:h-[600px]">
                 <div className="relative h-full w-full">
                     <div
-                        className="absolute inset-0 bg-cover bg-center blur-lg"
+                        className="absolute inset-0 z-0 bg-cover bg-center blur-xl"
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1)), url(${product.photoPath})`,
-                        }}></div>
+                            backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0), rgba(30, 30, 30, 1))`,
+                        }}>
+                        <Image
+                            src={product.photoPath}
+                            alt={'product image'}
+                            layout="fill"
+                            objectFit="cover"
+                            quality={20}
+                        />
+                    </div>
                     <div className="relative inset-0 flex h-full items-center justify-center bg-cover bg-center md:absolute md:inline-flex md:hidden">
                         <Image
                             src={product.photoPath}

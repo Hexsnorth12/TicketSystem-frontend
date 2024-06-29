@@ -47,7 +47,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
     return (
         <>
             {/* Desktop-Navbar */}
-            <div className="hidden md:mx-32 md:block">
+            <div className="hidden md:block">
                 <Swiper
                     slidesPerView={3}
                     spaceBetween={10}
@@ -59,13 +59,11 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                     navigation={true}
                     modules={[Navigation]}>
                     {groups.map((group) => (
-                        <div
-                            key={group._id}
-                            className="m-4 overflow-hidden rounded-lg p-4">
+                        <div key={group._id} className="rounded-lg">
                             <Link href="">
                                 <SwiperSlide key={group._id}>
                                     <div
-                                        className="relative h-[173px] w-[288px] cursor-pointer"
+                                        className="relative h-[173px] cursor-pointer"
                                         onClick={openEventModal.bind(
                                             null,
                                             group._id as string,
@@ -76,7 +74,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                                             alt={group.title}
                                             layout="fill"
                                             objectFit="cover"
-                                            className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                            className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 hover:border-opacity-100"
                                         />
                                         {/* Border-primary with blur effect */}
                                         <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -117,7 +115,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                 </Swiper>
             </div>
             {/* Mobile-Navbar */}
-            <div className="block flex overflow-x-scroll whitespace-nowrap md:hidden">
+            <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
                 {groups.map((group) => (
                     <div
                         key={group._id}
@@ -133,7 +131,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                                     alt={group.title}
                                     layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 hover:border-opacity-100"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
