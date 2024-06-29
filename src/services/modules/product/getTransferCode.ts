@@ -20,10 +20,7 @@ const getTransferCode = (
         'api'
     >,
 ) =>
-    build.query<
-        TransferCodeData,
-        { payload: TransferPayload; token: string }
-    >({
+    build.query<TransferCodeData, { payload: TransferPayload; token: string }>({
         query: ({ payload, token }) => ({
             url: `api/v1/ticket/transfer/createCode`,
             method: 'PATCH',

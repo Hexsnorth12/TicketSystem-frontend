@@ -11,4 +11,9 @@ export const adminApi = api.injectEndpoints({
     }),
 })
 
-export const { useGetOrdersQuery, useLazyGetOrdersQuery, useVerifyTicketMutation, useLazyGetTicketsQuery } = adminApi
+export const {
+    useGetOrdersQuery,
+    useLazyGetOrdersQuery,
+    useVerifyTicketMutation,
+    useLazyGetTicketsQuery,
+} = adminApi

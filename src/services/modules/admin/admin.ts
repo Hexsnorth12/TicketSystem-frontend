@@ -88,7 +88,4 @@ export interface TicketsData {
     totalCount: number
 }
 
-
-
 export interface IMeta {}
-

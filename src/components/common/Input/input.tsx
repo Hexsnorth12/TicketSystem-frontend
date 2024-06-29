@@ -9,6 +9,8 @@ interface InputProps {
     value: string
     placeholder?: string
     onChange: (value: string) => void
+    onFocus?: () => void
+    onBlur?: () => void
     theme?: 'light' | 'dark'
     rounded?: 'full' | 'none' | 'md'
     required?: boolean
@@ -23,6 +25,8 @@ const InputComponent: React.FC<InputProps> = ({
     value,
     placeholder = '',
     onChange,
+    onFocus = () => {},
+    onBlur = () => {},
     theme = 'dark',
     rounded = 'md',
     required = false,
@@ -49,6 +53,8 @@ const InputComponent: React.FC<InputProps> = ({
                     name={name}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
+                    onFocus={() => onFocus()}
+                    onBlur={() => onBlur()}
                     type={type}
                     className={clsx(
                         'block h-full w-full bg-gray-1 px-2.5 py-2 text-small2 leading-150 text-white shadow-sm ring-1 ring-inset ring-gray-3 placeholder:text-gray-4 focus:outline-none focus:ring-2 focus:ring-primary md:px-4 md:py-2.5 md:text-body',
