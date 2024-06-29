@@ -8,12 +8,11 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = async ({ params }) => {
-
     const { data }: { data: TicketDetail } = await fetchServer({
         method: 'GET',
         url: `api/v1/ticket/${params.id}`,
     })
-    
+
     return (
         <>
             <div className="md:w-4/12 md:pr-10">

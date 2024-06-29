@@ -1,31 +1,31 @@
-import fetchClient from '@/lib/fetchClient';
-import { getUserSession } from '@/lib/auth.actions';
-import { TicketDetail } from '@/types';
+import fetchClient from '@/lib/fetchClient'
+import { getUserSession } from '@/lib/auth.actions'
+import { TicketDetail } from '@/types'
 
 export type Product = {
-    limit: number;
-    page: string;
-    isPublic: boolean;
-    _id: string;
-    title: string;
-    type: string;
-    genre: string;
-    theater: string;
-    brief: string;
-    vendor: string;
-    price: number;
-    amount: number;
-    soldAmount: number;
-    isLaunched: boolean;
-    recommendWeight: number;
-    sellEndAt: string;
-    sellStartAt: string;
-    endAt: string;
-    startAt: string;
-    tags: { tagId: string }[];
-    photoPath: string;
+    limit: number
+    page: string
+    isPublic: boolean
+    _id: string
+    title: string
+    type: string
+    genre: string
+    theater: string
+    brief: string
+    vendor: string
+    price: number
+    amount: number
+    soldAmount: number
+    isLaunched: boolean
+    recommendWeight: number
+    sellEndAt: string
+    sellStartAt: string
+    endAt: string
+    startAt: string
+    tags: { tagId: string }[]
+    photoPath: string
     isFavorite: boolean
-};
+}
 
 export type Group = {
     _id: string
@@ -42,7 +42,7 @@ export type Group = {
     status: string
     content: string
     participantCount: number
-};
+}
 
 export type Ticket = {
     photoPath: string
@@ -74,22 +74,22 @@ export type Ticket = {
 
 export const fetchGeneralProducts = async (): Promise<Product[]> => {
     try {
-        const { session } = await getUserSession();
-        const token = session?.user?.token;
+        const { session } = await getUserSession()
+        const token = session?.user?.token
         const params = new URLSearchParams({
             limit: '50',
             page: '1',
             isPublic: 'true',
             sortField: 'sellStartAt',
             sortOrder: 'desc',
-        });
+        })
 
         const { data } = await fetchClient({
             method: 'GET',
             url: `api/v1/product?${params.toString()}`,
             token,
             tags: ['product'],
-        });
+        })
 
         if (data && data.products) {
             return data.products.map((product: Product) => ({
@@ -97,33 +97,33 @@ export const fetchGeneralProducts = async (): Promise<Product[]> => {
                 photoPath: product.photoPath.startsWith('')
                     ? product.photoPath
                     : `${product.photoPath}`,
-            }));
+            }))
         } else {
-            throw new Error('未找到商品');
+            throw new Error('未找到商品')
         }
     } catch (err) {
-        throw new Error('獲取商品失敗');
+        throw new Error('獲取商品失敗')
     }
-};
+}
 
 export const fetchPopProducts = async (): Promise<Product[]> => {
     try {
-        const { session } = await getUserSession();
-        const token = session?.user?.token;
+        const { session } = await getUserSession()
+        const token = session?.user?.token
         const params = new URLSearchParams({
             limit: '10',
             page: '1',
             isPublic: 'true',
             sortField: 'soldAmount',
             sortOrder: 'asc',
-        });
+        })
 
         const { data } = await fetchClient({
             method: 'GET',
             url: `api/v1/product?${params.toString()}`,
             token,
             tags: ['product'],
-        });
+        })
 
         if (data && data.products) {
             return data.products.map((product: Product) => ({
@@ -131,33 +131,33 @@ export const fetchPopProducts = async (): Promise<Product[]> => {
                 photoPath: product.photoPath.startsWith('')
                     ? product.photoPath
                     : `${product.photoPath}`,
-            }));
+            }))
         } else {
-            throw new Error('未找到商品');
+            throw new Error('未找到商品')
         }
     } catch (err) {
-        throw new Error('獲取商品失敗');
+        throw new Error('獲取商品失敗')
     }
-};
+}
 
 export const fetchRecProducts = async (): Promise<Product[]> => {
     try {
-        const { session } = await getUserSession();
-        const token = session?.user?.token;
+        const { session } = await getUserSession()
+        const token = session?.user?.token
         const params = new URLSearchParams({
             limit: '10',
             page: '1',
             isPublic: 'true',
             sortField: 'recommendWeight',
             sortOrder: 'asc',
-        });
+        })
 
         const { data } = await fetchClient({
             method: 'GET',
             url: `api/v1/product?${params.toString()}`,
             token,
             tags: ['product'],
-        });
+        })
 
         if (data && data.products) {
             return data.products.map((product: Product) => ({
@@ -165,33 +165,33 @@ export const fetchRecProducts = async (): Promise<Product[]> => {
                 photoPath: product.photoPath.startsWith('')
                     ? product.photoPath
                     : `${product.photoPath}`,
-            }));
+            }))
         } else {
-            throw new Error('未找到商品');
+            throw new Error('未找到商品')
         }
     } catch (err) {
-        throw new Error('獲取商品失敗');
+        throw new Error('獲取商品失敗')
     }
-};
+}
 
 export const fetchGroupProducts = async (): Promise<Group[]> => {
     try {
-        const { session } = await getUserSession();
-        const token = session?.user?.token;
+        const { session } = await getUserSession()
+        const token = session?.user?.token
         const params = new URLSearchParams({
             limit: '10',
             page: '1',
             isPublic: 'true',
             sortField: 'createdAt',
             sortOrder: 'desc',
-        });
+        })
 
         const { data } = await fetchClient({
             method: 'GET',
             url: `api/v1/group?${params.toString()}`,
             token,
             tags: ['group'],
-        });
+        })
 
         if (data && data.groups) {
             return data.groups.map((group: Group) => ({
@@ -199,32 +199,32 @@ export const fetchGroupProducts = async (): Promise<Group[]> => {
                 placeholderImg: group.placeholderImg.startsWith('')
                     ? group.placeholderImg
                     : `${group.placeholderImg}`,
-            }));
+            }))
         } else {
-            throw new Error('未找到商品');
+            throw new Error('未找到商品')
         }
     } catch (err) {
-        throw new Error('獲取商品失敗');
+        throw new Error('獲取商品失敗')
     }
-};
+}
 
 export const fetchTicketProducts = async (): Promise<Ticket[]> => {
     try {
-        const { session } = await getUserSession();
-        const token = session?.user?.token;
+        const { session } = await getUserSession()
+        const token = session?.user?.token
         const params = new URLSearchParams({
             limit: '10',
             page: '1',
             sortField: 'createdAt',
             sortOrder: 'desc',
-        });
+        })
 
         const { data } = await fetchClient({
             method: 'GET',
             url: `api/v1/ticket-shared?${params.toString()}`,
             token,
             tags: ['ticekt'],
-        });
+        })
 
         if (data && data.tickets) {
             return data.tickets.map((ticket: Ticket) => ({
@@ -232,14 +232,14 @@ export const fetchTicketProducts = async (): Promise<Ticket[]> => {
                 photoPath: ticket.product.photoPath.startsWith('')
                     ? ticket.product.photoPath
                     : `${ticket.product.photoPath}`,
-            }));
+            }))
         } else {
-            throw new Error('未找到商品');
+            throw new Error('未找到商品')
         }
     } catch (err) {
-        throw new Error('獲取商品失敗');
+        throw new Error('獲取商品失敗')
     }
-};
+}
 
 export const favorites = [
     {
@@ -344,5 +344,3 @@ export const dummyTicketDetail: TicketDetail = {
     purchaseAt: '2024-06-15T12:50:23.686Z',
     purchaseAmount: 11,
 }
-
-

@@ -20,7 +20,7 @@ const CustomizeDatePickerInput = styled(DatePicker)`
         color: #4e4e4e;
     }
     & .MuiOutlinedInput-notchedOutline {
-       border-color: transparent; 
+        border-color: transparent;
     }
     &:hover .MuiOutlinedInput-notchedOutline {
         border-color: transparent;

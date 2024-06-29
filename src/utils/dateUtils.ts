@@ -26,7 +26,6 @@ export const formatdate = (isoString: string) => {
     return `${year}-${month}-${day}`
 }
 
-
 export function formatJoinEventDate(date: Date) {
     const eventDate = formatDate(date)
     const time = formatTimeString(date)

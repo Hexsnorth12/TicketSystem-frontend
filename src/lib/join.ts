@@ -1,6 +1,11 @@
 import fetchClient from './fetchClient'
 
-import type { EventDetailRes, GetEventListRes, JoinEventRes, GetEventParams } from '@/types'
+import type {
+    EventDetailRes,
+    GetEventListRes,
+    JoinEventRes,
+    GetEventParams,
+} from '@/types'
 
 const today = new Date()
 const later = new Date(today.getTime() + 86400000)
@@ -32,7 +37,7 @@ export const getJoinEventList = async ({
     timeEnd = '',
     movieTitle = '',
     title = '',
-    theater = ''
+    theater = '',
 }: GetEventParams): Promise<GetEventListRes> => {
     try {
         // 初次render拿全部活動資料前20筆資料

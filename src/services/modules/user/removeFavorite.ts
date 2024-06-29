@@ -20,13 +20,13 @@ const removeFavorite = (
         'api'
     >,
 ) =>
-    build.mutation<UpdateFavoriteData, { productId: string, token: string }>({
+    build.mutation<UpdateFavoriteData, { productId: string; token: string }>({
         query: ({ productId, token }) => ({
             url: `api/v1/user/favorite/${productId}`,
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
-            }
+            },
         }),
     })
 

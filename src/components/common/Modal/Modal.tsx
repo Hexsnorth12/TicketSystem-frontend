@@ -27,7 +27,9 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
             <Dialog.Portal>
                 <Dialog.Overlay className="fixed inset-0 z-50 overflow-auto bg-black/70" />
 
-                <Dialog.DialogContent aria-describedby={'Common Modal content'} className="fixed left-1/2 top-1/2 z-50 my-8 max-h-[calc(100vh-138px)] max-w-[327px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto  rounded-lg bg-gray-2 px-3 py-6 scrollbar-hidden md:max-h-[calc(100vh-231px)] md:max-w-[1296px] md:overflow-y-scroll md:marker:scrollbar">
+                <Dialog.DialogContent
+                    aria-describedby={'Common Modal content'}
+                    className="fixed left-1/2 top-1/2 z-50 my-8 max-h-[calc(100vh-138px)] max-w-[327px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto  rounded-lg bg-gray-2 px-3 py-6 scrollbar-hidden md:max-h-[calc(100vh-231px)] md:max-w-[1296px] md:overflow-y-scroll md:marker:scrollbar">
                     <Dialog.DialogTitle></Dialog.DialogTitle>
                     <Dialog.Description></Dialog.Description>
                     {children}

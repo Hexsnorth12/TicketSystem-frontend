@@ -7,8 +7,12 @@ export const productApi = api.injectEndpoints({
     endpoints: (build) => ({
         postComment: postComment(build),
         getTransferCode: getTransferCode(build),
-        postSellTicket: postSellTicket(build)
+        postSellTicket: postSellTicket(build),
     }),
 })
 
-export const { usePostCommentMutation, useGetTransferCodeQuery, usePostSellTicketMutation } = productApi
+export const {
+    usePostCommentMutation,
+    useGetTransferCodeQuery,
+    usePostSellTicketMutation,
+} = productApi
