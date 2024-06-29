@@ -127,7 +127,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
             <div className="min-w-[279px] px-5 md:px-12 md:py-9">
                 <div className="mb-6 flex flex-col gap-4 md:flex-row">
-                    <div className="max-h-[173px] overflow-hidden">
+                    <div className="max-h-[173px] overflow-hidden rounded-lg">
                         <Image
                             loader={() => eventDetail.placeholderImg as string}
                             src={eventDetail.placeholderImg as string}

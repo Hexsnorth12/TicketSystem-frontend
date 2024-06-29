@@ -19,7 +19,9 @@ const CustomizeDatePickerInput = styled(DatePicker)`
     .MuiSvgIcon-root {
         color: #4e4e4e;
     }
-    & .MuiOutlinedInput-notchedOutline,
+    & .MuiOutlinedInput-notchedOutline {
+       border-color: transparent; 
+    }
     &:hover .MuiOutlinedInput-notchedOutline {
         border-color: transparent;
     }

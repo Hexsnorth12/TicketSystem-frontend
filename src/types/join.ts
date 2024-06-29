@@ -63,3 +63,15 @@ export type JoinEventSuccess = {
 export type GetEventListRes = JoinPageSuccess | JoinPageError | undefined
 export type EventDetailRes = EventDetailSuccess | JoinPageError | undefined
 export type JoinEventRes = JoinEventSuccess | JoinPageError | undefined
+
+export type GetEventParams = {
+    limit: number
+    page: number
+    startAt?: string
+    endAt?: string
+    timeBegin?: string
+    timeEnd?: string
+    movieTitle?: string
+    title?: string
+    theater?: string
+}
