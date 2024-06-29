@@ -135,7 +135,7 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                         )}>
                         <span className="font-medium tracking-wider">換票</span>
                     </Button>
-                    {/* <Button
+                    <Button
                         type={'button'}
                         title={'詳細'}
                         onClick={() => {
@@ -143,7 +143,7 @@ const MyTicket: React.FC<MyTicketProps> = ({ ticket, status }) => {
                         }}
                         className="w-full py-2 md:w-auto md:py-3">
                         <span className="font-medium tracking-wider">詳細</span>
-                    </Button> */}
+                    </Button>
                 </div>
             </div>
         </div>
