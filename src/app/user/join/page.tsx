@@ -271,7 +271,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                     width={267}
                                                     height={160}
                                                     alt="event image"
-                                                    className="rounded-lg bg-gray-5 object-cover"
+                                                    className="h-full rounded-lg bg-gray-5 object-cover"
                                                 />
                                             </div>
                                             <div className="mb-6 grow md:m-0">
@@ -405,9 +405,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                                     key={index}
                                                                     className="flex w-full flex-wrap justify-between border-b border-b-gray-5 py-1 text-center text-white">
                                                                     <div className="w-1/4 break-words p-1">
-                                                                        {
-                                                                            item?.name
-                                                                        }
+                                                                        {`${item?.name}${!index ? '（主揪）' : ''}`}
                                                                     </div>
                                                                     <div className="w-1/4 break-words p-1">
                                                                         {
