@@ -1,29 +1,80 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import clsx from 'clsx'
+import { useSession } from 'next-auth/react'
+
 import { Counter, Button } from '@/components/common'
 import fackImg from '@images/groupcard1.png'
-import { useRouter } from 'next/navigation'
-// import { usePostSellTicketMutation } from '@/services/modules/product'
+import { PublishData } from '@/types/product'
+import { bellota } from '@/components/fonts'
+import { usePostSellTicketMutation } from '@/services/modules/product'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
+import { useAlert } from '@/components/useAlert/useAlert'
 
-interface PublishFormProps {}
+interface PublishFormProps {
+    data: PublishData
+    orderId: string
+    productId: string
+}
 
-const PublishForm: React.FC<PublishFormProps> = () => {
+const PublishForm: React.FC<PublishFormProps> = ({
+    data,
+    orderId,
+    productId,
+}) => {
+    const [count, setCount] = useState(1)
     const router = useRouter()
+    const { data: session } = useSession()
+    const [postSellTicket, { isLoading, isSuccess }] =
+        usePostSellTicketMutation()
+    const showAlert = useAlert()
+
+    useEffect(() => {
+        if (isSuccess) {
+            showAlert('上架成功', 'success')
+            router.back()
+        }
+    }, [isSuccess])
+
     const handleClose = () => {
         router.back()
     }
+
+    const handleSubmit = async () => {
+        try {
+            await postSellTicket({
+                payload: {
+                    orderId: orderId,
+                    productId: productId,
+                    amount: count,
+                },
+                token: session?.accessToken || '',
+            }).unwrap()
+        } catch (err) {
+            console.log(err)
+            showAlert('上架失敗，請稍候再試', 'error')
+            router.back()
+        }
+    }
+
     return (
         <div>
+            {isLoading && (
+                <div className="absolute left-[50%] top-0 z-30 -translate-x-1/2">
+                    <LoadingSkeleton />
+                </div>
+            )}
             <h2 className="my-2 text-header5 text-white md:my-3">
-                金剛大戰哥吉拉
+                {data.productName}
             </h2>
             <p className="text-btn2 text-gray-4">台北場</p>
             <div className="my-2 flex items-center justify-between gap-3 md:my-3 md:justify-start md:gap-4">
                 <div className="rounded-lg">
                     <Image
-                        src={fackImg}
+                        src={data.photoPath || fackImg}
                         alt="group card"
                         width={120}
                         height={120}
@@ -31,9 +82,18 @@ const PublishForm: React.FC<PublishFormProps> = () => {
                     />
                 </div>
                 <div className="w-1/4 grow md:grow-0">
-                    <Counter onValueChange={() => {}} maxValue={999} />
+                    <Counter
+                        onValueChange={(value) => {
+                            setCount(value)
+                        }}
+                        maxValue={data.holdCount}
+                    />
                 </div>
-                <p className="text-btn2 text-white">350 NT</p>
+                <p
+                    className={clsx(
+                        'text-btn2 text-white',
+                        bellota.className,
+                    )}>{`${data.price} NT`}</p>
             </div>
             <h3 className="my-2 text-header5 text-white md:my-3">注意事項</h3>
             <ol className="mb-3 h-[200px] space-y-1 overflow-y-scroll bg-gray-2 p-2 pr-4 text-small2  text-white scrollbar md:mb-4 md:h-auto md:p-0 md:py-2 md:scrollbar-hidden">
@@ -71,7 +131,7 @@ const PublishForm: React.FC<PublishFormProps> = () => {
                 </Button>
                 <Button
                     type="button"
-                    onClick={() => {}}
+                    onClick={handleSubmit}
                     className="mr-4"
                     title="submit">
                     <span>送出</span>
