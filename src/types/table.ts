@@ -4,3 +4,8 @@ export interface HeadCell {
     label: string
     numeric: boolean
 }
+
+export interface InputItem {
+    id: string
+    content: string
+}

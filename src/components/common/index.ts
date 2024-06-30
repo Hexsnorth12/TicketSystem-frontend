@@ -28,6 +28,7 @@ import ErrorModal from './ErrorModal'
 import DataTable from './DataTable/DataTable'
 import DataShell from './DataShell/DataShell'
 import SuccessModal from './SuccessModal'
+import DragItem from './DragItem/DragItem'
 
 export {
     Modal,
@@ -60,4 +61,5 @@ export {
     DataTable,
     DataShell,
     SuccessModal,
+    DragItem,
 }
