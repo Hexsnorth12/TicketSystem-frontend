@@ -68,7 +68,7 @@ const JoinCard: React.FC<JoinCardProps> = ({ group }) => {
                             height={16}
                         />
                         <span className="text-number5 text-primary">
-                            {group?.participantCount ?? 1}
+                            {group?.vacancy ?? 1}
                         </span>
                         <span className="text-number5 text-gray-5">/</span>
                         <span className="text-number5 text-gray-5">
