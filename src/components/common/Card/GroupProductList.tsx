@@ -1,21 +1,13 @@
 // /components/ProductList.tsx
 'use client'
 import React from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
-import {
-    truncateName,
-    truncateContent,
-    truncateContentMobile,
-} from '@/utils/numberUtils'
-import { formatdate } from '@/utils/dateUtils'
-import Tag from '@components/common/Tag/tag'
-import { FaMapMarkerAlt } from 'react-icons/fa'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import { useRouter } from 'next/navigation'
+
 import { JoinCard } from '@/components/common'
 import arrowLeftIcon from '@icon/arrow_left_white.svg'
 import arrowRightIcon from '@icon/arrow_right_white.svg'
@@ -60,7 +52,7 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                         className="prev cursor-pointer "
                     />
                 </div>
-                <div className="next absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer  rounded-full border border-primary xl:right-[-72px] xl:flex xl:items-center xl:justify-center">
+                <div className="next absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer rounded-full border border-primary xl:right-[-72px] xl:flex xl:items-center xl:justify-center">
                     <Image
                         src={arrowRightIcon}
                         alt="scroll t0 left"
@@ -82,7 +74,8 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
                     {groups.map((group) => (
                         <SwiperSlide
                             key={group._id}
-                            className="min-w-[216px] md:max-w-[288px]">
+                            className="max-w-[216px] md:max-w-[288px]"
+                            onClick={() => openEventModal(group._id)}>
                             <JoinCard group={group} />
                         </SwiperSlide>
                     ))}

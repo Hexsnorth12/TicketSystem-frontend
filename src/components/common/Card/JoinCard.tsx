@@ -3,7 +3,6 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 import { bellota } from '@/components/fonts'
-import fakeImage from '@images/groupcard4.jpg'
 import accountIcon from '@icon/account_gray.svg'
 import location from '@icon/location.svg'
 
@@ -32,8 +31,8 @@ interface JoinCardProps {
 
 const JoinCard: React.FC<JoinCardProps> = ({ group }) => {
     return (
-        <div className="flex flex-col rounded-lg">
-            <div className="h-[216px] w-[129px] md:h-[173px] md:w-[288px]">
+        <div className="flex flex-col rounded-lg border-primary hover:border">
+            <div className="h-[216px] w-full md:h-[173px]">
                 <Image
                     src={group.placeholderImg}
                     alt="Join Card"
@@ -89,9 +88,7 @@ const JoinCard: React.FC<JoinCardProps> = ({ group }) => {
                             className=""
                             alt="location"
                         />
-                        <p className="text-small2 text-white">
-                            台北市
-                        </p>
+                        <p className="text-small2 text-white">台北市</p>
                     </div>
                 </div>
             </div>
