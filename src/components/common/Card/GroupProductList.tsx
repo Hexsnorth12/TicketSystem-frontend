@@ -16,6 +16,9 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
 import { useRouter } from 'next/navigation'
+import { JoinCard } from '@/components/common'
+import arrowLeftIcon from '@icon/arrow_left_white.svg'
+import arrowRightIcon from '@icon/arrow_right_white.svg'
 
 type Group = {
     _id: string
@@ -47,123 +50,43 @@ const PopProductList: React.FC<GroupProductListProps> = ({ groups }) => {
     return (
         <>
             {/* Desktop-Navbar */}
-            <div className="hidden md:block">
+            <div className="relative select-none">
+                <div className="prev absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer  rounded-full border border-primary xl:left-[-72px] xl:flex xl:items-center xl:justify-center">
+                    <Image
+                        src={arrowLeftIcon}
+                        alt="scroll t0 left"
+                        width={24}
+                        height={24}
+                        className="prev cursor-pointer "
+                    />
+                </div>
+                <div className="next absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer  rounded-full border border-primary xl:right-[-72px] xl:flex xl:items-center xl:justify-center">
+                    <Image
+                        src={arrowRightIcon}
+                        alt="scroll t0 left"
+                        width={24}
+                        height={24}
+                        className="next cursor-pointer "
+                    />
+                </div>
                 <Swiper
-                    slidesPerView={3}
+                    slidesPerView={'auto'}
                     spaceBetween={10}
-                    centeredSlides={true}
                     loop={true}
                     pagination={{
                         type: 'fraction',
                     }}
-                    navigation={true}
-                    modules={[Navigation]}>
+                    navigation={{ prevEl: `.prev`, nextEl: `.next` }}
+                    modules={[Navigation]}
+                    className="max-w-[1296px]">
                     {groups.map((group) => (
-                        <div key={group._id} className="rounded-lg">
-                            <Link href="">
-                                <SwiperSlide key={group._id}>
-                                    <div
-                                        className="relative h-[173px] cursor-pointer"
-                                        onClick={openEventModal.bind(
-                                            null,
-                                            group._id as string,
-                                        )}>
-                                        <Image
-                                            loader={() => group.placeholderImg}
-                                            src={group.placeholderImg}
-                                            alt={group.title}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 hover:border-opacity-100"
-                                        />
-                                        {/* Border-primary with blur effect */}
-                                        <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
-                                    </div>
-                                    <div className="text-start">
-                                        <div className="mt-2 text-btn1 font-medium text-white">
-                                            {truncateName(group.movieTitle)}
-                                        </div>
-                                        <div className="text-small2 font-regular">
-                                            <div className="text-gray-5">
-                                                {truncateContent(group.content)}
-                                            </div>
-                                            <div className="flex justify-between text-primary">
-                                                <div>
-                                                    {formatdate(group.time)}
-                                                </div>
-                                                <p className="px-2">
-                                                    {group.vacancy}
-                                                </p>
-                                            </div>
-
-                                            <div className="flex text-white">
-                                                <div>{group.title}</div>
-                                                <div className=" px-2">
-                                                    <Tag
-                                                        icon={FaMapMarkerAlt}
-                                                        tagValue={group.theater}
-                                                        iconColor="gray-4"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SwiperSlide>
-                            </Link>
-                        </div>
+                        <SwiperSlide
+                            key={group._id}
+                            className="min-w-[216px] md:max-w-[288px]">
+                            <JoinCard group={group} />
+                        </SwiperSlide>
                     ))}
                 </Swiper>
-            </div>
-            {/* Mobile-Navbar */}
-            <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
-                {groups.map((group) => (
-                    <div
-                        key={group._id}
-                        className="mx-1 inline-block"
-                        onClick={openEventModal.bind(
-                            null,
-                            group._id as string,
-                        )}>
-                        <Link href="">
-                            <div className="relative h-[129px] w-[216px] cursor-pointer">
-                                <Image
-                                    src={group.placeholderImg}
-                                    alt={group.title}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 hover:border-opacity-100"
-                                />
-                                {/* Border-primary with blur effect */}
-                                <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
-                            </div>
-                        </Link>
-                        <div className="text-start">
-                            <div className="mt-2 text-btn2 font-medium text-white">
-                                {truncateName(group.movieTitle)}
-                            </div>
-                            <div className="text-small2 font-regular">
-                                <div className="text-gray-5">
-                                    {truncateContentMobile(group.content)}
-                                </div>
-                                <div className="flex justify-between text-primary">
-                                    <div>{truncateContent(group.time)}</div>
-                                    <p className="px-2">{group.vacancy}</p>
-                                </div>
-
-                                <div className="flex text-white">
-                                    <div>{group.title}</div>
-                                    <div className=" px-2">
-                                        <Tag
-                                            icon={FaMapMarkerAlt}
-                                            tagValue={group.theater}
-                                            iconColor="gray-4"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
             </div>
         </>
     )
