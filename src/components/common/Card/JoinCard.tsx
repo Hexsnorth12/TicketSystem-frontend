@@ -79,7 +79,7 @@ const JoinCard: React.FC<JoinCardProps> = ({ group }) => {
                 </div>
                 <div className="item-center flex space-x-3 border-t border-gray-3 pt-2 md:pt-3">
                     <p className="rounded-lg bg-gray-1 px-3 py-1 text-small2 text-white">
-                        {group.vacancy}
+                        {group.theater}
                     </p>
                     <div className="flex items-center gap-1">
                         <Image
@@ -90,7 +90,7 @@ const JoinCard: React.FC<JoinCardProps> = ({ group }) => {
                             alt="location"
                         />
                         <p className="text-small2 text-white">
-                            {group.theater}
+                            台北市
                         </p>
                     </div>
                 </div>
