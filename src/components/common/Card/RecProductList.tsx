@@ -127,7 +127,10 @@ const RecProductList: React.FC<RecProductListProps> = ({
             {/* Mobile-Navbar */}
             <div className="flex overflow-x-scroll whitespace-nowrap scrollbar-hidden md:hidden">
                 {products.map((product) => (
-                    <div key={product._id} className="mx-1 inline-block w-32">
+                    <div
+                        key={product._id}
+                        className="mx-1 inline-block w-32"
+                        onClick={() => handleMovieDetail(product._id)}>
                         <Link href="">
                             <div className="relative h-[160px] w-[120px]">
                                 <Image
