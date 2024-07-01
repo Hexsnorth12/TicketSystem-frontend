@@ -34,8 +34,8 @@ export const truncateBrief = (content: string): string => {
 }
 
 export const truncateTitle = (content: string): string => {
-    if (content && content.length > 8) {
-        return content.slice(0, 13) + '...'
+    if (content && content.length > 10) {
+        return content.slice(0, 10) + '...'
     }
     return content
 }
