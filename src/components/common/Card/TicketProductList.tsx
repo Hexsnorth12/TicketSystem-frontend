@@ -41,7 +41,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
         <>
             {/* Desktop-Navbar */}
             <div className="mt-[80px] hidden md:grid md:grid-cols-4 md:gap-4">
-                {tickets.map((ticket) => (
+                {tickets.map((ticket, index) => (
                     <div
                         key={ticket._id}
                         className="relative m-4 w-full rounded-lg  bg-gray-3 shadow-[0_0_15px_-3px_rgba(0,0,0,0.3)] hover:shadow-primary md:pb-3 md:pt-[80px] lg:pb-6 lg:pt-[104px]">
@@ -94,14 +94,18 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                     </span>
                                 </p>
                             </div>
-                            <Chatbtn />
+                            <Chatbtn
+                                ticketId={ticket._id}
+                                index={index}
+                                name={ticket.product.title}
+                            />
                         </div>
                     </div>
                 ))}
             </div>
             {/* Mobile-Navbar */}
             <div className="flex overflow-x-scroll whitespace-nowrap md:hidden">
-                {tickets.map((ticket) => (
+                {tickets.map((ticket, index) => (
                     <div
                         key={ticket._id}
                         className="m-4 flex flex-col items-center rounded-lg shadow-md">
@@ -147,8 +151,11 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 </nav>
                             </div>
                         </div>
-
-                        <Chatbtn />
+                        <Chatbtn
+                            ticketId={ticket._id}
+                            index={index}
+                            name={ticket.product.title}
+                        />
                     </div>
                 ))}
             </div>
