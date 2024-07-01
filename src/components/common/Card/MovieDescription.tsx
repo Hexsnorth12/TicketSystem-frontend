@@ -22,7 +22,7 @@ const MovieDescriptionCard: React.FC<CardProps> = ({ product }) => {
                 <div className=" flex max-w-6xl flex-col gap-y-10">
                     <div>
                         <h1 className="mb-2 text-btn2 font-medium leading-6 tracking-widest text-primary md:mb-4 md:text-header5">
-                            臨時通知
+                            活動簡介
                         </h1>
                         <p className="text-small2 leading-5 text-gray-5 md:text-small1 md:leading-6">
                             {product.brief}
