@@ -22,15 +22,18 @@ import { MOVIES, THEATERS, COUNTRIES } from '@/definitions'
 import {
     EventList,
     GetEventListRes,
+    GetEventParams,
     JoinPageError,
     JoinPageSuccess,
 } from '@/types'
 
 const LIMITAMOUNT = 10
 
+//TODO: 程式碼優化：模組化
 const JoinPage = () => {
     const router = useRouter()
     const eventListContainer = useRef<HTMLDivElement>(null)
+
     const [isLoading, setIsLoading] = useState(false)
     const [stopFetching, setStopFetching] = useState(false)
     const [error, setError] = useState('')
@@ -41,6 +44,9 @@ const JoinPage = () => {
 
     const [page, setPage] = useState(1)
     const [checkFilter, setCheckFilter] = useState(false)
+    const [noEvent, setNoEvent] = useState(false)
+    const [onSearchInput, setOnSearchInput] = useState(false)
+    const [checkedDatePicker, setCheckedDatePicker] = useState(false)
 
     const [countryTag, setCountryTag] = useState<string>('')
     const [theaterTags, setTheaterTags] = useState<string[]>([])
@@ -86,6 +92,8 @@ const JoinPage = () => {
 
     // 拿所有活動，無篩選
     async function getAllEvents() {
+        setNoEvent(false)
+
         const queryString = {
             page,
             limit: LIMITAMOUNT,
@@ -98,6 +106,8 @@ const JoinPage = () => {
 
     // 拿篩選後活動
     async function getFilterEvents(scrollBottom = false) {
+        setNoEvent(false)
+
         const { startDate, endDate, startTime, endTime } = timeRange
         const dateRangeError = startDate > endDate
         const timeRangeError = checkInvalidTimeRange(startTime, endTime)
@@ -109,28 +119,34 @@ const JoinPage = () => {
 
         const { startAt, endAt, timeBegin, timeEnd } =
             exportTimeRangeString(timeRange)
-
-        const updatedStartDate = formatDate(new Date(startAt), '/')
-        const updatedEndDate = formatDate(new Date(endAt), '/')
-        const updatedStartTime = formatTimeString(new Date(timeBegin))
-        const updatedEndTime = formatTimeString(new Date(timeEnd))
+        const dateRangeObj = {
+            startAt: formatDate(new Date(startAt), '/'),
+            endAt: formatDate(new Date(endAt), '/'),
+            timeBegin: formatTimeString(new Date(timeBegin)),
+            timeEnd: formatTimeString(new Date(timeEnd)),
+        }
 
         const updatedPage = !scrollBottom ? 1 : page
-        // TODO: api須更新，少電影院參數
-        // eslint-disable-next-line
         const theaters = theaterTags.join(',')
         const movieTitles = movieTags.join(',')
         const eventTitle = title
 
-        const params = {
+        let params: GetEventParams = {
             limit: LIMITAMOUNT,
             page: updatedPage,
-            startAt: updatedStartDate,
-            endAt: updatedEndDate,
-            timeBegin: updatedStartTime,
-            timeEnd: updatedEndTime,
             title: eventTitle,
             movieTitle: movieTitles,
+            theater: theaters,
+            ...(checkedDatePicker && dateRangeObj),
+        }
+
+        // 如果是活動標題搜尋，則無其他參數限制
+        if (onSearchInput) {
+            params = {
+                limit: LIMITAMOUNT,
+                page: updatedPage,
+                title: eventTitle,
+            }
         }
 
         const result = await getJoinEventList(params)
@@ -142,8 +158,8 @@ const JoinPage = () => {
             const success = result as JoinPageSuccess
             const resEventList = success.events as EventList
             const totalCount = success.totalCount
-            const noMoreData =
-                resEventList.length === 0 || totalCount <= LIMITAMOUNT
+            const hasNoEvent = resEventList.length === 0
+            const noMoreData = hasNoEvent || totalCount <= LIMITAMOUNT
 
             let updatedEventList = resEventList
             if (!initRender) {
@@ -153,12 +169,14 @@ const JoinPage = () => {
             const shouldAddMoreSpace = updatedEventList.length > 6
 
             if (initRender) setPage(1)
+            if (initRender && hasNoEvent) setNoEvent(true)
             setStopFetching(noMoreData)
             setEventList(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
         } else {
             const error = (result as JoinPageError).error
             setError(error)
+            setNoEvent(true)
         }
 
         setIsLoading(false)
@@ -203,6 +221,14 @@ const JoinPage = () => {
         router.push('createOriganize')
     }
 
+    function checkDatePicker() {
+        setCheckedDatePicker(true)
+    }
+
+    function focusSearchInput(isFocus: boolean) {
+        setOnSearchInput(isFocus)
+    }
+
     function updateTimeRange(dateRange: {
         startDate: Date
         endDate: Date
@@ -210,6 +236,7 @@ const JoinPage = () => {
         endTime: Date
     }) {
         readyToFilter()
+        checkDatePicker()
         setTimeRange(dateRange)
     }
 
@@ -329,6 +356,11 @@ const JoinPage = () => {
                             />
                         )
                     })}
+                {!isLoading && noEvent && (
+                    <div className="flex h-full w-full flex-col items-center justify-center">
+                        <div className="text-header5 text-gray-3">查無活動</div>
+                    </div>
+                )}
             </div>
 
             {/* 地圖 */}
@@ -344,6 +376,8 @@ const JoinPage = () => {
                                 onChange={changeSearchContent}
                                 placeholder="輸入活動名稱"
                                 className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
+                                onFocus={() => focusSearchInput(true)}
+                                onBlur={() => focusSearchInput(false)}
                             />
                             <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
                                 <SearchBtn

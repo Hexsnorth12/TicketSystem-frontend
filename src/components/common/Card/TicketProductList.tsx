@@ -44,7 +44,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                 {tickets.map((ticket) => (
                     <div
                         key={ticket._id}
-                        className="relative m-4 w-full rounded-lg  bg-gray-3 shadow-[0_0_15px_-3px_rgba(0,0,0,0.3)] hover:shadow-primary md:pb-3 md:pt-[80px] lg:pb-6 lg:pt-[104px]">
+                        className="relative m-4 rounded-lg  bg-gray-3 shadow-[0_0_15px_-3px_rgba(0,0,0,0.3)] hover:shadow-primary md:pb-3 md:pt-[80px] lg:pb-6 lg:pt-[104px]">
                         <div className=" flex flex-col items-center">
                             <div className="absolute md:-top-[60px] md:h-[120px] md:w-[120px] lg:-top-[80px] lg:h-[160px] lg:w-[160px]">
                                 <Image
@@ -112,7 +112,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                     alt={ticket.product.title}
                                     layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 border-opacity-100 transition-opacity duration-300"
+                                    className="rounded-lg border-2 border-white border-opacity-0 md:border-opacity-100 transition-opacity duration-300"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -142,7 +142,6 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                             <div className="flex items-center justify-center text-gray-5">
                                 時效性
                                 <nav className="px-2 text-number5 text-white">
-                                    {' '}
                                     {formatdate(ticket.expiredAt)}
                                 </nav>
                             </div>

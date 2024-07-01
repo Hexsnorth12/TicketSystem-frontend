@@ -90,6 +90,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
             setSuccess(success.message)
             setTimeout(() => {
                 closeSuccessModal()
+                closeUpdateEventModal()
             }, 1500)
         } else {
             const failed = result as JoinPageError
@@ -129,7 +130,8 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
         setGroupId('')
     }
 
-    function toggleParticipantList() {
+    function toggleParticipantList(groupId: string) {
+        setGroupId(showParticipants ? '' : groupId)
         setShowParticipants((prevState) => !prevState)
     }
 
@@ -225,7 +227,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                 <div
                     className={cn(
                         'flex max-h-[1000px] flex-col gap-5 overflow-y-scroll scrollbar-hidden md:pr-10 md:scrollbar md:scrollbar-block',
-                        eventList.length > 4 ? 'pb-[600px]' : '',
+                        eventList.length > 2 ? 'pb-[600px]' : '',
                     )}>
                     {eventList.length === 0 && (
                         <div className="md:flex md:h-[600px] md:items-center">
@@ -234,10 +236,11 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                     )}
 
                     {eventList.map((item, index) => {
+                        const eventId = item._id as string
                         return (
                             <div key={index}>
                                 {/* 修改活動彈窗 */}
-                                {showUpdateModal && (
+                                {showUpdateModal && eventId === groupId && (
                                     <UpdateEventModal
                                         existedData={{
                                             title: item?.title,
@@ -268,7 +271,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                     width={267}
                                                     height={160}
                                                     alt="event image"
-                                                    className="rounded-lg bg-gray-5 object-cover"
+                                                    className="h-full rounded-lg bg-gray-5 object-cover"
                                                 />
                                             </div>
                                             <div className="mb-6 grow md:m-0">
@@ -354,9 +357,10 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                 <Button
                                                     type={'button'}
                                                     title={'詳細'}
-                                                    onClick={
-                                                        toggleParticipantList
-                                                    }
+                                                    onClick={toggleParticipantList.bind(
+                                                        null,
+                                                        eventId,
+                                                    )}
                                                     className="w-full py-2 md:w-auto md:py-3">
                                                     <span className="text-btn2 md:text-btn1">
                                                         查看參加者
@@ -377,6 +381,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
 
                                             {/* 參加者名單 */}
                                             {showParticipants &&
+                                                eventId === groupId &&
                                                 item.participant && (
                                                     <div className="mt-8">
                                                         <div className="flex w-full justify-between rounded-md bg-gray-5 py-1">
@@ -400,9 +405,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                                                     key={index}
                                                                     className="flex w-full flex-wrap justify-between border-b border-b-gray-5 py-1 text-center text-white">
                                                                     <div className="w-1/4 break-words p-1">
-                                                                        {
-                                                                            item?.name
-                                                                        }
+                                                                        {`${item?.name}${!index ? '（主揪）' : ''}`}
                                                                     </div>
                                                                     <div className="w-1/4 break-words p-1">
                                                                         {

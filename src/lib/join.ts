@@ -1,6 +1,11 @@
 import fetchClient from './fetchClient'
 
-import type { EventDetailRes, GetEventListRes, JoinEventRes } from '@/types'
+import type {
+    EventDetailRes,
+    GetEventListRes,
+    JoinEventRes,
+    GetEventParams,
+} from '@/types'
 
 const today = new Date()
 const later = new Date(today.getTime() + 86400000)
@@ -32,16 +37,8 @@ export const getJoinEventList = async ({
     timeEnd = '',
     movieTitle = '',
     title = '',
-}: {
-    limit: number
-    page: number
-    startAt?: string
-    endAt?: string
-    timeBegin?: string
-    timeEnd?: string
-    movieTitle?: string
-    title?: string
-}): Promise<GetEventListRes> => {
+    theater = '',
+}: GetEventParams): Promise<GetEventListRes> => {
     try {
         // 初次render拿全部活動資料前20筆資料
         const queryString = new URLSearchParams({
@@ -53,6 +50,7 @@ export const getJoinEventList = async ({
             endTime: timeEnd,
             movieTitle,
             title,
+            theater,
             status: 'ongoing',
         })
         const url = `api/v1/group?${queryString.toString()}`

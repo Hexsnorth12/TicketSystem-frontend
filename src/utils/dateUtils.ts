@@ -12,7 +12,8 @@ export function formatTimeString(date: Date) {
 
 export function formatDate(date: Date, formatType = '.') {
     const year = date.getFullYear()
-    const month = date.getMonth() + 1
+    let month: string | number = date.getMonth() + 1
+    if (month < 10) month = '0' + month
     const eventDate = date.getDate()
     return `${year}${formatType}${month}${formatType}${eventDate}`
 }
@@ -24,7 +25,6 @@ export const formatdate = (isoString: string) => {
     const day = String(date.getDate()).padStart(2, '0')
     return `${year}-${month}-${day}`
 }
-
 
 export function formatJoinEventDate(date: Date) {
     const eventDate = formatDate(date)

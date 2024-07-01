@@ -125,3 +125,10 @@ export type ShareOrder = {
     expiredAt: string
     amount: 7
 }
+
+export type PublishData = {
+    productName: string
+    photoPath: string
+    holdCount: number
+    price: number
+}

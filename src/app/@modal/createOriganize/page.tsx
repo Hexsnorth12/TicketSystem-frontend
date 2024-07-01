@@ -14,6 +14,7 @@ import {
     InputRegister,
     ErrorModal,
     SuccessModal,
+    Modal,
 } from '@/components/common'
 import add_primary from '@icon/add_primary.svg'
 import { JOIN_OPTIONS } from '@/definitions/joinForm'
@@ -40,6 +41,7 @@ const Page: React.FC<pageProps> = () => {
 
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     function closeErrorModal() {
         setError('')
@@ -66,6 +68,8 @@ const Page: React.FC<pageProps> = () => {
 
     async function onSubmit(data: FieldValues) {
         try {
+            setIsLoading(true)
+
             const {
                 title,
                 description,
@@ -79,6 +83,7 @@ const Page: React.FC<pageProps> = () => {
                 phone,
                 time,
             } = data
+            console.log('data: ', data)
             const haveTicket = isBought === '是'
             // TODO: 需要優化
             const selectedHour = time.split(':')[0]
@@ -107,6 +112,8 @@ const Page: React.FC<pageProps> = () => {
                 },
             })) as JoinEventRes
 
+            setIsLoading(false)
+
             if (result?.status === 'success') {
                 const success = result as JoinEventSuccess
                 setSuccess(success?.message)
@@ -124,6 +131,7 @@ const Page: React.FC<pageProps> = () => {
             }
             // eslint-disable-next-line
         } catch (error: any) {
+            setIsLoading(false)
             setError(error?.message)
         }
     }
@@ -134,6 +142,16 @@ const Page: React.FC<pageProps> = () => {
             {error && <ErrorModal onClose={closeErrorModal} errorMsg={error} />}
             {/* 成功彈窗 */}
             {success && <SuccessModal successMsg={success} />}
+
+            {isLoading && (
+                <Modal onClose={() => {}}>
+                    <div className="flex w-[150px] flex-col gap-5 px-6">
+                        <div className="flex items-center justify-center">
+                            <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
+                        </div>
+                    </div>
+                </Modal>
+            )}
 
             <div className="flex min-w-[279px] flex-col px-3 md:flex-row md:items-center md:justify-between md:gap-10 md:py-[34px]">
                 <div className="mx-auto mb-3 flex h-[120px] w-[120px] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-3 bg-gray-1 md:h-[480px] md:w-[480px]">
@@ -187,7 +205,7 @@ const Page: React.FC<pageProps> = () => {
                     />
                     <SelectBox title="位置">
                         <Controller
-                            name="movie"
+                            name="location"
                             control={control}
                             render={({ field }) => (
                                 <SelectInput
