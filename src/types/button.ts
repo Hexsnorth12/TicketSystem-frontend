@@ -62,6 +62,9 @@ export type SearchButton = {
 }
 export type ChatButton = {
     disabled?: boolean
+    ticketId: string // 添加 ticketId 作为属性
+    index: number
+    name: string
 }
 
 export type CloseButton = {
