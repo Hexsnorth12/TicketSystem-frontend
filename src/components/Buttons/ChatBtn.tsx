@@ -5,12 +5,7 @@ import type { ChatButton } from '@/types'
 import { useButton } from '@/hooks/button'
 import * as Ably from 'ably'
 import AblyChat from '@components/Chat/chat'
-import {
-    AblyProvider,
-    ChannelProvider,
-    useChannel,
-    useConnectionStateListener,
-} from 'ably/react'
+import { AblyProvider, ChannelProvider } from 'ably/react'
 const client = new Ably.Realtime({
     key: 'fdxeXQ.vQ53EQ:-5NaA5sXsII1Ono7Ygi4XBAFNBwQ7Ftl9008W6a0mmo',
 })
@@ -25,8 +20,6 @@ const ChatBtn: React.FC<ChatButton> = ({ disabled, ticketId, index, name }) => {
     }
 
     const [openChats, setOpenChats] = useState<string[]>([])
-    console.log(openChats, 'openChats')
-
     function onClickHandler() {
         if (!openChats.includes(ticketId)) {
             setOpenChats((prev) => [...prev, ticketId])
@@ -37,7 +30,6 @@ const ChatBtn: React.FC<ChatButton> = ({ disabled, ticketId, index, name }) => {
         setOpenChats((prev) => prev.filter((id) => id !== ticketId))
     }
     //未來添加相對應功能
-    function openChat() {}
     const translateYValue = `${index * 350}px`
     return (
         <div {...basicButtonProps}>
