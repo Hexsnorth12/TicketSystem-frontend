@@ -1,7 +1,7 @@
-'use client' // This is a client component 👈🏽
 import React from 'react'
-import SearchResult from '@components/forms/Search/SearchResult'
 
-export default function SearchResultPage() {
-    return <SearchResult />
+const SearchResultPage = () => {
+    return <p>Search Result Page</p>
 }
+
+export default SearchResultPage

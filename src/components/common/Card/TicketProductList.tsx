@@ -116,7 +116,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                     alt={ticket.product.title}
                                     layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 md:border-opacity-100 transition-opacity duration-300"
+                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 md:border-opacity-100"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>

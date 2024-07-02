@@ -2,11 +2,20 @@
 import React, { useState, useEffect } from 'react'
 import { Popcards } from '../../../definitions/marqueeData'
 import Image from 'next/image'
-import { Input } from '@components/common'
-import { SearchBtn } from '@/components/Buttons'
-import { Modal } from '@components/common'
-import { SearchForm } from '@components/forms'
-import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import GeneralProductList from '@components/common/Card/GeneralProductList'
+import {
+    fetchGeneralProducts,
+    fetchResultProducts,
+    fetchResult2Products,
+    Product,
+} from '../../../definitions/movieData'
+import { useAlert } from '@/components/useAlert/useAlert'
+import {
+    useAddFavoriteMutation,
+    useRemoveFavoriteMutation,
+} from '@/services/modules/user'
+import Loading from '@/components/LoadingSkeleton/Loading'
 
 type Popcard = {
     image: string
@@ -22,24 +31,117 @@ function shuffleArray(array: Popcard[]): Popcard[] {
 }
 
 export default function SearchResult() {
-    const [search, setSearch] = useState<string>('')
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [generalProducts, setGeneralProducts] = useState<Product[]>([])
+    const [resultProducts, setResultProducts] = useState<Product[]>([])
+    const [favorites, setFavorites] = useState<Record<string, boolean>>({})
     const [shuffledPopcards, setShuffledPopcards] = useState<Popcard[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string | null>(null)
+    const showAlert = useAlert()
+
+    //Favorite Function
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [generalProducts] = await Promise.all([
+                    fetchGeneralProducts(),
+                ])
+                setGeneralProducts(generalProducts)
+                // 初始化收藏状态
+                const initialFavorites: Record<string, boolean> = {}
+                ;[...generalProducts].forEach((product) => {
+                    initialFavorites[product._id] = product.isFavorite
+                })
+                setFavorites(initialFavorites)
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unknown error occurred.')
+                }
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [])
+    useEffect(() => {
+        const fetchData = async (theater: string) => {
+            try {
+                const [resultProducts] = await Promise.all([
+                    fetchResultProducts(theater),
+                ])
+                setResultProducts(resultProducts)
+                // 初始化收藏状态
+                const initialFavorites: Record<string, boolean> = {}
+                ;[...resultProducts].forEach((product) => {
+                    initialFavorites[product._id] = product.isFavorite
+                })
+                setFavorites(initialFavorites)
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unknown error occurred.')
+                }
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    const { data: session } = useSession()
+    const [addFavorite] = useAddFavoriteMutation()
+    const [removeFavorite] = useRemoveFavoriteMutation()
+    const handleUpdateFavorite = async (productId: string) => {
+        if (!session) {
+            showAlert('登入後收藏', 'warning')
+            return
+        }
+        const currentStatus = favorites[productId]
+        setFavorites((prevFavorites) => ({
+            ...prevFavorites,
+            [productId]: !currentStatus,
+        }))
+
+        try {
+            if (currentStatus) {
+                await removeFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            } else {
+                await addFavorite({
+                    productId,
+                    token: session?.accessToken ?? '',
+                }).unwrap()
+            }
+        } catch (error) {
+            // Handle error (optional)
+            setFavorites((prevFavorites) => ({
+                ...prevFavorites,
+                [productId]: currentStatus,
+            }))
+        }
+    }
 
     useEffect(() => {
         setShuffledPopcards(shuffleArray([...Popcards]))
     }, [])
+    if (loading) {
+        return (
+            <div>
+                <Loading />
+            </div>
+        )
+    }
+    if (error) {
+        return <div>{error}</div>
+    }
 
-    const handleSearchChange = (value: string) => {
-        setSearch(value)
-    }
-    const handleFilterClick = () => {
-        setIsModalOpen(true)
-    }
-
-    const handleModalClose = () => {
-        setIsModalOpen(false)
-    }
     return (
         <>
             <div className="relative  h-screen w-screen">
@@ -51,56 +153,35 @@ export default function SearchResult() {
                                 objectFit="cover"
                                 src={popcard.image}
                                 alt={popcard.name}
-                                className="grayscale filter"
                             />
                         </div>
                     </div>
                 ))}
-                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center text-center">
-                    <div className="flex flex-col items-center md:space-y-4">
-                        <div className="flex flex-col ">
-                            <div className="text-btn2 text-primary md:mb-3 md:text-header3">
-                                哎哎呀！找不到你的搜尋結果...
-                            </div>
-                            <div className="flex flex-row  gap-x-2 font-sans font-bold text-white md:gap-x-4 md:text-header5">
-                                請重新篩選搜尋條件！
-                            </div>
-                        </div>
-
-                        <div className=" pointer-events-auto relative top-1 order-first order-last mt-6">
-                            <div className="relative shadow-sm">
-                                <Input
-                                    type="text"
-                                    rounded="full"
-                                    value={search}
-                                    onChange={handleSearchChange}
-                                    placeholder="輸入關鍵字"
-                                    className="h-12 w-[360px] py-5 md:h-16 md:w-[526px]"
-                                />
-                                <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                                    <SearchBtn
-                                        type="filter"
-                                        onClick={handleFilterClick}
-                                    />
-                                    <SearchBtn type="recommend" />
-                                    <Link href="/search">
-                                        <SearchBtn
-                                            type="search"
-                                            active={true}
-                                        />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        {isModalOpen && (
-                            <Modal onClose={handleModalClose}>
-                                <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
-                                    <SearchForm />
-                                </div>
-                            </Modal>
-                        )}
-                    </div>
+                <div className="absolute bottom-0 left-0 m-4 flex flex-col items-start md:space-y-4">
+                    <span className="text-header5 font-bold tracking-widest text-white md:text-header2">
+                        找到了
+                        <span className="text-primary">13</span>
+                        個電影票券！
+                    </span>
+                    <span className="mb-4 text-left text-body text-white">
+                        太讚惹！在<span className="text-primary">信義威秀</span>
+                        找到 13 個電影票券 🏝
+                    </span>
                 </div>
+            </div>
+            <div className="h-screen w-screen">
+                <GeneralProductList
+                    products={generalProducts}
+                    favorites={favorites}
+                    onUpdateFavorite={handleUpdateFavorite}
+                />
+            </div>
+            <div className="h-screen w-screen">
+                <GeneralProductList
+                    products={resultProducts}
+                    favorites={favorites}
+                    onUpdateFavorite={handleUpdateFavorite}
+                />
             </div>
         </>
     )
