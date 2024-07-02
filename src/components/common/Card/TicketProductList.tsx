@@ -7,7 +7,7 @@ import { truncateName } from '@/utils/numberUtils'
 import { formatdate } from '@/utils/dateUtils'
 import Chatbtn from '../../Buttons/ChatBtn'
 import { bellota } from '@/components/fonts'
-
+import { Session } from 'next-auth'
 type Ticket = {
     _id: string
     productId: string
@@ -34,9 +34,13 @@ type Ticket = {
 
 type TicketProductListProps = {
     tickets: Ticket[]
+    session: Session
 }
 
-const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
+const TicketProductList: React.FC<TicketProductListProps> = ({
+    tickets,
+    session,
+}) => {
     return (
         <>
             {/* Desktop-Navbar */}
@@ -95,6 +99,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 </p>
                             </div>
                             <Chatbtn
+                                session={session}
                                 ticketId={ticket._id}
                                 index={index}
                                 name={ticket.product.title}
@@ -116,7 +121,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                     alt={ticket.product.title}
                                     layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg border-2 border-white border-opacity-0 md:border-opacity-100 transition-opacity duration-300"
+                                    className="rounded-lg border-2 border-white border-opacity-0 transition-opacity duration-300 md:border-opacity-100"
                                 />
                                 {/* Border-primary with blur effect */}
                                 <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
@@ -151,6 +156,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                             </div>
                         </div>
                         <Chatbtn
+                            session={session}
                             ticketId={ticket._id}
                             index={index}
                             name={ticket.product.title}

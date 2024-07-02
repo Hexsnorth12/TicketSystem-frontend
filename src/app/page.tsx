@@ -1,5 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useEffect, useState } from 'react'
+import { Session } from 'next-auth'
 import {
     mdiFire,
     mdiHeartCircle,
@@ -102,7 +103,6 @@ const HomePage: React.FC = () => {
     const handleUpdateFavorite = async (productId: string) => {
         if (!session) {
             showAlert('登入後收藏', 'warning')
-            // setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
             return
         }
         const currentStatus = favorites[productId]
@@ -182,7 +182,10 @@ const HomePage: React.FC = () => {
                         title="分票專區"
                         iconPath={mdiTicketConfirmation}
                     />
-                    <TicketProductList tickets={ticketproducts} />
+                    <TicketProductList
+                        tickets={ticketproducts}
+                        session={session as Session} // 使用类型断言
+                    />
                 </div>
                 <NavBanner type="ticket" />
             </div>
