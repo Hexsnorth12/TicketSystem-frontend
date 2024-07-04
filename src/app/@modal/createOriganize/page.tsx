@@ -22,7 +22,7 @@ import upLoadImage from '@/lib/uploadImage'
 import { createJoinEvent } from '@/lib/join'
 
 import { JoinEventRes, JoinEventSuccess, JoinPageError } from '@/types'
-import { MOVIES, THEATERS, COUNTRIES } from '@/definitions'
+import { THEATERS, COUNTRIES } from '@/definitions'
 
 interface pageProps {}
 
