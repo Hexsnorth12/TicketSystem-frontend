@@ -1,33 +1,48 @@
 'use client' // This is a client component 👈🏽
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
-import { refreshAuth } from '@/lib'
-import { useSearchParams } from 'next/navigation'
-import { getSession } from 'next-auth/react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
+
 interface SignInProps {
     callbackUrl: string
 }
+
 const SignIn = ({ callbackUrl }: SignInProps) => {
     const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')
     const searchParams = useSearchParams()
+    const router = useRouter()
+    const { data: session, status } = useSession()
+
+    useEffect(() => {
+        if (status === 'authenticated') {
+            let redirectUrl = '/'
+            if (session?.user.accountType === 'admin') {
+                redirectUrl = '/admin/order'
+            } else {
+                redirectUrl = searchParams.get('callbackUrl') || '/'
+            }
+            router.push(redirectUrl)
+        }
+    }, [session, status, searchParams, router])
 
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-    // const handleGoogleLogin = () => {}
+
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
+
     const mergeCart = useCartStore((state) => state.mergeCarts)
     const fetchCartData = async () => {
         const response = await fetchClient({
@@ -54,14 +69,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             setErrorMessage(response.error)
         } else {
             setErrorMessage('')
-            const session = await getSession()
-            let callbackUrl
-            if (session?.user.accountType === 'admin') {
-                callbackUrl = '/admin/order'
-            } else {
-                callbackUrl = searchParams.get('callbackUrl') || '/'
-            }
-            refreshAuth(callbackUrl)
             fetchCartData()
         }
     }
@@ -148,4 +155,5 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
         </>
     )
 }
+
 export default SignIn

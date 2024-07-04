@@ -1,10 +1,10 @@
 import type { NextAuthOptions, User } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { jwt } from '@/utils'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google';
+import { BASE_URL, serverCode } from '@/definitions'
 import fetchClient from './fetchClient'
-import { serverCode } from '@/definitions'
-import GoogleProvider from 'next-auth/providers/google'
+import { jwt } from '@/utils'
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -30,6 +30,7 @@ export const authOptions: NextAuthOptions = {
 
                     if (!data.data) throw data
 
+                    console.log('Local Login Response Data:', data); 
                     if (data.data) {
                         return data.data
                     }
@@ -65,13 +66,58 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            profile: async (profile: GoogleProfile) => {
+                try {
+                    const response = await fetch(`${BASE_URL}api/v1/user/google-login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: profile.sub,
+                            email: profile.email,
+                            name: profile.name,
+                            image: profile.picture
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Google Login Response Data:', data);
+
+                        return {
+                            id: data.data.account,
+                            email: data.data.email,
+                            name: data.data.account,
+                            token: data.data.token,
+                            refreshToken: data.data.refreshToken,
+                            accountType: data.data.accountType,
+                            image: profile.picture,
+                        } as User;
+                    } else {
+                        console.error('Google Login Failed:', await response.text());
+                    }
+                } catch (error) {
+                    console.error("Error during backend verification:", error);
+                }
+                return {
+                    id: '',
+                    email: '',
+                    name: '',
+                    token: '',
+                    refreshToken: '',
+                    accountType: '',
+                    image: '',
+                } as User;
+            }
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.user = user
-                token.accessToken = user.token
+        async signIn() {
+            return true;
+        },
+        async jwt({ token, user, account}) {
+            if (account && user) {
+                token.user = user;
+                token.accessToken = user.token;
             }
 
             const accessTokenExpires = token.exp as number
@@ -87,6 +133,7 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             session.user = token.user as User
             session.accessToken = token.accessToken
+            session.accessToken = token.accessToken;
             return session
         },
     },
