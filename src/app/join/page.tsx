@@ -60,6 +60,7 @@ const JoinPage = () => {
     useEffect(() => {
         setIsLoading(true)
         getAllEvents()
+        updateTags('country', ['0'])
     }, [])
 
     // 拿下一頁資料
@@ -266,6 +267,7 @@ const JoinPage = () => {
     }
 
     function clickMarkerHandler(theater: string) {
+        console.log('theater', theater)
         setIsLoading(true)
         updateTags('theater', [theater])
     }
@@ -306,6 +308,7 @@ const JoinPage = () => {
                                     onSelectChange={(updatedInfo) =>
                                         updateTags('country', updatedInfo)
                                     }
+                                    defaultValue="台北市"
                                 />
                             }
                         />
@@ -459,7 +462,9 @@ const JoinPage = () => {
                                                     pixelOffset={[0, -36]}
                                                     disableAutoPan
                                                     headerDisabled>
-                                                    <div>{theater.label}</div>
+                                                    <p className="text-small1 text-gray-2">
+                                                        {theater.label}
+                                                    </p>
                                                 </InfoWindow>
                                             )}
                                         </>
