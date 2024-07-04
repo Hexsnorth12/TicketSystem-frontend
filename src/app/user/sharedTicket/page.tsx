@@ -1,24 +1,20 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import clsx from 'clsx'
 
 import { ShareTicket } from '@/components/member'
 import { TicketCodeForm } from '@/components/forms'
 import BasicTabs from '@/components/common/Tab/movieDetail'
-import fetchServer from '@/lib/fetchServer'
-import { ShareOrder } from '@/types/product'
-import {
-    useGetShareTicketsQuery,
-    useLazyGetShareTicketsQuery,
-} from '@/services/modules/user'
+import { useLazyGetShareTicketsQuery } from '@/services/modules/user'
 
 interface pageProps {}
 
 const Page: React.FC<pageProps> = () => {
     const { data: session } = useSession()
     const [getShareTickets, { data }] = useLazyGetShareTicketsQuery()
+    const [isPublished, setIsPublished] = useState<boolean>(false)
 
     // const { data }: { data: ShareOrder[] } = await fetchServer({
     //     method: 'GET',
@@ -33,7 +29,11 @@ const Page: React.FC<pageProps> = () => {
     }, [])
 
     const renderShareTickets = data?.map((order) => (
-        <ShareTicket key={order.orderId} order={order} />
+        <ShareTicket
+            key={order.orderId}
+            order={order}
+            isPublished={isPublished}
+        />
     ))
 
     const handleTabsChange = (index: number) => {
@@ -42,11 +42,13 @@ const Page: React.FC<pageProps> = () => {
                 token: session?.accessToken ?? '',
                 isPublished: false,
             }).unwrap()
+            setIsPublished(false)
         } else if (index === 1) {
             getShareTickets({
                 token: session?.accessToken ?? '',
                 isPublished: true,
             }).unwrap()
+            setIsPublished(true)
         }
     }
 
