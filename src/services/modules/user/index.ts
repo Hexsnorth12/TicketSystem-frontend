@@ -4,6 +4,7 @@ import removeFavorite from './removeFavorite'
 import updateInfo from './updateInfo'
 import getInfo from './getInfo'
 import claimTicket from './claimTicket'
+import getShareTickets from './getShareTickets'
 
 export const userApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -12,6 +13,7 @@ export const userApi = api.injectEndpoints({
         updateInfo: updateInfo(build),
         getInfo: getInfo(build),
         claimTicket: claimTicket(build),
+        getShareTickets: getShareTickets(build),
     }),
 })
 
@@ -21,4 +23,6 @@ export const {
     useUpdateInfoMutation,
     useLazyGetInfoQuery,
     useClaimTicketMutation,
+    useGetShareTicketsQuery,
+    useLazyGetShareTicketsQuery
 } = userApi
