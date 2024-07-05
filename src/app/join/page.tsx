@@ -270,7 +270,6 @@ const JoinPage = () => {
     }
 
     function clickMarkerHandler(theater: string) {
-        console.log('theater', theater)
         setIsLoading(true)
         updateTags('theater', [theater])
     }
