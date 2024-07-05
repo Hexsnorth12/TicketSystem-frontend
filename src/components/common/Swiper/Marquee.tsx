@@ -13,7 +13,11 @@ import { Modal } from '@components/common'
 import { SearchForm } from '@components/forms'
 import Link from 'next/link'
 
-const Marquee: React.FC = () => {
+interface Props {
+    popProductImages: string[]
+}
+
+const Marquee: React.FC<Props> = ({ popProductImages }) => {
     const [search, setSearch] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false)
     const handleSearchChange = (value: string) => {
@@ -62,14 +66,22 @@ const Marquee: React.FC = () => {
                         autoplay
                         modules={[Pagination, Navigation]}
                         className="h-full w-full">
-                        {Popcards.map((popcard, index) => (
+                        {popProductImages.map((path, index) => (
                             <SwiperSlide key={index}>
-                                <div className="h-full w-full">
+                                <div className="relative h-full w-full">
                                     <Image
                                         fill
                                         objectFit="cover"
-                                        src={popcard.image}
-                                        alt={popcard.name}
+                                        src={path}
+                                        alt={'product'}
+                                        className="blur-lg"
+                                    />
+                                    <Image
+                                        fill
+                                        objectFit="contain"
+                                        src={path}
+                                        alt={'product'}
+                                        className="absolute z-10"
                                     />
                                 </div>
                             </SwiperSlide>
