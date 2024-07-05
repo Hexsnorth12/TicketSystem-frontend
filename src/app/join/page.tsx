@@ -3,7 +3,7 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
-import { format } from 'date-fns'
+import { format, endOfMonth } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
@@ -97,10 +97,15 @@ const JoinPage = () => {
     // 拿所有活動，無篩選
     async function getAllEvents() {
         setNoEvent(false)
+        const { startDate, endDate, startTime, endTime } = timeRange
 
         const queryString = {
             page,
             limit: LIMITAMOUNT,
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
         const result = await getJoinEventList(queryString)
         const isInitRender = page === 1
@@ -292,6 +297,9 @@ const JoinPage = () => {
                                 <DatePicker
                                     onError={(error) => setError(error)}
                                     setTimeRange={updateTimeRange}
+                                    defaultDateRange={{
+                                        endDate: endOfMonth(new Date()),
+                                    }}
                                 />
                             }
                         />
