@@ -1,13 +1,14 @@
 'use client' // This is a client component 👈🏽
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { signIn, useSession } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
-import { useSearchParams, useRouter } from 'next/navigation'
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
+import { refreshAuth } from '@/lib'
+import { useSearchParams } from 'next/navigation'
 
 interface SignInProps {
     callbackUrl: string
@@ -18,16 +19,6 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const [passWord, setPassWord] = useState('')
     const [errorMsg, setErrorMessage] = useState('')
     const searchParams = useSearchParams()
-    const router = useRouter()
-    const { data: session, status } = useSession()
-
-    useEffect(() => {
-        if (status === 'authenticated') {
-            const redirectUrl =
-                session?.user.accountType === 'admin' ? '/admin/order' : '/'
-            router.push(redirectUrl)
-        }
-    }, [session, status, searchParams, router])
 
     const handleUsernameChange = (value: string) => {
         setUsername(value)
@@ -63,6 +54,14 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
             setErrorMessage(response.error)
         } else {
             setErrorMessage('')
+            const session = await getSession()
+            let callbackUrl
+            if (session?.user.accountType === 'admin') {
+                callbackUrl = '/admin/order'
+            } else {
+                callbackUrl = searchParams.get('callbackUrl') || '/'
+            }
+            refreshAuth(callbackUrl)
             fetchCartData()
         }
     }

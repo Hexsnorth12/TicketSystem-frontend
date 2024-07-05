@@ -30,7 +30,6 @@ export const authOptions: NextAuthOptions = {
 
                     if (!data.data) throw data
 
-                    console.log('Local Login Response Data:', data); 
                     if (data.data) {
                         return data.data
                     }
@@ -81,7 +80,6 @@ export const authOptions: NextAuthOptions = {
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log('Google Login Response Data:', data);
 
                         return {
                             id: data.data.account,
@@ -111,11 +109,8 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        async signIn() {
-            return true;
-        },
-        async jwt({ token, user, account}) {
-            if (account && user) {
+        async jwt({ token, user}) {
+            if (user) {
                 token.user = user;
                 token.accessToken = user.token;
             }
@@ -133,7 +128,6 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             session.user = token.user as User
             session.accessToken = token.accessToken
-            session.accessToken = token.accessToken;
             return session
         },
     },
