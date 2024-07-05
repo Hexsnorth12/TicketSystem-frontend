@@ -77,9 +77,9 @@ const AblyChat: React.FC<ChatProps> = ({
 
     return (
         <>
-            <div className="fixed bottom-10 right-1/3 z-50">
+            <div className="fixed bottom-10 right-1/3 z-50 ">
                 <div
-                    className="fixed bottom-10 right-0 z-50"
+                    className="fixed bottom-2/3 right-0 z-50"
                     style={{
                         transform: `translateY(-${offset})`,
                     }}>
@@ -95,14 +95,16 @@ const AblyChat: React.FC<ChatProps> = ({
                     </div>
                 </div>
                 {isMinimized ? (
-                    <p></p>
+                    <p className="border border-green-500 bg-green-500"></p>
                 ) : (
                     <div
-                        className="fixed bottom-10 right-1/3 z-50 border border-black drop-shadow-2xl md:left-2/3 "
+                        className="fixed bottom-0 right-1/3 z-50 drop-shadow-2xl md:right-1/3"
                         style={{
-                            transform: `translateX(calc(${offset}))`,
+                            transform: `translateX(calc(${offset}*6.5))`,
                         }}>
-                        <div className="w-80 rounded-md bg-gray-3 shadow-lg">
+                        <div
+                            className="w-80 rounded-md bg-gray-3 shadow-lg"
+                            style={{ maxWidth: '50vh', overflowX: 'auto' }}>
                             <div className="flex items-center justify-between px-4 py-3">
                                 <div className="flex items-center justify-center p-3">
                                     <div className="flex items-center text-white">
