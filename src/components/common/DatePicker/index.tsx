@@ -18,16 +18,28 @@ const {
     ENDDATETITLE,
 } = datePickerStaticData
 
-const DatePicker: React.FC<Props> = ({ onError, setTimeRange }) => {
+const DatePicker: React.FC<Props> = ({
+    onError,
+    setTimeRange,
+    defaultDateRange,
+}) => {
     const [renderStartDateModal, setRenderStartDateModal] = useState(false)
     const [renderEndDateModal, setRenderEndDateModal] = useState(false)
 
     const [startFilter, setStartFilter] = useState(false)
 
-    const [startDate, setStartDate] = useState(DEFAULTDATE)
-    const [endDate, setEndDate] = useState(DEFAULTENDDATE)
-    const [startTime, setStartTime] = useState(DEFAULTSTARTTIME)
-    const [endTime, setEndTime] = useState(DEFAULTENDTIME)
+    const [startDate, setStartDate] = useState(
+        defaultDateRange?.startDate ?? DEFAULTDATE,
+    )
+    const [endDate, setEndDate] = useState(
+        defaultDateRange?.endDate ?? DEFAULTENDDATE,
+    )
+    const [startTime, setStartTime] = useState(
+        defaultDateRange?.startTime ?? DEFAULTSTARTTIME,
+    )
+    const [endTime, setEndTime] = useState(
+        defaultDateRange?.endTime ?? DEFAULTENDTIME,
+    )
 
     const startDateString = formatDateString(startDate)
     const endDateString = formatDateString(endDate)

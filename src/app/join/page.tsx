@@ -3,6 +3,7 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
+import { format, endOfMonth } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
@@ -12,9 +13,6 @@ import { SearchBtn } from '@/components/Buttons'
 import {
     checkInvalidTimeRange,
     cn,
-    exportTimeRangeString,
-    formatDate,
-    formatTimeString,
 } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
@@ -60,6 +58,7 @@ const JoinPage = () => {
     useEffect(() => {
         setIsLoading(true)
         getAllEvents()
+        updateTags('country', ['0'])
     }, [])
 
     // 拿下一頁資料
@@ -98,10 +97,15 @@ const JoinPage = () => {
     // 拿所有活動，無篩選
     async function getAllEvents() {
         setNoEvent(false)
+        const { startDate, endDate, startTime, endTime } = timeRange
 
         const queryString = {
             page,
             limit: LIMITAMOUNT,
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
         const result = await getJoinEventList(queryString)
         const isInitRender = page === 1
@@ -122,13 +126,13 @@ const JoinPage = () => {
             return
         }
 
-        const { startAt, endAt, timeBegin, timeEnd } =
-            exportTimeRangeString(timeRange)
+        // const { startAt, endAt, timeBegin, timeEnd } =
+        //     exportTimeRangeString(timeRange)
         const dateRangeObj = {
-            startAt: formatDate(new Date(startAt), '/'),
-            endAt: formatDate(new Date(endAt), '/'),
-            timeBegin: formatTimeString(new Date(timeBegin)),
-            timeEnd: formatTimeString(new Date(timeEnd)),
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
 
         const updatedPage = !scrollBottom ? 1 : page
@@ -292,6 +296,9 @@ const JoinPage = () => {
                                 <DatePicker
                                     onError={(error) => setError(error)}
                                     setTimeRange={updateTimeRange}
+                                    defaultDateRange={{
+                                        endDate: endOfMonth(new Date()),
+                                    }}
                                 />
                             }
                         />
@@ -306,6 +313,7 @@ const JoinPage = () => {
                                     onSelectChange={(updatedInfo) =>
                                         updateTags('country', updatedInfo)
                                     }
+                                    defaultValue="台北市"
                                 />
                             }
                         />
@@ -459,7 +467,9 @@ const JoinPage = () => {
                                                     pixelOffset={[0, -36]}
                                                     disableAutoPan
                                                     headerDisabled>
-                                                    <div>{theater.label}</div>
+                                                    <p className="text-small1 text-gray-2">
+                                                        {theater.label}
+                                                    </p>
                                                 </InfoWindow>
                                             )}
                                         </>
