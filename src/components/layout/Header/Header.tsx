@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
 
-    const headerRef = useRef(null)
+    const headerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (!isAuth) return
@@ -38,11 +38,9 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
     }, [isAuth, session])
 
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (
-                headerRef.current &&
-                !headerRef.current.contains(event.target)
-            ) {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as HTMLElement
+            if (headerRef.current && !headerRef.current.contains(target)) {
                 setIsOpen(false)
             }
         }
