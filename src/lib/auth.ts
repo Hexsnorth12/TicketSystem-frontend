@@ -68,6 +68,10 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
+        async signIn(user, account, profile) {
+            console.log('signIn', user, account, profile)
+            return true
+        },
         async jwt({ token, user }) {
             if (user) {
                 token.user = user
