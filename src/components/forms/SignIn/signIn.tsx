@@ -1,5 +1,4 @@
 'use client' // This is a client component 👈🏽
-
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { signIn, useSession } from 'next-auth/react'
@@ -7,7 +6,6 @@ import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
 import { useSearchParams, useRouter } from 'next/navigation'
-
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
 
@@ -25,12 +23,8 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
 
     useEffect(() => {
         if (status === 'authenticated') {
-            let redirectUrl = '/'
-            if (session?.user.accountType === 'admin') {
-                redirectUrl = '/admin/order'
-            } else {
-                redirectUrl = searchParams.get('callbackUrl') || '/'
-            }
+            const redirectUrl =
+                session?.user.accountType === 'admin' ? '/admin/order' : '/'
             router.push(redirectUrl)
         }
     }, [session, status, searchParams, router])
