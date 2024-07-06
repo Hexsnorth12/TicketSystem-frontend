@@ -24,5 +24,5 @@ export const {
     useLazyGetInfoQuery,
     useClaimTicketMutation,
     useGetShareTicketsQuery,
-    useLazyGetShareTicketsQuery
+    useLazyGetShareTicketsQuery,
 } = userApi
