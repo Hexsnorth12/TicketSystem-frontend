@@ -4,7 +4,7 @@ import Link from 'next/link'
 import transaction_order from '@icon/transaction_order_primary.svg'
 import code_analysis from '@icon/code_analysis_solid_primary.svg'
 // import ticket_managed from '@icon/ticket_managed_primary.svg'
-// import folder_managed from '@icon/folder_managed_primary.svg'
+import folder_managed from '@icon/folder_managed_primary.svg'
 // import manage_accounts from '@icon/manage_accounts_primary.svg'
 
 interface AdminSidebarProps {}
@@ -87,6 +87,22 @@ const AdminSidebar: React.FC<AdminSidebarProps> = () => {
                     />
                     <p className="text-btn2 text-white hover:text-primary hover:text-shadow-sm">
                         票券核銷
+                    </p>
+                </Link>
+            </li>
+            <li className="rounded-b-lg bg-gray-1">
+                <Link
+                    href={'/admin/post'}
+                    className="flex items-center rounded-b-lg p-4">
+                    <Image
+                        className="mr-2"
+                        src={folder_managed}
+                        alt={'ge to folder_manager'}
+                        width={24}
+                        height={24}
+                    />
+                    <p className="text-btn2 text-white hover:text-primary hover:text-shadow-sm">
+                        新增商品
                     </p>
                 </Link>
             </li>

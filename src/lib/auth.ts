@@ -56,9 +56,7 @@ export const authOptions: NextAuthOptions = {
                     const err = error as Response
                     const errorData = await err.json()
 
-                    throw new Error(
-                        `status: ${errorData.status}; message: ${errorData.message}`,
-                    )
+                    throw new Error(`${errorData.message}`)
                 }
             },
         }),

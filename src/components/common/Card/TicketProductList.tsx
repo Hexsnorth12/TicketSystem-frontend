@@ -44,7 +44,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({
     return (
         <>
             {/* Desktop-Navbar */}
-            <div className="mt-[80px] hidden md:grid md:grid-cols-4 md:gap-4">
+            <div className="mt-[80px] hidden md:grid md:grid-cols-4 md:gap-4 md:gap-y-[80px]">
                 {tickets.map((ticket, index) => (
                     <div
                         key={ticket._id}

@@ -54,7 +54,7 @@ const ChatBtn: React.FC<ChatBtnProps> = ({
         setOpenChats((prev) => prev.filter((id) => id !== ticketId))
     }
     //未來添加相對應功能
-    const translateYValue = `${index * 50}px`
+
     return (
         <div {...basicButtonProps}>
             <Button
@@ -76,7 +76,7 @@ const ChatBtn: React.FC<ChatBtnProps> = ({
                                     userAccount={session.user.account}
                                     ticketId={id}
                                     onClose={() => handleCloseChat(id)}
-                                    offset={translateYValue} // 将 offset 属性传递给 AblyChat
+                                    offset={index} // 将 offset 属性传递给 AblyChat
                                     name={name}
                                 />
                             )}

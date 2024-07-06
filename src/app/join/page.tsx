@@ -3,19 +3,14 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
+import { format, endOfMonth } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
-import {
-    checkInvalidTimeRange,
-    cn,
-    exportTimeRangeString,
-    formatDate,
-    formatTimeString,
-} from '@/utils'
+import { checkInvalidTimeRange, cn } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
@@ -60,7 +55,12 @@ const JoinPage = () => {
     useEffect(() => {
         setIsLoading(true)
         getAllEvents()
+        updateTags('country', ['0'])
     }, [])
+
+    useEffect(() => {
+        setTheaterTags([])
+    }, [countryTag])
 
     // 拿下一頁資料
     useEffect(() => {
@@ -98,10 +98,15 @@ const JoinPage = () => {
     // 拿所有活動，無篩選
     async function getAllEvents() {
         setNoEvent(false)
+        const { startDate, endDate, startTime, endTime } = timeRange
 
         const queryString = {
             page,
             limit: LIMITAMOUNT,
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
         const result = await getJoinEventList(queryString)
         const isInitRender = page === 1
@@ -122,13 +127,13 @@ const JoinPage = () => {
             return
         }
 
-        const { startAt, endAt, timeBegin, timeEnd } =
-            exportTimeRangeString(timeRange)
+        // const { startAt, endAt, timeBegin, timeEnd } =
+        //     exportTimeRangeString(timeRange)
         const dateRangeObj = {
-            startAt: formatDate(new Date(startAt), '/'),
-            endAt: formatDate(new Date(endAt), '/'),
-            timeBegin: formatTimeString(new Date(timeBegin)),
-            timeEnd: formatTimeString(new Date(timeEnd)),
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
 
         const updatedPage = !scrollBottom ? 1 : page
@@ -166,15 +171,30 @@ const JoinPage = () => {
             const hasNoEvent = resEventList.length === 0
             const noMoreData = hasNoEvent || totalCount <= LIMITAMOUNT
 
-            let updatedEventList = resEventList
+            let totalEvents = resEventList
             if (!initRender) {
-                updatedEventList = [...eventList, ...resEventList] as EventList
+                totalEvents = [...eventList, ...resEventList] as EventList
             }
 
-            const shouldAddMoreSpace = updatedEventList.length > 6
+            const filteredCountryEvents = []
+            if (countryTag) {
+                const rangedTheaters = THEATERS[Number(countryTag)]
+                const theaterName = rangedTheaters.map((t) => t.label)
+                for (const event of totalEvents) {
+                    if (theaterName.includes(event?.theater))
+                        filteredCountryEvents.push(event)
+                }
+            }
+
+            // 有點選縣市的話，只會顯示該縣市活動
+            const updatedEventList = countryTag
+                ? filteredCountryEvents
+                : totalEvents
+            const shouldAddMoreSpace = updatedEventList.length > 4
 
             if (initRender) setPage(1)
-            if (initRender && hasNoEvent) setNoEvent(true)
+            if ((initRender && hasNoEvent) || !updatedEventList.length)
+                setNoEvent(true)
             setStopFetching(noMoreData)
             setEventList(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
@@ -292,6 +312,9 @@ const JoinPage = () => {
                                 <DatePicker
                                     onError={(error) => setError(error)}
                                     setTimeRange={updateTimeRange}
+                                    defaultDateRange={{
+                                        endDate: endOfMonth(new Date()),
+                                    }}
                                 />
                             }
                         />
@@ -306,10 +329,11 @@ const JoinPage = () => {
                                     onSelectChange={(updatedInfo) =>
                                         updateTags('country', updatedInfo)
                                     }
+                                    defaultValue="台北市"
                                 />
                             }
                         />
-                        {!!countryTag && (
+                        {typeof Number(countryTag) === 'number' && (
                             <FilterOption
                                 title="地點"
                                 filter={
@@ -459,7 +483,9 @@ const JoinPage = () => {
                                                     pixelOffset={[0, -36]}
                                                     disableAutoPan
                                                     headerDisabled>
-                                                    <div>{theater.label}</div>
+                                                    <p className="text-small1 text-gray-2">
+                                                        {theater.label}
+                                                    </p>
                                                 </InfoWindow>
                                             )}
                                         </>

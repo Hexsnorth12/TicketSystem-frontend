@@ -362,9 +362,15 @@ export const THEATERS = [
 ]
 
 export const MOVIES = [
-    { label: '可憐的東西', value: '可憐的東西' },
-    { label: '沙丘2', value: '沙丘2' },
-    { label: '功夫熊貓', value: '功夫熊貓' },
     { label: '腦筋急轉彎2', value: '腦筋急轉彎2' },
-    { label: '再見機器人', value: '再見機器人' },
+    { label: '絕地戰警：生死與共', value: '絕地戰警：生死與共' },
+    {
+        label: '劇場版 排球少年！！ 垃圾場的決戰',
+        value: '劇場版 排球少年！！ 垃圾場的決戰',
+    },
+    { label: '屍油降', value: '屍油降' },
+    { label: '亡命機劫', value: '亡命機劫' },
+    { label: '承諾大海的老師', value: '承諾大海的老師' },
+    { label: '金孫爆富攻略', value: '金孫爆富攻略' },
+    { label: '媽的人生願望', value: '媽的人生願望' },
 ]
