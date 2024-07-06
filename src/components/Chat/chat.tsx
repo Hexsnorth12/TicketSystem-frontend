@@ -4,6 +4,7 @@ import { useChannel, useConnectionStateListener } from 'ably/react'
 import { Button } from '../common'
 import { IoChatbubbleEllipsesOutline } from 'react-icons/io5'
 import Image from 'next/image'
+
 interface ChatMessage {
     id: string
     content: string
@@ -14,7 +15,7 @@ interface ChatMessage {
 interface ChatProps {
     ticketId: string
     onClose: () => void // 添加 onClose 属性
-    offset: string
+    offset: number
     name: string
     userInfo: string
     userAccount: string
@@ -74,41 +75,40 @@ const AblyChat: React.FC<ChatProps> = ({
         setIsMinimized(false)
         setMinimizedChats(minimizedChats.filter((id) => id !== ticketId))
     }
-
     return (
         <>
-            <div className="fixed bottom-10 right-1/3 z-50">
+            <div className="fixed bottom-10 right-1/3 z-50 ">
                 <div
-                    className="fixed bottom-10 right-0 z-50"
+                    className="fixed bottom-1/3 right-0 z-50"
                     style={{
-                        transform: `translateY(-${offset})`,
+                        transform: `translateY(-${offset * 50}px)`,
                     }}>
                     <div
-                        className="w-40 cursor-pointer rounded-md bg-gray-6 shadow-lg"
+                        className="w-auto cursor-pointer rounded-md bg-gray-6 text-small2 shadow-lg md:w-auto md:text-base"
                         onClick={restoreChat}>
                         <div className="flex items-center justify-center p-3">
                             <span className="flex items-center text-white">
-                                <IoChatbubbleEllipsesOutline className="mr-2" />{' '}
+                                <IoChatbubbleEllipsesOutline className="mr-2 hidden md:inline-block" />{' '}
                                 {name}
                             </span>
                         </div>
                     </div>
                 </div>
                 {isMinimized ? (
-                    <p></p>
+                    <div className="hidden" />
                 ) : (
                     <div
-                        className="fixed bottom-10 right-1/3 z-50 border border-black drop-shadow-2xl md:left-2/3 "
+                        className="fixed bottom-0 left-1/2 z-50 drop-shadow-2xl md:left-1/2"
                         style={{
-                            transform: `translateX(calc(${offset}))`,
+                            transform: `translateX(calc(-${offset * 70}px))`,
                         }}>
-                        <div className="w-80 rounded-md bg-gray-3 shadow-lg">
+                        <div className=" w-60 rounded-md bg-gray-3 shadow-lg md:w-80">
                             <div className="flex items-center justify-between px-4 py-3">
-                                <div className="flex items-center justify-center p-3">
-                                    <div className="flex items-center text-white">
-                                        <IoChatbubbleEllipsesOutline className="mr-2" />{' '}
-                                        <h3 className="text-btn1 font-medium text-white ">
-                                            聊聊 {name}
+                                <div className="flex items-center justify-center p-1 md:p-2">
+                                    <div className="flex flex-nowrap items-center whitespace-nowrap text-small2 font-medium text-white md:text-btn2">
+                                        <IoChatbubbleEllipsesOutline className="mr-2 hidden md:inline-block" />{' '}
+                                        <h3 className="hidden md:inline-block">
+                                            聊聊
                                         </h3>
                                     </div>
                                 </div>
@@ -116,18 +116,23 @@ const AblyChat: React.FC<ChatProps> = ({
                                 <div className="flex gap-2">
                                     <button
                                         onClick={onClose}
-                                        className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-5 text-small2 text-gray-1">
+                                        className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-5 text-small2 text-gray-1 md:h-6 md:w-6">
                                         ×
                                     </button>
                                     {/* 缩小按钮 */}
                                     <button
                                         onClick={toggleMinimize}
-                                        className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-5 text-small2 text-gray-1">
+                                        className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-5 text-small2 text-gray-1 md:h-6 md:w-6">
                                         {isMinimized ? '▢' : '−'}
                                     </button>
                                 </div>
                             </div>
-                            <div className="h-80 overflow-auto bg-gray-1 p-2">
+                            <div className="h-40 overflow-auto bg-gray-1 p-2 md:h-80">
+                                <div className="mb-1 flex items-center justify-center bg-gray-2 p-1 md:p-2">
+                                    <div className="flex flex-nowrap items-center  text-small2 font-medium text-white md:text-btn2">
+                                        <h3>{name}</h3>
+                                    </div>
+                                </div>
                                 {messages.map((msg) => (
                                     <div
                                         key={msg.id}
@@ -157,7 +162,7 @@ const AblyChat: React.FC<ChatProps> = ({
                                                         ? 'bg-secondary text-right'
                                                         : 'bg-gray-4 text-left'
                                                 }`}>
-                                                <span className="block text-small2 text-white">
+                                                <span className="block break-words text-small2 text-white">
                                                     {msg.content}
                                                 </span>
                                             </div>
