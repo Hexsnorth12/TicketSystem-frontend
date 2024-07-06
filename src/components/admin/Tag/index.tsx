@@ -11,7 +11,7 @@ interface Props {
 
 const Tag: React.FC<Props> = ({ value, onDelete }) => {
     return (
-        <div className="flex items-center space-x-2 rounded-lg border border-primary py-1 pl-3 pr-2 select-none">
+        <div className="flex select-none items-center space-x-2 rounded-lg border border-primary py-1 pl-3 pr-2">
             <span className="text-small2 text-white">{value}</span>
             <Image
                 src={close}
