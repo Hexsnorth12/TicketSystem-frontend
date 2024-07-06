@@ -26,6 +26,8 @@ import { useCreateProductMutation } from '@/services/modules/product'
 import { DragInput } from '@/components/admin'
 import { THEATERS, COUNTRIES } from '@/definitions'
 import { ProductGenre } from '@/definitions/movieData'
+import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
+import { useAlert } from '@/components/useAlert/useAlert'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
     .MuiInputBase-root {
@@ -100,13 +102,14 @@ const Page: React.FC<Props> = () => {
     const fileRef = useRef<HTMLInputElement>(null)
     const briefRef = useRef<HTMLTextAreaElement>(null)
     const { data: session } = useSession()
-    const [createProduct] = useCreateProductMutation()
+    const [createProduct, { isLoading }] = useCreateProductMutation()
     const {
         register,
         formState: { errors },
         control,
         handleSubmit,
     } = useForm<FieldValues>()
+    const showAlert = useAlert()
 
     const onDragEnd = (result: DropResult, type: string) => {
         if (!result.destination) {
@@ -279,63 +282,79 @@ const Page: React.FC<Props> = () => {
 
         const imageURL = await uploadImage(formData, 'user', token)
         const photoPath = imageURL?.isSuccess ? imageURL?.url : ''
-        createProduct({
-            payload: {
-                products: [
-                    {
-                        soldAmount: 0,
-                        title: data.title,
-                        brief: briefRef.current?.value || '',
-                        type: data.type,
-                        genre: data.genre,
-                        vendor: data.vendor,
-                        theater: data.theater,
-                        price: Number(data.price),
-                        amount: 10,
-                        isLaunched: true,
-                        isPublic: true,
-                        recommendWeight: Number(data.recommendWeight),
-                        sellEndAt: format(
-                            data.sellEndAt,
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        ),
-                        sellStartAt: format(
-                            data.sellStartAt,
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        ),
-                        endAt: format(
-                            data.endAt,
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        ),
-                        startAt: format(
-                            data.startAt,
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        ),
-                        photoPath,
-                        introduction: textAreaRef.current?.value || '',
-                        notifications: notifications.map(
-                            (item) => item.content,
-                        ),
-                        highlights: highlights.map((item) => item.content),
-                        cautions: cautions.map((item) => item.content),
-                        confirmations: confirmations.map(
-                            (item) => item.content,
-                        ),
-                        cancelPolicies: cancelPolicies.map(
-                            (item) => item.content,
-                        ),
-                        certificates: certificates.map((item) => item.content),
-                        tagNames: tags,
-                        plans,
-                    },
-                ],
-            },
-            token,
-        })
+        try {
+            await createProduct({
+                payload: {
+                    products: [
+                        {
+                            soldAmount: 0,
+                            title: data.title,
+                            brief: briefRef.current?.value || '',
+                            type: data.type,
+                            genre: data.genre,
+                            vendor: data.vendor,
+                            theater: data.theater,
+                            price: Number(data.price),
+                            amount: 10,
+                            isLaunched: true,
+                            isPublic: true,
+                            recommendWeight: Number(data.recommendWeight),
+                            sellEndAt: format(
+                                data.sellEndAt,
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            ),
+                            sellStartAt: format(
+                                data.sellStartAt,
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            ),
+                            endAt: format(
+                                data.endAt,
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            ),
+                            startAt: format(
+                                data.startAt,
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            ),
+                            photoPath,
+                            introduction: textAreaRef.current?.value || '',
+                            notifications: notifications.map(
+                                (item) => item.content,
+                            ),
+                            highlights: highlights.map((item) => item.content),
+                            cautions: cautions.map((item) => item.content),
+                            confirmations: confirmations.map(
+                                (item) => item.content,
+                            ),
+                            cancelPolicies: cancelPolicies.map(
+                                (item) => item.content,
+                            ),
+                            certificates: certificates.map(
+                                (item) => item.content,
+                            ),
+                            tagNames: tags,
+                            plans,
+                        },
+                    ],
+                },
+                token,
+            }).unwrap()
+            showAlert('新增成功', 'success')
+
+        } catch (error) {
+            // eslint-disable-next-line
+            //@ts-ignore
+            const err = JSON.parse(error.data)
+            showAlert(err.message, 'error')
+        }
     }
 
     return (
         <section>
+            {isLoading && (
+                <div className="absolute left-[50%] top-0 z-30 -translate-x-1/2">
+                    <LoadingSkeleton />
+                </div>
+            )}
             <DataShell title="新增商品">
                 <form
                     action=""
