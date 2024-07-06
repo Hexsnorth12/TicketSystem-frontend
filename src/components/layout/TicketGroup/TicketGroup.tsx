@@ -21,9 +21,9 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
         tickets,
         pageLimit,
         currentPage,
-        'products',
+        'tickets',
         status,
-        'api/v1/product',
+        'api/v1/ticket',
         { status },
     )
 
