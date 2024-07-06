@@ -193,7 +193,8 @@ const JoinPage = () => {
             const shouldAddMoreSpace = updatedEventList.length > 4
 
             if (initRender) setPage(1)
-            if (initRender && hasNoEvent) setNoEvent(true)
+            if ((initRender && hasNoEvent) || !updatedEventList.length)
+                setNoEvent(true)
             setStopFetching(noMoreData)
             setEventList(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
