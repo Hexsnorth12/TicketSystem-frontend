@@ -73,7 +73,7 @@ const AblyChat: React.FC<ChatProps> = ({
     // restoreChat
     const restoreChat = () => {
         setIsMinimized(false)
-        setMinimizedChats(minimizedChats.filter((id) => id == ticketId))
+        setMinimizedChats(minimizedChats.filter((id) => id !== ticketId))
     }
     return (
         <>
@@ -98,7 +98,7 @@ const AblyChat: React.FC<ChatProps> = ({
                     <div className="hidden" />
                 ) : (
                     <div
-                        className="fixed bottom-0 left-0 z-50 drop-shadow-2xl md:left-1/2"
+                        className="fixed bottom-0 left-1/2 z-50 drop-shadow-2xl md:left-1/2"
                         style={{
                             transform: `translateX(calc(-${offset * 70}px))`,
                         }}>
