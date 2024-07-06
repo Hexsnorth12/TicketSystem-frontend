@@ -29,6 +29,7 @@ import DataTable from './DataTable/DataTable'
 import DataShell from './DataShell/DataShell'
 import SuccessModal from './SuccessModal'
 import DragItem from './DragItem/DragItem'
+import JoinCard from './Card/JoinCard'
 
 export {
     Modal,
@@ -62,4 +63,5 @@ export {
     DataShell,
     SuccessModal,
     DragItem,
+    JoinCard,
 }

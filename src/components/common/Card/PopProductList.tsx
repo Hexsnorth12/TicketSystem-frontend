@@ -12,6 +12,8 @@ import 'swiper/swiper-bundle.css'
 import { CiHeart } from 'react-icons/ci'
 import { FaHeart } from 'react-icons/fa'
 import { bellota } from '@/components/fonts'
+import arrowLeftIcon from '@icon/arrow_left_white.svg'
+import arrowRightIcon from '@icon/arrow_right_white.svg'
 
 type Tag = {
     tagId: string
@@ -60,20 +62,41 @@ const PopProductList: React.FC<PopProductListProps> = ({
     return (
         <section className=" border-b border-gray-3 pb-[54px] md:pb-[60px]">
             {/* Desktop View */}
-            <div className="hidden md:block">
+            <div className="relative hidden select-none md:block">
+                <div className="prev absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer  rounded-full border border-primary xl:left-[-72px] xl:flex xl:items-center xl:justify-center">
+                    <Image
+                        src={arrowLeftIcon}
+                        alt="scroll t0 left"
+                        width={24}
+                        height={24}
+                        className="prev cursor-pointer "
+                    />
+                </div>
+                <div className="next absolute top-1/2 z-30 hidden h-[56px] w-[56px] cursor-pointer  rounded-full border border-primary xl:right-[-72px] xl:flex xl:items-center xl:justify-center">
+                    <Image
+                        src={arrowRightIcon}
+                        alt="scroll t0 left"
+                        width={24}
+                        height={24}
+                        className="next cursor-pointer "
+                    />
+                </div>
                 <Swiper
-                    slidesPerView={5}
+                    slidesPerView={'auto'}
                     spaceBetween={10}
-                    centeredSlides={true}
+                    // centeredSlides={true}
                     loop={true}
-                    initialSlide={2}
+                    // initialSlide={2}
                     pagination={{
                         type: 'fraction',
                     }}
-                    navigation={true}
-                    modules={[Navigation]}>
+                    navigation={{ prevEl: `.prev`, nextEl: `.next` }}
+                    modules={[Navigation]}
+                    className="max-w-[1296px]">
                     {products.map((product, index) => (
-                        <SwiperSlide key={product._id}>
+                        <SwiperSlide
+                            key={product._id}
+                            className="md:max-w-[240px]">
                             <div className="rounded-lg">
                                 <Link href={`/movies/${product._id}`}>
                                     <div className="relative h-[210px]">

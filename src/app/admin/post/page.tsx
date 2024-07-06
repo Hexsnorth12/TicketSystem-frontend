@@ -1,26 +1,19 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
-import {
-    DragDropContext,
-    Droppable,
-    Draggable,
-    DropResult,
-} from '@hello-pangea/dnd'
+import { DropResult } from '@hello-pangea/dnd'
 import { DatePicker } from '@mui/x-date-pickers'
 import { styled } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import clsx from 'clsx'
-import { parseISO, format, startOfMonth, endOfMonth } from 'date-fns'
-import { useForm, FieldPath, FieldValues, Controller } from 'react-hook-form'
+import { format, startOfMonth, endOfMonth } from 'date-fns'
+import { useForm, FieldValues, Controller } from 'react-hook-form'
 
 import {
-    DragItem,
     DataShell,
     Button,
-    InputComponent,
     SelectInput,
     InputRegister,
 } from '@/components/common'
@@ -29,8 +22,6 @@ import add from '@icon/add_primary.svg'
 import { Tag } from '@/components/admin'
 import uploadImage from '@/lib/uploadImage'
 import { useCreateProductMutation } from '@/services/modules/product'
-import { Plan } from '@/types/product'
-import { JOIN_OPTIONS } from '@/definitions/joinForm'
 import { DragInput } from '@/components/admin'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
@@ -79,17 +70,6 @@ export interface FormValues {
 interface Props {}
 
 const Page: React.FC<Props> = () => {
-    const [items, setItems] = useState([
-        {
-            id: 'item1',
-            content: '深入參觀雪梨歌劇院，欣賞全球最大的無梁拱形天花板',
-        },
-        {
-            id: 'item2',
-            content: '聆聽導覽，了解雪梨歌劇院富有戲劇性的豐富歷史',
-        },
-        // ... 其他項目
-    ])
     const [notifications, setNotifications] = useState<InputItem[]>(initValue)
     const [highlights, setHighlights] = useState<InputItem[]>(initValue)
     const [cautions, setCautions] = useState<InputItem[]>(initValue)

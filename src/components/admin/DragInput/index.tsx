@@ -5,30 +5,14 @@ import {
     Draggable,
     DropResult,
 } from '@hello-pangea/dnd'
-import { DatePicker } from '@mui/x-date-pickers'
-import { styled } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
-import clsx from 'clsx'
-import { parseISO, format, startOfMonth, endOfMonth } from 'date-fns'
-import { useForm, FieldPath, FieldValues, Controller } from 'react-hook-form'
 
 import {
     DragItem,
-    DataShell,
     Button,
-    InputComponent,
-    SelectInput,
-    InputRegister,
 } from '@/components/common'
 import { InputItem } from '@/types/table'
 import add from '@icon/add_primary.svg'
-import { Tag } from '@/components/admin'
-import uploadImage from '@/lib/uploadImage'
-import { useCreateProductMutation } from '@/services/modules/product'
-import { Plan } from '@/types/product'
-import { JOIN_OPTIONS } from '@/definitions/joinForm'
 
 interface Props {
     label: string

@@ -3,9 +3,15 @@ interface CheckboxProps {
     label: string
     checked: boolean
     onChange: () => void
+    defaultChecked?: boolean
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({
+    label,
+    checked,
+    onChange,
+    defaultChecked = false,
+}) => {
     return (
         <div className="flex items-center">
             <div className="relative flex cursor-pointer items-center rounded-full p-2">
@@ -15,6 +21,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
                     id="checkbox"
                     checked={checked}
                     onChange={onChange}
+                    defaultChecked={defaultChecked}
                 />
                 <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-gray-1 opacity-0 transition-opacity peer-checked:opacity-100">
                     <svg

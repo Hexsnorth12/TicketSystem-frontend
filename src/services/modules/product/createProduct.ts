@@ -5,7 +5,7 @@ import {
     FetchBaseQueryError,
     FetchBaseQueryMeta,
 } from '@reduxjs/toolkit/query'
-import { NewProduct, IMeta, CommentData } from './product'
+import { NewProduct, IMeta } from './product'
 
 const createProduct = (
     build: EndpointBuilder<

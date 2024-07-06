@@ -27,4 +27,10 @@ export type DatePickerComponent = {
         startTime: Date
         endTime: Date
     }) => void
+    defaultDateRange?: {
+        startDate?: Date
+        endDate?: Date
+        startTime?: Date
+        endTime?: Date
+    }
 }
