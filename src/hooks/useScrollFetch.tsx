@@ -7,12 +7,14 @@ const useScrollFetch = (
     limit: number,
     page: number,
     dataName: string,
-    status: string,
+    flag: string,
+    url?: string,
+    paramsObj?: { [key: string]: string },
 ) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<boolean>(false)
     const [dataList, setDataList] = useState(prevData)
-    const [hasMore, setHasMore] = useState(false)
+    const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
         // 防止重複請求
@@ -28,13 +30,14 @@ const useScrollFetch = (
                 const params = new URLSearchParams({
                     limit: limit.toString(),
                     page: page.toString(),
-                    status,
+                    ...paramsObj,
                 })
 
-                const data = await fetchClient({
+                const { data } = await fetchClient({
                     method: 'GET',
-                    url: `api/v1/product?${params.toString()}`,
+                    url: `${url}?${params.toString()}`,
                 })
+
                 if (data[dataName].length <= 0) {
                     setHasMore(false)
                 } else {
@@ -51,7 +54,7 @@ const useScrollFetch = (
         }
 
         fetchProducts()
-    }, [page, status])
+    }, [page, flag])
 
     return { loading, error, dataList, hasMore }
 }

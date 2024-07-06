@@ -11,9 +11,10 @@ import { ShareOrder } from '@/types/product'
 
 interface pageProps {
     order: ShareOrder
+    isPublished: boolean
 }
 
-const Page: React.FC<pageProps> = ({ order }) => {
+const Page: React.FC<pageProps> = ({ order, isPublished }) => {
     const router = useRouter()
 
     return (
@@ -73,20 +74,25 @@ const Page: React.FC<pageProps> = ({ order }) => {
                 </div>
             </div>
             <div className="mt-6 flex flex-col space-y-3 md:m-0 md:flex-row md:space-y-0">
-                <Button
-                    type={'button'}
-                    title={'上架分票'}
-                    onClick={() => {
-                        router.push(
-                            `sharedTicket/publish?orderId=${order.orderId}&productId=${order.productId}`,
-                            {
-                                scroll: false,
-                            },
-                        )
-                    }}
-                    className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
-                    <span className="font-medium tracking-wider">上架分票</span>
-                </Button>
+                {!isPublished ? (
+                    <Button
+                        type={'button'}
+                        title={'上架分票'}
+                        onClick={() => {
+                            router.push(
+                                `sharedTicket/publish?orderId=${order.orderId}&productId=${order.productId}`,
+                                {
+                                    scroll: false,
+                                },
+                            )
+                        }}
+                        className="mr-3 w-full border-white py-2 text-btn2 text-white hover:border-primary hover:bg-gray-1 hover:text-primary md:w-auto md:py-3 md:text-btn1">
+                        <span className="font-medium tracking-wider">
+                            上架分票
+                        </span>
+                    </Button>
+                ) : null}
+
                 <Button
                     type={'button'}
                     title={'取得分票碼'}
