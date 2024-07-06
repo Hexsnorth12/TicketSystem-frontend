@@ -1,3 +1,4 @@
+import { endOfMonth, format } from 'date-fns'
 import fetchClient from './fetchClient'
 
 import type {
@@ -8,10 +9,9 @@ import type {
 } from '@/types'
 
 const today = new Date()
-const later = new Date(today.getTime() + 86400000)
 export const DEFAULTTIMERANGE = {
     startDate: today,
-    endDate: later,
+    endDate: endOfMonth(new Date()),
     startTime: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),

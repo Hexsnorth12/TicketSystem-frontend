@@ -1,3 +1,5 @@
+import { setFutureMonthDate } from '@/utils'
+
 export const JOIN_OPTIONS = {
     areaOptions: ['台北市', '新北市', '桃園市', '新竹市'],
     locationOptions: ['威秀影城', '秀泰影城', '真善美劇院', '國賓影城'],
@@ -11,6 +13,7 @@ export const JOIN_OPTIONS = {
         '金孫爆富攻略',
         '媽的人生願望',
     ],
+    dateOptions: [...setFutureMonthDate()],
     timeOptions: [
         '01:00',
         '02:00',
