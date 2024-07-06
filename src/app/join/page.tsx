@@ -10,10 +10,7 @@ import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
-import {
-    checkInvalidTimeRange,
-    cn,
-} from '@/utils'
+import { checkInvalidTimeRange, cn } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
@@ -60,6 +57,10 @@ const JoinPage = () => {
         getAllEvents()
         updateTags('country', ['0'])
     }, [])
+
+    useEffect(() => {
+        setTheaterTags([])
+    }, [countryTag])
 
     // 拿下一頁資料
     useEffect(() => {
@@ -170,12 +171,26 @@ const JoinPage = () => {
             const hasNoEvent = resEventList.length === 0
             const noMoreData = hasNoEvent || totalCount <= LIMITAMOUNT
 
-            let updatedEventList = resEventList
+            let totalEvents = resEventList
             if (!initRender) {
-                updatedEventList = [...eventList, ...resEventList] as EventList
+                totalEvents = [...eventList, ...resEventList] as EventList
             }
 
-            const shouldAddMoreSpace = updatedEventList.length > 6
+            const filteredCountryEvents = []
+            if (countryTag) {
+                const rangedTheaters = THEATERS[Number(countryTag)]
+                const theaterName = rangedTheaters.map((t) => t.label)
+                for (let event of totalEvents) {
+                    if (theaterName.includes(event?.theater))
+                        filteredCountryEvents.push(event)
+                }
+            }
+
+            // 有點選縣市的話，只會顯示該縣市活動
+            const updatedEventList = countryTag
+                ? filteredCountryEvents
+                : totalEvents
+            const shouldAddMoreSpace = updatedEventList.length > 4
 
             if (initRender) setPage(1)
             if (initRender && hasNoEvent) setNoEvent(true)
@@ -317,7 +332,7 @@ const JoinPage = () => {
                                 />
                             }
                         />
-                        {!!countryTag && (
+                        {typeof Number(countryTag) === 'number' && (
                             <FilterOption
                                 title="地點"
                                 filter={
