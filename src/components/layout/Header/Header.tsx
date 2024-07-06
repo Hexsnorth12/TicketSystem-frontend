@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MemberMenu } from '@/components/common'
@@ -27,6 +27,8 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
 
     const [getInfo, { data: userInfo }] = useLazyGetInfoQuery()
 
+    const headerRef = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
         if (!isAuth) return
         const getUserInfo = async () => {
@@ -34,6 +36,20 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
         }
         getUserInfo()
     }, [isAuth, session])
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as HTMLElement
+            if (headerRef.current && !headerRef.current.contains(target)) {
+                setIsOpen(false)
+            }
+        }
+
+        document.addEventListener('click', handleClickOutside)
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        }
+    }, [])
 
     const onLogout = async () => {
         setIsOpen(false)
@@ -69,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ logoSrc }) => {
         setIsOpen(false)
     }
     return (
-        <header className="fixed z-[99] w-full bg-gray-3 py-4">
+        <header className="fixed z-[99] w-full bg-gray-3 py-4" ref={headerRef}>
             <div className="container relative flex items-center justify-between px-4">
                 {/* Mobile-Navbar */}
                 <div className="flex items-center space-x-4 md:hidden">
