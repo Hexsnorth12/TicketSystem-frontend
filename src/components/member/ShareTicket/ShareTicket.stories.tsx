@@ -31,5 +31,6 @@ export const Default: Story = {
             expiredAt: '2024-06-17T12:31:09.735Z',
             amount: 7,
         },
+        isPublished: true,
     },
 }
