@@ -102,6 +102,7 @@ const Page: React.FC<Props> = () => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null)
     const tagRef = useRef<HTMLInputElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
+    const briefRef = useRef<HTMLTextAreaElement>(null)
     const { data: session } = useSession()
     const [createProduct, { isLoading }] = useCreateProductMutation()
     const {
@@ -270,58 +271,6 @@ const Page: React.FC<Props> = () => {
 
         const imageURL = await uploadImage(formData, 'user', token)
         const photoPath = imageURL?.isSuccess ? imageURL?.url : ''
-        console.log([
-            {
-                soldAmount: 0,
-                title: data.title,
-                brief: '',
-                type: '電影',
-                genre: '科幻',
-                vendor: data.vendor,
-                theater: data.theater,
-                price: Number(data.price),
-                amount: 10,
-                isLaunched: false,
-                isPublic: false,
-                recommendWeight: Number(data.recommendWeight),
-                sellEndAt: format(
-                    data.sellEndAt,
-                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                ),
-                sellStartAt: format(
-                    data.sellStartAt,
-                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                ),
-                endAt: format(data.endAt, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
-                startAt: format(data.startAt, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
-                photoPath,
-                introduction: textAreaRef.current?.value || '',
-                notifications: notifications.map((item) => item.content),
-                highlights: highlights.map((item) => item.content),
-                cautions: cautions.map((item) => item.content),
-                confirmations: confirmations.map((item) => item.content),
-                cancelPolicies: cancelPolicies.map((item) => item.content),
-                certificates: certificates.map((item) => item.content),
-                tagNames: tags,
-                plans: [
-                    {
-                        name: '一人獨享',
-                        discount: 1,
-                        headCount: 1,
-                    },
-                    {
-                        name: '兩人同行',
-                        discount: 0.8,
-                        headCount: 2,
-                    },
-                    {
-                        name: '三人同行',
-                        discount: 0.5,
-                        headCount: 3,
-                    },
-                ],
-            },
-        ])
         createProduct({
             payload: {
                 products: [
@@ -531,8 +480,27 @@ const Page: React.FC<Props> = () => {
                             />
                         </div>
                     </div>
-
                     <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-2">
+                        <Controller
+                            name="vendor"
+                            control={control}
+                            render={({ field }) => (
+                                <div className="grow space-y-3">
+                                    <label
+                                        htmlFor=""
+                                        className="text-small2 text-gray-5 md:text-small1">
+                                        廠商地區
+                                    </label>
+                                    <SelectInput
+                                        placeholder="請選擇商品類型"
+                                        label="商品類型"
+                                        options={['特映會']}
+                                        onSelectChange={field.onChange}
+                                    />
+                                </div>
+                            )}
+                        />
+
                         <Controller
                             name="vendor"
                             control={control}
@@ -544,9 +512,31 @@ const Page: React.FC<Props> = () => {
                                         廠商
                                     </label>
                                     <SelectInput
-                                        placeholder="請選擇廠商"
-                                        label="地區 / 縣市"
-                                        options={JOIN_OPTIONS.locationOptions}
+                                        placeholder="請選擇商品類型"
+                                        label="商品類型"
+                                        options={['特映會']}
+                                        onSelectChange={field.onChange}
+                                    />
+                                </div>
+                            )}
+                        />
+                    </div>
+
+                    <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-2">
+                        <Controller
+                            name="vendor"
+                            control={control}
+                            render={({ field }) => (
+                                <div className="grow space-y-3">
+                                    <label
+                                        htmlFor=""
+                                        className="text-small2 text-gray-5 md:text-small1">
+                                        類型
+                                    </label>
+                                    <SelectInput
+                                        placeholder="請選擇商品類型"
+                                        label="商品類型"
+                                        options={['特映會']}
                                         onSelectChange={field.onChange}
                                     />
                                 </div>
@@ -694,6 +684,22 @@ const Page: React.FC<Props> = () => {
                             </DragDropContext>
                         </div>
                     </div> */}
+                    <div className="flex w-full flex-col gap-2 md:gap-4">
+                        <label className="align-start text-small2 text-white md:text-small1">
+                            簡介(限制100字)
+                        </label>
+                        <div className=" rounded-lg border border-gray-3 bg-gray-1 px-3 py-2 md:px-4 md:py-3">
+                            <textarea
+                                ref={briefRef}
+                                name={'brief'}
+                                id={'registerKey'}
+                                className="h-[300px] w-full resize-none bg-transparent pr-3 text-small2 text-white outline-none scrollbar-hidden placeholder:text-gray-4 md:pr-4 md:text-body"
+                                placeholder={'請輸入100字內商品簡介'}
+                                defaultValue={''}
+                                maxLength={100}
+                            />
+                        </div>
+                    </div>
 
                     <div className="flex w-full flex-col gap-2 md:gap-4">
                         <label className="align-start text-small2 text-white md:text-small1">
