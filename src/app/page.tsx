@@ -146,7 +146,7 @@ const HomePage: React.FC = () => {
 
     return (
         <>
-            <Marquee />
+            <Marquee popProductImages={popproducts.slice(0, 3).map(item => item.photoPath)} />
 
             <div className="container mb-6 md:mb-[60px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
