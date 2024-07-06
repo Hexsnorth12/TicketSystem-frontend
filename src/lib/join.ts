@@ -1,4 +1,4 @@
-import { endOfMonth, format } from 'date-fns'
+import { endOfMonth } from 'date-fns'
 import fetchClient from './fetchClient'
 
 import type {
