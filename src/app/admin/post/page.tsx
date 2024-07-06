@@ -16,6 +16,7 @@ import {
     Button,
     SelectInput,
     InputRegister,
+    InputComponent,
 } from '@/components/common'
 import { InputItem } from '@/types/table'
 import add from '@icon/add_primary.svg'
@@ -23,6 +24,8 @@ import { Tag } from '@/components/admin'
 import uploadImage from '@/lib/uploadImage'
 import { useCreateProductMutation } from '@/services/modules/product'
 import { DragInput } from '@/components/admin'
+import { THEATERS, COUNTRIES } from '@/definitions'
+import { ProductGenre } from '@/definitions/movieData'
 
 const CustomizeDatePickerInput = styled(DatePicker)`
     .MuiInputBase-root {
@@ -55,6 +58,12 @@ const initValue = [
     },
 ]
 
+interface Plan {
+    name: string
+    discount: number
+    headCount: number
+}
+
 export interface FormValues {
     title: string
     vendor: string
@@ -65,6 +74,8 @@ export interface FormValues {
     sellStartAt: string
     endAt: string
     startAt: string
+    type: string
+    genre: string
 }
 
 interface Props {}
@@ -78,17 +89,21 @@ const Page: React.FC<Props> = () => {
     const [certificates, setCertificates] = useState<InputItem[]>(initValue)
     const [imageUrl, setImageUrl] = useState<string>('')
     const [tags, setTags] = useState<string[]>([])
+    const [countryIndex, setCountryIndex] = useState<number>(0)
+    const [plans, setPlans] = useState<Plan[]>([])
+    const [planName, setPlanName] = useState<string>('')
+    const [planDiscount, setPlanDiscount] = useState<string>('')
+    const [planHeadCount, setPlanHeadCount] = useState<string>('')
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null)
     const tagRef = useRef<HTMLInputElement>(null)
     const fileRef = useRef<HTMLInputElement>(null)
     const briefRef = useRef<HTMLTextAreaElement>(null)
     const { data: session } = useSession()
-    const [createProduct, { isLoading }] = useCreateProductMutation()
+    const [createProduct] = useCreateProductMutation()
     const {
         register,
         formState: { errors },
-        setError,
         control,
         handleSubmit,
     } = useForm<FieldValues>()
@@ -204,7 +219,11 @@ const Page: React.FC<Props> = () => {
     }
 
     const handleTextAreaInput = () => {
+        // eslint-disable-next-line
+        //@ts-ignore
         textAreaRef.current.style.height = '300px'
+        // eslint-disable-next-line
+        //@ts-ignore
         textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`
     }
 
@@ -229,21 +248,30 @@ const Page: React.FC<Props> = () => {
         const reader = new FileReader()
         reader.onload = (e) => setImageUrl(e.target?.result as string)
         reader.readAsDataURL(file)
-        // const formData = new FormData()
-        // formData.append('avatar', file)
-
-        // const token = session?.accessToken || ''
-
-        // const imageURL = await uploadImage(formData, 'user', token)
-        // const imgUrl = imageURL?.isSuccess ? imageURL?.url : ''
     }
 
     const handleUpload = () => {
         if (fileRef.current) fileRef.current.click()
     }
 
+    const handleCreatePlan = () => {
+        if (!!planName || !!planDiscount || !!planHeadCount) {
+            const newPlan = {
+                name: planName,
+                discount: Number(planDiscount),
+                headCount: Number(planHeadCount),
+            }
+            setPlans([...plans, newPlan])
+            setPlanName('')
+            setPlanDiscount('')
+            setPlanHeadCount('')
+        }
+    }
+
     const handleCreateProduct = async (data: FieldValues) => {
-        const file = fileRef.current?.files[0]
+        // eslint-disable-next-line
+        //@ts-ignore
+        const file = fileRef.current?.files[0] || null
         if (!file) return
         const formData = new FormData()
         formData.append('avatar', file)
@@ -257,15 +285,15 @@ const Page: React.FC<Props> = () => {
                     {
                         soldAmount: 0,
                         title: data.title,
-                        brief: '',
-                        type: '電影',
-                        genre: '科幻',
+                        brief: briefRef.current?.value || '',
+                        type: data.type,
+                        genre: data.genre,
                         vendor: data.vendor,
                         theater: data.theater,
                         price: Number(data.price),
                         amount: 10,
-                        isLaunched: false,
-                        isPublic: false,
+                        isLaunched: true,
+                        isPublic: true,
                         recommendWeight: Number(data.recommendWeight),
                         sellEndAt: format(
                             data.sellEndAt,
@@ -298,36 +326,13 @@ const Page: React.FC<Props> = () => {
                         ),
                         certificates: certificates.map((item) => item.content),
                         tagNames: tags,
-                        plans: [
-                            {
-                                name: '一人獨享',
-                                discount: 1,
-                                headCount: 1,
-                            },
-                            {
-                                name: '兩人同行',
-                                discount: 0.8,
-                                headCount: 2,
-                            },
-                            {
-                                name: '三人同行',
-                                discount: 0.5,
-                                headCount: 3,
-                            },
-                        ],
+                        plans,
                     },
                 ],
             },
             token,
         })
     }
-
-    // const handleCreateProduct = async (data: FieldValues) => {
-    //     console.log(
-    //         'form',
-    //         format(data.sellStartAt, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
-    //     )
-    // }
 
     return (
         <section>
@@ -461,25 +466,28 @@ const Page: React.FC<Props> = () => {
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-2">
-                        <Controller
-                            name="vendor"
-                            control={control}
-                            render={({ field }) => (
-                                <div className="grow space-y-3">
-                                    <label
-                                        htmlFor=""
-                                        className="text-small2 text-gray-5 md:text-small1">
-                                        廠商地區
-                                    </label>
-                                    <SelectInput
-                                        placeholder="請選擇商品類型"
-                                        label="商品類型"
-                                        options={['特映會']}
-                                        onSelectChange={field.onChange}
-                                    />
-                                </div>
-                            )}
-                        />
+                        <div className="grow space-y-3">
+                            <label
+                                htmlFor=""
+                                className="text-small2 text-gray-5 md:text-small1">
+                                廠商地區
+                            </label>
+                            <SelectInput
+                                placeholder="請選擇廠商地區"
+                                label="廠商地區"
+                                options={COUNTRIES.map(
+                                    (country) => country.label,
+                                )}
+                                onSelectChange={(value) => {
+                                    setCountryIndex(
+                                        COUNTRIES.findIndex(
+                                            (country) =>
+                                                country.label === value,
+                                        ),
+                                    )
+                                }}
+                            />
+                        </div>
 
                         <Controller
                             name="vendor"
@@ -492,9 +500,11 @@ const Page: React.FC<Props> = () => {
                                         廠商
                                     </label>
                                     <SelectInput
-                                        placeholder="請選擇商品類型"
+                                        placeholder="請選擇廠商"
                                         label="商品類型"
-                                        options={['特映會']}
+                                        options={THEATERS[countryIndex].map(
+                                            (item) => item.label,
+                                        )}
                                         onSelectChange={field.onChange}
                                     />
                                 </div>
@@ -504,7 +514,7 @@ const Page: React.FC<Props> = () => {
 
                     <div className="flex flex-col items-center justify-between gap-3 lg:flex-row lg:gap-2">
                         <Controller
-                            name="vendor"
+                            name="type"
                             control={control}
                             render={({ field }) => (
                                 <div className="grow space-y-3">
@@ -523,19 +533,36 @@ const Page: React.FC<Props> = () => {
                             )}
                         />
 
-                        <div className="grow">
-                            <InputRegister
-                                label="價格"
-                                type="text"
-                                placeholder={'請輸入價格'}
-                                registerKey="price"
-                                register={register}
-                                defaultValue={''}
-                                errors={errors}
-                                required={true}
-                            />
-                        </div>
+                        <Controller
+                            name="genre"
+                            control={control}
+                            render={({ field }) => (
+                                <div className="grow space-y-3">
+                                    <label
+                                        htmlFor=""
+                                        className="text-small2 text-gray-5 md:text-small1">
+                                        電影類型分類
+                                    </label>
+                                    <SelectInput
+                                        placeholder="請選擇類型分類"
+                                        label="電影類型分類"
+                                        options={ProductGenre}
+                                        onSelectChange={field.onChange}
+                                    />
+                                </div>
+                            )}
+                        />
                     </div>
+                    <InputRegister
+                        label="價格"
+                        type="text"
+                        placeholder={'請輸入價格'}
+                        registerKey="price"
+                        register={register}
+                        defaultValue={''}
+                        errors={errors}
+                        required={true}
+                    />
                     <div className="5 flex flex-col justify-between gap-3 lg:flex-row lg:gap-2">
                         <div className="grow">
                             <InputRegister
@@ -563,6 +590,86 @@ const Page: React.FC<Props> = () => {
                         </div>
                     </div>
 
+                    <div className="flex w-full flex-col gap-2 md:gap-4">
+                        <div className="space-x-1">
+                            <label className="align-start text-small2 text-white md:text-small1">
+                                銷售方案
+                            </label>
+                            <Button
+                                type="button"
+                                title="error-modal-button"
+                                className=" hover:bg-gary-2 border-gray-3 bg-gray-2 p-2 px-4 hover:border-primary hover:text-white"
+                                onClick={handleCreatePlan}>
+                                <div className="flex items-center space-x-0.5">
+                                    <p className="text-sm">確認方案</p>
+                                </div>
+                            </Button>
+                        </div>
+                        {plans.map((plan, index) => (
+                            <div
+                                key={uuidv4()}
+                                className="flex items-start justify-between">
+                                <InputComponent
+                                    label={`方案 ${index + 1} 名稱`}
+                                    type="text"
+                                    value={plan.name}
+                                    onChange={() => {}}
+                                    placeholder=""
+                                    name="plan"
+                                    className="bg-gray-3"
+                                    disabled
+                                />
+                                <InputComponent
+                                    label={`方案 ${index + 1} 折扣`}
+                                    type="text"
+                                    value={plan.discount.toString()}
+                                    onChange={() => {}}
+                                    placeholder=""
+                                    name="plan"
+                                    className="bg-gray-3"
+                                    disabled
+                                />
+                                <InputComponent
+                                    label={`方案 ${index + 1} 購買數量`}
+                                    type="text"
+                                    value={plan.headCount.toString()}
+                                    onChange={() => {}}
+                                    placeholder=""
+                                    name="plan"
+                                    className="bg-gray-3"
+                                    disabled
+                                />
+                            </div>
+                        ))}
+
+                        <div className="flex items-start justify-between">
+                            <InputComponent
+                                label={`方案 ${plans.length + 1} 名稱`}
+                                type="text"
+                                value={planName}
+                                onChange={(value) => setPlanName(value)}
+                                placeholder="輸入方案名稱"
+                                name="planName"
+                            />
+                            <InputComponent
+                                label={`方案 ${plans.length + 1} 折扣`}
+                                type="text"
+                                value={planDiscount}
+                                onChange={(value) => setPlanDiscount(value)}
+                                placeholder="範圍 0.1 ~ 1"
+                                name="planDiscount"
+                            />
+                            <InputComponent
+                                label={`方案 ${plans.length + 1} 購買數量`}
+                                type="text"
+                                value={planHeadCount}
+                                onChange={(value) => setPlanHeadCount(value)}
+                                placeholder="方案的一次購買數量"
+                                name="planHeadCount"
+                            />
+                        </div>
+                    </div>
+
                     <DragInput
                         label={'臨時通知'}
                         type={'notification'}
@@ -582,88 +689,6 @@ const Page: React.FC<Props> = () => {
                         onDelete={handleDeleteDragItem}
                     />
 
-                    {/* <div>
-                        <div className="mb-4 flex items-center space-x-3">
-                            <label className="text-small2 text-white md:text-small1">
-                                臨時通知
-                            </label>
-                            <Button
-                                type="button"
-                                title="error-modal-button"
-                                className=" hover:bg-gary-2 border-gray-3 bg-gray-2 p-2 px-4 hover:border-primary hover:text-white"
-                                onClick={() =>
-                                    handleCreateDragItem('highlight')
-                                }>
-                                <div className="flex items-center space-x-0.5">
-                                    <p className="text-sm">新增</p>
-                                    <Image
-                                        src={add}
-                                        alt="add"
-                                        width={16}
-                                        height={16}
-                                    />
-                                </div>
-                            </Button>
-                        </div>
-
-                        <div className="space-y-4">
-                            <DragDropContext
-                                onDragEnd={(result: DropResult) =>
-                                    onDragEnd(result, 'notification')
-                                }>
-                                <Droppable droppableId="droppable">
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.droppableProps}
-                                            className="space-y-4">
-                                            {notifications.map(
-                                                (item, index) => (
-                                                    <Draggable
-                                                        key={item.id}
-                                                        draggableId={item.id}
-                                                        index={index}>
-                                                        {(provided) => (
-                                                            <div
-                                                                ref={
-                                                                    provided.innerRef
-                                                                }
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}>
-                                                                <DragItem
-                                                                    value={
-                                                                        item.content
-                                                                    }
-                                                                    onChange={(
-                                                                        e,
-                                                                    ) =>
-                                                                        handleChange(
-                                                                            'notification',
-                                                                            e
-                                                                                .target
-                                                                                .value,
-                                                                            item.id,
-                                                                        )
-                                                                    }
-                                                                    onDelete={() =>
-                                                                        handleDeleteDragItem(
-                                                                            'notification',
-                                                                            item.id,
-                                                                        )
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                ),
-                                            )}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                        </div>
-                    </div> */}
                     <div className="flex w-full flex-col gap-2 md:gap-4">
                         <label className="align-start text-small2 text-white md:text-small1">
                             簡介(限制100字)

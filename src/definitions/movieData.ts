@@ -344,3 +344,24 @@ export const dummyTicketDetail: TicketDetail = {
     purchaseAt: '2024-06-15T12:50:23.686Z',
     purchaseAmount: 11,
 }
+
+export const ProductGenre = [
+    '動作片',
+    '冒險片',
+    '動畫片',
+    '喜劇片',
+    '懸疑片',
+    '紀錄片',
+    '劇情片',
+    '驚悚片',
+    '奇幻片',
+    '恐怖片',
+    '歌舞片',
+    '音樂片',
+    '愛情片',
+    '科幻片',
+    '戰爭片',
+    '西部片',
+    '史詩片',
+    '歷史電影'
+]
