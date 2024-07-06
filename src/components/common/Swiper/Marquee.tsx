@@ -65,6 +65,18 @@ const Marquee: React.FC<Props> = ({ popProductImages }) => {
                         autoplay
                         modules={[Pagination, Navigation]}
                         className="h-full w-full">
+                        {
+                            <SwiperSlide>
+                                <div className="relative h-full w-full">
+                                    <Image
+                                        fill
+                                        objectFit="cover"
+                                        src={'/assets/slide1.jpg'}
+                                        alt={'product'}
+                                    />
+                                </div>
+                            </SwiperSlide>
+                        }
                         {popProductImages.map((path, index) => (
                             <SwiperSlide key={index}>
                                 <div className="relative h-full w-full">
