@@ -180,7 +180,7 @@ const JoinPage = () => {
             if (countryTag) {
                 const rangedTheaters = THEATERS[Number(countryTag)]
                 const theaterName = rangedTheaters.map((t) => t.label)
-                for (let event of totalEvents) {
+                for (const event of totalEvents) {
                     if (theaterName.includes(event?.theater))
                         filteredCountryEvents.push(event)
                 }
