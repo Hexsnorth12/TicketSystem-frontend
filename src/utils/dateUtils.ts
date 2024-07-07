@@ -10,12 +10,15 @@ export function formatTimeString(date: Date) {
     return `${hours}:${minutes}`
 }
 
-export function formatDate(date: Date, formatType = '.') {
+export function formatDate(date: Date, formatType = '.', noYear = false) {
     const year = date.getFullYear()
     let month: string | number = date.getMonth() + 1
     if (month < 10) month = '0' + month
-    const eventDate = date.getDate()
-    return `${year}${formatType}${month}${formatType}${eventDate}`
+    let eventDate: string | number = date.getDate()
+    if (eventDate < 10) eventDate = '0' + eventDate
+    return !noYear
+        ? `${year}${formatType}${month}${formatType}${eventDate}`
+        : `${month}${formatType}${eventDate}`
 }
 //Home Page
 export const formatdate = (isoString: string) => {
@@ -87,4 +90,17 @@ export function exportTimeRangeString({
         endTime.getMinutes(),
     ).toLocaleString()
     return { startAt, endAt, timeBegin, timeEnd }
+}
+
+export const setFutureMonthDate = (daysAmount = 30) => {
+    const dateArr = []
+    const today = new Date()
+
+    for (let i = 0; i < daysAmount; i++) {
+        const futureDate = new Date()
+        futureDate.setDate(today.getDate() + i)
+        const dateString = formatDate(futureDate, '/', true)
+        dateArr.push(dateString)
+    }
+    return dateArr
 }
