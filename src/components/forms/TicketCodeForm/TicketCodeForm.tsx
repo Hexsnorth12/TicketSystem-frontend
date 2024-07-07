@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { InputComponent, Button } from '@/components/common'
 import { useClaimTicketMutation } from '@/services/modules/user'
 import LoadingSkeleton from '@/components/LoadingSkeleton/Loading'
+import { useAlert } from '@/components/useAlert/useAlert'
 
 interface TicketCodeFormProps {}
 
@@ -14,6 +15,7 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
     const [claimTicket, { isSuccess, isLoading }] = useClaimTicketMutation()
     const { data: session } = useSession()
     const router = useRouter()
+    const showAlert = useAlert()
 
     const handleClaimTicket = async () => {
         try {
@@ -23,11 +25,13 @@ const TicketCodeForm: React.FC<TicketCodeFormProps> = () => {
             }).unwrap()
         } catch (error) {
             console.error(error)
+            showAlert('輸入分票碼失敗', 'error')
         }
     }
 
     useEffect(() => {
         if (!isLoading && isSuccess) {
+            showAlert('取得票券成功', 'success')
             router.push(`/user/tickets?status=unverified`, {
                 scroll: false,
             })
