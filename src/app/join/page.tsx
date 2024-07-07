@@ -43,7 +43,6 @@ const JoinPage = () => {
     const [checkFilter, setCheckFilter] = useState(false)
     const [noEvent, setNoEvent] = useState(false)
     const [onSearchInput, setOnSearchInput] = useState(false)
-    const [checkedDatePicker, setCheckedDatePicker] = useState(false)
 
     const [countryTag, setCountryTag] = useState<string>('')
     const [theaterTags, setTheaterTags] = useState<string[]>([])
@@ -55,7 +54,6 @@ const JoinPage = () => {
     useEffect(() => {
         setIsLoading(true)
         getAllEvents()
-        updateTags('country', ['0'])
     }, [])
 
     useEffect(() => {
@@ -127,8 +125,6 @@ const JoinPage = () => {
             return
         }
 
-        // const { startAt, endAt, timeBegin, timeEnd } =
-        //     exportTimeRangeString(timeRange)
         const dateRangeObj = {
             startAt: format(startDate, 'yyyy/MM/dd'),
             endAt: format(endDate, 'yyyy/MM/dd'),
@@ -147,7 +143,7 @@ const JoinPage = () => {
             title: eventTitle,
             movieTitle: movieTitles,
             theater: theaters,
-            ...(checkedDatePicker && dateRangeObj),
+            ...dateRangeObj,
         }
 
         // 如果是活動標題搜尋，則無其他參數限制
@@ -247,10 +243,6 @@ const JoinPage = () => {
         router.push('createOriganize')
     }
 
-    function checkDatePicker() {
-        setCheckedDatePicker(true)
-    }
-
     function focusSearchInput(isFocus: boolean) {
         setOnSearchInput(isFocus)
     }
@@ -262,7 +254,6 @@ const JoinPage = () => {
         endTime: Date
     }) {
         readyToFilter()
-        checkDatePicker()
         setTimeRange(dateRange)
     }
 

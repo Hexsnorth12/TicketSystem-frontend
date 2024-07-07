@@ -363,5 +363,5 @@ export const ProductGenre = [
     '戰爭片',
     '西部片',
     '史詩片',
-    '歷史電影'
+    '歷史電影',
 ]

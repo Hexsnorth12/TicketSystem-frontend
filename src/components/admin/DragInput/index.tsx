@@ -7,10 +7,7 @@ import {
 } from '@hello-pangea/dnd'
 import Image from 'next/image'
 
-import {
-    DragItem,
-    Button,
-} from '@/components/common'
+import { DragItem, Button } from '@/components/common'
 import { InputItem } from '@/types/table'
 import add from '@icon/add_primary.svg'
 

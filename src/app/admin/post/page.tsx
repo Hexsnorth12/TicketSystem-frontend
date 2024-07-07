@@ -339,7 +339,6 @@ const Page: React.FC<Props> = () => {
                 token,
             }).unwrap()
             showAlert('新增成功', 'success')
-
         } catch (error) {
             // eslint-disable-next-line
             //@ts-ignore
