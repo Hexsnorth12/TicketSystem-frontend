@@ -8,7 +8,9 @@ import { CloseBtn } from '@/components/Buttons'
 
 import type { DatePickerModal as Props } from '@/types'
 
-const LASTDAY = new Date(new Date().getFullYear(), 11, 31)
+const today = new Date()
+// 30天
+const LASTDAY = new Date(today.setDate(today.getDate() + 30))
 
 const CustomizeDateCalendar = styled(DateCalendar)`
     color: #fff;

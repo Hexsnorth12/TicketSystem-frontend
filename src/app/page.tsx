@@ -34,6 +34,10 @@ interface HeaderTitleProps {
     iconPath: string
 }
 
+interface PageProps {
+    searchParams?: { [key: string]: string }
+}
+
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     return (
         <div className="flex items-center py-2 md:py-4 ">
@@ -51,7 +55,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     )
 }
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<PageProps> = ({ searchParams }) => {
     const [popproducts, setPopProducts] = useState<Product[]>([])
     const [recproducts, setRecProducts] = useState<Product[]>([])
     const [groupproducts, setGroupProducts] = useState<Group[]>([])
@@ -60,6 +64,7 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const showAlert = useAlert()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -97,6 +102,14 @@ const HomePage: React.FC = () => {
 
         fetchData()
     }, [])
+
+    useEffect(() => {
+        const payState = searchParams?.payState
+        if (payState) {
+            showAlert('付款成功', 'success')
+        }
+    }, [])
+
     const { data: session } = useSession()
     const [addFavorite] = useAddFavoriteMutation()
     const [removeFavorite] = useRemoveFavoriteMutation()

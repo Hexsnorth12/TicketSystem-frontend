@@ -83,17 +83,25 @@ const Page: React.FC<pageProps> = () => {
                 movie,
                 person,
                 phone,
+                date: eventDate,
                 time,
             } = data
-            console.log('data: ', data)
+
             const haveTicket = isBought === '是'
-            // TODO: 需要優化
             const selectedHour = time.split(':')[0]
+            const selectedMonth = eventDate.split('/')[0] - 1
+            const selectedDate = eventDate.split('/')[1]
             const today = new Date()
+            let selectedYear = today.getFullYear()
+            const nowMonth = today.getMonth()
+
+            // is next year
+            if (Number(selectedMonth) < nowMonth) selectedYear += 1
+
             const date = new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate(),
+                selectedYear,
+                selectedMonth,
+                selectedDate,
                 selectedHour,
             )
 
@@ -253,6 +261,21 @@ const Page: React.FC<pageProps> = () => {
                                     placeholder="請選擇"
                                     label={''}
                                     options={JOIN_OPTIONS.movieOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </SelectBox>
+                    <SelectBox title="日期">
+                        <Controller
+                            name="date"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.dateOptions}
                                     onSelectChange={field.onChange}
                                 />
                             )}

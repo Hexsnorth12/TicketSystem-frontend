@@ -137,7 +137,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                             className="rounded-lg"
                         />
                     </div>
-                    <div className="max-h-[184px] overflow-y-scroll pr-6 scrollbar">
+                    <div className="max-h-[184px] w-[280px] overflow-x-hidden overflow-y-scroll pr-6 scrollbar">
                         <h5 className="mb-1 text-small1 text-white md:mb-2 md:text-header5">
                             {eventDetail.title}
                         </h5>
@@ -151,7 +151,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                             position="left"
                             textStyle="text-small2 md:text-small1 text-white"
                         />
-                        <div className="mb-3 mt-3 flex flex-col items-start gap-3 md:mb-4 md:mt-4 md:flex-row md:items-center">
+                        <div className="mb-3 mt-3 flex flex-col items-start gap-3 md:mb-4 md:mt-4">
                             <div className="flex-1 rounded-md bg-gray-3 px-3 py-1 ">
                                 <span className="text-nowrap text-small2 text-white">
                                     {haveTicketString}
@@ -178,7 +178,9 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                                             bellota.className,
                                         )}>
                                         <span className="text-primary">
-                                            {eventDetail.vacancy}
+                                            {(eventDetail.amount as number) -
+                                                (eventDetail!
+                                                    .vacancy as number)}
                                         </span>
                                         <span className="text-gray-5">/</span>
                                         <span className="text-gray-5">

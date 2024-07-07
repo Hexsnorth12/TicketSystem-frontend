@@ -1,7 +1,7 @@
 import type { NextAuthOptions, User } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google';
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
 import { BASE_URL, serverCode } from '@/definitions'
 import fetchClient from './fetchClient'
 import { jwt } from '@/utils'
@@ -65,19 +65,22 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             profile: async (profile: GoogleProfile) => {
                 try {
-                    const response = await fetch(`${BASE_URL}api/v1/user/google-login`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            id: profile.sub,
-                            email: profile.email,
-                            name: profile.name,
-                            image: profile.picture
-                        })
-                    });
+                    const response = await fetch(
+                        `${BASE_URL}api/v1/user/google-login`,
+                        {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id: profile.sub,
+                                email: profile.email,
+                                name: profile.name,
+                                image: profile.picture,
+                            }),
+                        },
+                    )
 
                     if (response.ok) {
-                        const data = await response.json();
+                        const data = await response.json()
 
                         return {
                             id: data.data.account,
@@ -87,12 +90,15 @@ export const authOptions: NextAuthOptions = {
                             refreshToken: data.data.refreshToken,
                             accountType: data.data.accountType,
                             image: profile.picture,
-                        } as User;
+                        } as User
                     } else {
-                        console.error('Google Login Failed:', await response.text());
+                        console.error(
+                            'Google Login Failed:',
+                            await response.text(),
+                        )
                     }
                 } catch (error) {
-                    console.error("Error during backend verification:", error);
+                    console.error('Error during backend verification:', error)
                 }
                 return {
                     id: '',
@@ -102,15 +108,15 @@ export const authOptions: NextAuthOptions = {
                     refreshToken: '',
                     accountType: '',
                     image: '',
-                } as User;
-            }
+                } as User
+            },
         }),
     ],
     callbacks: {
-        async jwt({ token, user}) {
+        async jwt({ token, user }) {
             if (user) {
-                token.user = user;
-                token.accessToken = user.token;
+                token.user = user
+                token.accessToken = user.token
             }
 
             const accessTokenExpires = token.exp as number
