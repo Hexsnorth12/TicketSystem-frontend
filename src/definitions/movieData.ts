@@ -89,7 +89,44 @@ export const fetchGeneralProducts = async (): Promise<Product[]> => {
             url: `api/v1/product?${params.toString()}`,
             token,
             tags: ['product'],
-        })
+        });
+        console.log("總覽API 回應的數據:", data);
+
+        if (data && data.products) {
+            return data.products.map((product: Product) => ({
+                ...product,
+                photoPath: product.photoPath.startsWith('')
+                    ? product.photoPath
+                    : `${product.photoPath}`,
+            }));
+        } else {
+            throw new Error('未找到商品');
+        }
+    } catch (err) {
+        throw new Error('獲取商品失敗');
+    }
+};
+
+export const fetchResultProducts = async (theater: string): Promise<Product[]> => {
+    try {
+        const { session } = await getUserSession();
+        const token = session?.user?.token;
+        const params = new URLSearchParams({
+            limit: '50',
+            page: '1',
+            isPublic: 'true',
+            sortField: 'sellStartAt',
+            sortOrder: 'desc',
+            theaters: theater,
+        });
+
+        const { data } = await fetchClient({
+            method: 'GET',
+            url: `api/v1/product?${params.toString()}`,
+            token,
+            tags: ['product'],
+        });
+        console.log("搜尋結果API 回應的數據:", data);
 
         if (data && data.products) {
             return data.products.map((product: Product) => ({
