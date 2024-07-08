@@ -29,6 +29,7 @@ import DataTable from './DataTable/DataTable'
 import DataShell from './DataShell/DataShell'
 import SuccessModal from './SuccessModal'
 import JoinCard from './Card/JoinCard'
+import ProductCard from './ProductCard'
 
 export {
     Modal,
@@ -62,4 +63,5 @@ export {
     DataShell,
     SuccessModal,
     JoinCard,
+    ProductCard,
 }

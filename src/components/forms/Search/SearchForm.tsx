@@ -1,38 +1,41 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Input, SelectInput } from '@/components/common'
-import { TaiwanCities } from '@/definitions/taiwanCities'
-import { HomeSearch } from '@/definitions/homeSearch'
-import Link from 'next/link'
-import { number } from 'zod'
-import {
-    fetchResultProducts,
-    fetchResult2Products,
-    Product,
-} from '@/definitions/movieData'
+// import { TaiwanCities } from '@/definitions/taiwanCities'
+// import { HomeSearch } from '@/definitions/homeSearch'
+// import Link from 'next/link'
+// import { number } from 'zod'
+// import {
+//     fetchResultProducts,
+//     fetchResult2Products,
+//     Product,
+// } from '@/definitions/movieData'
 
 export default function SearchForm() {
-    const [isFormOpen, setIsFormOpen] = useState(false)
+    const [, setIsFormOpen] = useState(false)
     const [title, settitle] = useState('') // 模糊搜尋
-    const [selectedCity, setSelectedCity] = useState('') // 狀態用於存儲所選縣市
-    const [selectedDistrict, setSelectedDistrict] = useState('') // 狀態用於存儲所選行政區
+    // const [selectedCity, setSelectedCity] = useState('') // 狀態用於存儲所選縣市
+    const [, setSelectedDistrict] = useState('') // 狀態用於存儲所選行政區
     // 商品列表
     const [selectedType, setSelectedType] = useState('') // 狀態用於存儲所選商品類別
     const [selectedGenre, setSelectedGenre] = useState('') // 狀態用於存儲所選電影分類
     const [selectedVendor, setSelectedVendor] = useState('') // 狀態用於存儲所選供應商
     const [selectedTheater, setSelectedTheater] = useState('') // 狀態用於存儲所選劇院位置
     // 揪團列表
-    const [selectedhasticket, setSelectedhasticket] = useState('') // 狀態用於存儲所選有無票券
+    // const [selectedhasticket, setSelectedhasticket] = useState('') // 狀態用於存儲所選有無票券
     const [selectedmovietitle, setSelectedmovietitle] = useState('') // 狀態用於存儲所選電影名稱
-    const [selectedstatus, setSelectedstatus] = useState('ongoing') // 狀態用於存儲所選揪團狀態
+    // const [, setSelectedstatus] = useState('ongoing') // 狀態用於存儲所選揪團狀態
     const [selectedcount, setSelectedcount] = useState('') // 狀態用於存儲所選揪團人數
     // 分票列表
     const [selectedID, setSelectedID] = useState('') // 狀態用於存儲所選票券編號列表
-    const [selectedPublish, setSelectedPublish] = useState('') // 狀態用於存儲所選是否上架分票
+    const [, setSelectedPublish] = useState('') // 狀態用於存儲所選是否上架分票
 
     const [formType, setFormType] = useState<'ticket' | 'group' | 'split'>(
         'ticket',
     ) // 狀態用於存儲當前顯示的表單類型
+
+    const router = useRouter()
 
     const handleFilterClick = () => {
         setIsFormOpen(true)
@@ -53,13 +56,23 @@ export default function SearchForm() {
     }
 
     const handleSearchClick = async () => {
-        try {
-            const products = await fetchResultProducts(selectedTheater)
-            console.log('Fetched products:', products)
-            setSelectedTheater(selectedTheater)
-        } catch (error) {
-            console.error('Error fetching products:', error)
-        }
+        const searchParams = new URLSearchParams({
+            limit: '50',
+            page: '1',
+            isPublic: 'true',
+            sortField: 'sellStartAt',
+            sortOrder: 'desc',
+            theaters: selectedTheater,
+        })
+        router.push(`/search?${searchParams.toString()}`)
+        // try {
+        //     //const products = await fetchResultProducts(selectedTheater)
+        //     // console.log('Fetched products:', products)
+        //     // setSelectedTheater(selectedTheater)
+
+        // } catch (error) {
+        //     console.error('Error fetching products:', error)
+        // }
     }
 
     return (
@@ -345,17 +358,15 @@ export default function SearchForm() {
                             </Button>
                         </div>
                         <div className="col-span-3 mt-2 grow text-white md:col-span-1 md:mt-0">
-                            <Link href="/search/productresult">
-                                <Button
-                                    type="submit"
-                                    title="表单按钮"
-                                    onClick={handleSearchClick}
-                                    className="bg-gray-8 text白色 ml-3 inline-flex justify-center rounded-full px-3 py-1.5 text-btn2 font-semibold shadow-sm hover:bg-gray-6 sm:ml-0"
-                                    name="Ticketbutton"
-                                    value="搜尋">
-                                    搜尋
-                                </Button>
-                            </Link>
+                            <Button
+                                type="submit"
+                                title="表单按钮"
+                                onClick={handleSearchClick}
+                                className="bg-gray-8 text白色 ml-3 inline-flex justify-center rounded-full px-3 py-1.5 text-btn2 font-semibold shadow-sm hover:bg-gray-6 sm:ml-0"
+                                name="Ticketbutton"
+                                value="搜尋">
+                                搜尋
+                            </Button>
                         </div>
                     </div>
                 </div>

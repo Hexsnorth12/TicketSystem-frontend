@@ -1,15 +1,9 @@
 'use client' // This is a client component 👈🏽
 import React, { useState, useEffect } from 'react'
 import { Popcards } from '../../../definitions/marqueeData'
-import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import GeneralProductList from '@components/common/Card/GeneralProductList'
-import {
-    fetchGeneralProducts,
-    fetchResultProducts,
-    fetchResult2Products,
-    Product,
-} from '../../../definitions/movieData'
+import { Product } from '../../../definitions/movieData'
 import { useAlert } from '@/components/useAlert/useAlert'
 import {
     useAddFavoriteMutation,
@@ -31,67 +25,67 @@ function shuffleArray(array: Popcard[]): Popcard[] {
 }
 
 export default function SearchResult() {
-    const [generalProducts, setGeneralProducts] = useState<Product[]>([])
-    const [resultProducts, setResultProducts] = useState<Product[]>([])
+    const [generalProducts] = useState<Product[]>([])
+    const [resultProducts] = useState<Product[]>([])
     const [favorites, setFavorites] = useState<Record<string, boolean>>({})
-    const [shuffledPopcards, setShuffledPopcards] = useState<Popcard[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<string | null>(null)
+    const [, setShuffledPopcards] = useState<Popcard[]>([])
+    const [loading] = useState<boolean>(true)
+    const [error] = useState<string | null>(null)
     const showAlert = useAlert()
 
     //Favorite Function
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [generalProducts] = await Promise.all([
-                    fetchGeneralProducts(),
-                ])
-                setGeneralProducts(generalProducts)
-                // 初始化收藏状态
-                const initialFavorites: Record<string, boolean> = {}
-                ;[...generalProducts].forEach((product) => {
-                    initialFavorites[product._id] = product.isFavorite
-                })
-                setFavorites(initialFavorites)
-            } catch (err) {
-                if (err instanceof Error) {
-                    setError(err.message)
-                } else {
-                    setError('An unknown error occurred.')
-                }
-            } finally {
-                setLoading(false)
-            }
-        }
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const [generalProducts] = await Promise.all([
+    //                 fetchGeneralProducts(),
+    //             ])
+    //             setGeneralProducts(generalProducts)
+    //             // 初始化收藏状态
+    //             const initialFavorites: Record<string, boolean> = {}
+    //             ;[...generalProducts].forEach((product) => {
+    //                 initialFavorites[product._id] = product.isFavorite
+    //             })
+    //             setFavorites(initialFavorites)
+    //         } catch (err) {
+    //             if (err instanceof Error) {
+    //                 setError(err.message)
+    //             } else {
+    //                 setError('An unknown error occurred.')
+    //             }
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
 
-        fetchData()
-    }, [])
-    useEffect(() => {
-        const fetchData = async (theater: string) => {
-            try {
-                const [resultProducts] = await Promise.all([
-                    fetchResultProducts(theater),
-                ])
-                setResultProducts(resultProducts)
-                // 初始化收藏状态
-                const initialFavorites: Record<string, boolean> = {}
-                ;[...resultProducts].forEach((product) => {
-                    initialFavorites[product._id] = product.isFavorite
-                })
-                setFavorites(initialFavorites)
-            } catch (err) {
-                if (err instanceof Error) {
-                    setError(err.message)
-                } else {
-                    setError('An unknown error occurred.')
-                }
-            } finally {
-                setLoading(false)
-            }
-        }
+    //     fetchData()
+    // }, [])
+    // useEffect(() => {
+    //     const fetchData = async (theater: string) => {
+    //         try {
+    //             const [resultProducts] = await Promise.all([
+    //                 fetchResultProducts(theater),
+    //             ])
+    //             setResultProducts(resultProducts)
+    //             // 初始化收藏状态
+    //             const initialFavorites: Record<string, boolean> = {}
+    //             ;[...resultProducts].forEach((product) => {
+    //                 initialFavorites[product._id] = product.isFavorite
+    //             })
+    //             setFavorites(initialFavorites)
+    //         } catch (err) {
+    //             if (err instanceof Error) {
+    //                 setError(err.message)
+    //             } else {
+    //                 setError('An unknown error occurred.')
+    //             }
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
 
-        fetchData()
-    }, [])
+    //     fetchData()
+    // }, [])
 
     const { data: session } = useSession()
     const [addFavorite] = useAddFavoriteMutation()
@@ -145,7 +139,7 @@ export default function SearchResult() {
     return (
         <>
             <div className="relative  h-screen w-screen">
-                {shuffledPopcards.map((popcard, index) => (
+                {/* {shuffledPopcards.map((popcard, index) => (
                     <div key={index}>
                         <div className="h-full w-full">
                             <Image
@@ -156,7 +150,7 @@ export default function SearchResult() {
                             />
                         </div>
                     </div>
-                ))}
+                ))} */}
                 <div className="absolute bottom-0 left-0 m-4 flex flex-col items-start md:space-y-4">
                     <span className="text-header5 font-bold tracking-widest text-white md:text-header2">
                         找到了

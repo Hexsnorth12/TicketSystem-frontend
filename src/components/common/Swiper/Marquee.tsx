@@ -3,29 +3,35 @@ import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Pagination, Navigation } from 'swiper/modules'
 import { Popcards } from '../../../definitions/marqueeData'
-import Image from 'next/image'
 import './swiper-custom.css'
 import { Input } from '@components/common'
 import { SearchBtn } from '@/components/Buttons'
-import { Modal } from '@components/common'
-import { SearchForm } from '@components/forms'
-import Link from 'next/link'
+// import { Modal } from '@components/common'
+// import { SearchForm } from '@components/forms'
 
 const Marquee: React.FC = () => {
     const [search, setSearch] = useState('')
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    // const [isModalOpen, setIsModalOpen] = useState(false)
+    const router = useRouter()
     const handleSearchChange = (value: string) => {
         setSearch(value)
     }
-    const handleFilterClick = () => {
-        setIsModalOpen(true)
+    // const handleFilterClick = () => {
+    //     setIsModalOpen(true)
+    // }
+
+    // const handleModalClose = () => {
+    //     setIsModalOpen(false)
+    // }
+
+    const handleSearch = () => {
+        router.push(`/search?keyword=${search}`)
     }
 
-    const handleModalClose = () => {
-        setIsModalOpen(false)
-    }
     return (
         <div className="relative h-[240px] md:h-screen">
             <Swiper
@@ -80,30 +86,35 @@ const Marquee: React.FC = () => {
                                     className="h-12 w-screen py-5 md:h-16 md:w-[526px] md:rounded-full"
                                 />
                                 <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                                    <SearchBtn
+                                    {/* <SearchBtn
                                         type="filter"
                                         onClick={handleFilterClick}
-                                    />
-                                    <Link href="/generalMovies">
+                                    /> */}
+                                    {/* <Link href="/generalMovies">
                                         <SearchBtn type="recommend" />
-                                    </Link>
-                                    <Link href="/search/notfound">
+                                    </Link> */}
+                                    {/* <Link href="/search/notfound">
                                         <SearchBtn
                                             type="search"
                                             active={true}
                                         />
-                                    </Link>
+                                    </Link> */}
+                                    <SearchBtn
+                                        type="search"
+                                        active={true}
+                                        onClick={handleSearch}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {isModalOpen && (
+                    {/* {isModalOpen && (
                         <Modal onClose={handleModalClose}>
                             <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
                                 <SearchForm />
                             </div>
                         </Modal>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>
