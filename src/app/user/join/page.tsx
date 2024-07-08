@@ -22,7 +22,7 @@ import {
     JoinPageSuccess,
 } from '@/types'
 import UpdateEventModal from '@/components/Join/UpdateEventModal'
-import { cn, formatJoinEventDate } from '@/utils'
+import { formatJoinEventDate } from '@/utils'
 
 interface pageProps {
     searchParams?: { [key: string]: string }
@@ -224,11 +224,7 @@ const Page: React.FC<pageProps> = ({ searchParams }) => {
                     'mt-4 md:mt-10',
                     'md:relative md:after:absolute md:after:bottom-0 md:after:z-10 md:after:h-[80px] md:after:w-full md:after:shadow-[inset_0_-35px_30px_-15px_rgba(0,0,0,0.5)] md:after:shadow-gray-1',
                 )}>
-                <div
-                    className={cn(
-                        'flex max-h-[1000px] flex-col gap-5 overflow-y-scroll scrollbar-hidden md:pr-10 md:scrollbar md:scrollbar-block',
-                        eventList.length > 2 ? 'pb-[600px]' : '',
-                    )}>
+                <div className="flex max-h-[1000px] flex-col gap-5 overflow-y-scroll pb-[600px] scrollbar-hidden md:pr-10 md:scrollbar md:scrollbar-block">
                     {eventList.length === 0 && (
                         <div className="md:flex md:h-[600px] md:items-center">
                             <EmptyData message="尚無活動" hasButton={false} />
