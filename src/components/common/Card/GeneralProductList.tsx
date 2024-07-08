@@ -59,12 +59,12 @@ const GeneralProductList: React.FC<PopProductListProps> = ({
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="overflow-hidden rounded-lg"
+                        className="w-[160px] overflow-hidden  rounded-lg"
                         onClick={() => handleMovieDetail(product._id)}
                         style={{ cursor: 'pointer' }}>
                         <div className="overflow-hidden rounded-lg">
                             <Link href={`/movies/${product._id}`}>
-                                <div className="relative h-[210px] w-[160px]">
+                                <div className="relative h-[210px]">
                                     <Image
                                         src={product.photoPath}
                                         alt={product.title}
@@ -96,7 +96,7 @@ const GeneralProductList: React.FC<PopProductListProps> = ({
                                     {/* Border-primary with blur effect */}
                                     <div className="absolute inset-0 rounded-lg border-4 border-primary border-opacity-0 blur-sm transition-opacity duration-300 hover:border-opacity-100"></div>
                                 </div>
-                                <div className="text-center">
+                                <div className="flex flex-col text-center">
                                     <div className="flex justify-between">
                                         <div className="mt-2 text-start text-white">
                                             <div className="text-btn1 font-medium">
@@ -113,7 +113,7 @@ const GeneralProductList: React.FC<PopProductListProps> = ({
                                     <Button
                                         type="button"
                                         title="立即購票"
-                                        className="py-1"
+                                        className="mt-2 py-1"
                                         onClick={() =>
                                             handleMovieDetail(product._id)
                                         }>

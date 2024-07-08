@@ -23,6 +23,8 @@ const TicketGroup: React.FC<TicketGroupProps> = ({ tickets, pageLimit }) => {
         currentPage,
         'tickets',
         status,
+        'api/v1/ticket',
+        { status },
     )
 
     const observer = useRef<IntersectionObserver>()

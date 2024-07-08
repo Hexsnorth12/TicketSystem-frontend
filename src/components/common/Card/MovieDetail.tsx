@@ -21,6 +21,8 @@ import {
     useRemoveFavoriteMutation,
 } from '@/services/modules/user'
 import { useAlert } from '@/components/useAlert/useAlert'
+import clsx from 'clsx'
+
 interface CardProps {
     product: ProductDetail
 }
@@ -151,18 +153,20 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                     </div>
                     <div className="col-span-1 row-span-1 flex items-center justify-start">
                         <div className="flex items-center justify-center gap-x-2">
-                            <MovieTag label="科幻類" />
+                            <MovieTag label={product.genre} />
                             <Image
                                 src={star}
                                 alt="star"
                                 width={20}
                                 height={20}
                             />
-                            <div className={bellota.className}>
-                                <p className="leading-1.5 text-number5 font-bold text-white md:text-number4">
-                                    {3}
-                                </p>
-                            </div>
+                            <span
+                                className={clsx(
+                                    'leading-1.5 text-number5 font-bold text-white md:text-number4',
+                                    bellota.className,
+                                )}>
+                                {Math.ceil(Math.random() * 5)}
+                            </span>
                         </div>
                     </div>
                     <div className="col-span-2 row-span-1 flex items-center justify-start border-b-[1px] border-white md:col-span-1">

@@ -45,13 +45,20 @@ interface TabInfo {
 interface BasicTabsProps {
     tabs: TabInfo[]
     className?: string
+    handleTabsChange?: (newValue: number) => void
 }
 
-const BasicTabs: React.FC<BasicTabsProps> = ({ tabs }) => {
+const BasicTabs: React.FC<BasicTabsProps> = ({
+    tabs,
+    handleTabsChange = null,
+}) => {
     const [value, setValue] = React.useState(0)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
+        if (handleTabsChange) {
+            handleTabsChange(newValue)
+        }
     }
     interface StyledTabsProps {
         children?: React.ReactNode

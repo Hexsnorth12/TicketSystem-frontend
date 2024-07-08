@@ -22,6 +22,7 @@ import upLoadImage from '@/lib/uploadImage'
 import { createJoinEvent } from '@/lib/join'
 
 import { JoinEventRes, JoinEventSuccess, JoinPageError } from '@/types'
+import { THEATERS, COUNTRIES } from '@/definitions'
 
 interface pageProps {}
 
@@ -42,6 +43,7 @@ const Page: React.FC<pageProps> = () => {
     const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [countryIndex, setCountryIndex] = useState<number>(0)
 
     function closeErrorModal() {
         setError('')
@@ -81,17 +83,25 @@ const Page: React.FC<pageProps> = () => {
                 movie,
                 person,
                 phone,
+                date: eventDate,
                 time,
             } = data
-            console.log('data: ', data)
+
             const haveTicket = isBought === '是'
-            // TODO: 需要優化
             const selectedHour = time.split(':')[0]
+            const selectedMonth = eventDate.split('/')[0] - 1
+            const selectedDate = eventDate.split('/')[1]
             const today = new Date()
+            let selectedYear = today.getFullYear()
+            const nowMonth = today.getMonth()
+
+            // is next year
+            if (Number(selectedMonth) < nowMonth) selectedYear += 1
+
             const date = new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate(),
+                selectedYear,
+                selectedMonth,
+                selectedDate,
                 selectedHour,
             )
 
@@ -203,16 +213,39 @@ const Page: React.FC<pageProps> = () => {
                         errors={errors}
                         required={true}
                     />
+                    <SelectBox title="縣市">
+                        <SelectInput
+                            placeholder="台北市"
+                            label={''}
+                            options={COUNTRIES.map((country) => country.label)}
+                            defaultValue="台北市"
+                            onSelectChange={(value) => {
+                                setCountryIndex(
+                                    Number(
+                                        COUNTRIES.find(
+                                            (c) => c.label === value,
+                                        )!.value,
+                                    ),
+                                )
+                            }}
+                        />
+                    </SelectBox>
+
                     <SelectBox title="位置">
                         <Controller
                             name="location"
                             control={control}
+                            defaultValue={THEATERS[countryIndex].map(
+                                (theatre) => theatre.label,
+                            )}
                             render={({ field }) => (
                                 <SelectInput
                                     {...field}
                                     placeholder="請選擇"
                                     label={''}
-                                    options={JOIN_OPTIONS.locationOptions}
+                                    options={THEATERS[countryIndex].map(
+                                        (theatre) => theatre.label,
+                                    )}
                                     onSelectChange={field.onChange}
                                 />
                             )}
@@ -228,6 +261,21 @@ const Page: React.FC<pageProps> = () => {
                                     placeholder="請選擇"
                                     label={''}
                                     options={JOIN_OPTIONS.movieOptions}
+                                    onSelectChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </SelectBox>
+                    <SelectBox title="日期">
+                        <Controller
+                            name="date"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectInput
+                                    {...field}
+                                    placeholder="請選擇"
+                                    label={''}
+                                    options={JOIN_OPTIONS.dateOptions}
                                     onSelectChange={field.onChange}
                                 />
                             )}

@@ -1,5 +1,6 @@
 'use client' // This is a client component 👈🏽
 import React, { useEffect, useState } from 'react'
+import { Session } from 'next-auth'
 import {
     mdiFire,
     mdiHeartCircle,
@@ -33,6 +34,10 @@ interface HeaderTitleProps {
     iconPath: string
 }
 
+interface PageProps {
+    searchParams?: { [key: string]: string }
+}
+
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     return (
         <div className="flex items-center py-2 md:py-4 ">
@@ -50,7 +55,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ title, iconPath }) => {
     )
 }
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<PageProps> = ({ searchParams }) => {
     const [popproducts, setPopProducts] = useState<Product[]>([])
     const [recproducts, setRecProducts] = useState<Product[]>([])
     const [groupproducts, setGroupProducts] = useState<Group[]>([])
@@ -59,6 +64,7 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const showAlert = useAlert()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -96,13 +102,20 @@ const HomePage: React.FC = () => {
 
         fetchData()
     }, [])
+
+    useEffect(() => {
+        const payState = searchParams?.payState
+        if (payState) {
+            showAlert('付款成功', 'success')
+        }
+    }, [])
+
     const { data: session } = useSession()
     const [addFavorite] = useAddFavoriteMutation()
     const [removeFavorite] = useRemoveFavoriteMutation()
     const handleUpdateFavorite = async (productId: string) => {
         if (!session) {
             showAlert('登入後收藏', 'warning')
-            // setTimeout(() => setShowAlert(false), 3000) // 3 秒后隐藏 Alert
             return
         }
         const currentStatus = favorites[productId]
@@ -146,7 +159,11 @@ const HomePage: React.FC = () => {
 
     return (
         <>
-            <Marquee />
+            <Marquee
+                popProductImages={popproducts
+                    .slice(0, 3)
+                    .map((item) => item.photoPath)}
+            />
 
             <div className="container mb-6 md:mb-[60px]">
                 <HeaderTitle title="熱門電影" iconPath={mdiFire} />
@@ -182,7 +199,10 @@ const HomePage: React.FC = () => {
                         title="分票專區"
                         iconPath={mdiTicketConfirmation}
                     />
-                    <TicketProductList tickets={ticketproducts} />
+                    <TicketProductList
+                        tickets={ticketproducts}
+                        session={session as Session} // 使用类型断言
+                    />
                 </div>
                 <NavBanner type="ticket" />
             </div>

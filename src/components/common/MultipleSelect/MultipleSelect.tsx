@@ -11,6 +11,7 @@ interface Props {
     }[]
     selectedValues: string[]
     onSelectChange: (currentValues: string[]) => void
+    defaultValue?: string
 }
 
 const MultipleSelect: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const MultipleSelect: React.FC<Props> = ({
     options,
     selectedValues,
     onSelectChange,
+    defaultValue = '',
 }) => {
     const handleChange = (value: string) => {
         if (selectedValues.includes(value)) {
@@ -43,6 +45,7 @@ const MultipleSelect: React.FC<Props> = ({
                         onChange={() => {
                             handleChange(value)
                         }}
+                        defaultChecked={defaultValue === label}
                     />
                 ))}
             </div>

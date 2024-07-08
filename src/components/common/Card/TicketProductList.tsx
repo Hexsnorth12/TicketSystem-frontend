@@ -7,7 +7,7 @@ import { truncateName } from '@/utils/numberUtils'
 import { formatdate } from '@/utils/dateUtils'
 import Chatbtn from '../../Buttons/ChatBtn'
 import { bellota } from '@/components/fonts'
-
+import { Session } from 'next-auth'
 type Ticket = {
     _id: string
     productId: string
@@ -34,13 +34,17 @@ type Ticket = {
 
 type TicketProductListProps = {
     tickets: Ticket[]
+    session: Session
 }
 
-const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
+const TicketProductList: React.FC<TicketProductListProps> = ({
+    tickets,
+    session,
+}) => {
     return (
         <>
             {/* Desktop-Navbar */}
-            <div className="mt-[80px] hidden md:grid md:grid-cols-4 md:gap-4">
+            <div className="mt-[80px] hidden md:grid md:grid-cols-4 md:gap-4 md:gap-y-[80px]">
                 {tickets.map((ticket, index) => (
                     <div
                         key={ticket._id}
@@ -95,6 +99,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                                 </p>
                             </div>
                             <Chatbtn
+                                session={session}
                                 ticketId={ticket._id}
                                 index={index}
                                 name={ticket.product.title}
@@ -151,6 +156,7 @@ const TicketProductList: React.FC<TicketProductListProps> = ({ tickets }) => {
                             </div>
                         </div>
                         <Chatbtn
+                            session={session}
                             ticketId={ticket._id}
                             index={index}
                             name={ticket.product.title}

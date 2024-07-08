@@ -133,3 +133,9 @@ export type PublishData = {
     holdCount: number
     price: number
 }
+
+export interface Plan {
+    name: string
+    discount: number
+    headCount: number
+}

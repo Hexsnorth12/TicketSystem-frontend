@@ -2,19 +2,15 @@
 import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
+import { format, endOfMonth } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
-import {
-    checkInvalidTimeRange,
-    cn,
-    exportTimeRangeString,
-    formatDate,
-    formatTimeString,
-} from '@/utils'
+import { checkInvalidTimeRange, cn } from '@/utils'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
@@ -33,6 +29,7 @@ const LIMITAMOUNT = 10
 const JoinPage = () => {
     const router = useRouter()
     const eventListContainer = useRef<HTMLDivElement>(null)
+    const [mapKey, setMapKey] = useState(0)
 
     const [isLoading, setIsLoading] = useState(false)
     const [stopFetching, setStopFetching] = useState(false)
@@ -46,17 +43,22 @@ const JoinPage = () => {
     const [checkFilter, setCheckFilter] = useState(false)
     const [noEvent, setNoEvent] = useState(false)
     const [onSearchInput, setOnSearchInput] = useState(false)
-    const [checkedDatePicker, setCheckedDatePicker] = useState(false)
 
     const [countryTag, setCountryTag] = useState<string>('')
     const [theaterTags, setTheaterTags] = useState<string[]>([])
     const [movieTags, setMovieTags] = useState<string[]>([])
     const [title, setTitle] = useState<string>('')
 
+    const [showInfoWindow, setShowInfoWindow] = useState(false)
+
     useEffect(() => {
         setIsLoading(true)
         getAllEvents()
     }, [])
+
+    useEffect(() => {
+        setTheaterTags([])
+    }, [countryTag])
 
     // 拿下一頁資料
     useEffect(() => {
@@ -71,8 +73,8 @@ const JoinPage = () => {
     useEffect(() => {
         try {
             if (checkFilter) {
+                setIsLoading(true)
                 const resend = setTimeout(() => {
-                    setIsLoading(true)
                     getFilterEvents()
                 }, 1200)
 
@@ -84,6 +86,7 @@ const JoinPage = () => {
             // eslint-disable-next-line
         } catch (error: any) {
             setError(error.message)
+            setIsLoading(false)
         }
     }, [timeRange, theaterTags, movieTags])
 
@@ -93,10 +96,15 @@ const JoinPage = () => {
     // 拿所有活動，無篩選
     async function getAllEvents() {
         setNoEvent(false)
+        const { startDate, endDate, startTime, endTime } = timeRange
 
         const queryString = {
             page,
             limit: LIMITAMOUNT,
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
         const result = await getJoinEventList(queryString)
         const isInitRender = page === 1
@@ -117,13 +125,11 @@ const JoinPage = () => {
             return
         }
 
-        const { startAt, endAt, timeBegin, timeEnd } =
-            exportTimeRangeString(timeRange)
         const dateRangeObj = {
-            startAt: formatDate(new Date(startAt), '/'),
-            endAt: formatDate(new Date(endAt), '/'),
-            timeBegin: formatTimeString(new Date(timeBegin)),
-            timeEnd: formatTimeString(new Date(timeEnd)),
+            startAt: format(startDate, 'yyyy/MM/dd'),
+            endAt: format(endDate, 'yyyy/MM/dd'),
+            timeBegin: format(startTime, 'HH:mm'),
+            timeEnd: format(endTime, 'HH:mm'),
         }
 
         const updatedPage = !scrollBottom ? 1 : page
@@ -137,7 +143,7 @@ const JoinPage = () => {
             title: eventTitle,
             movieTitle: movieTitles,
             theater: theaters,
-            ...(checkedDatePicker && dateRangeObj),
+            ...dateRangeObj,
         }
 
         // 如果是活動標題搜尋，則無其他參數限制
@@ -161,15 +167,30 @@ const JoinPage = () => {
             const hasNoEvent = resEventList.length === 0
             const noMoreData = hasNoEvent || totalCount <= LIMITAMOUNT
 
-            let updatedEventList = resEventList
+            let totalEvents = resEventList
             if (!initRender) {
-                updatedEventList = [...eventList, ...resEventList] as EventList
+                totalEvents = [...eventList, ...resEventList] as EventList
             }
 
-            const shouldAddMoreSpace = updatedEventList.length > 6
+            const filteredCountryEvents = []
+            if (countryTag) {
+                const rangedTheaters = THEATERS[Number(countryTag)]
+                const theaterName = rangedTheaters.map((t) => t.label)
+                for (const event of totalEvents) {
+                    if (theaterName.includes(event?.theater))
+                        filteredCountryEvents.push(event)
+                }
+            }
+
+            // 有點選縣市的話，只會顯示該縣市活動
+            const updatedEventList = countryTag
+                ? filteredCountryEvents
+                : totalEvents
+            const shouldAddMoreSpace = updatedEventList.length > 4
 
             if (initRender) setPage(1)
-            if (initRender && hasNoEvent) setNoEvent(true)
+            if ((initRender && hasNoEvent) || !updatedEventList.length)
+                setNoEvent(true)
             setStopFetching(noMoreData)
             setEventList(updatedEventList)
             setAddMoreSpace(shouldAddMoreSpace)
@@ -195,6 +216,7 @@ const JoinPage = () => {
     }
 
     function searchTitle() {
+        setIsLoading(true)
         getFilterEvents(false)
     }
 
@@ -221,10 +243,6 @@ const JoinPage = () => {
         router.push('createOriganize')
     }
 
-    function checkDatePicker() {
-        setCheckedDatePicker(true)
-    }
-
     function focusSearchInput(isFocus: boolean) {
         setOnSearchInput(isFocus)
     }
@@ -236,7 +254,6 @@ const JoinPage = () => {
         endTime: Date
     }) {
         readyToFilter()
-        checkDatePicker()
         setTimeRange(dateRange)
     }
 
@@ -245,6 +262,9 @@ const JoinPage = () => {
         const updatedValue = updatedInfo.length ? updatedInfo[0] : ''
         switch (type) {
             case 'country':
+                if (!(Number(updatedValue) === Number(countryTag[0]))) {
+                    setMapKey(Number(updatedValue))
+                }
                 setCountryTag(updatedValue)
                 break
             case 'theater':
@@ -256,166 +276,233 @@ const JoinPage = () => {
         }
     }
 
+    function clickMarkerHandler(theater: string) {
+        setIsLoading(true)
+        updateTags('theater', [theater])
+    }
+
     return (
-        <div className="flex h-screen">
-            {/* 錯誤彈窗 */}
-            {error && <ErrorModal onClose={closeErrorModal} errorMsg={error} />}
+        <APIProvider
+            apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
+            <div className="flex h-screen">
+                {/* 錯誤彈窗 */}
+                {error && (
+                    <ErrorModal onClose={closeErrorModal} errorMsg={error} />
+                )}
 
-            {/* 篩選列 */}
-            <div className="overflow-scroll bg-gray-1 px-6 scrollbar-hidden">
-                <div className="py-10">
-                    <p className="text-header4 text-white">篩選揪團</p>
-                </div>
+                {/* 篩選列 */}
+                <div className="overflow-scroll bg-gray-1 px-6 scrollbar-hidden">
+                    <div className="py-10">
+                        <p className="text-header4 text-white">篩選揪團</p>
+                    </div>
 
-                <div className="flex flex-col gap-6">
-                    <FilterOption
-                        title="時間"
-                        filter={
-                            <DatePicker
-                                onError={(error) => setError(error)}
-                                setTimeRange={updateTimeRange}
-                            />
-                        }
-                    />
-                    <FilterOption
-                        title="縣市"
-                        filter={
-                            <MultipleSelect
-                                single
-                                title="縣市"
-                                options={COUNTRIES}
-                                selectedValues={[countryTag]}
-                                onSelectChange={(updatedInfo) =>
-                                    updateTags('country', updatedInfo)
-                                }
-                            />
-                        }
-                    />
-                    {!!countryTag && (
+                    <div className="flex flex-col gap-6">
                         <FilterOption
-                            title="地點"
+                            title="時間"
+                            filter={
+                                <DatePicker
+                                    onError={(error) => setError(error)}
+                                    setTimeRange={updateTimeRange}
+                                    defaultDateRange={{
+                                        endDate: endOfMonth(new Date()),
+                                    }}
+                                />
+                            }
+                        />
+                        <FilterOption
+                            title="縣市"
                             filter={
                                 <MultipleSelect
-                                    title="地點"
-                                    options={THEATERS[Number(countryTag)]}
-                                    selectedValues={theaterTags}
+                                    single
+                                    title="縣市"
+                                    options={COUNTRIES}
+                                    selectedValues={[countryTag]}
                                     onSelectChange={(updatedInfo) =>
-                                        updateTags('theater', updatedInfo)
+                                        updateTags('country', updatedInfo)
+                                    }
+                                    defaultValue="台北市"
+                                />
+                            }
+                        />
+                        {typeof Number(countryTag) === 'number' && (
+                            <FilterOption
+                                title="地點"
+                                filter={
+                                    <MultipleSelect
+                                        title="地點"
+                                        options={THEATERS[Number(countryTag)]}
+                                        selectedValues={theaterTags}
+                                        onSelectChange={(updatedInfo) =>
+                                            updateTags('theater', updatedInfo)
+                                        }
+                                    />
+                                }
+                            />
+                        )}
+                        <FilterOption
+                            title="電影"
+                            filter={
+                                <MultipleSelect
+                                    title="電影"
+                                    options={MOVIES}
+                                    selectedValues={movieTags}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('movie', updatedInfo)
                                     }
                                 />
                             }
                         />
-                    )}
-                    <FilterOption
-                        title="電影"
-                        filter={
-                            <MultipleSelect
-                                title="電影"
-                                options={MOVIES}
-                                selectedValues={movieTags}
-                                onSelectChange={(updatedInfo) =>
-                                    updateTags('movie', updatedInfo)
-                                }
-                            />
-                        }
-                    />
+                    </div>
+                    <div className="h-[200px] w-full" />
                 </div>
-                <div className="h-[200px] w-full" />
-            </div>
 
-            {/* 活動列 */}
-            <div
-                ref={eventListContainer}
-                className={cn(
-                    'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
-                    addMoreSpace && 'pb-[300px]',
-                )}>
-                {isLoading && (
-                    <div className="flex h-full w-full flex-col items-center justify-center">
-                        <div className="flex items-center justify-center">
-                            <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
-                        </div>
-                    </div>
-                )}
-                {!isLoading &&
-                    eventList.length > 0 &&
-                    eventList.map((item, index) => {
-                        return (
-                            <Event
-                                key={index}
-                                placeholderImg={item.placeholderImg}
-                                title={item.title}
-                                movieTitle={item.movieTitle}
-                                time={item.time}
-                                amount={item.amount}
-                                theater={item.theater}
-                                onClick={openEventModal.bind(
-                                    null,
-                                    item._id as string,
-                                )}
-                            />
-                        )
-                    })}
-                {!isLoading && noEvent && (
-                    <div className="flex h-full w-full flex-col items-center justify-center">
-                        <div className="text-header5 text-gray-3">查無活動</div>
-                    </div>
-                )}
-            </div>
-
-            {/* 地圖 */}
-            <div className="relative flex-1 bg-white">
-                {/* 搜尋欄 */}
-                <form onSubmit={searchInputOnSubmitHandler}>
-                    <div className="absolute left-6 top-6 inline-block">
-                        <div className="relative shadow-sm">
-                            <Input
-                                type="text"
-                                rounded="none"
-                                value={title}
-                                onChange={changeSearchContent}
-                                placeholder="輸入活動名稱"
-                                className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
-                                onFocus={() => focusSearchInput(true)}
-                                onBlur={() => focusSearchInput(false)}
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                                <SearchBtn
-                                    type="search"
-                                    active={true}
-                                    onClick={searchTitle}
-                                />
+                {/* 活動列 */}
+                <div
+                    ref={eventListContainer}
+                    className={cn(
+                        'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
+                        addMoreSpace && 'pb-[300px]',
+                    )}>
+                    {isLoading && (
+                        <div className="flex h-full w-full flex-col items-center justify-center">
+                            <div className="flex items-center justify-center">
+                                <div className="h-16 w-16 animate-spin rounded-full border-[5px] border-b-transparent border-l-primary border-r-primary border-t-primary"></div>
                             </div>
                         </div>
+                    )}
+                    {!isLoading &&
+                        eventList.length > 0 &&
+                        eventList.map((item, index) => {
+                            return (
+                                <Event
+                                    key={index}
+                                    placeholderImg={item.placeholderImg}
+                                    title={item.title}
+                                    movieTitle={item.movieTitle}
+                                    time={item.time}
+                                    amount={item.amount}
+                                    theater={item.theater}
+                                    onClick={openEventModal.bind(
+                                        null,
+                                        item._id as string,
+                                    )}
+                                />
+                            )
+                        })}
+                    {!isLoading && noEvent && (
+                        <div className="flex h-full w-full flex-col items-center justify-center">
+                            <div className="text-header5 text-gray-3">
+                                查無活動
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="relative flex-1 bg-white">
+                    {/* 搜尋欄 */}
+                    <div className="absolute left-6 top-6 z-50 inline-block">
+                        <form onSubmit={searchInputOnSubmitHandler}>
+                            {/* <div className="absolute left-6 top-6 inline-block"> */}
+                            <div className="relative shadow-sm">
+                                <Input
+                                    type="text"
+                                    rounded="none"
+                                    value={title}
+                                    onChange={changeSearchContent}
+                                    placeholder="輸入活動名稱"
+                                    className="h-16 w-screen py-5 md:h-16 md:w-[416px] md:rounded-full"
+                                    onFocus={() => focusSearchInput(true)}
+                                    onBlur={() => focusSearchInput(false)}
+                                />
+                                <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                    <SearchBtn
+                                        type="search"
+                                        active={true}
+                                        onClick={searchTitle}
+                                    />
+                                </div>
+                            </div>
+                            {/* </div> */}
+                        </form>
                     </div>
-                </form>
-                {/* 地圖 */}
-                <Image
-                    src="/icons/join/dummy_map_should_be_deleted.png"
-                    alt="dummy map"
-                    width={1500}
-                    height={1000}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                    }}
-                />
-                {/* 新增活動按鈕 */}
-                <Button
-                    type="button"
-                    title="create join button"
-                    onClick={openAddEventModal}
-                    className="absolute bottom-6 right-6 rounded-full bg-black p-5 hover:bg-black">
-                    <Image
-                        src="/icons/join/icon_add_join.png"
-                        alt="Add Join event button"
-                        width={18}
-                        height={18}
-                    />
-                </Button>
+
+                    {/* 地圖 */}
+                    <div className="h-full w-full">
+                        <Map
+                            //變更key來reload map，來重新定位defaulCenter
+                            key={mapKey}
+                            style={{ width: '100%', height: '100%' }}
+                            defaultCenter={{
+                                lat: COUNTRIES[Number(countryTag)]
+                                    .defaultPosition?.lat as number,
+                                lng: COUNTRIES[Number(countryTag)]
+                                    .defaultPosition?.lng as number,
+                            }}
+                            defaultZoom={13}
+                            gestureHandling={'greedy'}
+                            disableDefaultUI={true}>
+                            {THEATERS[Number(countryTag)].map(
+                                (theater, index) => {
+                                    return (
+                                        <>
+                                            <Marker
+                                                key={index}
+                                                onClick={() => {
+                                                    clickMarkerHandler(
+                                                        theater.label,
+                                                    )
+                                                }}
+                                                onMouseOver={() => {
+                                                    setShowInfoWindow(true)
+                                                }}
+                                                onMouseOut={() => {
+                                                    setShowInfoWindow(false)
+                                                }}
+                                                position={{
+                                                    lat: theater.position[0],
+                                                    lng: theater.position[1],
+                                                }}
+                                            />
+                                            {showInfoWindow && (
+                                                <InfoWindow
+                                                    position={{
+                                                        lat: theater
+                                                            .position[0],
+                                                        lng: theater
+                                                            .position[1],
+                                                    }}
+                                                    pixelOffset={[0, -36]}
+                                                    disableAutoPan
+                                                    headerDisabled>
+                                                    <p className="text-small1 text-gray-2">
+                                                        {theater.label}
+                                                    </p>
+                                                </InfoWindow>
+                                            )}
+                                        </>
+                                    )
+                                },
+                            )}
+                        </Map>
+                    </div>
+                    {/* 新增活動按鈕 */}
+                    <div className="absolute bottom-6 right-6 ">
+                        <Button
+                            type="button"
+                            title="create join button"
+                            onClick={openAddEventModal}
+                            className="rounded-full bg-black p-5 hover:bg-black">
+                            <Image
+                                src="/icons/join/icon_add_join.png"
+                                alt="Add Join event button"
+                                width={18}
+                                height={18}
+                            />
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </APIProvider>
     )
 }
 

@@ -28,6 +28,7 @@ import ErrorModal from './ErrorModal'
 import DataTable from './DataTable/DataTable'
 import DataShell from './DataShell/DataShell'
 import SuccessModal from './SuccessModal'
+import DragItem from './DragItem/DragItem'
 import JoinCard from './Card/JoinCard'
 import ProductCard from './ProductCard'
 
@@ -62,6 +63,7 @@ export {
     DataTable,
     DataShell,
     SuccessModal,
+    DragItem,
     JoinCard,
     ProductCard,
 }

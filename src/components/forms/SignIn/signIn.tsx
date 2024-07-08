@@ -1,20 +1,19 @@
 'use client' // This is a client component 👈🏽
-
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { signIn } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 import { InputComponent } from '../../common'
 import { Button } from '@/components/common'
 import GoogleSignInButton from '../../Buttons/GoogleBtn'
-import { refreshAuth } from '@/lib'
-import { useSearchParams } from 'next/navigation'
-import { getSession } from 'next-auth/react'
-
 import fetchClient from '@/lib/fetchClient'
 import { useCartStore } from '@/stores/useCartStore'
+import { refreshAuth } from '@/lib'
+import { useSearchParams } from 'next/navigation'
+
 interface SignInProps {
     callbackUrl: string
 }
+
 const SignIn = ({ callbackUrl }: SignInProps) => {
     const [username, setUsername] = useState('')
     const [passWord, setPassWord] = useState('')
@@ -24,10 +23,11 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
     const handleUsernameChange = (value: string) => {
         setUsername(value)
     }
-    // const handleGoogleLogin = () => {}
+
     const handlePasswordChange = (value: string) => {
         setPassWord(value)
     }
+
     const mergeCart = useCartStore((state) => state.mergeCarts)
     const fetchCartData = async () => {
         const response = await fetchClient({
@@ -148,4 +148,5 @@ const SignIn = ({ callbackUrl }: SignInProps) => {
         </>
     )
 }
+
 export default SignIn
