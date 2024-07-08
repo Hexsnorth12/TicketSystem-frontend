@@ -30,4 +30,19 @@ export interface SellPayload {
     amount: number
 }
 
+export interface Product {
+    _id: string
+    title: string
+    photoPath: string
+    type: string
+    price?: number
+    startAt?: string
+    endAt?: string
+    recommendWeight?: number
+    isPublic?: boolean
+    theater?: string
+    genre?: string
+    brief?: string
+}
+
 export interface IMeta {}
