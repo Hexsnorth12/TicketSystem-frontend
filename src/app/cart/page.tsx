@@ -38,7 +38,6 @@ const CartPage = () => {
 
     const dataSource: DataSource[] = []
     cart.forEach((item) => {
-        console.log(item, 'itemitem')
 
         const dataSourceItem: DataSource = {
             key: item._id,

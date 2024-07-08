@@ -4,6 +4,9 @@ export const JOIN_OPTIONS = {
     areaOptions: ['台北市', '新北市', '桃園市', '新竹市'],
     locationOptions: ['威秀影城', '秀泰影城', '真善美劇院', '國賓影城'],
     movieOptions: [
+        '沙丘：第二部',
+        '秒速5公分',
+        '芙莉歐莎：瘋狂麥斯傳奇篇章',
         '腦筋急轉彎2',
         '絕地戰警：生死與共',
         '劇場版 排球少年！！ 垃圾場的決戰',
@@ -12,6 +15,7 @@ export const JOIN_OPTIONS = {
         '承諾大海的老師',
         '金孫爆富攻略',
         '媽的人生願望',
+        '沙丘3',
     ],
     dateOptions: [...setFutureMonthDate()],
     timeOptions: [
