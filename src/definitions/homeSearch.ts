@@ -47,7 +47,7 @@ export const HomeSearch: HomeSearchType = {
         '石碇區',
         '坪林區',
         '烏來區',
-    ]
+    ],
 }
 
 export const memberPath = [
