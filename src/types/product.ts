@@ -14,7 +14,8 @@ export interface Product {
     recommendWeight?: number
     isPublic?: boolean
     theater?: string
-    isAvailable?: boolean // 要請後端新增
+    genre?: string
+    brief?: string
 }
 
 export interface ProductDetail extends Product {

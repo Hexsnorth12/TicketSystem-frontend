@@ -39,6 +39,22 @@ export const pathMap: Map = {
         path: '/user/publish',
         name: '上架分票',
     },
+    notfound: {
+        path: '/search/notfound',
+        name: '找無商品',
+    },
+    productresult: {
+        path: '/search/productresult',
+        name: '商品搜尋結果',
+    },
+    groupresult: {
+        path: '/search/groupresult',
+        name: '揪團搜尋結果',
+    },
+    ticketresult: {
+        path: '/search/ticketresult',
+        name: '票券搜尋結果',
+    },
 }
 
 export const memberPath = [

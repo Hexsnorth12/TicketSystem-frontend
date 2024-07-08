@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
-import { Pagination, Navigation } from 'swiper/modules'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { Pagination, Navigation } from 'swiper/modules'
 import './swiper-custom.css'
 import { Input } from '@components/common'
 import { SearchBtn } from '@/components/Buttons'
-import { Modal } from '@components/common'
-import { SearchForm } from '@components/forms'
-import Link from 'next/link'
+// import { Modal } from '@components/common'
+// import { SearchForm } from '@components/forms'
 
 interface Props {
     popProductImages: string[]
@@ -18,17 +18,23 @@ interface Props {
 
 const Marquee: React.FC<Props> = ({ popProductImages }) => {
     const [search, setSearch] = useState('')
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    // const [isModalOpen, setIsModalOpen] = useState(false)
+    const router = useRouter()
     const handleSearchChange = (value: string) => {
         setSearch(value)
     }
-    const handleFilterClick = () => {
-        setIsModalOpen(true)
+    // const handleFilterClick = () => {
+    //     setIsModalOpen(true)
+    // }
+
+    // const handleModalClose = () => {
+    //     setIsModalOpen(false)
+    // }
+
+    const handleSearch = () => {
+        router.push(`/search?keyword=${search}`)
     }
 
-    const handleModalClose = () => {
-        setIsModalOpen(false)
-    }
     return (
         <>
             <div className="w-full px-4 py-2 md:hidden">
@@ -39,16 +45,21 @@ const Marquee: React.FC<Props> = ({ popProductImages }) => {
                         value={search}
                         onChange={handleSearchChange}
                         placeholder="輸入關鍵字"
-                        className="h-12 w-full py-4 "
+                        className="h-12 w-full px-4 py-4"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
-                        <SearchBtn type="filter" onClick={handleFilterClick} />
+                        {/* <SearchBtn type="filter" onClick={handleFilterClick} />
                         <Link href="/generalMovies">
                             <SearchBtn type="recommend" />
                         </Link>
                         <Link href="/search">
                             <SearchBtn type="search" active={true} />
-                        </Link>
+                        </Link> */}
+                        <SearchBtn
+                            type="search"
+                            active={true}
+                            onClick={handleSearch}
+                        />
                     </div>
                 </div>
             </div>
@@ -116,9 +127,9 @@ const Marquee: React.FC<Props> = ({ popProductImages }) => {
                                 />
                             </div>
                         </div>
-                        <div className=" pointer-events-auto absolute top-1 order-first -mt-2 hidden md:relative md:order-last md:mt-6 md:inline-flex">
+                        <div className=" pointer-events-auto absolute top-1 order-first -mt-2 hidden md:relative md:order-last md:mt-6 md:block">
                             <div>
-                                <div className="relative mt-6 shadow-sm">
+                                <div className="relative shadow-sm ">
                                     <Input
                                         type="text"
                                         rounded="none"
@@ -128,30 +139,35 @@ const Marquee: React.FC<Props> = ({ popProductImages }) => {
                                         className="h-12 w-screen py-5 md:h-16 md:w-[526px] md:rounded-full"
                                     />
                                     <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                        {/* <SearchBtn
+                                        type="filter"
+                                        onClick={handleFilterClick}
+                                    /> */}
+                                        {/* <Link href="/generalMovies">
+                                        <SearchBtn type="recommend" />
+                                    </Link> */}
+                                        {/* <Link href="/search/notfound">
                                         <SearchBtn
-                                            type="filter"
-                                            onClick={handleFilterClick}
+                                            type="search"
+                                            active={true}
                                         />
-                                        <Link href="/generalMovies">
-                                            <SearchBtn type="recommend" />
-                                        </Link>
-                                        <Link href="/search">
-                                            <SearchBtn
-                                                type="search"
-                                                active={true}
-                                            />
-                                        </Link>
+                                    </Link> */}
+                                        <SearchBtn
+                                            type="search"
+                                            active={true}
+                                            onClick={handleSearch}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {isModalOpen && (
-                            <Modal onClose={handleModalClose}>
-                                <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
-                                    <SearchForm />
-                                </div>
-                            </Modal>
-                        )}
+                        {/* {isModalOpen && (
+                        <Modal onClose={handleModalClose}>
+                            <div className="mx-auto overflow-auto border-0 bg-gray-2 p-4">
+                                <SearchForm />
+                            </div>
+                        </Modal>
+                    )} */}
                     </div>
                 </div>
             </div>
