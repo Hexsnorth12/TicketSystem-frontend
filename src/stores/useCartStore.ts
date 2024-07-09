@@ -281,7 +281,6 @@ export const useCartStore = create<State & Actions>()(
                         selectedPlan: serverItem.plan,
                         quantity: serverItem.amount,
                     }
-                    console.log(formattedItem)
 
                     // 查找合併購物車中是否存在同一個產品和計劃
                     const index = mergedCart.findIndex(

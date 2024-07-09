@@ -139,7 +139,7 @@ const Delivery = () => {
             if (response.status == 6000) {
                 const responseData = await response
                 const { status, message, data } = responseData
-                console.log(responseData, 'responseresponse')
+
                 if (status === '6000') {
                     if (orderData.paymentMethod === 'linePay' && data.linePay) {
                         // Order was successful with Line Pay
