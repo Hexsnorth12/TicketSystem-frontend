@@ -30,7 +30,7 @@ const Page: React.FC<pageProps> = () => {
 
     const renderShareTickets = data?.map((order) => (
         <ShareTicket
-            key={order.orderId}
+            key={order.orderId + order.productId}
             order={order}
             isPublished={isPublished}
         />
