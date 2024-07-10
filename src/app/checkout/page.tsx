@@ -63,7 +63,6 @@ const CheckoutPage = () => {
         const headCount = product.selectedPlan.headCount
         return acc + price * headCount * product.quantity
     }, 0)
-    console.log(columns, 'columns')
 
     const discount = originalTotal - total
     return (

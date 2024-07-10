@@ -13,9 +13,7 @@ const GoogleSignInButton = ({
     callbackUrl,
 }: GoogleSignInButtonProps) => {
     const loginWithGoogle = async () => {
-        console.log('Signing in with Google...')
-        const result = await signIn('google', { callbackUrl })
-        console.log('Result:', result)
+        await signIn('google', { callbackUrl })
     }
 
     return (
