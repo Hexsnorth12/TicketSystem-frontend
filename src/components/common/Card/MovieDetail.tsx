@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import 'swiper/css'
 import 'swiper/swiper-bundle.css'
@@ -33,6 +33,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const [removeFavorite, { isLoading: isLoadingRemove }] =
         useRemoveFavoriteMutation()
     const { data: session } = useSession()
+    const [rating, setRating] = useState(1)
 
     const initialPlan = product.plans[0] || {}
     const [selectPlan, setSelectPlan] = useState<ProductPlan>(initialPlan)
@@ -47,6 +48,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
     const handleConterClick = (value: number) => {
         setConter(value)
     }
+
     // 处理方案选择
     const handleSelectPlanClick = (
         product: ProductDetail,
@@ -112,6 +114,11 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
         ))
     }, [product.plans.length, selectPlan])
 
+    useEffect(() => {
+        const ratingValue = Math.ceil(Math.random() * 5)
+        setRating(ratingValue)
+    }, [])
+
     return (
         <div className="relative h-full w-full">
             <div className="relative h-[312px] md:h-[600px]">
@@ -165,7 +172,7 @@ const MovieDetailCard: React.FC<CardProps> = ({ product }) => {
                                     'leading-1.5 text-number5 font-bold text-white md:text-number4',
                                     bellota.className,
                                 )}>
-                                {Math.ceil(Math.random() * 5)}
+                                {rating}
                             </span>
                         </div>
                     </div>
