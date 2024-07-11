@@ -24,6 +24,7 @@ import {
 } from '@/types'
 
 const LIMITAMOUNT = 10
+const MOBILE_FILTER_LIST = ['時間', '縣市', '地點', '電影']
 
 //TODO: 程式碼優化：模組化
 const JoinPage = () => {
@@ -50,6 +51,10 @@ const JoinPage = () => {
     const [title, setTitle] = useState<string>('')
 
     const [showInfoWindow, setShowInfoWindow] = useState(false)
+
+    const [mobileSelectedFilterIndex, setMobileSelectedFilterIndex] = useState<
+        number | null
+    >(null)
 
     useEffect(() => {
         setIsLoading(true)
@@ -281,17 +286,94 @@ const JoinPage = () => {
         updateTags('theater', [theater])
     }
 
+    function mobileFilterSelectHandler(isSelected: boolean, index: number) {
+        if (isSelected) setMobileSelectedFilterIndex(null)
+        else setMobileSelectedFilterIndex(index)
+    }
+
     return (
         <APIProvider
             apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
-            <div className="flex h-screen">
+            <div className="relative h-screen md:flex">
+                {/* mobile search bar & filter inputs */}
+                <div className="absolute top-[-6px] z-10 md:hidden">
+                    <div className="relative">
+                        <form onSubmit={searchInputOnSubmitHandler}>
+                            <Input
+                                type="text"
+                                rounded="none"
+                                value={title}
+                                onChange={changeSearchContent}
+                                placeholder="輸入活動名稱"
+                                className="w-screen py-3"
+                                onFocus={() => focusSearchInput(true)}
+                                onBlur={() => focusSearchInput(false)}
+                            />
+                            <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                <SearchBtn
+                                    type="search"
+                                    active={true}
+                                    onClick={searchTitle}
+                                    iconDimension={{ width: 16, height: 16 }}
+                                />
+                            </div>
+                        </form>
+                    </div>
+
+                    <div className="flex gap-[10px] border-b border-t border-gray-3 bg-gray-2 px-3 md:hidden">
+                        {MOBILE_FILTER_LIST.map((filter, index) => {
+                            const isSelected =
+                                mobileSelectedFilterIndex === index
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() =>
+                                        mobileFilterSelectHandler(
+                                            isSelected,
+                                            index,
+                                        )
+                                    }
+                                    className="flex items-center justify-center py-3 text-small2">
+                                    <div
+                                        className={cn(
+                                            'text-white',
+                                            isSelected && 'text-primary',
+                                        )}>
+                                        {filter}
+                                    </div>
+                                    {isSelected ? (
+                                        <Image
+                                            src={
+                                                '/icons/join/icon_arrow_up_light.png'
+                                            }
+                                            alt="arrow down highlight"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={
+                                                '/icons/join/icon_arrow_down.png'
+                                            }
+                                            alt="arrow down"
+                                            width={16}
+                                            height={16}
+                                        />
+                                    )}
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+
+                {/* desktop */}
                 {/* 錯誤彈窗 */}
                 {error && (
                     <ErrorModal onClose={closeErrorModal} errorMsg={error} />
                 )}
 
                 {/* 篩選列 */}
-                <div className="overflow-scroll bg-gray-1 px-6 scrollbar-hidden">
+                <div className="hidden overflow-scroll bg-gray-1 px-6 scrollbar-hidden md:block">
                     <div className="py-10">
                         <p className="text-header4 text-white">篩選揪團</p>
                     </div>
@@ -360,7 +442,7 @@ const JoinPage = () => {
                 <div
                     ref={eventListContainer}
                     className={cn(
-                        'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
+                        'hidden w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden md:flex',
                         addMoreSpace && 'pb-[300px]',
                     )}>
                     {isLoading && (
@@ -398,9 +480,9 @@ const JoinPage = () => {
                     )}
                 </div>
 
-                <div className="relative flex-1 bg-white">
+                <div className="relative h-full bg-white md:flex-1">
                     {/* 搜尋欄 */}
-                    <div className="absolute left-6 top-6 z-50 inline-block">
+                    <div className="absolute left-6 top-6 z-50 hidden md:inline-block">
                         <form onSubmit={searchInputOnSubmitHandler}>
                             {/* <div className="absolute left-6 top-6 inline-block"> */}
                             <div className="relative shadow-sm">
@@ -426,8 +508,9 @@ const JoinPage = () => {
                         </form>
                     </div>
 
+                    {/* desktop & mobile */}
                     {/* 地圖 */}
-                    <div className="h-full w-full">
+                    <div className="h-full w-full md:block">
                         <Map
                             //變更key來reload map，來重新定位defaulCenter
                             key={mapKey}
@@ -484,9 +567,36 @@ const JoinPage = () => {
                                 },
                             )}
                         </Map>
+
+                        {/* mobile event list */}
+                        <div className="absolute bottom-[15%] flex w-full gap-3 overflow-x-scroll pl-3 pr-[100px] scrollbar-hidden md:hidden">
+                            {!isLoading &&
+                                eventList.length > 0 &&
+                                eventList.map((item, index) => {
+                                    return (
+                                        <Event
+                                            key={index}
+                                            placeholderImg={item.placeholderImg}
+                                            title={item.title}
+                                            movieTitle={item.movieTitle}
+                                            time={item.time}
+                                            amount={item.amount}
+                                            theater={item.theater}
+                                            onClick={openEventModal.bind(
+                                                null,
+                                                item._id as string,
+                                            )}
+                                            containerStyle={
+                                                'bg-gray-2 p-3 rounded-lg'
+                                            }
+                                        />
+                                    )
+                                })}
+                        </div>
                     </div>
+
                     {/* 新增活動按鈕 */}
-                    <div className="absolute bottom-6 right-6 ">
+                    <div className="absolute bottom-6 right-6 hidden md:block ">
                         <Button
                             type="button"
                             title="create join button"
