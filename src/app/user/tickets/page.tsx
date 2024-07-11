@@ -28,7 +28,7 @@ const Page: React.FC<pageProps> = async ({ searchParams }) => {
             <div
                 className={clsx(
                     'mt-4 md:mt-10',
-                    'md:relative md:after:absolute md:after:bottom-0 md:after:z-10 md:after:h-[80px] md:after:w-full md:after:shadow-[inset_0_-35px_30px_-15px_rgba(0,0,0,0.5)] md:after:shadow-gray-1',
+                    'after:pointer-events-none md:relative md:after:absolute md:after:bottom-0 md:after:z-10 md:after:h-[80px] md:after:w-full md:after:shadow-[inset_0_-35px_30px_-15px_rgba(0,0,0,0.5)] md:after:shadow-gray-1 ',
                 )}>
                 <TicketGroup tickets={tickets} pageLimit={PAGE_LIMIT} />
             </div>
