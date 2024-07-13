@@ -371,7 +371,6 @@ const Page: React.FC<pageProps> = () => {
                         placeholder="新增活動內容"
                         registerKey={'description'}
                         register={register}
-                        required={true}
                     />
                     <div className="flex justify-center">
                         <Button
