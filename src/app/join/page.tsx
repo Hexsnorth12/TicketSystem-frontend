@@ -3,14 +3,16 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
-import { format, endOfMonth } from 'date-fns'
+import { format } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
 import FilterOption from '@/components/Join/FilterOption'
 import Event from '@/components/Join/Event'
 import { SearchBtn } from '@/components/Buttons'
+import DatePickerModal from '@/components/common/DatePicker/DatePickerModal'
 import { checkInvalidTimeRange, cn } from '@/utils'
+import { datePickerStaticData } from '@/lib'
 import { getJoinEventList, DEFAULTTIMERANGE } from '@/lib/join'
 import { useScrollToBottom } from '@/hooks'
 
@@ -23,7 +25,10 @@ import {
     JoinPageSuccess,
 } from '@/types'
 
+const { DEFAULTDATE, STARTDATETITLE, ENDDATETITLE } = datePickerStaticData
+
 const LIMITAMOUNT = 10
+const MOBILE_FILTER_LIST = ['時間', '縣市', '地點', '電影']
 
 //TODO: 程式碼優化：模組化
 const JoinPage = () => {
@@ -50,6 +55,13 @@ const JoinPage = () => {
     const [title, setTitle] = useState<string>('')
 
     const [showInfoWindow, setShowInfoWindow] = useState(false)
+    const [showMobileStartDateModal, setShowMobileStartDateModal] =
+        useState(false)
+    const [showMobileEndDateModal, setShowMobileEndDateModal] = useState(false)
+
+    const [mobileSelectedFilterIndex, setMobileSelectedFilterIndex] = useState<
+        number | null
+    >(null)
 
     useEffect(() => {
         setIsLoading(true)
@@ -122,6 +134,7 @@ const JoinPage = () => {
 
         if (dateRangeError || timeRangeError) {
             setError('時間範圍有誤')
+            setIsLoading(false)
             return
         }
 
@@ -281,17 +294,201 @@ const JoinPage = () => {
         updateTags('theater', [theater])
     }
 
+    function mobileFilterSelectHandler(isSelected: boolean, index: number) {
+        if (isSelected) setMobileSelectedFilterIndex(null)
+        else setMobileSelectedFilterIndex(index)
+    }
+
+    function mobileFilterHandler(index: number, isSelected: boolean) {
+        if (index === 0) toggleMobileStartDateModal(true)
+        else mobileFilterSelectHandler(isSelected, index)
+    }
+
+    function toggleMobileStartDateModal(show: boolean) {
+        setShowMobileStartDateModal(show)
+    }
+
+    function toggleMobileEndDateModal(show: boolean) {
+        setShowMobileEndDateModal(show)
+    }
+
+    function mobileChangeStartDate(date: Date) {
+        updateTimeRange({ ...timeRange, startDate: date })
+        toggleMobileEndDateModal(true)
+    }
+
+    function mobileChangeEndDate(date: Date) {
+        if (timeRange.startDate > date) {
+            setError('結束日期不可早於開始日期')
+            toggleMobileEndDateModal(false)
+            return
+        }
+        updateTimeRange({ ...timeRange, endDate: date })
+    }
+
     return (
         <APIProvider
             apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
-            <div className="flex h-screen">
+            <div className="relative h-screen md:flex">
+                {/* mobile search bar & filter inputs */}
+                <div className="absolute top-[-6px] z-10 max-w-full overflow-hidden md:hidden">
+                    <div className="relative">
+                        <form onSubmit={searchInputOnSubmitHandler}>
+                            <Input
+                                type="text"
+                                rounded="none"
+                                value={title}
+                                onChange={changeSearchContent}
+                                placeholder="輸入活動名稱"
+                                className="w-screen py-3"
+                                onFocus={() => focusSearchInput(true)}
+                                onBlur={() => focusSearchInput(false)}
+                            />
+                            <div className="absolute inset-y-0 right-0 flex items-center gap-1 p-2">
+                                <SearchBtn
+                                    type="search"
+                                    active={true}
+                                    onClick={searchTitle}
+                                    iconDimension={{ width: 16, height: 16 }}
+                                />
+                            </div>
+                        </form>
+                    </div>
+
+                    <div className="flex gap-[10px] border-b border-t border-gray-3 bg-gray-2 px-3 md:hidden">
+                        {MOBILE_FILTER_LIST.map((filter, index) => {
+                            const isSelected =
+                                mobileSelectedFilterIndex === index
+                            return (
+                                <>
+                                    <button
+                                        key={index}
+                                        onClick={() => {
+                                            mobileFilterHandler(
+                                                index,
+                                                isSelected,
+                                            )
+                                        }}
+                                        className="flex items-center justify-center py-3 text-small2">
+                                        <div
+                                            className={cn(
+                                                'text-white',
+                                                isSelected && 'text-primary',
+                                            )}>
+                                            {filter}
+                                        </div>
+                                        {isSelected ? (
+                                            <Image
+                                                src={
+                                                    '/icons/join/icon_arrow_up_light.png'
+                                                }
+                                                alt="arrow down highlight"
+                                                width={16}
+                                                height={16}
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={
+                                                    '/icons/join/icon_arrow_down.png'
+                                                }
+                                                alt="arrow down"
+                                                width={16}
+                                                height={16}
+                                            />
+                                        )}
+                                    </button>
+
+                                    {index === 0 && (
+                                        <>
+                                            {/* 開始日期彈窗 */}
+                                            <DatePickerModal
+                                                visible={
+                                                    showMobileStartDateModal
+                                                }
+                                                title={STARTDATETITLE}
+                                                value={new Date()}
+                                                defaultValue={DEFAULTDATE}
+                                                onChange={mobileChangeStartDate}
+                                                onClose={toggleMobileStartDateModal.bind(
+                                                    null,
+                                                    false,
+                                                )}
+                                                containerStyle="max-w-[400px]"
+                                            />
+                                            {/* 結束日期彈窗 */}
+                                            <DatePickerModal
+                                                visible={showMobileEndDateModal}
+                                                title={ENDDATETITLE}
+                                                value={new Date()}
+                                                defaultValue={DEFAULTDATE}
+                                                onChange={mobileChangeEndDate}
+                                                onClose={toggleMobileEndDateModal.bind(
+                                                    null,
+                                                    false,
+                                                )}
+                                                containerStyle="max-w-[400px]"
+                                            />
+                                        </>
+                                    )}
+                                </>
+                            )
+                        })}
+                    </div>
+
+                    {!!mobileSelectedFilterIndex && (
+                        <div className="min-w-full overflow-x-auto bg-gray-1 p-4 scrollbar-hidden md:hidden">
+                            {mobileSelectedFilterIndex === 1 && (
+                                <MultipleSelect
+                                    single
+                                    title="縣市"
+                                    options={COUNTRIES}
+                                    selectedValues={[countryTag]}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('country', updatedInfo)
+                                    }
+                                    hideBorder
+                                    containerStyle="p-0"
+                                    checkboxStyle="min-w-[90px]"
+                                />
+                            )}
+                            {mobileSelectedFilterIndex === 2 && (
+                                <MultipleSelect
+                                    title="地點"
+                                    options={THEATERS[Number(countryTag)]}
+                                    selectedValues={theaterTags}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('theater', updatedInfo)
+                                    }
+                                    hideBorder
+                                    containerStyle="p-0"
+                                    checkboxStyle="min-w-[150px]"
+                                />
+                            )}
+                            {mobileSelectedFilterIndex === 3 && (
+                                <MultipleSelect
+                                    title="電影"
+                                    options={MOVIES}
+                                    selectedValues={movieTags}
+                                    onSelectChange={(updatedInfo) =>
+                                        updateTags('movie', updatedInfo)
+                                    }
+                                    hideBorder
+                                    containerStyle="p-0"
+                                    checkboxStyle="min-w-[150px]"
+                                />
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* desktop */}
                 {/* 錯誤彈窗 */}
                 {error && (
                     <ErrorModal onClose={closeErrorModal} errorMsg={error} />
                 )}
 
                 {/* 篩選列 */}
-                <div className="overflow-scroll bg-gray-1 px-6 scrollbar-hidden">
+                <div className="hidden overflow-scroll bg-gray-1 px-6 scrollbar-hidden md:block">
                     <div className="py-10">
                         <p className="text-header4 text-white">篩選揪團</p>
                     </div>
@@ -303,9 +500,6 @@ const JoinPage = () => {
                                 <DatePicker
                                     onError={(error) => setError(error)}
                                     setTimeRange={updateTimeRange}
-                                    defaultDateRange={{
-                                        endDate: endOfMonth(new Date()),
-                                    }}
                                 />
                             }
                         />
@@ -360,7 +554,7 @@ const JoinPage = () => {
                 <div
                     ref={eventListContainer}
                     className={cn(
-                        'flex w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden',
+                        'hidden w-[364px] flex-col gap-10 overflow-scroll px-6 py-10 scrollbar-hidden md:flex',
                         addMoreSpace && 'pb-[300px]',
                     )}>
                     {isLoading && (
@@ -398,9 +592,9 @@ const JoinPage = () => {
                     )}
                 </div>
 
-                <div className="relative flex-1 bg-white">
+                <div className="relative h-full bg-white md:flex-1">
                     {/* 搜尋欄 */}
-                    <div className="absolute left-6 top-6 z-50 inline-block">
+                    <div className="absolute left-6 top-6 z-50 hidden md:inline-block">
                         <form onSubmit={searchInputOnSubmitHandler}>
                             {/* <div className="absolute left-6 top-6 inline-block"> */}
                             <div className="relative shadow-sm">
@@ -426,8 +620,9 @@ const JoinPage = () => {
                         </form>
                     </div>
 
+                    {/* desktop & mobile */}
                     {/* 地圖 */}
-                    <div className="h-full w-full">
+                    <div className="h-full w-full md:block">
                         <Map
                             //變更key來reload map，來重新定位defaulCenter
                             key={mapKey}
@@ -484,9 +679,60 @@ const JoinPage = () => {
                                 },
                             )}
                         </Map>
+
+                        {/* mobile event list & add join event button*/}
+                        <div className="absolute bottom-[33%] right-3 md:hidden ">
+                            <Button
+                                type="button"
+                                title="create join button"
+                                onClick={openAddEventModal}
+                                className="rounded-full bg-black p-3 hover:bg-black">
+                                <Image
+                                    src="/icons/join/icon_add_join.png"
+                                    alt="Add Join event button"
+                                    width={16}
+                                    height={16}
+                                />
+                            </Button>
+                        </div>
+                        {isLoading && (
+                            <div className="absolute bottom-[15%] flex h-[100px] w-full items-start justify-center md:hidden">
+                                <div className="flex items-center justify-center">
+                                    <div className="h-10 w-10 animate-spin rounded-full border-[5px] border-b-transparent border-l-gray-4 border-r-gray-4 border-t-gray-4"></div>
+                                </div>
+                            </div>
+                        )}
+                        {!isLoading && (
+                            <div className="absolute bottom-[15%] flex w-full gap-3 overflow-x-scroll pl-3 pr-[100px] scrollbar-hidden md:hidden">
+                                {eventList.length > 0 &&
+                                    eventList.map((item, index) => {
+                                        return (
+                                            <Event
+                                                key={index}
+                                                placeholderImg={
+                                                    item.placeholderImg
+                                                }
+                                                title={item.title}
+                                                movieTitle={item.movieTitle}
+                                                time={item.time}
+                                                amount={item.amount}
+                                                theater={item.theater}
+                                                onClick={openEventModal.bind(
+                                                    null,
+                                                    item._id as string,
+                                                )}
+                                                containerStyle={
+                                                    'bg-gray-2 p-3 rounded-lg'
+                                                }
+                                            />
+                                        )
+                                    })}
+                            </div>
+                        )}
                     </div>
+
                     {/* 新增活動按鈕 */}
-                    <div className="absolute bottom-6 right-6 ">
+                    <div className="absolute bottom-6 right-6 hidden md:block ">
                         <Button
                             type="button"
                             title="create join button"

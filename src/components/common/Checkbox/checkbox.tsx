@@ -1,9 +1,11 @@
+import { cn } from '@/utils'
 import React from 'react'
 interface CheckboxProps {
     label: string
     checked: boolean
     onChange: () => void
     defaultChecked?: boolean
+    checkboxStyle?: string | null
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -11,9 +13,11 @@ const Checkbox: React.FC<CheckboxProps> = ({
     checked,
     onChange,
     defaultChecked = false,
+    checkboxStyle = null,
 }) => {
     return (
-        <div className="flex items-center">
+        <div
+            className={cn('flex items-center', checkboxStyle && checkboxStyle)}>
             <div className="relative flex cursor-pointer items-center rounded-full p-2">
                 <input
                     type="checkbox"

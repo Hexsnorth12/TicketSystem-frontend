@@ -1,4 +1,3 @@
-import { endOfMonth } from 'date-fns'
 import fetchClient from './fetchClient'
 
 import type {
@@ -11,7 +10,7 @@ import type {
 const today = new Date()
 export const DEFAULTTIMERANGE = {
     startDate: today,
-    endDate: endOfMonth(new Date()),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 31)), // 一個月
     startTime: new Date(
         new Date().getFullYear(),
         new Date().getMonth(),

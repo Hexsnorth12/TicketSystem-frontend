@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { Checkbox } from '@/components/common'
+import { cn } from '@/utils'
 
 interface Props {
     single?: boolean
@@ -12,6 +13,9 @@ interface Props {
     selectedValues: string[]
     onSelectChange: (currentValues: string[]) => void
     defaultValue?: string
+    hideBorder?: boolean
+    containerStyle?: string
+    checkboxStyle?: string
 }
 
 const MultipleSelect: React.FC<Props> = ({
@@ -21,6 +25,9 @@ const MultipleSelect: React.FC<Props> = ({
     selectedValues,
     onSelectChange,
     defaultValue = '',
+    hideBorder = false,
+    containerStyle = null,
+    checkboxStyle = null,
 }) => {
     const handleChange = (value: string) => {
         if (selectedValues.includes(value)) {
@@ -36,7 +43,12 @@ const MultipleSelect: React.FC<Props> = ({
     return (
         <div>
             <h5 className="mb-3 hidden text-small1 text-white">{title}</h5>
-            <div className="flex flex-row rounded-lg border border-gray-3 p-4 md:flex-col">
+            <div
+                className={cn(
+                    'flex flex-row rounded-lg p-4 md:flex-col',
+                    !hideBorder && 'border border-gray-3',
+                    containerStyle && containerStyle,
+                )}>
                 {options.map(({ label, value }) => (
                     <Checkbox
                         key={label}
@@ -46,6 +58,7 @@ const MultipleSelect: React.FC<Props> = ({
                             handleChange(value)
                         }}
                         defaultChecked={defaultValue === label}
+                        checkboxStyle={checkboxStyle}
                     />
                 ))}
             </div>

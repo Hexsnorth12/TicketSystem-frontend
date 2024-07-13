@@ -1,5 +1,5 @@
 const today = new Date()
-const later = new Date(today.getTime() + 86400000)
+const later = new Date(new Date().setDate(new Date().getDate() + 31)) // 一個月
 
 export const DEFAULTSTARTTIME = new Date(
     today.getFullYear(),
