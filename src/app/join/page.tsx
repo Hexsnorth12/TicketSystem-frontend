@@ -3,7 +3,7 @@ import React, { FormEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps'
-import { format, endOfMonth } from 'date-fns'
+import { format } from 'date-fns'
 
 import { Button, DatePicker, ErrorModal, Input } from '@/components/common'
 import { MultipleSelect } from '@/components/common'
