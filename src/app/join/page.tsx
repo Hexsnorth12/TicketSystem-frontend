@@ -500,9 +500,6 @@ const JoinPage = () => {
                                 <DatePicker
                                     onError={(error) => setError(error)}
                                     setTimeRange={updateTimeRange}
-                                    defaultDateRange={{
-                                        endDate: endOfMonth(new Date()),
-                                    }}
                                 />
                             }
                         />
