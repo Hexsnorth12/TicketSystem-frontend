@@ -5,6 +5,7 @@ export type DatePickerModal = {
     title: string
     onClose: () => void
     onChange: (date: Date) => void
+    containerStyle?: string
 }
 
 export type DatePickerInput = {

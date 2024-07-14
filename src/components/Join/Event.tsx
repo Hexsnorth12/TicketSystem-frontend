@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-import { formatJoinEventDate, truncateJoinEvent } from '@/utils'
+import { cn, formatJoinEventDate, truncateJoinEvent } from '@/utils'
 
 import type { Event as Props } from '@/types'
 
@@ -14,11 +14,17 @@ const Event: React.FC<Props> = ({
     movieTitle,
     placeholderImg,
     onClick,
+    containerStyle,
 }) => {
     const formatedTime = formatJoinEventDate(new Date(time))
 
     return (
-        <div className="flex cursor-pointer gap-4" onClick={() => onClick()}>
+        <div
+            className={cn(
+                'flex cursor-pointer gap-4',
+                containerStyle && containerStyle,
+            )}
+            onClick={() => onClick()}>
             <div className="h-[120px] w-[120px] overflow-hidden rounded-lg bg-gray-3">
                 <Image
                     loader={() => placeholderImg}
