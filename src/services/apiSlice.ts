@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { serverCode } from '@/definitions'
+import { serverCode, BASE_URL } from '@/definitions'
 
 // next api endpoint
 export const nextApi = createApi({
@@ -48,7 +48,7 @@ export const { useSignInMutation, useLazyLogoutQuery } = nextApi
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://ticketsystembackend-zz2vrjpjsa-de.a.run.app/',
+        baseUrl: BASE_URL,
         prepareHeaders: (headers) => {
             // TODO: 有需要改headers再處理
             // const token = getState().user.token

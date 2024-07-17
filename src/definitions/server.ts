@@ -11,7 +11,7 @@ export const serverCode: Server = {
     PASSWORD_NOT_MATCH: '6202',
 }
 
-export const BASE_URL = 'https://ticketsystembackend-zz2vrjpjsa-de.a.run.app/'
+export const BASE_URL = 'https://ticketsystem-backend.onrender.com/'
 
 // 保護路由: 驗證失敗會重導登入頁
 export const protectedRoutes = [
